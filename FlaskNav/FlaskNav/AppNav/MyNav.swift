@@ -20,7 +20,7 @@ class AppNav: FlaskNav<MainControllers> {
     
     override func configRouter(){
         
-        router[.Home] = { UIViewController() }
+        router[.Home] = { (payload) in UIViewController() }
         
     }
     

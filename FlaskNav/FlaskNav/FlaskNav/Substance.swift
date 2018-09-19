@@ -12,8 +12,8 @@ import Flask
 struct NavigationState: State {
     
     enum prop : StateProp{
-        case currentPath
+        case currentRoute
     }
-    var currentPath = "root"
+    var currentRoute = "root"
 }
 

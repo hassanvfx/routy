@@ -9,25 +9,31 @@
 import UIKit
 import Flask
 
+let UNDEFINED_CONTEXT_ID = -1
+
+
 public class FlaskNav<T:Hashable & RawRepresentable> : FlaskReactor{
   
-    let navigation = NewSubstance(definedBy: NavigationState.self)
-
-    public var router:[T:NavConstructor] = [:]
-    var _router:[String:NavConstructor] = [:]
+    
+    // MARK: NAV CONTROLLER
     
     var window: UIWindow?
     var navController: UINavigationController?
     var stack:[String] = []
     
+    // MARK: ROUTING
+    
+    let navigation = NewSubstance(definedBy: NavigationState.self)
+
+    public var router:[T:NavConstructor] = [:]
+    var _router:[String:NavConstructor] = [:]
+    
+    var transitionContexts:[Int:NavigationContext] = [:]
+ 
     init() {
         configRouter()
         updateRouter()
         AttachFlaskReactor(to: self, mixing: [navigation])
-    }
-    
-    open func configRouter(){
-        //user should define routes using router[.Foo] = Closure
     }
     
     public func updateRouter(){
@@ -39,10 +45,18 @@ public class FlaskNav<T:Hashable & RawRepresentable> : FlaskReactor{
             _router[stringKey] = value
         }
     }
-
+    
+    // MARK: OPEN OVERRIDES
+    
+    open func configRouter(){
+        //user should define routes using router[.Foo] = Closure
+    }
+    
+    
     open func  navBarHidden()->Bool{
         return true
     }
+    
     open func  rootViewController<T:UIViewController>()->T{
         return UIViewController() as! T
     }
@@ -56,28 +70,60 @@ extension FlaskNav{
         if let constructor = _router[path]{
             return constructor
         }
-        fatalError("constuctor not defined")
+        fatalError("constuctor `\(path)` not defined")
     }
 }
 
 extension FlaskNav{
 
     public func flaskReactor(reaction: FlaskReaction) {
-        reaction.on(NavigationState.prop.currentPath){[weak self] (change) in
+        reaction.on(NavigationState.prop.currentRoute){[weak self] (change) in
             
-            self?.presentController(path: navigation.state.currentPath )
+            self?.presentRoute(navigation.state.currentRoute )
             
         }
     }
-    
-    public func push(path:T){
+    public func push(path:T, payload:Any? = nil){
+        push(resource:path,resourceId:nil,payload:payload)
+    }
+    public func push(resource:T, resourceId:String?, payload:Any? = nil){
         
-        let stringPath = path.rawValue as! String
+        let stringResource = resource.rawValue as! String
+        
+        var route = NavigationRoute(resource: stringResource, resourceId: resourceId)
+        let context = NavigationContext(payload: payload, transition: .push)
+        route.contextId = startTransition(context: context)
         
         GetFlaskReactor(at: self).toMix(navigation) { (substance) in
-            substance.prop.currentPath = stringPath
+            substance.prop.currentRoute = route.toString()
         }.andReact()
+        
     }
+}
+extension FlaskNav{
+
+    func startTransition(context:NavigationContext)->Int{
+        
+        let index = transitionContexts.count
+        guard transitionContexts[index] == nil else{
+            fatalError("unexpected keyspace collision")
+        }
+        
+        transitionContexts[index] = context
+        return index
+    }
+    
+    func finishTransition(contextIndex index: Int)->NavigationContext{
+        let value = transitionContexts[index]
+        transitionContexts.removeValue(forKey: index)
+        
+        if let value = value {
+            return value
+        }
+        fatalError("index not found")
+    }
+    
+    
 }
 extension FlaskNav{
     
@@ -96,13 +142,17 @@ extension FlaskNav{
         
     }
     
-    
-    
-    func  presentController(path:String){
+
+    func presentRoute(_ aRoute:String){
        
-        let constructor = self.constructorFor(path)
-        let controller = constructor()
+        let route = NavigationRoute.init(fromString: aRoute)
+        let context = finishTransition(contextIndex: route.contextId)
+        let payload = NavigationPayload(context: context, route: route)
+        
+        let constructor = constructorFor(route.resource)
+        let controller = constructor(payload)
         controller.view.backgroundColor = .red
+       
         navController?.pushViewController(controller, animated: true)
         
     }
