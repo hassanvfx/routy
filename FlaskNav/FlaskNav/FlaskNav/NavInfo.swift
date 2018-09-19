@@ -12,18 +12,40 @@ import UIKit
 public typealias NavConstructor = () -> UIViewController
 public typealias RoutingMap = [String:NavConstructor]
 
-public protocol NavigationInfo{
-    associatedtype Routes
+open class  NavigationInfo<T:Hashable>: NavigationInfoConcrete{
+    var router:RoutingMap = [:]
     
-    var router:RoutingMap {get set}
-    func  navBarHidden()->Bool
-    func  rootViewController<T:UIViewController>()->T;
+    override init() {
+        super.init()
+        configRouter()
+    }
+    
+    override public  func constructorFor(_ path:String)->NavConstructor{
+        
+        if let constructor = router[path]{
+            return constructor
+        }
+        fatalError("constuctor not defined")
+    }
+    
+    
+    func configRouter(){
+    }
+}
+
+
+open class  NavigationInfoConcrete{
+    open func  navBarHidden()->Bool{
+        return true
+    }
+    open func  rootViewController<T:UIViewController>()->T{
+        return UIViewController() as! T
+    }
+    
+    public  func constructorFor(_ path:String)->NavConstructor{
+        return {UIViewController()}
+    }
     
 }
 
-extension NavigationInfo{
-    func  navBarHidden()->Bool{
-        return true
-    }
-}
 

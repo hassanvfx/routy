@@ -8,24 +8,22 @@
 
 import UIKit
 
-enum MainControllers {
+enum MainControllers:String {
     case Home, Settings, Feed
 }
 
 
 
-class AppNav: NavigationInfo {
+class AppNav: NavigationInfo<MainControllers> {
     
-    var router: RoutingMap = [:]
-
     
-    func  rootViewController<T:UIViewController>()->T{
+    override func  rootViewController<T:UIViewController>()->T{
         return ViewController() as! T
     }
     
-    func setupRouter(){
+    override func configRouter(){
         
-        router["foo"] = { UIViewController() }
+        router[MainControllers.Home.rawValue] = { UIViewController() }
         
     }
     
