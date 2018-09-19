@@ -9,7 +9,13 @@
 import UIKit
 
 
+public typealias NavConstructor = () -> UIViewController
+public typealias RoutingMap = [String:NavConstructor]
+
 public protocol NavigationInfo{
+    associatedtype Routes
+    
+    var router:RoutingMap {get set}
     func  navBarHidden()->Bool
     func  rootViewController<T:UIViewController>()->T;
     

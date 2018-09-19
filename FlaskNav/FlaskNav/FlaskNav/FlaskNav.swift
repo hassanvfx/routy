@@ -34,9 +34,7 @@ public class FlaskNav {
     }
     
     func presentController(name:String){
-        
-        let aClass = MainClass[.Home]
-        let vc = aClass.self.init()
+      
     }
     
 }

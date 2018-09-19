@@ -8,26 +8,26 @@
 
 import UIKit
 
-
-
 enum MainControllers {
     case Home, Settings, Feed
 }
 
-var  MainClass:[MainControllers:AnyObject.Type]{
-    return [
-        .Home: UIViewController.self,
-        .Settings: UIViewController.self,
-        .Feed: UIViewController.self,
-    ]
-}
 
 
 class AppNav: NavigationInfo {
+    
+    var router: RoutingMap = [:]
 
     
     func  rootViewController<T:UIViewController>()->T{
         return ViewController() as! T
     }
+    
+    func setupRouter(){
+        
+        router["foo"] = { UIViewController() }
+        
+    }
+    
     
 }
