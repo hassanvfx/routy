@@ -7,10 +7,14 @@
 //
 
 import UIKit
+import Flask
 
-public class FlaskNav<T:Hashable> {
+public class FlaskNav<T:Hashable & RawRepresentable> : FlaskReactor{
+  
+    let navigation = NewSubstance(definedBy: NavigationState.self)
 
-    var router:[T:NavConstructor] = [:]
+    public var router:[T:NavConstructor] = [:]
+    var _router:[String:NavConstructor] = [:]
     
     var window: UIWindow?
     var navController: UINavigationController?
@@ -18,11 +22,23 @@ public class FlaskNav<T:Hashable> {
     
     init() {
         configRouter()
+        updateRouter()
+        AttachFlaskReactor(to: self, mixing: [navigation])
     }
     
-    open func configRouter(){}
-
+    open func configRouter(){
+        //user should define routes using router[.Foo] = Closure
+    }
     
+    public func updateRouter(){
+        
+        _router = [:]
+        
+        for (key,value) in router {
+            let stringKey = key.rawValue as! String
+            _router[stringKey] = value
+        }
+    }
 
     open func  navBarHidden()->Bool{
         return true
@@ -36,14 +52,33 @@ public class FlaskNav<T:Hashable> {
 
 extension FlaskNav{
     
-    public func constructorFor(_ path:T)->NavConstructor{
-        if let constructor = router[path]{
+    public func constructorFor(_ path:String)->NavConstructor{
+        if let constructor = _router[path]{
             return constructor
         }
         fatalError("constuctor not defined")
     }
 }
 
+extension FlaskNav{
+
+    public func flaskReactor(reaction: FlaskReaction) {
+        reaction.on(NavigationState.prop.currentPath){[weak self] (change) in
+            
+            self?.presentController(path: navigation.state.currentPath )
+            
+        }
+    }
+    
+    public func push(path:T){
+        
+        let stringPath = path.rawValue as! String
+        
+        GetFlaskReactor(at: self).toMix(navigation) { (substance) in
+            substance.prop.currentPath = stringPath
+        }.andReact()
+    }
+}
 extension FlaskNav{
     
     
@@ -61,8 +96,10 @@ extension FlaskNav{
         
     }
     
-    public func presentController(path:T){
-        
+    
+    
+    func  presentController(path:String){
+       
         let constructor = self.constructorFor(path)
         let controller = constructor()
         controller.view.backgroundColor = .red
