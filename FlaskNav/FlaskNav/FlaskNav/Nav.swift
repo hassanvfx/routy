@@ -108,10 +108,10 @@ extension FlaskNav{
 }
 extension FlaskNav{
     
-    public func push(controller:T, payload:Any? = nil){
+    public func push(controller:T, payload:AnyCodable? = nil){
         push(controller:controller,resourceId:nil,payload:payload)
     }
-    public func push(controller:T, resourceId:String?, payload:Any? = nil){
+    public func push(controller:T, resourceId:String?, payload:AnyCodable? = nil){
         
         let stringController = controller.rawValue as! String
         let context = NavigationContext(payload: payload, navigationType: .push)
@@ -129,7 +129,7 @@ extension FlaskNav{
 
 extension FlaskNav{
     
-    public func push(accesory:A, payload:Any? = nil){
+    public func push(accesory:A, payload:AnyCodable? = nil){
         let stringAccesory = accesory.rawValue as! String
         let context = NavigationContext(payload: payload, navigationType: .push)
         

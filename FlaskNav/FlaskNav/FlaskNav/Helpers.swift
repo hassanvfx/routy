@@ -18,22 +18,22 @@ public enum AccesoryLayers:Int {
     case First, Second, Third, Fourth, Fifth, Sixth, Seventh, Eighth, Ninth, Tenth
 }
 
-public enum NavigationType:String {
+public enum NavigationType:String,Codable {
     case push,pop
 }
 
-public struct NavigationPayload {
+public struct NavigationPayload:Codable {
     
     public let context:NavigationContext
     public let route:NavigationRoute
     
-    public var object:Any? {
+    public var object:AnyCodable? {
         return context.payload
     }
 }
 
-public struct NavigationContext {
-    public let payload:Any?
+public struct NavigationContext:Codable {
+    public let payload:AnyCodable?
     public let navigationType:NavigationType
 }
 
