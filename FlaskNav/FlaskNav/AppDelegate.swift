@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.nav.setup(withWindow: window!) 
-        Services.nav.push(path:.Home)
+        Services.nav.push(path:.Home, payload:"hello")
         return true
     }
 

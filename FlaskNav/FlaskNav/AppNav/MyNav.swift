@@ -14,13 +14,13 @@ enum MainControllers:String {
 
 class AppNav: FlaskNav<MainControllers> {
     
-    override func  rootViewController<T:UIViewController>()->T{
+    override func  rootController<T:UIViewController>()->T{
         return ViewController() as! T
     }
     
-    override func configRouter(){
+    override func defineControllers(){
         
-        router[.Home] = { (payload) in UIViewController() }
+        controllers[.Home] = { (payload) in UIViewController() }
         
     }
     

@@ -25,30 +25,38 @@ public class FlaskNav<T:Hashable & RawRepresentable> : FlaskReactor{
     
     let navigation = NewSubstance(definedBy: NavigationState.self)
 
-    public var router:[T:NavConstructor] = [:]
-    var _router:[String:NavConstructor] = [:]
+    public var controllers:[T:NavConstructor] = [:]
+    var _controllers:[String:NavConstructor] = [:]
     
     var transitionContexts:[Int:NavigationContext] = [:]
  
     init() {
-        configRouter()
-        updateRouter()
+        _configControllers()
+        
         AttachFlaskReactor(to: self, mixing: [navigation])
     }
     
-    public func updateRouter(){
+    func _configControllers(){
+        controllers = [:]
+        defineControllers()
         
-        _router = [:]
+        assert(controllers.count > 0, "Ensure to define your controllers using `controllers` example `controllers[.Name] = { (payload) in UIViewController() }`")
         
-        for (key,value) in router {
+        mapControllers()
+    }
+    
+    func mapControllers(){
+        _controllers = [:]
+        
+        for (key,value) in controllers {
             let stringKey = key.rawValue as! String
-            _router[stringKey] = value
+            _controllers[stringKey] = value
         }
     }
     
     // MARK: OPEN OVERRIDES
     
-    open func configRouter(){
+    open func defineControllers(){
         //user should define routes using router[.Foo] = Closure
     }
     
@@ -57,7 +65,7 @@ public class FlaskNav<T:Hashable & RawRepresentable> : FlaskReactor{
         return true
     }
     
-    open func  rootViewController<T:UIViewController>()->T{
+    open func  rootController<T:UIViewController>()->T{
         return UIViewController() as! T
     }
     
@@ -67,7 +75,7 @@ public class FlaskNav<T:Hashable & RawRepresentable> : FlaskReactor{
 extension FlaskNav{
     
     public func constructorFor(_ path:String)->NavConstructor{
-        if let constructor = _router[path]{
+        if let constructor = _controllers[path]{
             return constructor
         }
         fatalError("constuctor `\(path)` not defined")
@@ -83,6 +91,8 @@ extension FlaskNav{
             
         }
     }
+    
+    
     public func push(path:T, payload:Any? = nil){
         push(resource:path,resourceId:nil,payload:payload)
     }
@@ -133,7 +143,7 @@ extension FlaskNav{
         assert(window == nil, "This instance is already setup")
         window = aWindow
         
-        let rootController = self.rootViewController()
+        let rootController = self.rootController()
         navController = UINavigationController(rootViewController: rootController)
         navController?.setNavigationBarHidden(self.navBarHidden(), animated: false)
         
