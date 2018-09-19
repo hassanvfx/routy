@@ -12,7 +12,7 @@ import Flask
 let UNDEFINED_CONTEXT_ID = -1
 
 
-public class FlaskNav<T:Hashable & RawRepresentable> : FlaskReactor{
+public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentable > : FlaskReactor{
   
     
     // MARK: NAV CONTROLLER
@@ -25,7 +25,12 @@ public class FlaskNav<T:Hashable & RawRepresentable> : FlaskReactor{
     
     let navigation = NewSubstance(definedBy: NavigationState.self)
 
-    public var controllers:[T:NavConstructor] = [:]
+    public var viewControllers:[T:NavConstructor] = [:]
+    
+    public var accesoryControllers:[A :NavConstructor] = [:]
+    public var accesoryParents:[A: [T]] = [:]
+    public var accesoryLayer:[ A : AccesoryLayers ] = [:]
+    
     var _controllers:[String:NavConstructor] = [:]
     
     var transitionContexts:[Int:NavigationContext] = [:]
@@ -37,18 +42,23 @@ public class FlaskNav<T:Hashable & RawRepresentable> : FlaskReactor{
     }
     
     func _configControllers(){
-        controllers = [:]
+        viewControllers = [:]
         defineControllers()
         
-        assert(controllers.count > 0, "Ensure to define your controllers using `controllers` example `controllers[.Name] = { (payload) in UIViewController() }`")
+        assert(viewControllers.count > 0, "Ensure to define your controllers using `controllers` example `controllers[.Name] = { (payload) in UIViewController() }`")
         
         mapControllers()
+    }
+    
+    func _configAccesories(){
+        
+        defineAccesories()
     }
     
     func mapControllers(){
         _controllers = [:]
         
-        for (key,value) in controllers {
+        for (key,value) in viewControllers {
             let stringKey = key.rawValue as! String
             _controllers[stringKey] = value
         }
@@ -57,9 +67,12 @@ public class FlaskNav<T:Hashable & RawRepresentable> : FlaskReactor{
     // MARK: OPEN OVERRIDES
     
     open func defineControllers(){
-        //user should define routes using router[.Foo] = Closure
+        //user should define controllers using controller[.Foo] = Closure
     }
     
+    open func defineAccesories(){
+        //user should define accesoryController using accesory[.Foo] = Closure
+    }
     
     open func  navBarHidden()->Bool{
         return true
