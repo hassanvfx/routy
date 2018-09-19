@@ -12,15 +12,18 @@ enum MainControllers:String {
     case Home, Settings, Feed
 }
 
+
 class AppNav: FlaskNav<MainControllers> {
     
-    override func  rootController<T:UIViewController>()->T{
-        return ViewController() as! T
+    override func rootController()->UIViewController{
+        return ViewController()
     }
     
     override func defineControllers(){
-        
+       
         controllers[.Home] = { (payload) in UIViewController() }
+        controllers[.Settings] = { (payload) in UIViewController() }
+        controllers[.Feed] = { (payload) in UIViewController() }
         
     }
     

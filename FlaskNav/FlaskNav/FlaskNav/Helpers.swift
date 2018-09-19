@@ -12,7 +12,7 @@ import UIKit
 public typealias NavConstructor = (_ payload:NavigationPayload) -> UIViewController
 public typealias RoutingMap = [String:NavConstructor]
 
-public enum NavigationTransition:String {
+public enum NavigationType:String {
     case push,pop
 }
 
@@ -28,17 +28,17 @@ public struct NavigationPayload {
 
 public struct NavigationContext {
     public let payload:Any?
-    public let transition:NavigationTransition
+    public let navigationType:NavigationType
 }
 
 public struct NavigationRoute:Codable {
-    public let resource:String
+    public let controller:String
     public let resourceId:String?
     public var contextId:Int = UNDEFINED_CONTEXT_ID
     
     
-    public init(resource:String, resourceId:String?){
-        self.resource = resource
+    public init(controller:String, resourceId:String?){
+        self.controller = controller
         self.resourceId = resourceId
     }
     public init(fromString json:String){
@@ -47,7 +47,7 @@ public struct NavigationRoute:Codable {
             let jsonData = json.data(using: .utf8)!
             let instance:NavigationRoute = try JSONDecoder().decode(NavigationRoute.self, from: jsonData)
             
-            self.resource = instance.resource
+            self.controller = instance.controller
             self.resourceId = instance.resourceId
             self.contextId  = instance.contextId
             

@@ -65,8 +65,8 @@ public class FlaskNav<T:Hashable & RawRepresentable> : FlaskReactor{
         return true
     }
     
-    open func  rootController<T:UIViewController>()->T{
-        return UIViewController() as! T
+    open func  rootController()->UIViewController{
+        return UIViewController()
     }
     
     
@@ -74,7 +74,7 @@ public class FlaskNav<T:Hashable & RawRepresentable> : FlaskReactor{
 
 extension FlaskNav{
     
-    public func constructorFor(_ path:String)->NavConstructor{
+    public func controllerConstructor(for path:String)->NavConstructor{
         if let constructor = _controllers[path]{
             return constructor
         }
@@ -87,21 +87,21 @@ extension FlaskNav{
     public func flaskReactor(reaction: FlaskReaction) {
         reaction.on(NavigationState.prop.currentRoute){[weak self] (change) in
             
-            self?.presentRoute(navigation.state.currentRoute )
+            self?.presentController(navigation.state.currentRoute )
             
         }
     }
     
     
-    public func push(path:T, payload:Any? = nil){
-        push(resource:path,resourceId:nil,payload:payload)
+    public func push(controller:T, payload:Any? = nil){
+        push(controller:controller,resourceId:nil,payload:payload)
     }
-    public func push(resource:T, resourceId:String?, payload:Any? = nil){
+    public func push(controller:T, resourceId:String?, payload:Any? = nil){
         
-        let stringResource = resource.rawValue as! String
+        let stringController = controller.rawValue as! String
         
-        var route = NavigationRoute(resource: stringResource, resourceId: resourceId)
-        let context = NavigationContext(payload: payload, transition: .push)
+        var route = NavigationRoute(controller: stringController, resourceId: resourceId)
+        let context = NavigationContext(payload: payload, navigationType: .push)
         route.contextId = startTransition(context: context)
         
         GetFlaskReactor(at: self).toMix(navigation) { (substance) in
@@ -153,16 +153,23 @@ extension FlaskNav{
     }
     
 
-    func presentRoute(_ aRoute:String){
+    func presentController(_ aRoute:String){
        
         let route = NavigationRoute.init(fromString: aRoute)
         let context = finishTransition(contextIndex: route.contextId)
         let payload = NavigationPayload(context: context, route: route)
         
-        let constructor = constructorFor(route.resource)
+        let constructor = controllerConstructor(for: route.controller)
         let controller = constructor(payload)
         controller.view.backgroundColor = .red
        
+        switch context.navigationType {
+        case .pop:
+            break;
+        case .push:
+            break;
+        }
+        
         navController?.pushViewController(controller, animated: true)
         
     }
