@@ -9,11 +9,13 @@
 import UIKit
 import Flask
 
+
 struct NavigationState: State {
     
     enum prop : StateProp{
-        case currentRoute
+        case currentController
     }
-    var currentRoute = "root"
+    var currentController = ROOT_CONTROLLER_ROUTE
+    var currentAccesory:String? = nil
 }
 

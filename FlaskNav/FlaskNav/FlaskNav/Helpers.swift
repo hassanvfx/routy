@@ -9,8 +9,10 @@
 import UIKit
 
 
-public typealias NavConstructor = (_ payload:NavigationPayload) -> UIViewController
-public typealias RoutingMap = [String:NavConstructor]
+let ROOT_CONTROLLER_ROUTE = "root"
+
+public typealias ControllerConstructor = (_ payload:NavigationPayload) -> UIViewController
+public typealias RoutingMap = [String:ControllerConstructor]
 
 public enum AccesoryLayers:Int {
     case First, Second, Third, Fourth, Fifth, Sixth, Seventh, Eighth, Ninth, Tenth

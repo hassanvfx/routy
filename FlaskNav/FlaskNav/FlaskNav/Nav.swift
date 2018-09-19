@@ -25,13 +25,13 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
     
     let navigation = NewSubstance(definedBy: NavigationState.self)
 
-    public var viewControllers:[T:NavConstructor] = [:]
+    public var viewControllers:[T:ControllerConstructor] = [:]
     
-    public var accesoryControllers:[A :NavConstructor] = [:]
+    public var accesoryControllers:[A :ControllerConstructor] = [:]
     public var accesoryParents:[A: [T]] = [:]
     public var accesoryLayer:[ A : AccesoryLayers ] = [:]
     
-    var _controllers:[String:NavConstructor] = [:]
+    var _controllers:[String:ControllerConstructor] = [:]
     
     var transitionContexts:[Int:NavigationContext] = [:]
  
@@ -87,7 +87,7 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
 
 extension FlaskNav{
     
-    public func controllerConstructor(for path:String)->NavConstructor{
+    public func controllerConstructor(for path:String)->ControllerConstructor{
         if let constructor = _controllers[path]{
             return constructor
         }
@@ -98,13 +98,15 @@ extension FlaskNav{
 extension FlaskNav{
 
     public func flaskReactor(reaction: FlaskReaction) {
-        reaction.on(NavigationState.prop.currentRoute){[weak self] (change) in
+        reaction.on(NavigationState.prop.currentController){[weak self] (change) in
             
-            self?.presentController(navigation.state.currentRoute )
+            self?.presentController(navigation.state.currentController )
             
         }
     }
     
+}
+extension FlaskNav{
     
     public func push(controller:T, payload:Any? = nil){
         push(controller:controller,resourceId:nil,payload:payload)
@@ -112,17 +114,36 @@ extension FlaskNav{
     public func push(controller:T, resourceId:String?, payload:Any? = nil){
         
         let stringController = controller.rawValue as! String
+        let context = NavigationContext(payload: payload, navigationType: .push)
         
         var route = NavigationRoute(controller: stringController, resourceId: resourceId)
-        let context = NavigationContext(payload: payload, navigationType: .push)
         route.contextId = startTransition(context: context)
         
-        GetFlaskReactor(at: self).toMix(navigation) { (substance) in
-            substance.prop.currentRoute = route.toString()
-        }.andReact()
+        GetFlaskReactor(at: self)
+            .toMix(navigation) { (substance) in
+                substance.prop.currentController = route.toString()
+            }.andReact()
         
     }
 }
+
+extension FlaskNav{
+    
+    public func push(accesory:A, payload:Any? = nil){
+        let stringAccesory = accesory.rawValue as! String
+        let context = NavigationContext(payload: payload, navigationType: .push)
+        
+        var route = NavigationRoute(controller: stringAccesory, resourceId: nil)
+        route.contextId = startTransition(context: context)
+        
+        GetFlaskReactor(at: self)
+            .toMix(navigation) { (substance) in
+                substance.prop.currentAccesory = route.toString()
+            }.andReact()
+        
+    }
+}
+
 extension FlaskNav{
 
     func startTransition(context:NavigationContext)->Int{

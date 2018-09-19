@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.nav.setup(withWindow: window!) 
         Services.nav.push(controller:.Home, payload:"hello")
+        Services.nav.push(accesory: .Login)
         return true
     }
 
