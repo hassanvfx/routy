@@ -12,10 +12,7 @@ enum MainControllers:String {
     case Home, Settings, Feed
 }
 
-
-
-class AppNav: NavigationInfo<MainControllers> {
-    
+class AppNav: FlaskNav<MainControllers> {
     
     override func  rootViewController<T:UIViewController>()->T{
         return ViewController() as! T
@@ -23,7 +20,7 @@ class AppNav: NavigationInfo<MainControllers> {
     
     override func configRouter(){
         
-        router[MainControllers.Home.rawValue] = { UIViewController() }
+        router[.Home] = { UIViewController() }
         
     }
     

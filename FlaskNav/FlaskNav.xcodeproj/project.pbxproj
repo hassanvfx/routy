@@ -17,7 +17,6 @@
 		26B80731214DCB0E008091C2 /* NavInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B80730214DCB0E008091C2 /* NavInfo.swift */; };
 		26B80733214DCE82008091C2 /* MyNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B80732214DCE82008091C2 /* MyNav.swift */; };
 		26B80735214DCED9008091C2 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B80734214DCED9008091C2 /* Services.swift */; };
-		26B80739214DDEEA008091C2 /* String+Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B80738214DDEEA008091C2 /* String+Class.swift */; };
 		6AEA7D9BC508AE8AEC3D5E77 /* Pods_FlaskNav.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52034022360D0B591A49D5C5 /* Pods_FlaskNav.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,7 +46,6 @@
 		26B80730214DCB0E008091C2 /* NavInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavInfo.swift; sourceTree = "<group>"; };
 		26B80732214DCE82008091C2 /* MyNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNav.swift; sourceTree = "<group>"; };
 		26B80734214DCED9008091C2 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
-		26B80738214DDEEA008091C2 /* String+Class.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Class.swift"; sourceTree = "<group>"; };
 		52034022360D0B591A49D5C5 /* Pods_FlaskNav.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlaskNav.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93ED6DABE868F6348C0A850C /* Pods-FlaskNavTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlaskNavTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FlaskNavTests/Pods-FlaskNavTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED82F22A4D27889844352B98 /* Pods-FlaskNav.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlaskNav.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FlaskNav/Pods-FlaskNav.debug.xcconfig"; sourceTree = "<group>"; };
@@ -123,7 +121,6 @@
 			children = (
 				26B80730214DCB0E008091C2 /* NavInfo.swift */,
 				26B8072E214DCAF8008091C2 /* Nav.swift */,
-				26B80738214DDEEA008091C2 /* String+Class.swift */,
 			);
 			path = FlaskNav;
 			sourceTree = "<group>";
@@ -353,7 +350,6 @@
 				26B80731214DCB0E008091C2 /* NavInfo.swift in Sources */,
 				26B8070E214DC740008091C2 /* AppDelegate.swift in Sources */,
 				26B8072F214DCAF8008091C2 /* Nav.swift in Sources */,
-				26B80739214DDEEA008091C2 /* String+Class.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

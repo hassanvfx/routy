@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.nav.setup(withWindow: window!) 
-        Services.nav.presentController(path: MainControllers.Home.rawValue)
+        Services.nav.presentController(path: .Home)
         return true
     }
 

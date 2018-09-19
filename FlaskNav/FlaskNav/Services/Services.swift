@@ -9,7 +9,5 @@
 import UIKit
 
 class Services {
-    static let nav = FlaskNav(info: AppNav())
-    
-    
+    static let nav = AppNav()
 }

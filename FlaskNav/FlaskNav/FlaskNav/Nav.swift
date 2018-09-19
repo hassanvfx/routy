@@ -8,36 +8,65 @@
 
 import UIKit
 
-public class FlaskNav {
+public class FlaskNav<T:Hashable> {
 
+    var router:[T:NavConstructor] = [:]
+    
     var window: UIWindow?
     var navController: UINavigationController?
     var stack:[String] = []
-    let info:NavigationInfoConcrete
     
-    init(info:NavigationInfoConcrete) {
-        self.info = info
+    init() {
+        configRouter()
     }
+    
+    open func configRouter(){}
+
+    
+
+    open func  navBarHidden()->Bool{
+        return true
+    }
+    open func  rootViewController<T:UIViewController>()->T{
+        return UIViewController() as! T
+    }
+    
+    
+}
+
+extension FlaskNav{
+    
+    public func constructorFor(_ path:T)->NavConstructor{
+        if let constructor = router[path]{
+            return constructor
+        }
+        fatalError("constuctor not defined")
+    }
+}
+
+extension FlaskNav{
+    
     
     public func setup(withWindow aWindow:UIWindow){
         
         assert(window == nil, "This instance is already setup")
         window = aWindow
-   
-        let rootController = self.info.rootViewController()
+        
+        let rootController = self.rootViewController()
         navController = UINavigationController(rootViewController: rootController)
-        navController?.setNavigationBarHidden(self.info.navBarHidden(), animated: false)
+        navController?.setNavigationBarHidden(self.navBarHidden(), animated: false)
         
         window?.rootViewController = navController
         window?.makeKeyAndVisible()
         
     }
     
-    func presentController(path:String){
+    public func presentController(path:T){
         
-        let constructor = self.info.constructorFor(path)
+        let constructor = self.constructorFor(path)
         let controller = constructor()
-      
+        controller.view.backgroundColor = .red
+        navController?.pushViewController(controller, animated: true)
+        
     }
-    
 }
