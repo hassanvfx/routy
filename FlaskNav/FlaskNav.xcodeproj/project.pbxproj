@@ -1,0 +1,617 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0B3FC4BA21CC837C1A970459 /* Pods_FlaskNavTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248B7C7A42F05FCF01A6C174 /* Pods_FlaskNavTests.framework */; };
+		26B8070E214DC740008091C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8070D214DC740008091C2 /* AppDelegate.swift */; };
+		26B80710214DC740008091C2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8070F214DC740008091C2 /* ViewController.swift */; };
+		26B80715214DC740008091C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26B80714214DC740008091C2 /* Assets.xcassets */; };
+		26B80718214DC740008091C2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26B80716214DC740008091C2 /* LaunchScreen.storyboard */; };
+		26B80723214DC740008091C2 /* FlaskNavTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B80722214DC740008091C2 /* FlaskNavTests.swift */; };
+		26B8072F214DCAF8008091C2 /* FlaskNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8072E214DCAF8008091C2 /* FlaskNav.swift */; };
+		26B80731214DCB0E008091C2 /* NavInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B80730214DCB0E008091C2 /* NavInfo.swift */; };
+		26B80733214DCE82008091C2 /* MyNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B80732214DCE82008091C2 /* MyNav.swift */; };
+		26B80735214DCED9008091C2 /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B80734214DCED9008091C2 /* Services.swift */; };
+		26B80739214DDEEA008091C2 /* String+Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B80738214DDEEA008091C2 /* String+Class.swift */; };
+		6AEA7D9BC508AE8AEC3D5E77 /* Pods_FlaskNav.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52034022360D0B591A49D5C5 /* Pods_FlaskNav.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		26B8071F214DC740008091C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 26B80702214DC740008091C2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 26B80709214DC740008091C2;
+			remoteInfo = FlaskNav;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		034BBE99CA17643EACB96E2F /* Pods-FlaskNav.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlaskNav.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlaskNav/Pods-FlaskNav.release.xcconfig"; sourceTree = "<group>"; };
+		248B7C7A42F05FCF01A6C174 /* Pods_FlaskNavTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlaskNavTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		26B8070A214DC740008091C2 /* FlaskNav.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlaskNav.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		26B8070D214DC740008091C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		26B8070F214DC740008091C2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		26B80714214DC740008091C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		26B80717214DC740008091C2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		26B80719214DC740008091C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		26B8071E214DC740008091C2 /* FlaskNavTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlaskNavTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		26B80722214DC740008091C2 /* FlaskNavTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlaskNavTests.swift; sourceTree = "<group>"; };
+		26B80724214DC740008091C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		26B8072E214DCAF8008091C2 /* FlaskNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlaskNav.swift; sourceTree = "<group>"; };
+		26B80730214DCB0E008091C2 /* NavInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavInfo.swift; sourceTree = "<group>"; };
+		26B80732214DCE82008091C2 /* MyNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNav.swift; sourceTree = "<group>"; };
+		26B80734214DCED9008091C2 /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
+		26B80738214DDEEA008091C2 /* String+Class.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Class.swift"; sourceTree = "<group>"; };
+		52034022360D0B591A49D5C5 /* Pods_FlaskNav.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlaskNav.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		93ED6DABE868F6348C0A850C /* Pods-FlaskNavTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlaskNavTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FlaskNavTests/Pods-FlaskNavTests.debug.xcconfig"; sourceTree = "<group>"; };
+		ED82F22A4D27889844352B98 /* Pods-FlaskNav.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlaskNav.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FlaskNav/Pods-FlaskNav.debug.xcconfig"; sourceTree = "<group>"; };
+		FB6C0AEDC37274F235CA97B3 /* Pods-FlaskNavTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlaskNavTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlaskNavTests/Pods-FlaskNavTests.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		26B80707214DC740008091C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6AEA7D9BC508AE8AEC3D5E77 /* Pods_FlaskNav.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26B8071B214DC740008091C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B3FC4BA21CC837C1A970459 /* Pods_FlaskNavTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		26B80701214DC740008091C2 = {
+			isa = PBXGroup;
+			children = (
+				26B8070C214DC740008091C2 /* FlaskNav */,
+				26B80721214DC740008091C2 /* FlaskNavTests */,
+				26B8070B214DC740008091C2 /* Products */,
+				B898B10B335F9B3DCBA02CA0 /* Pods */,
+				91E99311693A6F8BE3CE964B /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		26B8070B214DC740008091C2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				26B8070A214DC740008091C2 /* FlaskNav.app */,
+				26B8071E214DC740008091C2 /* FlaskNavTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		26B8070C214DC740008091C2 /* FlaskNav */ = {
+			isa = PBXGroup;
+			children = (
+				26B8072D214DCAE1008091C2 /* FlaskNav */,
+				26B80737214DCEF3008091C2 /* AppNav */,
+				26B80736214DCEDF008091C2 /* Services */,
+				26B8070D214DC740008091C2 /* AppDelegate.swift */,
+				26B8070F214DC740008091C2 /* ViewController.swift */,
+				26B80714214DC740008091C2 /* Assets.xcassets */,
+				26B80716214DC740008091C2 /* LaunchScreen.storyboard */,
+				26B80719214DC740008091C2 /* Info.plist */,
+			);
+			path = FlaskNav;
+			sourceTree = "<group>";
+		};
+		26B80721214DC740008091C2 /* FlaskNavTests */ = {
+			isa = PBXGroup;
+			children = (
+				26B80722214DC740008091C2 /* FlaskNavTests.swift */,
+				26B80724214DC740008091C2 /* Info.plist */,
+			);
+			path = FlaskNavTests;
+			sourceTree = "<group>";
+		};
+		26B8072D214DCAE1008091C2 /* FlaskNav */ = {
+			isa = PBXGroup;
+			children = (
+				26B80730214DCB0E008091C2 /* NavInfo.swift */,
+				26B8072E214DCAF8008091C2 /* FlaskNav.swift */,
+				26B80738214DDEEA008091C2 /* String+Class.swift */,
+			);
+			path = FlaskNav;
+			sourceTree = "<group>";
+		};
+		26B80736214DCEDF008091C2 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				26B80734214DCED9008091C2 /* Services.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		26B80737214DCEF3008091C2 /* AppNav */ = {
+			isa = PBXGroup;
+			children = (
+				26B80732214DCE82008091C2 /* MyNav.swift */,
+			);
+			path = AppNav;
+			sourceTree = "<group>";
+		};
+		91E99311693A6F8BE3CE964B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				52034022360D0B591A49D5C5 /* Pods_FlaskNav.framework */,
+				248B7C7A42F05FCF01A6C174 /* Pods_FlaskNavTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B898B10B335F9B3DCBA02CA0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				ED82F22A4D27889844352B98 /* Pods-FlaskNav.debug.xcconfig */,
+				034BBE99CA17643EACB96E2F /* Pods-FlaskNav.release.xcconfig */,
+				93ED6DABE868F6348C0A850C /* Pods-FlaskNavTests.debug.xcconfig */,
+				FB6C0AEDC37274F235CA97B3 /* Pods-FlaskNavTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		26B80709214DC740008091C2 /* FlaskNav */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26B80727214DC740008091C2 /* Build configuration list for PBXNativeTarget "FlaskNav" */;
+			buildPhases = (
+				2C16D7971A653FBE70625C1B /* [CP] Check Pods Manifest.lock */,
+				26B80706214DC740008091C2 /* Sources */,
+				26B80707214DC740008091C2 /* Frameworks */,
+				26B80708214DC740008091C2 /* Resources */,
+				8301FA2BF745E1AB9FE2E695 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FlaskNav;
+			productName = FlaskNav;
+			productReference = 26B8070A214DC740008091C2 /* FlaskNav.app */;
+			productType = "com.apple.product-type.application";
+		};
+		26B8071D214DC740008091C2 /* FlaskNavTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26B8072A214DC740008091C2 /* Build configuration list for PBXNativeTarget "FlaskNavTests" */;
+			buildPhases = (
+				C5068C7419D7496EC873CCEB /* [CP] Check Pods Manifest.lock */,
+				26B8071A214DC740008091C2 /* Sources */,
+				26B8071B214DC740008091C2 /* Frameworks */,
+				26B8071C214DC740008091C2 /* Resources */,
+				D44896D03717A8B3C882455B /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				26B80720214DC740008091C2 /* PBXTargetDependency */,
+			);
+			name = FlaskNavTests;
+			productName = FlaskNavTests;
+			productReference = 26B8071E214DC740008091C2 /* FlaskNavTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		26B80702214DC740008091C2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0940;
+				LastUpgradeCheck = 0940;
+				ORGANIZATIONNAME = eonflux;
+				TargetAttributes = {
+					26B80709214DC740008091C2 = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
+					26B8071D214DC740008091C2 = {
+						CreatedOnToolsVersion = 9.4.1;
+						TestTargetID = 26B80709214DC740008091C2;
+					};
+				};
+			};
+			buildConfigurationList = 26B80705214DC740008091C2 /* Build configuration list for PBXProject "FlaskNav" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 26B80701214DC740008091C2;
+			productRefGroup = 26B8070B214DC740008091C2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				26B80709214DC740008091C2 /* FlaskNav */,
+				26B8071D214DC740008091C2 /* FlaskNavTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		26B80708214DC740008091C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26B80718214DC740008091C2 /* LaunchScreen.storyboard in Resources */,
+				26B80715214DC740008091C2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26B8071C214DC740008091C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2C16D7971A653FBE70625C1B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FlaskNav-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8301FA2BF745E1AB9FE2E695 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-FlaskNav/Pods-FlaskNav-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Delayed/Delayed.framework",
+				"${BUILT_PRODUCTS_DIR}/Flask/Flask.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Delayed.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Flask.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FlaskNav/Pods-FlaskNav-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C5068C7419D7496EC873CCEB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FlaskNavTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D44896D03717A8B3C882455B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-FlaskNavTests/Pods-FlaskNavTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Delayed/Delayed.framework",
+				"${BUILT_PRODUCTS_DIR}/Flask/Flask.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Delayed.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Flask.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FlaskNavTests/Pods-FlaskNavTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		26B80706214DC740008091C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26B80710214DC740008091C2 /* ViewController.swift in Sources */,
+				26B80735214DCED9008091C2 /* Services.swift in Sources */,
+				26B80733214DCE82008091C2 /* MyNav.swift in Sources */,
+				26B80731214DCB0E008091C2 /* NavInfo.swift in Sources */,
+				26B8070E214DC740008091C2 /* AppDelegate.swift in Sources */,
+				26B8072F214DCAF8008091C2 /* FlaskNav.swift in Sources */,
+				26B80739214DDEEA008091C2 /* String+Class.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		26B8071A214DC740008091C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26B80723214DC740008091C2 /* FlaskNavTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		26B80720214DC740008091C2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 26B80709214DC740008091C2 /* FlaskNav */;
+			targetProxy = 26B8071F214DC740008091C2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		26B80716214DC740008091C2 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				26B80717214DC740008091C2 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		26B80725214DC740008091C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		26B80726214DC740008091C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		26B80728214DC740008091C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED82F22A4D27889844352B98 /* Pods-FlaskNav.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QL65L72292;
+				INFOPLIST_FILE = FlaskNav/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = eonflux.flaskNav;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		26B80729214DC740008091C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 034BBE99CA17643EACB96E2F /* Pods-FlaskNav.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QL65L72292;
+				INFOPLIST_FILE = FlaskNav/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = eonflux.flaskNav;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		26B8072B214DC740008091C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 93ED6DABE868F6348C0A850C /* Pods-FlaskNavTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = FlaskNavTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eonflux.MOLD-BOILERPLATETests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlaskNav.app/FlaskNav";
+			};
+			name = Debug;
+		};
+		26B8072C214DC740008091C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FB6C0AEDC37274F235CA97B3 /* Pods-FlaskNavTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = FlaskNavTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "eonflux.MOLD-BOILERPLATETests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlaskNav.app/FlaskNav";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		26B80705214DC740008091C2 /* Build configuration list for PBXProject "FlaskNav" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26B80725214DC740008091C2 /* Debug */,
+				26B80726214DC740008091C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26B80727214DC740008091C2 /* Build configuration list for PBXNativeTarget "FlaskNav" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26B80728214DC740008091C2 /* Debug */,
+				26B80729214DC740008091C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		26B8072A214DC740008091C2 /* Build configuration list for PBXNativeTarget "FlaskNavTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26B8072B214DC740008091C2 /* Debug */,
+				26B8072C214DC740008091C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 26B80702214DC740008091C2 /* Project object */;
+}
