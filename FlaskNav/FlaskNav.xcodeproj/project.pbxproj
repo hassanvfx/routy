@@ -76,6 +76,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		266CDECC215310EB003B0F11 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				26B8070F214DC740008091C2 /* ViewController.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		26B80701214DC740008091C2 = {
 			isa = PBXGroup;
 			children = (
@@ -102,8 +110,8 @@
 				26B8072D214DCAE1008091C2 /* FlaskNav */,
 				26B80737214DCEF3008091C2 /* AppNav */,
 				26B80736214DCEDF008091C2 /* Services */,
+				266CDECC215310EB003B0F11 /* Components */,
 				26B8070D214DC740008091C2 /* AppDelegate.swift */,
-				26B8070F214DC740008091C2 /* ViewController.swift */,
 				26B80714214DC740008091C2 /* Assets.xcassets */,
 				26B80716214DC740008091C2 /* LaunchScreen.storyboard */,
 				26B80719214DC740008091C2 /* Info.plist */,

@@ -9,55 +9,61 @@
 import UIKit
 
 
-let ROOT_CONTROLLER_ROUTE = "root"
+let ROOT_CONTROLLER = "root"
 
-public typealias ControllerConstructor = (_ payload:NavigationPayload) -> UIViewController
+public typealias ControllerConstructor = (_ payload:NavigationContext) -> UIViewController
 public typealias RoutingMap = [String:ControllerConstructor]
+
+
+public class NavWeakRef<T> where T: AnyObject {
+    
+    private(set) weak var value: T?
+    
+    init(value: T?) {
+        self.value = value
+    }
+}
 
 public enum AccesoryLayers:Int {
     case First, Second, Third, Fourth, Fifth, Sixth, Seventh, Eighth, Ninth, Tenth
 }
 
 public enum NavigationType:String,Codable {
-    case push,pop
+    case Accesory,PushController,PopToController
 }
 
-public struct NavigationPayload:Codable {
-    
-    public let context:NavigationContext
-    public let route:NavigationRoute
-    
-    public var object:AnyCodable? {
-        return context.payload
-    }
+public enum NavigationAnimations:String,Codable {
+    case None, Default
 }
 
 public struct NavigationContext:Codable {
+    
     public let payload:AnyCodable?
-    public let navigationType:NavigationType
-}
-
-public struct NavigationRoute:Codable {
+    public let animation:NavigationAnimations
+    
     public let controller:String
     public let resourceId:String?
-    public var contextId:Int = UNDEFINED_CONTEXT_ID
+  
     
-    
-    public init(controller:String, resourceId:String?){
+    public init(controller:String, resourceId:String?,  payload:AnyCodable?, animation:NavigationAnimations = .Default){
+        self.animation = animation
+        self.payload = payload
         self.controller = controller
         self.resourceId = resourceId
     }
+    
     public init(fromString json:String){
         
         do {
             let jsonData = json.data(using: .utf8)!
-            let instance:NavigationRoute = try JSONDecoder().decode(NavigationRoute.self, from: jsonData)
+            let instance:NavigationContext = try JSONDecoder().decode(NavigationContext.self, from: jsonData)
+            
+            self.payload = instance.payload
+            self.animation = instance.animation
             
             self.controller = instance.controller
             self.resourceId = instance.resourceId
-            self.contextId  = instance.contextId
             
-            //            return String(data: jsonData, encoding: .utf8)!
         }catch{
             fatalError("Serialization error")
         }
@@ -73,6 +79,14 @@ public struct NavigationRoute:Codable {
             fatalError("Serialization error")
         }
     }
+    
+    public func path()->String {
+        if let resourceId = resourceId {
+            return "\(controller).\(resourceId)"
+        }
+        return controller
+    }
+    
 }
 
 

@@ -12,18 +12,18 @@ import Flask
 let UNDEFINED_CONTEXT_ID = -1
 
 
-public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentable > : FlaskReactor{
+public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentable > : NSObject, FlaskReactor, UINavigationControllerDelegate{
   
     
     // MARK: NAV CONTROLLER
     
     var window: UIWindow?
     var navController: UINavigationController?
-    var stack:[String] = []
+    var cachedControllers:[String:NavWeakRef<UIViewController>] = [:]
     
     // MARK: ROUTING
     
-    let navigation = NewSubstance(definedBy: NavigationState.self)
+    let navigation = NavigationSubstance()
 
     public var viewControllers:[T:ControllerConstructor] = [:]
     
@@ -33,9 +33,9 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
     
     var _controllers:[String:ControllerConstructor] = [:]
     
-    var transitionContexts:[Int:NavigationContext] = [:]
- 
-    init() {
+    
+    override init() {
+        super.init()
         _configControllers()
         
         AttachFlaskReactor(to: self, mixing: [navigation])
@@ -83,16 +83,48 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
     }
     
     
+    //MARK: delegates
+    
+    var locks:[FluxLock] = []
+    
+    public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+        
+        if let lock = locks.popLast() {
+            lock.release()
+        }
+    }
+    
+    public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        
+    }
+    
 }
 
 extension FlaskNav{
     
-    public func controllerConstructor(for path:String)->ControllerConstructor{
-        if let constructor = _controllers[path]{
+    func controllerConstructor(for controller:String)->ControllerConstructor{
+        if let constructor = _controllers[controller]{
             return constructor
         }
-        fatalError("constuctor `\(path)` not defined")
+        fatalError("constuctor for `\(controller)` not defined")
     }
+    
+    func cachedControllerFrom(context:NavigationContext)->(controller:UIViewController,cached:Bool){
+    
+        let key = context.toString()
+        if let value = cachedControllers[key]?.value{
+           return (controller:value, cached:true)
+        }
+        
+        let constructor = controllerConstructor(for: context.controller)
+        let instance = constructor(context)
+        
+        cachedControllers[key] = NavWeakRef(value:instance)
+        
+        return (controller:instance, cached:false)
+        
+    }
+    
 }
 
 extension FlaskNav{
@@ -100,7 +132,7 @@ extension FlaskNav{
     public func flaskReactor(reaction: FlaskReaction) {
         reaction.on(NavigationState.prop.currentController){[weak self] (change) in
             
-            self?.presentController(navigation.state.currentController )
+           self?.navigateToCurrentController()
             
         }
     }
@@ -108,21 +140,23 @@ extension FlaskNav{
 }
 extension FlaskNav{
     
+    public func popToRootController(){
+        let context = NavigationContext( controller: ROOT_CONTROLLER, resourceId: nil, payload: nil)
+        
+        Flask.applyMixer(NavigationMixers.Controller, payload: ["context":context.toString()])
+        
+    }
+    
     public func push(controller:T, payload:AnyCodable? = nil){
         push(controller:controller,resourceId:nil,payload:payload)
     }
     public func push(controller:T, resourceId:String?, payload:AnyCodable? = nil){
         
         let stringController = controller.rawValue as! String
-        let context = NavigationContext(payload: payload, navigationType: .push)
+        let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)
         
-        var route = NavigationRoute(controller: stringController, resourceId: resourceId)
-        route.contextId = startTransition(context: context)
+        Flask.applyMixer(NavigationMixers.Controller, payload: ["context":context.toString()])
         
-        GetFlaskReactor(at: self)
-            .toMix(navigation) { (substance) in
-                substance.prop.currentController = route.toString()
-            }.andReact()
         
     }
 }
@@ -131,44 +165,14 @@ extension FlaskNav{
     
     public func push(accesory:A, payload:AnyCodable? = nil){
         let stringAccesory = accesory.rawValue as! String
-        let context = NavigationContext(payload: payload, navigationType: .push)
+        let context = NavigationContext(controller: stringAccesory, resourceId: nil, payload: payload)
         
-        var route = NavigationRoute(controller: stringAccesory, resourceId: nil)
-        route.contextId = startTransition(context: context)
+        Flask.applyMixer(NavigationMixers.Controller, payload: ["context":context.toString()])
         
-        GetFlaskReactor(at: self)
-            .toMix(navigation) { (substance) in
-                substance.prop.currentAccesory = route.toString()
-            }.andReact()
         
     }
 }
 
-extension FlaskNav{
-
-    func startTransition(context:NavigationContext)->Int{
-        
-        let index = transitionContexts.count
-        guard transitionContexts[index] == nil else{
-            fatalError("unexpected keyspace collision")
-        }
-        
-        transitionContexts[index] = context
-        return index
-    }
-    
-    func finishTransition(contextIndex index: Int)->NavigationContext{
-        let value = transitionContexts[index]
-        transitionContexts.removeValue(forKey: index)
-        
-        if let value = value {
-            return value
-        }
-        fatalError("index not found")
-    }
-    
-    
-}
 extension FlaskNav{
     
     
@@ -180,6 +184,7 @@ extension FlaskNav{
         let rootController = self.rootController()
         navController = UINavigationController(rootViewController: rootController)
         navController?.setNavigationBarHidden(self.navBarHidden(), animated: false)
+        navController?.delegate = self
         
         window?.rootViewController = navController
         window?.makeKeyAndVisible()
@@ -187,24 +192,63 @@ extension FlaskNav{
     }
     
 
-    func presentController(_ aRoute:String){
-       
-        let route = NavigationRoute.init(fromString: aRoute)
-        let context = finishTransition(contextIndex: route.contextId)
-        let payload = NavigationPayload(context: context, route: route)
+    
+}
+
+extension FlaskNav {
+
+    func presentRootView(){
+        //TODO: animated parametrization?
+        navController?.popToRootViewController(animated:false)
+    }
+    
+    func navigateToCurrentController(){
         
-        let constructor = controllerConstructor(for: route.controller)
-        let controller = constructor(payload)
-        controller.view.backgroundColor = .red
-       
-        switch context.navigationType {
-        case .pop:
-            break;
-        case .push:
-            break;
+        let stringContext = navigation.state.currentController
+        let context = NavigationContext(fromString: stringContext)
+
+        guard context.controller != ROOT_CONTROLLER else{
+            presentRootView()
+            return
         }
         
-        navController?.pushViewController(controller, animated: true)
+        let cache = cachedControllerFrom(context: context)
+       
+        cache.controller.view.backgroundColor = .red
+    
+        if (cache.cached){
+            popToController(cache.controller,context: context)
+        }else{
+            pushController(cache.controller, context: context)
+        }
+ 
+    }
+    
+    func pushController(_ controller:UIViewController, context:NavigationContext){
+        DispatchQueue.main.async { [weak self] in
+            let animated = context.animation != .None
+            self?.navController?.pushViewController(controller, animated: animated)
+            
+        }
+    }
+    
+    func popToController(_ controller:UIViewController,  context:NavigationContext){
+        DispatchQueue.main.async { [weak self] in
+            let animated = context.animation != .None
+            self?.navController?.popToViewController(controller, animated: animated)
+        }
+    }
+  
+}
+
+extension FlaskNav {
+    
+    
+    func presentAccessory(_ controller:UIViewController,  context:NavigationContext){
         
     }
+    
+
 }
+
+
