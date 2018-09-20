@@ -1,5 +1,5 @@
 //
-//  AsyncBlockOperation.swift
+//  FlaskNavOperation.swift
 //
 //  Created by Satish Mahalingam on 12/26/15.
 //  Swift fork Copyright © 2015 Satish Maha Software. All rights reserved.
@@ -8,12 +8,14 @@
 
 
 import Foundation
+import Flask
 
-class AsyncBlockOperation: Operation {
+class FlaskNavOperation: Operation {
     
-    typealias AsyncBlock = (AsyncBlockOperation) -> Void
+    typealias AsyncBlock = (FlaskNavOperation) -> Void
     
     var block: AsyncBlock?
+    var fluxLock: FluxLock?
     
     init(block: @escaping AsyncBlock) {
         super.init()
@@ -65,7 +67,7 @@ class AsyncBlockOperation: Operation {
 
 extension OperationQueue {
     
-    func addOperationWithAsyncBlock(block: AsyncBlockOperation) {
+    func addOperationWithAsyncBlock(block: FlaskNavOperation) {
         self.addOperation(block)
     }
 }
