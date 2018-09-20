@@ -1,3 +1,7 @@
+## Operation Queue
+
+We need to refactor the Flask operation queue to use an Async operation instead of pausing/ releasing the queue
+
 ## Concerns
 
 When initializing a substance wiuth the `NewSubstance(definedBy:)` we may need to consider how to handle naming.

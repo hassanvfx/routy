@@ -9,11 +9,13 @@
 import UIKit
 import Flask
 
-let UNDEFINED_CONTEXT_ID = -1
+
 
 
 public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentable > : NSObject, FlaskReactor, UINavigationControllerDelegate{
   
+    let FIRST_NAVIGATION_ROOT_COUNT = 2
+    let UNDEFINED_CONTEXT_ID = -1
     
     // MARK: NAV CONTROLLER
     
@@ -85,17 +87,76 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
     
     //MARK: delegates
     
-    var locks:[FluxLock] = []
+    var didShowRootCounter = 0
+    
+    let operationQueue:OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount=1
+        return queue
+    }()
+    
+    var operations:[String:[NavWeakRef<AsyncBlockOperation>]] = [:]
+    
+    func operationsFor(key:String)->[NavWeakRef<AsyncBlockOperation>]{
+        if let references = operations[key] {
+            return references
+        }
+        return []
+    }
+    
+    @discardableResult
+    func startOperationFor(controller:UIViewController, name:String="", _ closure:@escaping (AsyncBlockOperation)->Void) -> AsyncBlockOperation{
+        
+        let operation = AsyncBlockOperation(block: closure)
+        operation.name = name
+        let key = pointerKey(controller)
+        print("setting operation for key \(name) \(key)")
+        
+        var references = operationsFor(key:key)
+        references.append( NavWeakRef(value:operation) )
+        operations[key] = references
+        
+        operationQueue.addOperation(operation)
+        return operation
+    }
     
     public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         
-        if let lock = locks.popLast() {
-            lock.release()
+        let rootController = activeRootController()
+        let key = pointerKey(viewController)
+        
+        if viewController == rootController &&
+            didShowRootCounter < FIRST_NAVIGATION_ROOT_COUNT {
+            print("skiping operation for root key \(key)")
+            didShowRootCounter += 1
+            return
         }
+        
+        var references = operationsFor(key:key)
+        let ref = references.removeFirst()
+        
+        if let operation = ref.value {
+            operations[key] = references
+            
+            print("removing operation for key \(String(describing: operation.name)) \(key)")
+            DispatchQueue.main.async {
+                operation.complete()
+            }
+            
+            
+        }else{
+            
+            print("ignoring operation for key \(key)")
+        }
+        
     }
     
     public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         
+    }
+    
+    func pointerKey(_ key:Any)->String{
+        return "\(Unmanaged.passUnretained(key as AnyObject).toOpaque())"
     }
     
 }
@@ -113,7 +174,11 @@ extension FlaskNav{
     
         let key = context.toString()
         if let value = cachedControllers[key]?.value{
-           return (controller:value, cached:true)
+            if (navController?.viewControllers.contains(value))!{
+                return (controller:value, cached:true)
+            }else{
+                cachedControllers[key] = nil
+            }
         }
         
         let constructor = controllerConstructor(for: context.controller)
@@ -132,7 +197,8 @@ extension FlaskNav{
     public func flaskReactor(reaction: FlaskReaction) {
         reaction.on(NavigationState.prop.currentController){[weak self] (change) in
             
-           self?.navigateToCurrentController()
+            reaction.onLock?.release()
+            self?.navigateToCurrentController()
             
         }
     }
@@ -143,10 +209,13 @@ extension FlaskNav{
     public func popToRootController(){
         let context = NavigationContext( controller: ROOT_CONTROLLER, resourceId: nil, payload: nil)
         
-        Flask.applyMixer(NavigationMixers.Controller, payload: ["context":context.toString()])
+        
+        Flask.lock(withMixer: NavigationMixers.Controller, payload: ["context":context.toString()])
+        
         
     }
-    
+}
+extension FlaskNav{
     public func push(controller:T, payload:AnyCodable? = nil){
         push(controller:controller,resourceId:nil,payload:payload)
     }
@@ -155,8 +224,7 @@ extension FlaskNav{
         let stringController = controller.rawValue as! String
         let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)
         
-        Flask.applyMixer(NavigationMixers.Controller, payload: ["context":context.toString()])
-        
+        Flask.lock(withMixer: NavigationMixers.Controller, payload: ["context":context.toString()])
         
     }
 }
@@ -167,8 +235,7 @@ extension FlaskNav{
         let stringAccesory = accesory.rawValue as! String
         let context = NavigationContext(controller: stringAccesory, resourceId: nil, payload: payload)
         
-        Flask.applyMixer(NavigationMixers.Controller, payload: ["context":context.toString()])
-        
+        Flask.lock(withMixer: NavigationMixers.Accesory, payload: ["context":context.toString()])
         
     }
 }
@@ -182,13 +249,15 @@ extension FlaskNav{
         window = aWindow
         
         let rootController = self.rootController()
-        navController = UINavigationController(rootViewController: rootController)
-        navController?.setNavigationBarHidden(self.navBarHidden(), animated: false)
-        navController?.delegate = self
+        rootController.view.backgroundColor = .green
+
+        self.navController = UINavigationController(rootViewController: rootController)
+        self.navController?.setNavigationBarHidden(self.navBarHidden(), animated: false)
+        self.navController?.delegate = self
         
-        window?.rootViewController = navController
-        window?.makeKeyAndVisible()
-        
+        self.window?.rootViewController = self.navController
+        self.window?.makeKeyAndVisible()
+
     }
     
 
@@ -196,10 +265,19 @@ extension FlaskNav{
 }
 
 extension FlaskNav {
+    
+    func activeRootController()->UIViewController?{
+        return navController?.viewControllers.first
+    }
 
     func presentRootView(){
         //TODO: animated parametrization?
-        navController?.popToRootViewController(animated:false)
+        let rootController = activeRootController()
+        startOperationFor(controller:rootController!,name:"Root") {[weak self] (operation) in
+            DispatchQueue.main.async {
+                self?.navController?.popToRootViewController(animated:true)
+            }
+        }
     }
     
     func navigateToCurrentController(){
@@ -207,6 +285,7 @@ extension FlaskNav {
         let stringContext = navigation.state.currentController
         let context = NavigationContext(fromString: stringContext)
 
+         print("--> navigation \(context.path())")
         guard context.controller != ROOT_CONTROLLER else{
             presentRootView()
             return
@@ -216,11 +295,15 @@ extension FlaskNav {
        
         cache.controller.view.backgroundColor = .red
     
-        if (cache.cached){
-            popToController(cache.controller,context: context)
-        }else{
-            pushController(cache.controller, context: context)
+       
+        startOperationFor(controller: cache.controller,name:context.controller) {[weak self] (operation) in
+            if (cache.cached){
+                self?.popToController(cache.controller,context: context)
+            }else{
+                self?.pushController(cache.controller, context: context)
+            }
         }
+       
  
     }
     

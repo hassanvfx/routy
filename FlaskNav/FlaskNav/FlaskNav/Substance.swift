@@ -28,13 +28,15 @@ class NavigationSubstance: ReactiveSubstance<NavigationState,NavigationMixers>{
     
     override func defineMixers() {
         define(mix: .Controller) { (payload, react, abort) in
-            let context = payload["context"]  as! String
+            let context = payload!["context"]  as! String
             self.prop.currentController = context
+            react()
         }
         
         define(mix: .Accesory) { (payload, react, abort) in
-            let context = payload["context"]  as? String
+            let context = payload!["context"]  as? String
             self.prop.currentAccesory = context
+            react()
         }
     }
 }
