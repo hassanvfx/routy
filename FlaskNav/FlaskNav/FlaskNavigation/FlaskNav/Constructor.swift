@@ -31,7 +31,17 @@ extension FlaskNav{
         let constructor = controllerConstructor(for: context.controller)
         let instance = constructor(context)
         
-        if let instanceAsyncSetup = instance as? FlaskNavAsyncSetup {
+        
+        
+        cachedControllers[key] = NavWeakRef(value:instance)
+        
+        return (controller:instance, cached:false)
+        
+    }
+    
+    func asyncSetupIntent(controller:UIViewController, context:NavigationContext, navOperation:FlaskNavOperation){
+        
+        if let instanceAsyncSetup = controller as? FlaskNavAsyncSetup {
             
             navOperation.lockNavigation()
             let completion = {
@@ -41,11 +51,6 @@ extension FlaskNav{
                 instanceAsyncSetup.setupWith(navigationContext: context, setupCompleted: completion)
             }
         }
-        
-        cachedControllers[key] = NavWeakRef(value:instance)
-        
-        return (controller:instance, cached:false)
-        
     }
     
 }

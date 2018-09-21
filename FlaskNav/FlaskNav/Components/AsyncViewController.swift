@@ -15,7 +15,8 @@ class AsyncViewController: UIViewController, FlaskNavAsyncSetup {
         self.view.backgroundColor = .red
         
         print("payload = \(String(describing: navigationContext.payload))")
-     
+        print("frame = \(String(describing: view.frame))")
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
              setupCompleted()
         }

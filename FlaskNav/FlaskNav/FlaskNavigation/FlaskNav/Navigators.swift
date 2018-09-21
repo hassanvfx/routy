@@ -47,6 +47,9 @@ extension FlaskNav {
             }else{
                 self?.pushController(cache.controller, context: context)
             }
+            
+            self?.asyncSetupIntent(controller: cache.controller, context: context, navOperation: navOperation)
+            
         }
         
         
