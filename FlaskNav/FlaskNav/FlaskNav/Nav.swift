@@ -95,9 +95,9 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
         return queue
     }()
     
-    var operations:[String:[NavWeakRef<FlaskNavOperation>]] = [:]
+    var operations:[String:[NavWeakRef<FlaskOperation>]] = [:]
     
-    func operationsFor(key:String)->[NavWeakRef<FlaskNavOperation>]{
+    func operationsFor(key:String)->[NavWeakRef<FlaskOperation>]{
         if let references = operations[key] {
             return references
         }
@@ -105,9 +105,9 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
     }
     
     @discardableResult
-    func startOperationFor(controller:UIViewController, fluxLock:FluxLock, name:String="", _ closure:@escaping (FlaskNavOperation)->Void) -> FlaskNavOperation{
+    func startOperationFor(controller:UIViewController, fluxLock:FluxLock, name:String="", _ closure:@escaping (FlaskOperation)->Void) -> FlaskOperation{
         
-        let operation = FlaskNavOperation(block: closure)
+        let operation = FlaskOperation(block: closure)
         operation.name = name
         operation.fluxLock = fluxLock
         
