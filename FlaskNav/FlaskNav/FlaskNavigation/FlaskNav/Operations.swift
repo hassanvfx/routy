@@ -14,11 +14,18 @@ extension FlaskNav{
     @discardableResult
     func startOperationFor(controller:UIViewController, navOperation:FlaskNavOperation, _ closure:@escaping (FlaskOperation)->Void) -> FlaskNavOperation{
         
-        let operation = FlaskOperation(block: closure)
+        let key = pointerKey(controller)
+        
+        let newClosure:(FlaskOperation)->Void = { (op) in
+            print("[$] performing operation for key \(navOperation.name) \(key)")
+            closure(navOperation.operation!)
+        }
+        
+        let operation = FlaskOperation(block: newClosure)
         navOperation.operation = operation
         
-        let key = pointerKey(controller)
-        print("setting operation for key \(navOperation.name) \(key)")
+        
+        print("[+] setting operation for key \(navOperation.name) \(key)")
         
         var references = operationsFor(key:key)
         references.append( navOperation )
@@ -35,7 +42,7 @@ extension FlaskNav{
         
         if controller == rootController &&
             didShowRootCounter < FIRST_NAVIGATION_ROOT_COUNT {
-            print("skiping operation for root key \(key)")
+            print("[ ] skiping operation for root key \(key)")
             didShowRootCounter += 1
             return
         }
@@ -43,7 +50,7 @@ extension FlaskNav{
         var references = operationsFor(key:key)
         let navOperation = references.removeFirst()
         
-        print("removing operation for key \(String(describing: navOperation.name)) \(key)")
+        print("[-] removing operation for key \(String(describing: navOperation.name)) \(key)")
         DispatchQueue.main.async {
             navOperation.releaseFlux()
         }

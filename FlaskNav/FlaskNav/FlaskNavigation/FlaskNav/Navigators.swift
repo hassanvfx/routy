@@ -38,17 +38,12 @@ extension FlaskNav {
             return
         }
         
-        let cache = cachedControllerFrom(context: context, navOperation:navOperation)
-        
+        let controller = controllerFrom(context: context, navOperation:navOperation)
 
-        startOperationFor(controller: cache.controller,navOperation: navOperation) {[weak self] (operation) in
-            if (cache.cached){
-                self?.popToController(cache.controller,context: context)
-            }else{
-                self?.pushController(cache.controller, context: context)
-            }
+        startOperationFor(controller: controller, navOperation: navOperation) {[weak self] (operation) in
             
-            self?.asyncSetupIntent(controller: cache.controller, context: context, navOperation: navOperation)
+            self?.pushController(controller, context: context)
+            self?.asyncSetupIntent(controller: controller, context: context, navOperation: navOperation)
             
         }
         

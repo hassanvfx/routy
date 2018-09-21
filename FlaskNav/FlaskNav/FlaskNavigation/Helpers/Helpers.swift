@@ -11,7 +11,7 @@ import UIKit
 
 let ROOT_CONTROLLER = "root"
 
-public typealias ControllerConstructor = (_ payload:NavigationContext) -> UIViewController
+public typealias ControllerConstructor = () -> UIViewController
 public typealias RoutingMap = [String:ControllerConstructor]
 
 

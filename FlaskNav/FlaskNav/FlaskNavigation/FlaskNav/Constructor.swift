@@ -29,13 +29,24 @@ extension FlaskNav{
         }
         
         let constructor = controllerConstructor(for: context.controller)
-        let instance = constructor(context)
-        
-        
-        
+        let instance = constructor()
+
         cachedControllers[key] = NavWeakRef(value:instance)
         
         return (controller:instance, cached:false)
+        
+    }
+    
+    func controllerFrom(context:NavigationContext, navOperation:FlaskNavOperation)->UIViewController{
+        
+        let key = context.toString()
+
+        let constructor = controllerConstructor(for: context.controller)
+        let instance = constructor()
+        
+        cachedControllers[key] = NavWeakRef(value:instance)
+        
+        return instance
         
     }
     
