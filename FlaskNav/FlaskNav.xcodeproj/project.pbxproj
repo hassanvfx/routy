@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		0B3FC4BA21CC837C1A970459 /* Pods_FlaskNavTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248B7C7A42F05FCF01A6C174 /* Pods_FlaskNavTests.framework */; };
+		2616BB6A2155946D00A6AEFB /* FlaskNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB692155946D00A6AEFB /* FlaskNavViewController.swift */; };
+		2616BB6C2155963900A6AEFB /* AsyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB6B2155963900A6AEFB /* AsyncViewController.swift */; };
+		2616BB6E2155A0D600A6AEFB /* Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB6D2155A0D600A6AEFB /* Factory.swift */; };
+		2616BB732155A1BC00A6AEFB /* Navigators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB722155A1BC00A6AEFB /* Navigators.swift */; };
+		2616BB752155A1F000A6AEFB /* Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB742155A1F000A6AEFB /* Operations.swift */; };
 		266CDECB215308DA003B0F11 /* AnyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266CDECA215308DA003B0F11 /* AnyCodable.swift */; };
 		26B8070E214DC740008091C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8070D214DC740008091C2 /* AppDelegate.swift */; };
 		26B80710214DC740008091C2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8070F214DC740008091C2 /* ViewController.swift */; };
@@ -35,6 +40,11 @@
 /* Begin PBXFileReference section */
 		034BBE99CA17643EACB96E2F /* Pods-FlaskNav.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlaskNav.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlaskNav/Pods-FlaskNav.release.xcconfig"; sourceTree = "<group>"; };
 		248B7C7A42F05FCF01A6C174 /* Pods_FlaskNavTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlaskNavTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2616BB692155946D00A6AEFB /* FlaskNavViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlaskNavViewController.swift; sourceTree = "<group>"; };
+		2616BB6B2155963900A6AEFB /* AsyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncViewController.swift; sourceTree = "<group>"; };
+		2616BB6D2155A0D600A6AEFB /* Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factory.swift; sourceTree = "<group>"; };
+		2616BB722155A1BC00A6AEFB /* Navigators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Navigators.swift; sourceTree = "<group>"; };
+		2616BB742155A1F000A6AEFB /* Operations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operations.swift; sourceTree = "<group>"; };
 		266CDECA215308DA003B0F11 /* AnyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCodable.swift; sourceTree = "<group>"; };
 		26B8070A214DC740008091C2 /* FlaskNav.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlaskNav.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26B8070D214DC740008091C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -76,10 +86,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2616BB6F2155A11200A6AEFB /* FlaskNav */ = {
+			isa = PBXGroup;
+			children = (
+				26B8072E214DCAF8008091C2 /* Nav.swift */,
+				2616BB6D2155A0D600A6AEFB /* Factory.swift */,
+				2616BB722155A1BC00A6AEFB /* Navigators.swift */,
+				2616BB742155A1F000A6AEFB /* Operations.swift */,
+			);
+			path = FlaskNav;
+			sourceTree = "<group>";
+		};
+		2616BB702155A12200A6AEFB /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				26B807472151EF83008091C2 /* Helpers.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		2616BB712155A12E00A6AEFB /* State */ = {
+			isa = PBXGroup;
+			children = (
+				26B807492151EF9E008091C2 /* Substance.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
 		266CDECC215310EB003B0F11 /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				26B8070F214DC740008091C2 /* ViewController.swift */,
+				2616BB6B2155963900A6AEFB /* AsyncViewController.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -107,7 +145,7 @@
 		26B8070C214DC740008091C2 /* FlaskNav */ = {
 			isa = PBXGroup;
 			children = (
-				26B8072D214DCAE1008091C2 /* FlaskNav */,
+				26B8072D214DCAE1008091C2 /* FlaskNavigation */,
 				26B80737214DCEF3008091C2 /* AppNav */,
 				26B80736214DCEDF008091C2 /* Services */,
 				266CDECC215310EB003B0F11 /* Components */,
@@ -128,15 +166,16 @@
 			path = FlaskNavTests;
 			sourceTree = "<group>";
 		};
-		26B8072D214DCAE1008091C2 /* FlaskNav */ = {
+		26B8072D214DCAE1008091C2 /* FlaskNavigation */ = {
 			isa = PBXGroup;
 			children = (
-				26B807472151EF83008091C2 /* Helpers.swift */,
-				26B8072E214DCAF8008091C2 /* Nav.swift */,
-				26B807492151EF9E008091C2 /* Substance.swift */,
+				2616BB712155A12E00A6AEFB /* State */,
+				2616BB702155A12200A6AEFB /* Helpers */,
+				2616BB6F2155A11200A6AEFB /* FlaskNav */,
 				266CDECA215308DA003B0F11 /* AnyCodable.swift */,
+				2616BB692155946D00A6AEFB /* FlaskNavViewController.swift */,
 			);
-			path = FlaskNav;
+			path = FlaskNavigation;
 			sourceTree = "<group>";
 		};
 		26B80736214DCEDF008091C2 /* Services */ = {
@@ -359,6 +398,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				26B8074A2151EF9E008091C2 /* Substance.swift in Sources */,
+				2616BB732155A1BC00A6AEFB /* Navigators.swift in Sources */,
+				2616BB6A2155946D00A6AEFB /* FlaskNavViewController.swift in Sources */,
+				2616BB752155A1F000A6AEFB /* Operations.swift in Sources */,
+				2616BB6E2155A0D600A6AEFB /* Factory.swift in Sources */,
 				26B80710214DC740008091C2 /* ViewController.swift in Sources */,
 				26B807482151EF83008091C2 /* Helpers.swift in Sources */,
 				26B80735214DCED9008091C2 /* Services.swift in Sources */,
@@ -366,6 +409,7 @@
 				266CDECB215308DA003B0F11 /* AnyCodable.swift in Sources */,
 				26B8070E214DC740008091C2 /* AppDelegate.swift in Sources */,
 				26B8072F214DCAF8008091C2 /* Nav.swift in Sources */,
+				2616BB6C2155963900A6AEFB /* AsyncViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

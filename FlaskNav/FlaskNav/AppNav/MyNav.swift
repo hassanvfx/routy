@@ -26,7 +26,7 @@ class AppNav: FlaskNav<Controllers,Accesories> {
     
     override func defineControllers(){
        
-        viewControllers[.Home] = { (payload) in UIViewController() }
+        viewControllers[.Home] = { (payload) in AsyncViewController() }
         viewControllers[.Settings] = { (payload) in UIViewController() }
         viewControllers[.Feed] = { (payload) in UIViewController() }
         

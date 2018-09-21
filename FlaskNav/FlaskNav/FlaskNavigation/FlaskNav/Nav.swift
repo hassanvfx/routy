@@ -95,63 +95,19 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
         return queue
     }()
     
-    var operations:[String:[NavWeakRef<FlaskOperation>]] = [:]
+    var operations:[String:[FlaskNavOperation]] = [:]
     
-    func operationsFor(key:String)->[NavWeakRef<FlaskOperation>]{
+    func operationsFor(key:String)->[FlaskNavOperation]{
         if let references = operations[key] {
             return references
         }
         return []
     }
     
-    @discardableResult
-    func startOperationFor(controller:UIViewController, fluxLock:FluxLock, name:String="", _ closure:@escaping (FlaskOperation)->Void) -> FlaskOperation{
-        
-        let operation = FlaskOperation(block: closure)
-        operation.name = name
-        operation.fluxLock = fluxLock
-        
-        let key = pointerKey(controller)
-        print("setting operation for key \(name) \(key)")
-        
-        var references = operationsFor(key:key)
-        references.append( NavWeakRef(value:operation) )
-        operations[key] = references
-        
-        operationQueue.addOperation(operation)
-        return operation
-    }
     
     public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
-        
-        let rootController = activeRootController()
-        let key = pointerKey(viewController)
-        
-        if viewController == rootController &&
-            didShowRootCounter < FIRST_NAVIGATION_ROOT_COUNT {
-            print("skiping operation for root key \(key)")
-            didShowRootCounter += 1
-            return
-        }
-        
-        var references = operationsFor(key:key)
-        let ref = references.removeFirst()
-        
-        if let operation = ref.value {
-            operations[key] = references
-            
-            print("removing operation for key \(String(describing: operation.name)) \(key)")
-            DispatchQueue.main.async {
-                operation.complete()
-                operation.fluxLock!.release()
-            }
-            
-            
-        }else{
-            
-            print("ignoring operation for key \(key)")
-        }
-        
+    
+        completeOperationFor(controller: viewController)
     }
     
     public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
@@ -164,36 +120,7 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
     
 }
 
-extension FlaskNav{
-    
-    func controllerConstructor(for controller:String)->ControllerConstructor{
-        if let constructor = _controllers[controller]{
-            return constructor
-        }
-        fatalError("constuctor for `\(controller)` not defined")
-    }
-    
-    func cachedControllerFrom(context:NavigationContext)->(controller:UIViewController,cached:Bool){
-    
-        let key = context.toString()
-        if let value = cachedControllers[key]?.value{
-            if (navController?.viewControllers.contains(value))!{
-                return (controller:value, cached:true)
-            }else{
-                cachedControllers[key] = nil
-            }
-        }
-        
-        let constructor = controllerConstructor(for: context.controller)
-        let instance = constructor(context)
-        
-        cachedControllers[key] = NavWeakRef(value:instance)
-        
-        return (controller:instance, cached:false)
-        
-    }
-    
-}
+
 
 extension FlaskNav{
 
@@ -266,48 +193,9 @@ extension FlaskNav{
     
 }
 
-extension FlaskNav {
-    
-    func activeRootController()->UIViewController?{
-        return navController?.viewControllers.first
-    }
 
-    func presentRootView(fluxLock:FluxLock){
-        //TODO: animated parametrization?
-        let rootController = activeRootController()
-        startOperationFor(controller:rootController!,fluxLock: fluxLock, name:"Root") {[weak self] (operation) in
-            DispatchQueue.main.async {
-                self?.navController?.popToRootViewController(animated:true)
-            }
-        }
-    }
-    
-    func navigateToCurrentController(fluxLock:FluxLock){
-        
-        let stringContext = navigation.state.currentController
-        let context = NavigationContext(fromString: stringContext)
 
-         print("--> navigation \(context.path())")
-        guard context.controller != ROOT_CONTROLLER else{
-            presentRootView(fluxLock: fluxLock)
-            return
-        }
-        
-        let cache = cachedControllerFrom(context: context)
-       
-        cache.controller.view.backgroundColor = .red
-    
-       
-        startOperationFor(controller: cache.controller,fluxLock: fluxLock,name:context.controller) {[weak self] (operation) in
-            if (cache.cached){
-                self?.popToController(cache.controller,context: context)
-            }else{
-                self?.pushController(cache.controller, context: context)
-            }
-        }
-       
- 
-    }
+extension FlaskNav{
     
     func pushController(_ controller:UIViewController, context:NavigationContext){
         DispatchQueue.main.async { [weak self] in
