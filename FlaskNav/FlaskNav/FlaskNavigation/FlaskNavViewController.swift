@@ -14,30 +14,17 @@ typealias FlaskNavCompletionBlock = ()->Void
 class FlaskNavOperation {
 
     weak var operation:FlaskOperation?
-    let navLock:FlaskNavLock
+    public let fluxLock : FluxLock
     let name:String
+    public private(set) var navLocked = false
+    public private(set) var pendingRelease = false
     
-    init(operation:FlaskOperation,navLock:FlaskNavLock,name:String){
-        self.operation = operation
-        self.navLock = navLock
+    init(fluxLock:FluxLock,name:String){
+        self.operation = nil
+        self.fluxLock = fluxLock
         self.name = name
     }
     
-    func complete(){
-        self.operation?.complete()
-        self.navLock.releaseFluxIntent()
-    }
-}
-
-
-class FlaskNavLock {
-    
-    public let fluxLock : FluxLock
-    public private(set)  var navLocked = false
-    
-    init(fluxLock:FluxLock) {
-        self.fluxLock = fluxLock
-    }
     
     func lockNavigation(){
         navLocked = true
@@ -45,16 +32,21 @@ class FlaskNavLock {
     
     func releaseNavigation(){
         navLocked = false
-        releaseFluxIntent()
+        if pendingRelease == true{
+            releaseFlux()
+        }
+    }
+    
+    func releaseFlux(){
+        if navLocked {
+            pendingRelease = true
+            return
+        }
+        self.operation?.complete()
+        fluxLock.release()
     }
 
     
-    func releaseFluxIntent(){
-        if navLocked {
-            return
-        }
-        fluxLock.release()
-    }
 }
 
 protocol FlaskNavAsyncSetup {

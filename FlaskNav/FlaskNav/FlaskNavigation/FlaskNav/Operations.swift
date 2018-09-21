@@ -12,13 +12,13 @@ import Flask
 extension FlaskNav{
     
     @discardableResult
-    func startOperationFor(controller:UIViewController, navLock:FlaskNavLock, name:String="", _ closure:@escaping (FlaskOperation)->Void) -> FlaskNavOperation{
+    func startOperationFor(controller:UIViewController, navOperation:FlaskNavOperation, _ closure:@escaping (FlaskOperation)->Void) -> FlaskNavOperation{
         
         let operation = FlaskOperation(block: closure)
-        let navOperation = FlaskNavOperation(operation: operation, navLock: navLock,name: name)
+        navOperation.operation = operation
         
         let key = pointerKey(controller)
-        print("setting operation for key \(name) \(key)")
+        print("setting operation for key \(navOperation.name) \(key)")
         
         var references = operationsFor(key:key)
         references.append( navOperation )
@@ -45,7 +45,7 @@ extension FlaskNav{
         
         print("removing operation for key \(String(describing: navOperation.name)) \(key)")
         DispatchQueue.main.async {
-            navOperation.complete()
+            navOperation.releaseFlux()
         }
         
     }

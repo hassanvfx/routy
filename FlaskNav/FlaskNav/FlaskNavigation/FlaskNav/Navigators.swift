@@ -15,10 +15,10 @@ extension FlaskNav {
         return navController?.viewControllers.first
     }
     
-    func navigateToRootView(navLock:FlaskNavLock){
+    func navigateToRootView(navOperation:FlaskNavOperation){
         //TODO: animated parametrization?
         let rootController = activeRootController()
-        startOperationFor(controller:rootController!,navLock: navLock, name:"Root") {[weak self] (operation) in
+        startOperationFor(controller:rootController!,navOperation: navOperation) {[weak self] (operation) in
             DispatchQueue.main.async {
                 self?.navController?.popToRootViewController(animated:true)
             }
@@ -29,18 +29,19 @@ extension FlaskNav {
         
         let stringContext = navigation.state.currentController
         let context = NavigationContext(fromString: stringContext)
-        let navLock = FlaskNavLock(fluxLock: fluxLock)
+       
+         let navOperation = FlaskNavOperation(fluxLock: fluxLock, name: context.controller)
         
         print("--> navigation \(context.path())")
         guard context.controller != ROOT_CONTROLLER else{
-            navigateToRootView(navLock: navLock)
+            navigateToRootView(navOperation: navOperation)
             return
         }
         
-        let cache = cachedControllerFrom(context: context, navLock:navLock)
+        let cache = cachedControllerFrom(context: context, navOperation:navOperation)
         
 
-        startOperationFor(controller: cache.controller,navLock: navLock,name:context.controller) {[weak self] (operation) in
+        startOperationFor(controller: cache.controller,navOperation: navOperation) {[weak self] (operation) in
             if (cache.cached){
                 self?.popToController(cache.controller,context: context)
             }else{

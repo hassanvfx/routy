@@ -17,7 +17,7 @@ extension FlaskNav{
         fatalError("constuctor for `\(controller)` not defined")
     }
     
-    func cachedControllerFrom(context:NavigationContext, navLock:FlaskNavLock)->(controller:UIViewController,cached:Bool){
+    func cachedControllerFrom(context:NavigationContext, navOperation:FlaskNavOperation)->(controller:UIViewController,cached:Bool){
         
         let key = context.toString()
         if let value = cachedControllers[key]?.value{
@@ -33,9 +33,9 @@ extension FlaskNav{
         
         if let instanceAsyncSetup = instance as? FlaskNavAsyncSetup {
             
-            navLock.lockNavigation()
+            navOperation.lockNavigation()
             let completion = {
-                navLock.releaseNavigation()
+                navOperation.releaseNavigation()
             }
             DispatchQueue.main.async {
                 instanceAsyncSetup.setupWith(navigationContext: context, setupCompleted: completion)

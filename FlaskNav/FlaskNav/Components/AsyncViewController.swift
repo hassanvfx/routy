@@ -17,7 +17,7 @@ class AsyncViewController: UIViewController, FlaskNavAsyncSetup {
         print("payload = \(String(describing: navigationContext.payload))")
      
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//             setupCompleted()
+             setupCompleted()
         }
        
     }
