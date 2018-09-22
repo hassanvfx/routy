@@ -11,48 +11,17 @@ import Flask
 
 typealias FlaskNavCompletionBlock = ()->Void
 
-class FlaskNavOperation {
-
-    weak var operation:FlaskOperation?
-    public let fluxLock : FluxLock
-    let name:String
-    public private(set) var navLocked = false
-    public private(set) var pendingRelease = false
-    
-    init(fluxLock:FluxLock,name:String){
-        self.operation = nil
-        self.fluxLock = fluxLock
-        self.name = name
-    }
-    
-    
-    func lockNavigation(){
-        navLocked = true
-    }
-    
-    func releaseNavigation(){
-        navLocked = false
-        if pendingRelease == true{
-            releaseFlux()
-        }
-    }
-    
-    func releaseFlux(){
-        if navLocked {
-            pendingRelease = true
-            return
-        }
-        self.operation?.complete()
-        fluxLock.release()
-    }
-
-    
+protocol FlaskNavInit {
+    func asyncInit(withContext context:NavigationContext)
 }
-
-protocol FlaskNavAsyncSetup {
-    
-    func setupWith(navigationContext:NavigationContext, setupCompleted:@escaping FlaskNavCompletionBlock)
-  
+extension FlaskNavInit{
+    func asyncInit(withContext context:NavigationContext){}
+}
+protocol FlaskNavSetup:FlaskNavInit {
+    func setup(withContext context:NavigationContext)
+}
+protocol FlaskNavAsyncSetup:FlaskNavInit {
+    func asyncSetup(withContext context:NavigationContext, setupFinalizer:@escaping FlaskNavCompletionBlock)
 }
 
 

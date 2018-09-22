@@ -21,9 +21,8 @@ extension FlaskNav{
             closure(navOperation.operation!)
         }
         
-        let operation = FlaskOperation(block: newClosure)
+        let operation = FlaskOperation(block: closure)
         navOperation.operation = operation
-        
         
         print("[+] setting operation for key \(navOperation.name) \(key)")
         
@@ -49,10 +48,14 @@ extension FlaskNav{
         
         var references = operationsFor(key:key)
         let navOperation = references.removeFirst()
+        operations[key] = references
+        
+        print("pending operations for \(key) =\(references.count)")
         
         print("[-] removing operation for key \(String(describing: navOperation.name)) \(key)")
         DispatchQueue.main.async {
             navOperation.releaseFlux()
+            print("pending operations for queue =\(self.operationQueue.operations.count)")
         }
         
     }

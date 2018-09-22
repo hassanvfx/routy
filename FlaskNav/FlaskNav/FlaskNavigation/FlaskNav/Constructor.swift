@@ -50,6 +50,16 @@ extension FlaskNav{
         
     }
     
+    func asyncInitIntent(controller:UIViewController, context:NavigationContext){
+        
+        if let instanceAsyncSetup = controller as? FlaskNavAsyncSetup {
+            
+            DispatchQueue.main.async {
+                instanceAsyncSetup.asyncInit(withContext: context)
+            }
+        }
+    }
+    
     func asyncSetupIntent(controller:UIViewController, context:NavigationContext, navOperation:FlaskNavOperation){
         
         if let instanceAsyncSetup = controller as? FlaskNavAsyncSetup {
@@ -59,7 +69,7 @@ extension FlaskNav{
                 navOperation.releaseNavigation()
             }
             DispatchQueue.main.async {
-                instanceAsyncSetup.setupWith(navigationContext: context, setupCompleted: completion)
+                instanceAsyncSetup.asyncSetup(withContext: context, setupFinalizer: completion)
             }
         }
     }

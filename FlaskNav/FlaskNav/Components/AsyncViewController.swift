@@ -10,20 +10,21 @@ import UIKit
 
 class AsyncViewController: UIViewController, FlaskNavAsyncSetup {
     
-    func setupWith(navigationContext: NavigationContext, setupCompleted: @escaping () -> Void) {
-       
-        self.view.backgroundColor = .red
+    func asyncInit(withContext context: NavigationContext) {
         
-        print("payload = \(String(describing: navigationContext.payload))")
+        self.view.backgroundColor = .red
+    }
+    
+    func asyncSetup(withContext context:NavigationContext, setupFinalizer:@escaping FlaskNavCompletionBlock) {
+       
+        print("payload = \(String(describing: context.payload))")
         print("frame = \(String(describing: view.frame))")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-             setupCompleted()
+             setupFinalizer()
         }
        
     }
-    
-    
-   
+
 
 }
