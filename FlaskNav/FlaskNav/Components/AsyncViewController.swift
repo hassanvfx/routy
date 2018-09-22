@@ -11,9 +11,22 @@ import UIKit
 class AsyncViewController: UIViewController, FlaskNavAsyncSetup {
     
     func asyncInit(withContext context: NavigationContext) {
-//        let info = context.payload as! [String:AnyCodable]
-//        let color = info!["color"]
-        self.view.backgroundColor = .red
+        let info = context.payload
+        let color = info!["color"]
+        
+        switch color {
+        case "red":
+            self.view.backgroundColor = .red
+        case "green":
+            self.view.backgroundColor = .green
+        case "blue":
+            self.view.backgroundColor = .blue
+        case "yellow":
+            self.view.backgroundColor = .yellow
+        default:
+            self.view.backgroundColor = .red
+        }
+        
     }
     
     func asyncSetup(withContext context:NavigationContext, setupFinalizer:@escaping FlaskNavCompletionBlock) {

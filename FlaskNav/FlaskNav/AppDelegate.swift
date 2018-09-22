@@ -20,14 +20,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.nav.setup(withWindow: window!) 
-        Services.nav.push(controller:.Home, payload:["message":"hello","var":[1,2,3]])
+        Services.nav.push(controller:.Home, payload:["message":"hello","var":[1,2,3],"color":"red"])
         Services.nav.popToRootController()
-        Services.nav.push(controller:.Home, payload:["message":"hello","var":[1,2,3]])
+        Services.nav.push(controller:.Home, payload:["message":"hello","var":[1,2,3],"color":"red"])
         Services.nav.popToRootController()
-        Services.nav.push(controller:.Home, payload:["message":"hello","var":[1,2,3]])
+        Services.nav.push(controller:.Home, payload:["message":"hello","var":[1,2,3],"color":"red"])
+        Services.nav.push(controller:.Home, payload:["message":"hello","var":[1,2,3],"color":"blue"])
+        Services.nav.push(controller:.Home, payload:["message":"hello","var":[1,2,3],"color":"yellow"])
         Services.nav.popToRootController()
-        Services.nav.push(controller:.Home, payload:["message":"hello","var":[1,2,3]])
-        Services.nav.push(controller:.Home, payload:["message":"hello","var":[1,2,3]])
 //          Services.nav.push(accesory: .Login)
         return true
     }
