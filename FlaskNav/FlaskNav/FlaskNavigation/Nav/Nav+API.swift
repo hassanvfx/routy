@@ -23,11 +23,11 @@ extension FlaskNav{
 
 extension FlaskNav{
     
-    public func push(controller:T, payload:AnyCodable? = nil){
+    public func push(controller:T, payload:[String:AnyCodable]? = nil){
         push(controller:controller,resourceId:nil,payload:payload)
     }
     
-    public func push(controller:T, resourceId:String?, payload:AnyCodable? = nil){
+    public func push(controller:T, resourceId:String?, payload:[String:AnyCodable]? = nil){
         
         let stringController = controller.rawValue as! String
         let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)
@@ -43,7 +43,7 @@ extension FlaskNav{
         applyContext()
     }
     
-    public func pop(toController controller:T, resourceId:String?, payload:AnyCodable? = nil){
+    public func pop(toController controller:T, resourceId:String?, payload:[String:AnyCodable]? = nil){
         
         let stringController = controller.rawValue as! String
         let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)

@@ -19,6 +19,7 @@ class AsyncViewController: UIViewController, FlaskNavAsyncSetup {
     func asyncSetup(withContext context:NavigationContext, setupFinalizer:@escaping FlaskNavCompletionBlock) {
        
         print("payload = \(String(describing: context.payload))")
+        print("message = \(String(describing: context.payload!["message"]))")
         print("frame = \(String(describing: view.frame))")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

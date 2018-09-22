@@ -38,14 +38,14 @@ public enum NavigationAnimations:String,Codable {
 
 public struct NavigationContext:Codable {
     
-    public let payload:AnyCodable?
+    public let payload:[String:AnyCodable]?
     public let animation:NavigationAnimations
     
     public let controller:String
     public let resourceId:String?
   
     
-    public init(controller:String, resourceId:String?,  payload:AnyCodable?, animation:NavigationAnimations = .Default){
+    public init(controller:String, resourceId:String?,  payload:[String:AnyCodable]?, animation:NavigationAnimations = .Default){
         self.animation = animation
         self.payload = payload
         self.controller = controller
