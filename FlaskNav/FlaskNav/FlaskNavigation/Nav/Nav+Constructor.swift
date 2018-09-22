@@ -86,7 +86,7 @@ extension FlaskNav{
                 navOperation.releaseNavigation()
             }
             DispatchQueue.main.async {
-                instanceAsyncSetup.setupContent(withAsyncFinalizer: completion)
+                instanceAsyncSetup.setupContent(with: completion)
             }
         }
     }

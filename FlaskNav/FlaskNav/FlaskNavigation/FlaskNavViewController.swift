@@ -26,7 +26,7 @@ protocol FlaskNavSetup:FlaskNavInit {
     func setupContent()
 }
 protocol FlaskNavSetupAsync:FlaskNavInit {
-    func setupContent(withAsyncFinalizer setupFinalizer:@escaping FlaskNavCompletionBlock)
+    func setupContent(with asyncCompletion:@escaping FlaskNavCompletionBlock)
 }
 
 

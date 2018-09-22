@@ -28,19 +28,19 @@ class AsyncViewController: UIViewController, FlaskNavSetupAsync {
         case "yellow":
             self.view.backgroundColor = .yellow
         default:
-            self.view.backgroundColor = .red
+            self.view.backgroundColor = .white
         }
         
     }
     
-    func setupContent(withAsyncFinalizer setupFinalizer: @escaping FlaskNavCompletionBlock) {
+    func setupContent(with asyncCompletion: @escaping FlaskNavCompletionBlock) {
         
         print("payload = \(String(describing: navContext?.payload))")
         print("message = \(String(describing: navContext?.payload!["message"]))")
         print("frame = \(String(describing: view.frame))")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-             setupFinalizer()
+             asyncCompletion()
         }
        
     }
