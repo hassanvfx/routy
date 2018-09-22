@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.nav.push(controller:.Home, payload:["message":"hello","var":[1,2,3],"color":"red"])
         Services.nav.push(controller:.Home, payload:["message":"hello","var":[1,2,3],"color":"blue"])
         Services.nav.push(controller:.Home, payload:["message":"hello","var":[1,2,3],"color":"yellow"])
+//        Services.nav.pop(toController: .Home, payload: ["message":"hello","var":[1,2,3],"color":"red"])
         Services.nav.popToRootController()
 //          Services.nav.push(accesory: .Login)
         return true

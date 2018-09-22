@@ -1,3 +1,158 @@
+## Accesories
+
+Accesories are independent to the current tab and cover the whole application screen. 
+
+Composed over the Root Tab bar controller.
+
+Layers can be composed in layers
+
+Each layer has its own stack.
+
+When displaying the accesories we take the oldest element of each layer
+
+```swift
+acessories[Int:  [Context] ]
+
+func stackForLayer(_ layer:Int){
+   if let stack = acessories[layer]{
+       return stack
+   }
+   return []
+}
+
+func push( stack, context){
+    //refactored push method to use a variable stack
+}
+```
+
+We may consider turning the stack into a class so we can easily mutate its inner dictionary.
+
+We can reuse the existing stack manipulation methods that are common to the navigationController context.
+
+then in the state we can define a dictionary to represent the layers most current state
+
+```swift
+
+struct NavState: State{
+    var accesories:[Int:String] = [:]
+}
+///
+
+func mix(){}
+    substance.prop.accesories = [:]
+
+    for index, stack in acessories{
+        substance.prop.accesories[0] = stack.current().toString()
+    }
+}
+
+```
+
+We may encapsulate the stack operations as follows
+
+```swift
+
+class NavStack {
+    var stack:[Context] = []
+    func pop(..)
+    func push(..)
+    func current()
+}
+```
+
+
+
+## TabBar Core
+
+We may consider using the tabbarcontroller as the root controller and then attach individual navigation controllers to each tab.
+
+
+
+Reference:
+https://medium.com/@ITZDERR/uinavigationcontroller-and-uitabbarcontroller-programmatically-swift-3-d85a885a5fd0
+
+```swift
+
+enum Tabs: String{
+    case Home, Friends
+}
+
+eum Controllers: String{
+    case Settings, PhotoDetail
+}
+
+class MyNav : FlaskNavM<Tabs, Controllers, Accesories>{
+
+    func defineNavigation(){
+
+        define(tab: .Home){  HomeViewController() }
+        define(tab: .Friends){  FriendsViewController() }
+
+        define(controller: .Settings){  HomeViewController() }
+        define(controller: .PhotoDetail){  FriendsViewController() }
+
+        define(controller: .Settings){  HomeViewController() }
+        define(controller: .PhotoDetail){  FriendsViewController() }
+
+        define(accesory: .Login){ FriendsViewController () }
+        define(accesory: .Login, parents:[.Home, .Settings]){                    
+            FriendsViewController ()
+        }
+    }
+}
+
+Services.nav.tab(.Home).push(controller: .Settings)
+Services.nav.tab(.Home).overlay(accesory: .Login)
+Services.nav.tab(.Home).overlay(accesory: .Login, atLayer: .First)
+Services.nav.tab(.Home).popCurrentController()
+
+Services.nav.tab(.Home).show()
+Services.nav.tab(.Friends).show()
+
+```
+
+We should also offer two methods for push,pop,etc such that the user an pass also constructors from the tabs.
+
+## Navigation transactions
+
+Navigation transactions: This will be useful to setup the navigation stack to a particular state before resolving the current state (ie. showing multiple accesory controller0 for onboard, permissions, etc.).
+
+```swift
+
+Services.nav.transaction{ (nav) in
+
+   nav.push(controller...)
+   nav.overlay(accesory:...)
+   nav.overlay(accesory:...)
+
+}
+
+```
+ApplyContext will be ignored while a transaction is being defined. 
+
+We should also add the transaction operations inside a queue to ensure atomicity
+
+
+## Navigation actions
+
+There is an advantage on internally managing the controllers stack as a string based array. We can easily pop the current controller or alter this array and then set the current controller from the last element
+
+* push
+    * clear accesories  
+    * set new controller
+* popCurrent
+    * clear accesories  
+    * pops the current controller
+    * set previous controller
+* popTo
+    * clear accesories  
+    * pops until finds the controller
+    * if not set controller
+* goTo
+    * clear accesories
+    * clear navigation stack
+    * set controller
+
 ## Operation Queue
 
 We need to refactor the Flask operation queue to use an Async operation instead of pausing/ releasing the queue

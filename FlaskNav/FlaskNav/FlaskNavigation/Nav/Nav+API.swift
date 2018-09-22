@@ -43,6 +43,10 @@ extension FlaskNav{
         applyContext()
     }
     
+    public func pop(toController controller:T, payload:[String:AnyCodable]? = nil){
+        pop(toController: controller,resourceId:nil, payload:payload)
+    }
+    
     public func pop(toController controller:T, resourceId:String?, payload:[String:AnyCodable]? = nil){
         
         let stringController = controller.rawValue as! String
