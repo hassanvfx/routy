@@ -11,7 +11,8 @@ import UIKit
 class AsyncViewController: UIViewController, FlaskNavAsyncSetup {
     
     func asyncInit(withContext context: NavigationContext) {
-        
+//        let info = context.payload as! [String:AnyCodable]
+//        let color = info!["color"]
         self.view.backgroundColor = .red
     }
     

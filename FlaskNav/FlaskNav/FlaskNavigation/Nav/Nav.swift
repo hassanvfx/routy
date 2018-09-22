@@ -20,7 +20,11 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
     var navController: UINavigationController?
     var cachedControllers:[String:NavWeakRef<UIViewController>] = [:]
     
-    // MARK: ROUTING
+    // MARK: STACK
+    
+    var stack:[NavigationContext] = []
+    
+    // MARK: CONFIG
     
     let navigation = NavigationSubstance()
 
