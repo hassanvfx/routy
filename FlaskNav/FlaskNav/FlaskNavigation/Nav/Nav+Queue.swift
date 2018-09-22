@@ -11,17 +11,31 @@ import Flask
 
 extension FlaskNav{
     
+    
+    func operationsFor(key:String)->[FlaskNavOperation]{
+        if let references = operations[key] {
+            return references
+        }
+        return []
+    }
+    
+
+    
+    func pointerKey(_ key:Any)->String{
+        return "\(Unmanaged.passUnretained(key as AnyObject).toOpaque())"
+    }
+    
     @discardableResult
     func startOperationFor(controller:UIViewController, navOperation:FlaskNavOperation, _ closure:@escaping (FlaskOperation)->Void) -> FlaskNavOperation{
         
         let key = pointerKey(controller)
         
-        let newClosure:(FlaskOperation)->Void = { (op) in
+        let debugClosure:(FlaskOperation)->Void = { (op) in
             print("[$] performing operation for key \(navOperation.name) \(key)")
             closure(navOperation.operation!)
         }
         
-        let operation = FlaskOperation(block: closure)
+        let operation = FlaskOperation(block: debugClosure)
         navOperation.operation = operation
         
         print("[+] setting operation for key \(navOperation.name) \(key)")

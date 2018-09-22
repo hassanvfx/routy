@@ -9,7 +9,7 @@
 import UIKit
 import Flask
 
-class FlaskNavOperation {
+class FlaskNavOperation : NSObject {
     
     weak var operation:FlaskOperation?
     public let fluxLock : FluxLock
