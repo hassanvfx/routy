@@ -50,26 +50,43 @@ extension FlaskNav{
         
     }
     
-    func asyncInitIntent(controller:UIViewController, context:NavigationContext){
+    func contextInitIntent(controller:UIViewController, context:NavigationContext){
         
-        if let instanceAsyncSetup = controller as? FlaskNavAsyncSetup {
+        if let instanceAsyncSetup = controller as? FlaskNavSetupAsync {
+            instanceAsyncSetup.navContextInit(withContext: context)
+        }
+    }
+    
+    func navInitIntent(controller:UIViewController, context:NavigationContext){
+        
+        if let instanceAsyncSetup = controller as? FlaskNavSetupAsync {
             
             DispatchQueue.main.async {
-                instanceAsyncSetup.asyncInit(withContext: context)
+                instanceAsyncSetup.setupEmptyState()
+            }
+        }
+    }
+    
+    func syncSetupIntent(controller:UIViewController, context:NavigationContext){
+        
+        if let instanceAsyncSetup = controller as? FlaskNavSetup {
+            
+            DispatchQueue.main.async {
+                instanceAsyncSetup.setupContent()
             }
         }
     }
     
     func asyncSetupIntent(controller:UIViewController, context:NavigationContext, navOperation:FlaskNavOperation){
         
-        if let instanceAsyncSetup = controller as? FlaskNavAsyncSetup {
+        if let instanceAsyncSetup = controller as? FlaskNavSetupAsync {
             
             navOperation.lockNavigation()
             let completion = {
                 navOperation.releaseNavigation()
             }
             DispatchQueue.main.async {
-                instanceAsyncSetup.asyncSetup(withContext: context, setupFinalizer: completion)
+                instanceAsyncSetup.setupContent(withAsyncFinalizer: completion)
             }
         }
     }

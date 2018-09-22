@@ -11,17 +11,22 @@ import Flask
 
 typealias FlaskNavCompletionBlock = ()->Void
 
-protocol FlaskNavInit {
-    func asyncInit(withContext context:NavigationContext)
+protocol FlaskNavInit:AnyObject {
+    var navContext:NavigationContext?{get set}
+    func navContextInit(withContext context:NavigationContext)
+    func setupEmptyState()
 }
 extension FlaskNavInit{
-    func asyncInit(withContext context:NavigationContext){}
+    func navContextInit(withContext context:NavigationContext){
+        self.navContext = context
+    }
+    func setupEmptyState(){}
 }
 protocol FlaskNavSetup:FlaskNavInit {
-    func setup(withContext context:NavigationContext)
+    func setupContent()
 }
-protocol FlaskNavAsyncSetup:FlaskNavInit {
-    func asyncSetup(withContext context:NavigationContext, setupFinalizer:@escaping FlaskNavCompletionBlock)
+protocol FlaskNavSetupAsync:FlaskNavInit {
+    func setupContent(withAsyncFinalizer setupFinalizer:@escaping FlaskNavCompletionBlock)
 }
 
 
