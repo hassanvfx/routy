@@ -1,5 +1,5 @@
 //
-//  NavigationContext.swift
+//  NavContext.swift
 //  FlaskNav
 //
 //  Created by hassan uriostegui on 9/22/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-public struct NavigationContext:Codable {
+public struct NavContext:Codable {
     
     public var _payload:String?
     public let animation:NavigationAnimations
@@ -17,14 +17,14 @@ public struct NavigationContext:Codable {
     public let resourceId:String?
     
     
-    public init(controller:String, resourceId:String?,  payload:CodablePayload?, animation:NavigationAnimations = .Default){
+    public init(controller:String, resourceId:String?,  info:CodableInfo?, animation:NavigationAnimations = .Default){
         self.animation = animation
         self.controller = controller
         self.resourceId = resourceId
         self._payload = nil
         
-        if let payload = payload {
-            self._payload = payload.asJSONString()
+        if let info = info {
+            self._payload = info.asJSONString()
         }
     }
     
@@ -32,7 +32,7 @@ public struct NavigationContext:Codable {
         
         do {
             let jsonData = json.data(using: .utf8)!
-            let instance:NavigationContext = try JSONDecoder().decode(NavigationContext.self, from: jsonData)
+            let instance:NavContext = try JSONDecoder().decode(NavContext.self, from: jsonData)
             
             self._payload = instance._payload
             self.animation = instance.animation
@@ -45,7 +45,7 @@ public struct NavigationContext:Codable {
         }
     }
     
-    public func payload<T:CodablePayload>()->T?{
+    public func payload<T:CodableInfo>()->T?{
         
         guard self._payload != nil else{
             return  nil

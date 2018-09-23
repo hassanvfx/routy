@@ -10,7 +10,7 @@ import UIKit
 
 public class NavStack {
     
-    public private(set) var stack:[NavigationContext] = []
+    public private(set) var stack:[NavContext] = []
     public private(set) var locked = false
     
     public static let stackQueue:OperationQueue = {
@@ -19,15 +19,15 @@ public class NavStack {
         return queue
     }()
     
-    public func rootContext()->NavigationContext{
-        return NavigationContext( controller: ROOT_CONTROLLER, resourceId: nil, payload: nil)
+    public func rootContext()->NavContext{
+        return NavContext( controller: ROOT_CONTROLLER, resourceId: nil, info: nil)
     }
     
     public func clear(){
         stack = []
     }
     
-    public func push(context:NavigationContext){
+    public func push(context:NavContext){
         stack.append(context)
     }
     
@@ -36,18 +36,18 @@ public class NavStack {
         _ = stack.dropLast()
     }
     
-    public func current() -> NavigationContext{
+    public func current() -> NavContext{
         if stack.isEmpty {
             return rootContext()
         }
         return stack.last!
     }
     
-    public func pop(toContext aContext:NavigationContext){
+    public func pop(toContext aContext:NavContext){
         
         
         let aStack = stack
-        var result:NavigationContext? = nil
+        var result:NavContext? = nil
         while (result == nil && aStack.count > 0) {
             
             let lastContext = aStack.last

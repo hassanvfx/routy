@@ -20,15 +20,15 @@ extension FlaskNav{
 
 extension FlaskNav{
     
-    public func push(onBatch:Bool=false, controller:T, payload:CodablePayload? = nil){
-        push(onBatch:onBatch, controller:controller,resourceId:nil,payload:payload)
+    public func push(onBatch:Bool=false, controller:T, info:CodableInfo? = nil){
+        push(onBatch:onBatch, controller:controller,resourceId:nil,info:info)
     }
     
-    public func push(onBatch useBatch:Bool=false, controller:T, resourceId:String?, payload:CodablePayload? = nil){
+    public func push(onBatch useBatch:Bool=false, controller:T, resourceId:String?, info:CodableInfo? = nil){
         
         batch(on:useBatch) { [weak self] in
             let stringController = controller.rawValue as! String
-            let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)
+            let context = NavContext( controller: stringController, resourceId: resourceId, info: info)
             self?.stack.push(context: context)
         }
         
@@ -39,15 +39,15 @@ extension FlaskNav{
 
 extension FlaskNav{
     
-    public func pop(onBatch useBatch:Bool=false, toController controller:T, payload:CodablePayload? = nil){
-        pop(toController: controller,resourceId:nil, payload:payload)
+    public func pop(onBatch useBatch:Bool=false, toController controller:T, info:CodableInfo? = nil){
+        pop(toController: controller,resourceId:nil, info:info)
     }
     
-    public func pop(onBatch useBatch:Bool=false, toController controller:T, resourceId:String?, payload:CodablePayload? = nil){
+    public func pop(onBatch useBatch:Bool=false, toController controller:T, resourceId:String?, info:CodableInfo? = nil){
         
         batch(on:useBatch) { [weak self] in
             let stringController = controller.rawValue as! String
-            let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)
+            let context = NavContext( controller: stringController, resourceId: resourceId, info: info)
             self?.stack.pop(toContext: context)
         }
     }
@@ -100,7 +100,7 @@ extension FlaskNav{
     
     public func push(accesory:A, payload:AnyCodable? = nil){
         //        let stringAccesory = accesory.rawValue as! String
-        //        let context = NavigationContext(controller: stringAccesory, resourceId: nil, payload: payload)
+        //        let context = NavContext(controller: stringAccesory, resourceId: nil, payload: payload)
         //
         //        Flask.lock(withMixer: NavMixers.Accesory, payload: ["context":context.toString()])
         

@@ -1,5 +1,5 @@
 //
-//  CodablePayload.swift
+//  CodableInfo.swift
 //  FlaskNav
 //
 //  Created by hassan uriostegui on 9/22/18.
@@ -8,12 +8,12 @@
 
 import UIKit
 
-public protocol CodablePayload:Codable {
+public protocol CodableInfo:Codable {
     func asJSONString()->String
-    static func instance<T>(withJSON string: String) -> T where T : CodablePayload
+    static func instance<T>(withJSON string: String) -> T where T : CodableInfo
    
 }
-extension CodablePayload{
+extension CodableInfo{
     
     public func asJSONString()->String {
         do{
@@ -25,7 +25,7 @@ extension CodablePayload{
        
     }
     
-    public static func instance<T>(withJSON string: String) -> T where T : CodablePayload {
+    public static func instance<T>(withJSON string: String) -> T where T : CodableInfo {
         do{
             let data = string.data(using: .utf8)
             let instance = try JSONDecoder().decode( T.self, from: data! )

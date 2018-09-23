@@ -29,25 +29,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func testTransaction(){
     
         Services.nav.batch {
-            Services.nav.push(onBatch:true, controller:.Home, payload:Info(title: "test", color: "red"))
-            Services.nav.push(onBatch:true, controller:.Home, payload:Info(title: "test", color: "blue"))
+            Services.nav.push(onBatch:true, controller:.Home, info:NavInfo(params:["color":"red"]))
+            Services.nav.push(onBatch:true, controller:.Home, info:NavInfo(params:["color":"blue"]))
         }
         Services.nav.batch {
-            Services.nav.push(onBatch:true, controller:.Home, payload:Info(title: "test", color: "white"))
+            Services.nav.push(onBatch:true, controller:.Home, info:NavInfo(params:["color":"white"]))
         }
-        Services.nav.push(controller:.Home, payload:Info(title: "test", color: "yellow"))
+        Services.nav.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
     }
     
     func testAPI(){
         let info = Info(title: "test", color: "red")
         
-        Services.nav.push(controller:.Home, payload:info)
+        Services.nav.push(controller:.Home, info:info)
         Services.nav.popToRootController()
-        Services.nav.push(controller:.Home, payload:info)
+        Services.nav.push(controller:.Home, info:info)
         Services.nav.popToRootController()
-        Services.nav.push(controller:.Home, payload:info)
-        Services.nav.push(controller:.Home, payload:info)
-        Services.nav.push(controller:.Home, payload:info)
+        Services.nav.push(controller:.Home, info:info)
+        Services.nav.push(controller:.Home, info:info)
+        Services.nav.push(controller:.Home, info:info)
         Services.nav.popToRootController()
     }
 

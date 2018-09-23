@@ -10,13 +10,13 @@ import UIKit
 
 class AsyncViewController: UIViewController, FlaskNavController {
     
-    typealias NavInfoType = Info
-    var navContext: NavigationContext?
-    var navInfo: Info?
+    typealias NavInfoType = NavInfo
+    var navContext: NavContext?
+    var navInfo: NavInfo?
     
     func setupEmptyState() {
         
-        let color = navInfo?.color
+        let color = navInfo?.params!["color"]
         print("a frame = \(String(describing: view.frame))")
         
         switch color {
@@ -37,7 +37,6 @@ class AsyncViewController: UIViewController, FlaskNavController {
     func setupContent(with completionHandle: @escaping FlaskNavCompletionBlock) {
         
         print("payload = \(String(describing: navInfo))")
-        print("message = \(String(describing: navInfo?.title))")
         print("frame = \(String(describing: view.frame))")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

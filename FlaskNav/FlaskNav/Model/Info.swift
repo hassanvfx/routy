@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct Info: CodablePayload {
+struct Info: CodableInfo {
     var title = "home"
     var color = "string"
 }

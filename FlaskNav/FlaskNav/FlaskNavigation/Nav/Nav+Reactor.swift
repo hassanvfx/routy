@@ -36,7 +36,7 @@ extension FlaskNav {
     func navigateToCurrentController(fluxLock:FluxLock){
         
         let stringContext = navigation.state.currentController
-        let context = NavigationContext(fromString: stringContext)
+        let context = NavContext(fromString: stringContext)
        
          let navOperation = FlaskNavOperation(fluxLock: fluxLock, name: context.controller)
         

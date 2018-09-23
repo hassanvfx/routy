@@ -17,7 +17,7 @@ extension FlaskNav{
         fatalError("constuctor for `\(controller)` not defined")
     }
     
-    func cachedControllerFrom(context:NavigationContext, navOperation:FlaskNavOperation)->(controller:UIViewController,cached:Bool){
+    func cachedControllerFrom(context:NavContext, navOperation:FlaskNavOperation)->(controller:UIViewController,cached:Bool){
         
         let key = context.toString()
         if let value = cachedControllers[key]?.value{
@@ -37,7 +37,7 @@ extension FlaskNav{
         
     }
     
-    func controllerFrom(context:NavigationContext, navOperation:FlaskNavOperation)->UIViewController{
+    func controllerFrom(context:NavContext, navOperation:FlaskNavOperation)->UIViewController{
         
         let key = context.toString()
 
@@ -50,14 +50,14 @@ extension FlaskNav{
         
     }
     
-    func contextInitIntent(controller:UIViewController, context:NavigationContext){
+    func contextInitIntent(controller:UIViewController, context:NavContext){
         
         if let instanceAsyncSetup = controller as? FlaskNavSetup {
             instanceAsyncSetup.navContextInit(withContext: context)
         }
     }
     
-    func setupEmptyStateIntent(controller:UIViewController, context:NavigationContext){
+    func setupEmptyStateIntent(controller:UIViewController, context:NavContext){
         
         if let instanceAsyncSetup = controller as? FlaskNavSetup {
             
@@ -68,7 +68,7 @@ extension FlaskNav{
     }
     
     
-    func setupContentIntent(controller:UIViewController, context:NavigationContext, navOperation:FlaskNavOperation){
+    func setupContentIntent(controller:UIViewController, context:NavContext, navOperation:FlaskNavOperation){
         
         if let instanceAsyncSetup = controller as? FlaskNavSetup {
             

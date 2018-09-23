@@ -10,7 +10,7 @@ import UIKit
 
 extension FlaskNav{
     
-    func pushController(_ controller:UIViewController, context:NavigationContext){
+    func pushController(_ controller:UIViewController, context:NavContext){
         DispatchQueue.main.async { [weak self] in
             let animated = context.animation != .None
             self?.navController?.pushViewController(controller, animated: animated)
@@ -18,7 +18,7 @@ extension FlaskNav{
         }
     }
     
-    func popToController(_ controller:UIViewController,  context:NavigationContext){
+    func popToController(_ controller:UIViewController,  context:NavContext){
         DispatchQueue.main.async { [weak self] in
             let animated = context.animation != .None
             self?.navController?.popToViewController(controller, animated: animated)
@@ -30,7 +30,7 @@ extension FlaskNav{
 extension FlaskNav {
     
     
-    func presentAccessory(_ controller:UIViewController,  context:NavigationContext){
+    func presentAccessory(_ controller:UIViewController,  context:NavContext){
         
     }
     
