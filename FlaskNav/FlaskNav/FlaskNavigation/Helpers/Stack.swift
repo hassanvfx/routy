@@ -8,34 +8,43 @@
 
 import UIKit
 
-class NavStack {
-    var stack:[NavigationContext] = []
-
-    func rootContext()->NavigationContext{
+public class NavStack {
+    
+    public private(set) var stack:[NavigationContext] = []
+    public private(set) var locked = false
+    
+    public static let stackQueue:OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount=1
+        return queue
+    }()
+    
+    public func rootContext()->NavigationContext{
         return NavigationContext( controller: ROOT_CONTROLLER, resourceId: nil, payload: nil)
     }
     
-    func clear(){
+    public func clear(){
         stack = []
     }
     
-    func push(context:NavigationContext){
+    public func push(context:NavigationContext){
         stack.append(context)
     }
     
     
-    func pop(){
+    public func pop(){
         _ = stack.dropLast()
     }
     
-    func current() -> NavigationContext{
+    public func current() -> NavigationContext{
         if stack.isEmpty {
             return rootContext()
         }
         return stack.last!
     }
     
-    func pop(toContext aContext:NavigationContext){
+    public func pop(toContext aContext:NavigationContext){
+        
         
         let aStack = stack
         var result:NavigationContext? = nil
@@ -57,6 +66,22 @@ class NavStack {
         stack = aStack
         
     }
+
+}
+
+extension NavStack {
     
+    public func lock(){
+        locked = true
+    }
     
+    public func unlock(){
+        locked = false
+    }
+    
+    public func enqueue(_ closure:@escaping ()->Void){
+        NavStack.stackQueue.addOperation { 
+            closure()
+        }
+    }
 }

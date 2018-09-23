@@ -19,12 +19,12 @@ struct NavigationState: State {
     var currentAccesory:String? = nil
 }
 
-enum NavigationMixers:SubstanceMixer{
+enum NavMixers:SubstanceMixer{
     case Controller
     case Accesory
 }
 
-class NavigationSubstance: ReactiveSubstance<NavigationState,NavigationMixers>{
+class NavigationSubstance: ReactiveSubstance<NavigationState,NavMixers>{
     
     override func defineMixers() {
         define(mix: .Controller) { (payload, react, abort) in

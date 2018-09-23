@@ -13,7 +13,7 @@ import Flask
 extension FlaskNav{
     public func popToRootController(){
         stack.clear()
-        applyContext()
+        applyContextIntent()
     }
     
 }
@@ -29,7 +29,7 @@ extension FlaskNav{
         let stringController = controller.rawValue as! String
         let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)
         stack.push(context: context)
-        applyContext()
+        applyContextIntent()
     }
 }
 
@@ -37,7 +37,7 @@ extension FlaskNav{
     
     public func popCurrentControler(){
         stack.pop()
-        applyContext()
+        applyContextIntent()
     }
     
     public func pop(toController controller:T, payload:CodablePayload? = nil){
@@ -49,18 +49,33 @@ extension FlaskNav{
         let stringController = controller.rawValue as! String
         let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)
         stack.pop(toContext: context)
-        applyContext()
+        applyContextIntent()
     }
 }
 
 extension FlaskNav{
     
+    func transaction(_ closure:@escaping ()->Void){
+
+        assert(stack.locked == false, "error the `stack` is currently locked")
+        
+        stack.lock()
+        closure()
+        stack.unlock()
+        applyContext()
+        
+    }
+    
+    func applyContextIntent(){
+        if(stack.locked){
+            return
+        }
+        applyContext()
+    }
     
     func applyContext(){
-        
-        let context = stack.current()
-        Flask.lock(withMixer: NavigationMixers.Controller, payload: ["context":context.toString()])
-        
+        let context = self.stack.current()
+        Flask.lock(withMixer: NavMixers.Controller, payload: ["context":context.toString()])
     }
     
 }
@@ -71,7 +86,7 @@ extension FlaskNav{
 //        let stringAccesory = accesory.rawValue as! String
 //        let context = NavigationContext(controller: stringAccesory, resourceId: nil, payload: payload)
 //
-//        Flask.lock(withMixer: NavigationMixers.Accesory, payload: ["context":context.toString()])
+//        Flask.lock(withMixer: NavMixers.Accesory, payload: ["context":context.toString()])
         
     }
 }

@@ -21,19 +21,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.nav.setup(withWindow: window!)
         
-        let info = Info(title: "test", color: "red")
-            
-        Services.nav.push(controller:.Home, payload:info)
-        Services.nav.popToRootController()
-        Services.nav.push(controller:.Home, payload:info)
-        Services.nav.popToRootController()
-        Services.nav.push(controller:.Home, payload:info)
-        Services.nav.push(controller:.Home, payload:info)
-        Services.nav.push(controller:.Home, payload:info)
-//        Services.nav.pop(toController: .Home, payload: ["message":"hello","var":[1,2,3],"color":"red"])
-        Services.nav.popToRootController()
-//          Services.nav.push(accesory: .Login)
+        testTransaction()
+//        testAPI()
         return true
+    }
+    
+    func testTransaction(){
+        
+        var info = Info(title: "test", color: "blue")
+        Services.nav.transaction {
+            Services.nav.push(controller:.Home, payload:info)
+        }
+        Services.nav.transaction {
+            info = Info(title: "test", color: "white")
+            Services.nav.push(controller:.Home, payload:info)
+        }
+       
+        info = Info(title: "test", color: "yellow")
+        Services.nav.push(controller:.Home, payload:info)
+    }
+    
+    func testAPI(){
+        let info = Info(title: "test", color: "red")
+        
+        Services.nav.push(controller:.Home, payload:info)
+        Services.nav.popToRootController()
+        Services.nav.push(controller:.Home, payload:info)
+        Services.nav.popToRootController()
+        Services.nav.push(controller:.Home, payload:info)
+        Services.nav.push(controller:.Home, payload:info)
+        Services.nav.push(controller:.Home, payload:info)
+        Services.nav.popToRootController()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
