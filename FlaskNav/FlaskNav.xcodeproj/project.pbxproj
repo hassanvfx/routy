@@ -22,6 +22,7 @@
 		2616BB842157096200A6AEFB /* Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB832157096200A6AEFB /* Info.swift */; };
 		2616BB86215709C500A6AEFB /* CodablePayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB85215709C500A6AEFB /* CodablePayload.swift */; };
 		2616BB892157105100A6AEFB /* NavigationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB882157105100A6AEFB /* NavigationContext.swift */; };
+		2616BB8B21573B4C00A6AEFB /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB8A21573B4C00A6AEFB /* Stack.swift */; };
 		266CDECB215308DA003B0F11 /* AnyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266CDECA215308DA003B0F11 /* AnyCodable.swift */; };
 		26B8070E214DC740008091C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8070D214DC740008091C2 /* AppDelegate.swift */; };
 		26B80710214DC740008091C2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8070F214DC740008091C2 /* ViewController.swift */; };
@@ -63,6 +64,7 @@
 		2616BB832157096200A6AEFB /* Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Info.swift; sourceTree = "<group>"; };
 		2616BB85215709C500A6AEFB /* CodablePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodablePayload.swift; sourceTree = "<group>"; };
 		2616BB882157105100A6AEFB /* NavigationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContext.swift; sourceTree = "<group>"; };
+		2616BB8A21573B4C00A6AEFB /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		266CDECA215308DA003B0F11 /* AnyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCodable.swift; sourceTree = "<group>"; };
 		26B8070A214DC740008091C2 /* FlaskNav.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlaskNav.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26B8070D214DC740008091C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				2616BB80215704E800A6AEFB /* NavSerializer.swift */,
 				2616BB85215709C500A6AEFB /* CodablePayload.swift */,
 				2616BB882157105100A6AEFB /* NavigationContext.swift */,
+				2616BB8A21573B4C00A6AEFB /* Stack.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -450,6 +453,7 @@
 				2616BB6A2155946D00A6AEFB /* NavInfoProtocol.swift in Sources */,
 				2616BB752155A1F000A6AEFB /* Nav+Queue.swift in Sources */,
 				2616BB6E2155A0D600A6AEFB /* Nav+Constructor.swift in Sources */,
+				2616BB8B21573B4C00A6AEFB /* Stack.swift in Sources */,
 				26B80710214DC740008091C2 /* ViewController.swift in Sources */,
 				2616BB7F2155D78600A6AEFB /* Nav+Setup.swift in Sources */,
 				2616BB7D2155D76700A6AEFB /* Nav+API.swift in Sources */,

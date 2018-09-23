@@ -22,7 +22,7 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
     
     // MARK: STACK
     
-    var stack:[NavigationContext] = []
+    var stack:NavStack = NavStack()
     
     // MARK: CONFIG
     

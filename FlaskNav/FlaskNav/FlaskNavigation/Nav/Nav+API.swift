@@ -12,13 +12,10 @@ import Flask
 
 extension FlaskNav{
     public func popToRootController(){
-        stackClear()
+        stack.clear()
         applyContext()
     }
     
-    func rootContext()->NavigationContext{
-         return NavigationContext( controller: ROOT_CONTROLLER, resourceId: nil, payload: nil)
-    }
 }
 
 extension FlaskNav{
@@ -31,7 +28,7 @@ extension FlaskNav{
         
         let stringController = controller.rawValue as! String
         let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)
-        stackPush(context: context)
+        stack.push(context: context)
         applyContext()
     }
 }
@@ -39,7 +36,7 @@ extension FlaskNav{
 extension FlaskNav{
     
     public func popCurrentControler(){
-        stackPop()
+        stack.pop()
         applyContext()
     }
     
@@ -51,58 +48,18 @@ extension FlaskNav{
         
         let stringController = controller.rawValue as! String
         let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)
-        stackPopTo(context: context)
+        stack.pop(toContext: context)
         applyContext()
     }
 }
 
 extension FlaskNav{
     
-    func stackClear(){
-        stack = []
-    }
-    
-    
-    func stackPop(){
-        _ = stack.dropLast()
-    }
-    
-    
-    func stackPopTo(context aContext:NavigationContext){
-        
-        let aStack = stack
-        var result:NavigationContext? = nil
-        while (result == nil && aStack.count > 0) {
-            
-            let lastContext = aStack.last
-            
-            if(lastContext?.controller == aContext.controller &&
-                lastContext?.resourceId == aContext.resourceId){
-                
-                if(aContext._payload == nil ||
-                    aContext._payload == lastContext?._payload){
-                    result = aContext
-                }
-            }
-            _=stack.dropLast()
-        }
-        
-        stack = aStack
-        
-    }
-    
-    func stackPush(context:NavigationContext){
-        stack.append(context)
-    }
     
     func applyContext(){
         
-        var context = stack.last
-        if context == nil{
-            context = rootContext()
-        }
-        print("applyContext \(String(describing: stack))")
-        Flask.lock(withMixer: NavigationMixers.Controller, payload: ["context":context!.toString()])
+        let context = stack.current()
+        Flask.lock(withMixer: NavigationMixers.Controller, payload: ["context":context.toString()])
         
     }
     
