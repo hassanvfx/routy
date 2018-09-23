@@ -36,6 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Services.nav.push(onBatch:true, controller:.Home, info:NavInfo(params:["color":"white"]))
         }
         Services.nav.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
+        Services.nav.popToRootController()
     }
     
     func testAPI(){

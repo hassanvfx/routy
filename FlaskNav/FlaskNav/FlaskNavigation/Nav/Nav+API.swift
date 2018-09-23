@@ -10,13 +10,6 @@ import UIKit
 import Flask
 
 
-extension FlaskNav{
-    public func popToRootController(){
-        stack.clear()
-        applyContextIntent()
-    }
-    
-}
 
 extension FlaskNav{
     
@@ -55,6 +48,11 @@ extension FlaskNav{
     public func popCurrentControler(onBatch useBatch:Bool=false){
         batch(on:useBatch) { [weak self] in
             self?.stack.pop()
+        }
+    }
+    public func popToRootController(onBatch useBatch:Bool=false){
+        batch(on:useBatch) { [weak self] in
+            self?.stack.clear()
         }
     }
 }
