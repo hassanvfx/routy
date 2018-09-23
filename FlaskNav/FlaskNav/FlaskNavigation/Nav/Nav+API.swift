@@ -23,11 +23,11 @@ extension FlaskNav{
 
 extension FlaskNav{
     
-    public func push(controller:T, payload:[String:AnyCodable]? = nil){
+    public func push(controller:T, payload:CodablePayload? = nil){
         push(controller:controller,resourceId:nil,payload:payload)
     }
     
-    public func push(controller:T, resourceId:String?, payload:[String:AnyCodable]? = nil){
+    public func push(controller:T, resourceId:String?, payload:CodablePayload? = nil){
         
         let stringController = controller.rawValue as! String
         let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)
@@ -43,11 +43,11 @@ extension FlaskNav{
         applyContext()
     }
     
-    public func pop(toController controller:T, payload:[String:AnyCodable]? = nil){
+    public func pop(toController controller:T, payload:CodablePayload? = nil){
         pop(toController: controller,resourceId:nil, payload:payload)
     }
     
-    public func pop(toController controller:T, resourceId:String?, payload:[String:AnyCodable]? = nil){
+    public func pop(toController controller:T, resourceId:String?, payload:CodablePayload? = nil){
         
         let stringController = controller.rawValue as! String
         let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)
@@ -79,8 +79,8 @@ extension FlaskNav{
             if(lastContext?.controller == aContext.controller &&
                 lastContext?.resourceId == aContext.resourceId){
                 
-                if(aContext.payload == nil ||
-                    aContext.payload == lastContext?.payload){
+                if(aContext._payload == nil ||
+                    aContext._payload == lastContext?._payload){
                     result = aContext
                 }
             }
