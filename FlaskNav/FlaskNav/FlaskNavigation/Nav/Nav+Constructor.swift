@@ -52,14 +52,14 @@ extension FlaskNav{
     
     func contextInitIntent(controller:UIViewController, context:NavigationContext){
         
-        if let instanceAsyncSetup = controller as? FlaskNavSetupAsync {
+        if let instanceAsyncSetup = controller as? FlaskNavSetup {
             instanceAsyncSetup.navContextInit(withContext: context)
         }
     }
     
-    func navInitIntent(controller:UIViewController, context:NavigationContext){
+    func setupEmptyStateIntent(controller:UIViewController, context:NavigationContext){
         
-        if let instanceAsyncSetup = controller as? FlaskNavSetupAsync {
+        if let instanceAsyncSetup = controller as? FlaskNavSetup {
             
             DispatchQueue.main.async {
                 instanceAsyncSetup.setupEmptyState()
@@ -67,26 +67,27 @@ extension FlaskNav{
         }
     }
     
-    func syncSetupIntent(controller:UIViewController, context:NavigationContext){
+    
+    func setupContentIntent(controller:UIViewController, context:NavigationContext, navOperation:FlaskNavOperation){
         
         if let instanceAsyncSetup = controller as? FlaskNavSetup {
             
-            DispatchQueue.main.async {
-                instanceAsyncSetup.setupContent()
+            let completion = { [weak self] in
+                _ = self?.contentQueue.addOperation {
+                    self?.waitingForContentCompletion = false
+                    navOperation.releaseNavigation()
+                }
             }
-        }
-    }
-    
-    func asyncSetupIntent(controller:UIViewController, context:NavigationContext, navOperation:FlaskNavOperation){
-        
-        if let instanceAsyncSetup = controller as? FlaskNavSetupAsync {
             
-            navOperation.lockNavigation()
-            let completion = {
-                navOperation.releaseNavigation()
-            }
-            DispatchQueue.main.async {
-                instanceAsyncSetup.setupContent(with: completion)
+            self.contentQueue.addOperation { [weak self] in
+                
+                assert(self?.waitingForContentCompletion == false, "Ensure to call the `setupContent(...` `completionHandler()`" )
+                self?.waitingForContentCompletion = true
+               
+                navOperation.lockNavigation()
+                DispatchQueue.main.async { 
+                    instanceAsyncSetup.setupContent(with: completion )
+                }
             }
         }
     }

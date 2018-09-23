@@ -51,9 +51,9 @@ extension FlaskNav {
         startOperationFor(controller: controller, navOperation: navOperation) {[weak self] (operation) in
             
             self?.contextInitIntent(controller: controller, context: context)
-            self?.navInitIntent(controller: controller, context: context)
+            self?.setupEmptyStateIntent(controller: controller, context: context)
             self?.pushController(controller, context: context)
-            self?.asyncSetupIntent(controller: controller, context: context, navOperation: navOperation)
+            self?.setupContentIntent(controller: controller, context: context, navOperation: navOperation)
             
         }
         

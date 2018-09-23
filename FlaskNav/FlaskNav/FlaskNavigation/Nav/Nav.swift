@@ -37,11 +37,17 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
     var _controllers:[String:ControllerConstructor] = [:]
     
     // MARK: QUEUE
-    
-    
+ 
     var didShowRootCounter = 0
+    var waitingForContentCompletion = false
     
     let operationQueue:OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount=1
+        return queue
+    }()
+    
+    let contentQueue:OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount=1
         return queue

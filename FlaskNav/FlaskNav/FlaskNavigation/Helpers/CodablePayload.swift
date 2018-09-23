@@ -10,7 +10,6 @@ import UIKit
 
 public protocol CodablePayload:Codable {
     func asJSONString()->String
-    func asDictionary()->[String:Any?]
     static func instance<T>(withJSON string: String) -> T where T : CodablePayload
    
 }
@@ -24,10 +23,6 @@ extension CodablePayload{
             fatalError("serialization error")
         }
        
-    }
-    
-    public func asDictionary()->[String:Any?]{
-        return NavSerializer.dictionary(from: self)
     }
     
     public static func instance<T>(withJSON string: String) -> T where T : CodablePayload {

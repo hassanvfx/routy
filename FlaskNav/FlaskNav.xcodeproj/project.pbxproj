@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0B3FC4BA21CC837C1A970459 /* Pods_FlaskNavTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248B7C7A42F05FCF01A6C174 /* Pods_FlaskNavTests.framework */; };
-		2616BB6A2155946D00A6AEFB /* FlaskNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB692155946D00A6AEFB /* FlaskNavViewController.swift */; };
+		2616BB6A2155946D00A6AEFB /* NavInfoProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB692155946D00A6AEFB /* NavInfoProtocol.swift */; };
 		2616BB6C2155963900A6AEFB /* AsyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB6B2155963900A6AEFB /* AsyncViewController.swift */; };
 		2616BB6E2155A0D600A6AEFB /* Nav+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB6D2155A0D600A6AEFB /* Nav+Constructor.swift */; };
 		2616BB732155A1BC00A6AEFB /* Nav+Reactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB722155A1BC00A6AEFB /* Nav+Reactor.swift */; };
@@ -49,7 +49,7 @@
 /* Begin PBXFileReference section */
 		034BBE99CA17643EACB96E2F /* Pods-FlaskNav.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlaskNav.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlaskNav/Pods-FlaskNav.release.xcconfig"; sourceTree = "<group>"; };
 		248B7C7A42F05FCF01A6C174 /* Pods_FlaskNavTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlaskNavTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		2616BB692155946D00A6AEFB /* FlaskNavViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlaskNavViewController.swift; sourceTree = "<group>"; };
+		2616BB692155946D00A6AEFB /* NavInfoProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavInfoProtocol.swift; sourceTree = "<group>"; };
 		2616BB6B2155963900A6AEFB /* AsyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncViewController.swift; sourceTree = "<group>"; };
 		2616BB6D2155A0D600A6AEFB /* Nav+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Constructor.swift"; sourceTree = "<group>"; };
 		2616BB722155A1BC00A6AEFB /* Nav+Reactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Reactor.swift"; sourceTree = "<group>"; };
@@ -148,12 +148,12 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		2616BB87215709D300A6AEFB /* Controllers */ = {
+		2616BB87215709D300A6AEFB /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				2616BB692155946D00A6AEFB /* FlaskNavViewController.swift */,
+				2616BB692155946D00A6AEFB /* NavInfoProtocol.swift */,
 			);
-			path = Controllers;
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		266CDECC215310EB003B0F11 /* Components */ = {
@@ -213,7 +213,7 @@
 		26B8072D214DCAE1008091C2 /* FlaskNavigation */ = {
 			isa = PBXGroup;
 			children = (
-				2616BB87215709D300A6AEFB /* Controllers */,
+				2616BB87215709D300A6AEFB /* Protocols */,
 				2616BB712155A12E00A6AEFB /* State */,
 				2616BB702155A12200A6AEFB /* Helpers */,
 				2616BB6F2155A11200A6AEFB /* Nav */,
@@ -447,7 +447,7 @@
 				2616BB7B2155D6F900A6AEFB /* Nav+Display.swift in Sources */,
 				2616BB772155CF8F00A6AEFB /* NavOperation.swift in Sources */,
 				2616BB732155A1BC00A6AEFB /* Nav+Reactor.swift in Sources */,
-				2616BB6A2155946D00A6AEFB /* FlaskNavViewController.swift in Sources */,
+				2616BB6A2155946D00A6AEFB /* NavInfoProtocol.swift in Sources */,
 				2616BB752155A1F000A6AEFB /* Nav+Queue.swift in Sources */,
 				2616BB6E2155A0D600A6AEFB /* Nav+Constructor.swift in Sources */,
 				26B80710214DC740008091C2 /* ViewController.swift in Sources */,

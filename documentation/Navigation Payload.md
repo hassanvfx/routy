@@ -1,3 +1,49 @@
+## ✅  Codable Payload
+
+Update: We end up creating the CodablePayload protocol and refactoring the internal property in the NavigationContext to use a string as the raw storage to prevent the need to male it conform to a codable protocol.
+
+#### ✅  Serializable payload
+
+We may use the keyed archiver to turn the structs into data and the data into a json representation.
+
+See here:
+
+https://medium.com/commencis/swift-4s-codable-one-last-battle-for-serialization-30ceb3ccb051
+
+**UPDATE** The above doesn't works unless the struct conforms and implements the NSCoding protocol.
+
+https://craiggrummitt.com/2017/10/04/migrating-to-codable-from-nscoding/
+
+#### ✅ Keep context from protocol in Controller
+
+we should try adding a property to keep the context on the FlaskInit Protocol and automaticallly assign in.
+
+Update:  navContext and navInfo are now resoldved with the FlaskNavController protocol
+
+#### ✅ Payload serialization methods
+
+We may end up creating just 2 methods to easily convert data from structs into payload dictionaries
+
+```swift
+Flask.dictionary(from: structInstance)
+Flask.instance(from: dictionary, type: Instance.self)
+```
+
+
+## Refactor Flask Storage
+
+Instead of using user defaults we may want to store the data on a separate keyed archiver:
+
+https://medium.com/commencis/swift-4s-codable-one-last-battle-for-serialization-30ceb3ccb051
+
+
+https://stackoverflow.com/questions/7510123/is-there-any-limit-in-storing-values-in-nsuserdefaults
+
+https://www.hackingwithswift.com/example-code/system/how-to-save-and-load-objects-with-nskeyedarchiver-and-nskeyedunarchiver
+
+
+
+
 ## Accesories
 
 Accesories are independent to the current tab and cover the whole application screen. 
