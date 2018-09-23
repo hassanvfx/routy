@@ -159,7 +159,7 @@ Services.nav.tab(.Friends).show()
 
 We should also offer two methods for push,pop,etc such that the user an pass also constructors from the tabs.
 
-## Navigation transactions
+## ✅ Navigation transactions
 
 Navigation transactions: This will be useful to setup the navigation stack to a particular state before resolving the current state (ie. showing multiple accesory controller0 for onboard, permissions, etc.).
 
