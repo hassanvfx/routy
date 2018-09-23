@@ -27,18 +27,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func testTransaction(){
-        
-        var info = Info(title: "test", color: "blue")
-        Services.nav.transaction {
-            Services.nav.push(controller:.Home, payload:info)
+    
+        Services.nav.batch {
+            Services.nav.push(onBatch:true, controller:.Home, payload:Info(title: "test", color: "red"))
+            Services.nav.push(onBatch:true, controller:.Home, payload:Info(title: "test", color: "blue"))
         }
-        Services.nav.transaction {
-            info = Info(title: "test", color: "white")
-            Services.nav.push(controller:.Home, payload:info)
+        Services.nav.batch {
+            Services.nav.push(onBatch:true, controller:.Home, payload:Info(title: "test", color: "white"))
         }
-       
-        info = Info(title: "test", color: "yellow")
-        Services.nav.push(controller:.Home, payload:info)
+        Services.nav.push(controller:.Home, payload:Info(title: "test", color: "yellow"))
     }
     
     func testAPI(){

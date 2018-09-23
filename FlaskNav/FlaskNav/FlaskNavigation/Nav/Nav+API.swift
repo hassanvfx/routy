@@ -20,49 +20,65 @@ extension FlaskNav{
 
 extension FlaskNav{
     
-    public func push(controller:T, payload:CodablePayload? = nil){
-        push(controller:controller,resourceId:nil,payload:payload)
+    public func push(onBatch:Bool=false, controller:T, payload:CodablePayload? = nil){
+        push(onBatch:onBatch, controller:controller,resourceId:nil,payload:payload)
     }
     
-    public func push(controller:T, resourceId:String?, payload:CodablePayload? = nil){
+    public func push(onBatch useBatch:Bool=false, controller:T, resourceId:String?, payload:CodablePayload? = nil){
         
-        let stringController = controller.rawValue as! String
-        let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)
-        stack.push(context: context)
-        applyContextIntent()
+        batch(on:useBatch) { [weak self] in
+            let stringController = controller.rawValue as! String
+            let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)
+            self?.stack.push(context: context)
+        }
+        
     }
+    
+    
 }
 
 extension FlaskNav{
     
-    public func popCurrentControler(){
-        stack.pop()
-        applyContextIntent()
-    }
-    
-    public func pop(toController controller:T, payload:CodablePayload? = nil){
+    public func pop(onBatch useBatch:Bool=false, toController controller:T, payload:CodablePayload? = nil){
         pop(toController: controller,resourceId:nil, payload:payload)
     }
     
-    public func pop(toController controller:T, resourceId:String?, payload:CodablePayload? = nil){
+    public func pop(onBatch useBatch:Bool=false, toController controller:T, resourceId:String?, payload:CodablePayload? = nil){
         
-        let stringController = controller.rawValue as! String
-        let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)
-        stack.pop(toContext: context)
-        applyContextIntent()
+        batch(on:useBatch) { [weak self] in
+            let stringController = controller.rawValue as! String
+            let context = NavigationContext( controller: stringController, resourceId: resourceId, payload: payload)
+            self?.stack.pop(toContext: context)
+        }
+    }
+    
+    public func popCurrentControler(onBatch useBatch:Bool=false){
+        batch(on:useBatch) { [weak self] in
+            self?.stack.pop()
+        }
     }
 }
 
 extension FlaskNav{
     
-    func transaction(_ closure:@escaping ()->Void){
-
-        assert(stack.locked == false, "error the `stack` is currently locked")
+    public func batch(on onBatch:Bool,action:@escaping ()->Void){
+        if onBatch {
+            action()
+        } else{
+            batch(action)
+        }
+    }
+    func batch(_ closure:@escaping ()->Void){
         
-        stack.lock()
-        closure()
-        stack.unlock()
-        applyContext()
+        stack.enqueue { [weak self] in
+            assert(self?.stack.locked == false, "error the `stack` is currently locked")
+            
+            self?.stack.lock()
+            closure()
+            self?.stack.unlock()
+            self?.applyContext()
+        }
+        
         
     }
     
@@ -83,10 +99,10 @@ extension FlaskNav{
 extension FlaskNav{
     
     public func push(accesory:A, payload:AnyCodable? = nil){
-//        let stringAccesory = accesory.rawValue as! String
-//        let context = NavigationContext(controller: stringAccesory, resourceId: nil, payload: payload)
-//
-//        Flask.lock(withMixer: NavMixers.Accesory, payload: ["context":context.toString()])
+        //        let stringAccesory = accesory.rawValue as! String
+        //        let context = NavigationContext(controller: stringAccesory, resourceId: nil, payload: payload)
+        //
+        //        Flask.lock(withMixer: NavMixers.Accesory, payload: ["context":context.toString()])
         
     }
 }
