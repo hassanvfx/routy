@@ -9,19 +9,23 @@
 import UIKit
 import Flask
 
-
-
 extension FlaskNav{
-    
-    public func push(onBatch:Bool=false, controller:T, info:CodableInfo? = nil){
-        push(onBatch:onBatch, controller:controller,resourceId:nil,info:info)
+    public func push(controller:T, info:CodableInfo? = nil){
+        push(controller:controller.rawValue as! String , resourceId:nil, info:info)
     }
     
-    public func push(onBatch useBatch:Bool=false, controller:T, resourceId:String?, info:CodableInfo? = nil){
+    public func push(controller:T, resourceId:String?, info:CodableInfo? = nil){
+        push(controller:controller.rawValue as! String , resourceId:resourceId, info:info)
+    }
+}
+
+extension FlaskNav: NavAPIDelegate{
+    
+
+    func push(controller:String , resourceId:String?, info:CodableInfo? = nil, batched:Bool = false){
         
-        batch(on:useBatch) { [weak self] in
-            let stringController = controller.rawValue as! String
-            let context = NavContext( controller: stringController, resourceId: resourceId, info: info)
+        batch(on:batched) { [weak self] in
+            let context = NavContext( controller: controller, resourceId: resourceId, info: info)
             self?.stack.push(context: context)
         }
         
@@ -76,6 +80,20 @@ extension FlaskNav{
             self?.stack.unlock()
             self?.applyContext()
         }
+    }
+    
+    
+    func transaction(_ closure:@escaping (NavBatch<T>)->Void){
+        
+        stack.enqueue { [weak self] in
+            assert(self?.stack.locked == false, "error the `stack` is currently locked")
+            
+            let batch = NavBatch<T>(delegate: self)
+            self?.stack.lock()
+            closure(batch)
+            self?.stack.unlock()
+            self?.applyContext()
+        }
         
         
     }
@@ -104,3 +122,4 @@ extension FlaskNav{
         
     }
 }
+

@@ -28,13 +28,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func testTransaction(){
     
-        Services.nav.batch {
-            Services.nav.push(onBatch:true, controller:.Home, info:NavInfo(params:["color":"red"]))
-            Services.nav.push(onBatch:true, controller:.Home, info:NavInfo(params:["color":"blue"]))
+        Services.nav.transaction { (batch) in
+            batch.push( controller:.Home, info:NavInfo(params:["color":"red"]))
+            batch.push( controller:.Home, info:NavInfo(params:["color":"blue"]))
         }
-        Services.nav.batch {
-            Services.nav.push(onBatch:true, controller:.Home, info:NavInfo(params:["color":"white"]))
+        Services.nav.transaction { (batch) in
+            batch.push(controller:.Home, info:NavInfo(params:["color":"white"]))
         }
+        
         Services.nav.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
         Services.nav.popToRootController()
     }
