@@ -10,56 +10,45 @@ import UIKit
 import Flask
 
 extension FlaskNav{
-    public func push(controller:T, info:CodableInfo? = nil){
-        push(controller:controller.rawValue as! String , resourceId:nil, info:info)
+    
+    public func push(controller:T, resourceId:String? = nil, info:CodableInfo? = nil){
+        push(controller:controller.rawValue as! String , resourceId:resourceId, info:info)
     }
     
-    public func push(controller:T, resourceId:String?, info:CodableInfo? = nil){
-        push(controller:controller.rawValue as! String , resourceId:resourceId, info:info)
+    public func pop(controller:T, resourceId:String? = nil, info:CodableInfo? = nil){
+        pop(toController:controller.rawValue as! String , resourceId:resourceId, info:info)
     }
 }
 
 extension FlaskNav: NavAPIDelegate{
     
-
     func push(controller:String , resourceId:String?, info:CodableInfo? = nil, batched:Bool = false){
-        
         batch(on:batched) { [weak self] in
             let context = NavContext( controller: controller, resourceId: resourceId, info: info)
             self?.stack.push(context: context)
         }
-        
+    }
+    
+    func pop(toController controller:String, resourceId:String?, info:CodableInfo?, batched:Bool = false){
+        batch(on:batched) { [weak self] in
+            let context = NavContext( controller: controller, resourceId: resourceId, info: info)
+            self?.stack.pop(toContext: context)
+        }
+    }
+    func popCurrentControler(batched:Bool = false){
+        batch(on:batched) { [weak self] in
+            self?.stack.pop()
+        }
+    }
+    func popToRootController(batched:Bool = false){
+        batch(on:batched) { [weak self] in
+            self?.stack.clear()
+        }
     }
     
     
 }
 
-extension FlaskNav{
-    
-    public func pop(onBatch useBatch:Bool=false, toController controller:T, info:CodableInfo? = nil){
-        pop(toController: controller,resourceId:nil, info:info)
-    }
-    
-    public func pop(onBatch useBatch:Bool=false, toController controller:T, resourceId:String?, info:CodableInfo? = nil){
-        
-        batch(on:useBatch) { [weak self] in
-            let stringController = controller.rawValue as! String
-            let context = NavContext( controller: stringController, resourceId: resourceId, info: info)
-            self?.stack.pop(toContext: context)
-        }
-    }
-    
-    public func popCurrentControler(onBatch useBatch:Bool=false){
-        batch(on:useBatch) { [weak self] in
-            self?.stack.pop()
-        }
-    }
-    public func popToRootController(onBatch useBatch:Bool=false){
-        batch(on:useBatch) { [weak self] in
-            self?.stack.clear()
-        }
-    }
-}
 
 extension FlaskNav{
     
