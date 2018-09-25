@@ -75,7 +75,7 @@ extension FlaskNav{
     }
     
     
-    func transaction(_ closure:@escaping (NavComposition<T,T,A>)->Void){
+    func transaction(_ closure:@escaping (NavComposition<TABS,CONT,ACCS>)->Void){
         
         NavStack.enqueue { [weak self] in
             assert(NavStack.locked == false, "error the `stack` is currently locked")
@@ -97,14 +97,5 @@ extension FlaskNav{
     
 }
 
-extension FlaskNav{
-    
-    public func push(accesory:A, payload:AnyCodable? = nil){
-        //        let stringAccesory = accesory.rawValue as! String
-        //        let context = NavContext(controller: stringAccesory, resourceId: nil, payload: payload)
-        //
-        //        Flask.lock(withMixer: NavMixers.Accesory, payload: ["context":context.toString()])
-        
-    }
-}
+
 

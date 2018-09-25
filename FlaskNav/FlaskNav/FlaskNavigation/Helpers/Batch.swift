@@ -32,7 +32,7 @@ protocol StackDelegate:AnyObject{
 }
 
 
-class NavComposition<CONT:RawRepresentable,TABS:RawRepresentable,ACCS:RawRepresentable> : NSObject{
+class NavComposition<TABS:RawRepresentable,CONT:RawRepresentable,ACCS:RawRepresentable> : NSObject{
     
     weak var delegate:StackDelegate?
     let batched:Bool
@@ -46,9 +46,9 @@ class NavComposition<CONT:RawRepresentable,TABS:RawRepresentable,ACCS:RawReprese
         return NavInterface<CONT>(batch:batched,layer: StackLayer.Main(), delegate: self)
     }
     
-    public func tab(_ tab:TABS)->NavInterface<TABS>{
+    public func tab(_ tab:TABS)->NavInterface<CONT>{
         let tabString = tab.rawValue as! String
-        return NavInterface<TABS>(batch:batched, layer: StackLayer.Tab(tabString), delegate: self)
+        return NavInterface<CONT>(batch:batched, layer: StackLayer.Tab(tabString), delegate: self)
     }
     
     public func accesory(_ layer:Int=0)->NavInterface<ACCS>{

@@ -8,6 +8,10 @@
 
 import UIKit
 
+enum Tabs:String {
+    case Main, Friends
+}
+
 enum Controllers:String {
     case Home, Settings, Feed
 }
@@ -18,7 +22,7 @@ enum Accesories:String {
 
 
 
-class AppNav: FlaskNav<Controllers,Accesories> {
+class AppNav: FlaskNav<Tabs, Controllers,Accesories> {
     
     override func rootController()->UIViewController{
         return ViewController()

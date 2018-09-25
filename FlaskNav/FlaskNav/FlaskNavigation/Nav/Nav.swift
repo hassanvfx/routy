@@ -9,7 +9,7 @@
 import UIKit
 import Flask
 
-public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentable > : NSObject, UINavigationControllerDelegate{
+public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepresentable,  ACCS:Hashable & RawRepresentable > : NSObject, UINavigationControllerDelegate{
   
     let FIRST_NAVIGATION_ROOT_COUNT = 2
     let UNDEFINED_CONTEXT_ID = -1
@@ -23,18 +23,18 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
     // MARK: STACK
     
     var layers:[String:NavStack] = [:]
-    var composition:NavComposition<T,T,A>?
-    var compositionBatch:NavComposition<T,T,A>?
+    var composition:NavComposition<TABS,CONT,ACCS>?
+    var compositionBatch:NavComposition<TABS,CONT,ACCS>?
     
     // MARK: CONFIG
     
     let navigation = NavigationSubstance()
 
-    public var viewControllers:[T:ControllerConstructor] = [:]
+    public var viewControllers:[CONT:ControllerConstructor] = [:]
     
-    public var accesoryControllers:[A :ControllerConstructor] = [:]
-    public var accesoryParents:[A: [T]] = [:]
-    public var accesoryLayer:[ A : AccesoryLayers ] = [:]
+    public var accesoryControllers:[ACCS :ControllerConstructor] = [:]
+    public var accesoryParents:[ACCS: [CONT]] = [:]
+    public var accesoryLayer:[ ACCS : AccesoryLayers ] = [:]
     
     var _controllers:[String:ControllerConstructor] = [:]
     
@@ -62,8 +62,8 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
     override init() {
         super.init()
         
-        self.composition = NavComposition<T,T,A>(delegate: self)
-        self.compositionBatch = NavComposition<T,T,A>(batch: true, delegate: self)
+        self.composition = NavComposition<TABS,CONT,ACCS>(delegate: self)
+        self.compositionBatch = NavComposition<TABS,CONT,ACCS>(batch: true, delegate: self)
         
         _configControllers()
         

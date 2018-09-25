@@ -39,8 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.nav.composition?.main.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
         Services.nav.composition?.main.popToRootController()
         
-//        Services.nav.composition?.tab(.Home).push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
-//        Services.nav.composition?.accesory().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))
+        Services.nav.composition?.tab(.Main).push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
+        Services.nav.composition?.accesory().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))
         
     }
     
