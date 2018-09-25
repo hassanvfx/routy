@@ -36,11 +36,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             batch.main.push(controller:.Home, info:NavInfo(params:["color":"white"]))
         }
         
-        Services.nav.composition?.main.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
-        Services.nav.composition?.main.popToRootController()
+        Services.nav.main.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
+        Services.nav.main.popToRootController()
         
-        Services.nav.composition?.tab(.Main).push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
-        Services.nav.composition?.accesory().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))
+        Services.nav.tab(.Main).push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
+        Services.nav.accesory().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))
         
     }
     

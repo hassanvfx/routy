@@ -25,7 +25,10 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     var layers:[String:NavStack] = [:]
     var composition:NavComposition<TABS,CONT,ACCS>?
     var compositionBatch:NavComposition<TABS,CONT,ACCS>?
+    var compDelegate: NavStackAPI? = nil
+    var compBatched: Bool = false
     
+   
     // MARK: CONFIG
     
     let navigation = NavigationSubstance()
