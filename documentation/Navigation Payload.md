@@ -1,3 +1,47 @@
+## RootController
+
+We may create a root controller that will define the complete empty state of the application.
+
+Then immediately attach a tabController as the only child whenever tabs are enabled.
+
+The above would allow to make a distinction between 
+
+```swift
+nav.main.popToRootController()
+```
+
+> and
+
+```swift
+nav.tab(.Home).popToRootController()
+```
+
+The above would require that whener we call to present a tab, the main navigation will need to pop until find the tanController.
+
+```
+main.tab(0).show()
+```
+
+```
+main.pop(toController:MAIN_TAB_CONTROLLER)
+tab.show()
+```
+
+It should always be the first element in the stack
+
+```
+[TabController]
+```
+
+## Tab accessor with index
+
+We should allow to also access the tabs by index like:
+
+```swift
+nav.tab(0).popToRootController()
+nav.tab().popToRootController()
+```
+
 ## Passing Composition state to flux
 
 We need to define how to store the composition state such that the keys can be easily observed.
@@ -36,7 +80,7 @@ reaction.on(.AccesoryLayer3){ change in }
 
 ```
 
-The tricky part is that we would need to map the tabs into a position to match the numeric index
+The tricky part is that we would need to map the tabs into a position to match the numeric index. This could be resolved during the tab definition:
 
 ```swift
 define(tab: .Home, index:0){  HomeViewController() }

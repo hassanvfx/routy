@@ -19,10 +19,6 @@ public class NavStack {
         return queue
     }()
     
-    init() {
-    
-    }
-    
     public func rootContext()->NavContext{
         return NavContext( controller: ROOT_CONTROLLER, resourceId: nil, info: nil)
     }
@@ -32,10 +28,7 @@ public class NavStack {
     }
     
     public func push(context:NavContext){
-        print("stack.count before:\(stack.count)")
-        print("appending \(context.controller)")
         stack.append(context)
-        print("stack.count after:\(stack.count)")
     }
     
     
