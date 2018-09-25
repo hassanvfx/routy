@@ -22,7 +22,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     
     // MARK: STACK
     
-    var layers:[String:NavStack] = [:]
+    var stackLayers:[String:NavStack] = [:]
     var composition:NavComposition<TABS,CONT,ACCS>?
     var compositionBatch:NavComposition<TABS,CONT,ACCS>?
     var compDelegate: NavStackAPI? = nil
@@ -108,12 +108,3 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
         
     }
 }
-
-
-
-
-
-
-
-
-

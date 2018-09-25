@@ -1,3 +1,49 @@
+## Passing Composition state to flux
+
+We need to define how to store the composition state such that the keys can be easily observed.
+
+For example for accesories we can obserbe keys like
+
+```swift
+reaction.on("accesories.layer0"){ change in }
+reaction.on("accesories.layer1"){ change in }
+reaction.on("accesories.layer2"){ change in }
+reaction.on("accesories.layer2"){ change in }
+```
+
+like wise we can apply the same logic for the tabs 
+
+```swift
+reaction.on("tabs.layer0"){ change in }
+reaction.on("tabs.layer1"){ change in }
+reaction.on("tabs.layer2"){ change in }
+reaction.on("tabs.layer2"){ change in }
+```
+
+for the sake of simiplication, we could define a hardcoded limit on the number of components, for example 10 layers and 10 tabs. This would allow us to define this as specific state vars like
+
+```swift
+reaction.on(.Tab0){ change in }
+reaction.on(.Tab1){ change in }
+reaction.on(.Tab2){ change in }
+reaction.on(.Tab3){ change in }
+
+
+reaction.on(.AccesoryLayer0){ change in }
+reaction.on(.AccesoryLayer1){ change in }
+reaction.on(.AccesoryLayer2){ change in }
+reaction.on(.AccesoryLayer3){ change in }
+
+```
+
+The tricky part is that we would need to map the tabs into a position to match the numeric index
+
+```swift
+define(tab: .Home, index:0){  HomeViewController() }
+define(tab: .Friends, index:1){  HomeViewController() }
+```
+
+
 ## ✅  Codable Payload
 
 Update: We end up creating the CodablePayload protocol and refactoring the internal property in the NavigationContext to use a string as the raw storage to prevent the need to male it conform to a codable protocol.

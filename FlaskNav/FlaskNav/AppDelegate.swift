@@ -35,12 +35,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.nav.transaction { (batch) in
             batch.main.push(controller:.Home, info:NavInfo(params:["color":"white"]))
         }
+        Services.nav.transaction { (batch) in
+            batch.main.popCurrentControler()
+            batch.main.popCurrentControler()
+        }
         
         Services.nav.main.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
         Services.nav.main.popToRootController()
-        
-        Services.nav.tab(.Main).push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
-        Services.nav.accesory().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))
+//
+//        Services.nav.tab(.Main).push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
+//        Services.nav.accesory().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))
         
     }
     

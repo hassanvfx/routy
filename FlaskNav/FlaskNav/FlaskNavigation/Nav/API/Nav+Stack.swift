@@ -12,12 +12,12 @@ import Flask
 extension FlaskNav{
  
     func stack(forLayer name:String)->NavStack{
-        if let stack = layers[name] {
+        if let stack = stackLayers[name] {
             return stack
         }
         let newStack = NavStack()
-        layers[name] = newStack
-        return NavStack()
+        stackLayers[name] = newStack
+        return newStack
     }
 }
 

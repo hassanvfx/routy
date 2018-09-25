@@ -9,15 +9,18 @@ import UIKit
 
 class StackLayer {
     
+    static let TAB = "tab"
+    static let ACCESORY = "accesory"
+    
     static func Main()->String{
         return "main"
     }
     static func Tab(_ name:String) -> String{
-        return "tab.\(name)"
+        return "\(TAB).\(name)"
     }
     
     static func Accesory(_ layer:Int)->String{
-        return "accesory.\(layer)"
+        return "\(ACCESORY).\(layer)"
     }
     
 }

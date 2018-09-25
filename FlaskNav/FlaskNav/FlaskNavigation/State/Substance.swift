@@ -16,7 +16,7 @@ struct NavigationState: State {
         case currentController
     }
     var currentController = ROOT_CONTROLLER
-    var currentAccesory:String? = nil
+    var accesories:[String:String]? = nil
 }
 
 enum NavMixers:SubstanceMixer{
@@ -28,14 +28,14 @@ class NavigationSubstance: ReactiveSubstance<NavigationState,NavMixers>{
     
     override func defineMixers() {
         define(mix: .Controller) { (payload, react, abort) in
-            let context = payload!["context"]  as! String
+            let context = payload!["main"]  as! String
             self.prop.currentController = context
             react()
         }
         
         define(mix: .Accesory) { (payload, react, abort) in
-            let context = payload!["context"]  as? String
-            self.prop.currentAccesory = context
+            let map = payload!["accesory"]
+            self.prop.accesories = map as? [String : String]
             react()
         }
     }
