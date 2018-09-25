@@ -22,7 +22,9 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
     
     // MARK: STACK
     
-    var stack:NavStack = NavStack()
+    var layers:[String:NavStack] = [:]
+    var composition:NavComposition<T,T,A>?
+    var compositionBatch:NavComposition<T,T,A>?
     
     // MARK: CONFIG
     
@@ -59,6 +61,10 @@ public class FlaskNav<T:Hashable & RawRepresentable, A:Hashable & RawRepresentab
     
     override init() {
         super.init()
+        
+        self.composition = NavComposition<T,T,A>(delegate: self)
+        self.compositionBatch = NavComposition<T,T,A>(batch: true, delegate: self)
+        
         _configControllers()
         
         AttachFlaskReactor(to: self, mixing: [navigation])

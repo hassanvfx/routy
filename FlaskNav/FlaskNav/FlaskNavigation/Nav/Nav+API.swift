@@ -10,39 +10,41 @@ import UIKit
 import Flask
 
 extension FlaskNav{
-    
-    public func push(controller:T, resourceId:String? = nil, info:CodableInfo? = nil){
-        push(controller:controller.rawValue as! String , resourceId:resourceId, info:info)
-    }
-    
-    public func pop(controller:T, resourceId:String? = nil, info:CodableInfo? = nil){
-        pop(toController:controller.rawValue as! String , resourceId:resourceId, info:info)
+ 
+    func stack(forLayer name:String)->NavStack{
+        if let stack = layers[name] {
+            return stack
+        }
+        let newStack = NavStack()
+        layers[name] = newStack
+        return NavStack()
     }
 }
 
-extension FlaskNav: NavAPIDelegate{
+
+extension FlaskNav: StackDelegate{
     
-    func push(controller:String , resourceId:String?, info:CodableInfo? = nil, batched:Bool = false){
-        batch(on:batched) { [weak self] in
+    func push(layer:String, controller:String , resourceId:String?, info:CodableInfo? = nil, batched:Bool = false){
+        navigate(batched:batched) { [weak self] in
             let context = NavContext( controller: controller, resourceId: resourceId, info: info)
-            self?.stack.push(context: context)
+            self?.stack(forLayer: layer).push(context: context)
         }
     }
     
-    func pop(toController controller:String, resourceId:String?, info:CodableInfo?, batched:Bool = false){
-        batch(on:batched) { [weak self] in
+    func pop(layer:String, toController controller:String, resourceId:String?, info:CodableInfo?, batched:Bool = false){
+        navigate(batched:batched) { [weak self] in
             let context = NavContext( controller: controller, resourceId: resourceId, info: info)
-            self?.stack.pop(toContext: context)
+            self?.stack(forLayer: layer).pop(toContext: context)
         }
     }
-    func popCurrentControler(batched:Bool = false){
-        batch(on:batched) { [weak self] in
-            self?.stack.pop()
+    func popCurrentControler(layer:String, batched:Bool = false){
+        navigate(batched:batched) { [weak self] in
+            self?.stack(forLayer: layer).pop()
         }
     }
-    func popToRootController(batched:Bool = false){
-        batch(on:batched) { [weak self] in
-            self?.stack.clear()
+    func popToRootController(layer:String, batched:Bool = false){
+        navigate(batched:batched) { [weak self] in
+            self?.stack(forLayer: layer).clear()
         }
     }
     
@@ -52,50 +54,44 @@ extension FlaskNav: NavAPIDelegate{
 
 extension FlaskNav{
     
-    public func batch(on onBatch:Bool,action:@escaping ()->Void){
-        if onBatch {
+    public func navigate(batched:Bool,action:@escaping ()->Void){
+        if batched {
             action()
         } else{
-            batch(action)
+            enqueueNow(action)
         }
     }
-    func batch(_ closure:@escaping ()->Void){
+    
+    func enqueueNow(_ closure:@escaping ()->Void){
         
-        stack.enqueue { [weak self] in
-            assert(self?.stack.locked == false, "error the `stack` is currently locked")
+        NavStack.enqueue { [weak self] in
+            assert(NavStack.locked == false, "error the `stack` is currently locked")
             
-            self?.stack.lock()
+            NavStack.lock()
             closure()
-            self?.stack.unlock()
+            NavStack.unlock()
             self?.applyContext()
         }
     }
     
     
-    func transaction(_ closure:@escaping (NavBatch<T>)->Void){
+    func transaction(_ closure:@escaping (NavComposition<T,T,A>)->Void){
         
-        stack.enqueue { [weak self] in
-            assert(self?.stack.locked == false, "error the `stack` is currently locked")
-            
-            let batch = NavBatch<T>(delegate: self)
-            self?.stack.lock()
-            closure(batch)
-            self?.stack.unlock()
+        NavStack.enqueue { [weak self] in
+            assert(NavStack.locked == false, "error the `stack` is currently locked")
+   
+            NavStack.lock()
+            if let my = self {
+                closure(my.compositionBatch!)
+            }
+            NavStack.unlock()
             self?.applyContext()
         }
         
-        
-    }
-    
-    func applyContextIntent(){
-        if(stack.locked){
-            return
-        }
-        applyContext()
     }
     
     func applyContext(){
-        let context = self.stack.current()
+        let context = self.stack(forLayer: StackLayer.Main()).current()
         Flask.lock(withMixer: NavMixers.Controller, payload: ["context":context.toString()])
     }
     

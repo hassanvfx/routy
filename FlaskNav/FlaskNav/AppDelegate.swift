@@ -29,28 +29,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func testTransaction(){
     
         Services.nav.transaction { (batch) in
-            batch.push( controller:.Home, info:NavInfo(params:["color":"red"]))
-            batch.push( controller:.Home, info:NavInfo(params:["color":"blue"]))
+            batch.main.push( controller:.Home, info:NavInfo(params:["color":"red"]))
+            batch.main.push( controller:.Home, info:NavInfo(params:["color":"blue"]))
         }
         Services.nav.transaction { (batch) in
-            batch.push(controller:.Home, info:NavInfo(params:["color":"white"]))
+            batch.main.push(controller:.Home, info:NavInfo(params:["color":"white"]))
         }
         
-        Services.nav.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
-        Services.nav.popToRootController()
+        Services.nav.composition?.main.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
+        Services.nav.composition?.main.popToRootController()
+        
+//        Services.nav.composition?.tab(.Home).push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
+//        Services.nav.composition?.accesory().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))
+        
     }
     
     func testAPI(){
         let info = Info(title: "test", color: "red")
         
-        Services.nav.push(controller:.Home, info:info)
-        Services.nav.popToRootController()
-        Services.nav.push(controller:.Home, info:info)
-        Services.nav.popToRootController()
-        Services.nav.push(controller:.Home, info:info)
-        Services.nav.push(controller:.Home, info:info)
-        Services.nav.push(controller:.Home, info:info)
-        Services.nav.popToRootController()
+        Services.nav.composition?.main.push(controller:.Home, info:info)
+        Services.nav.composition?.main.popToRootController()
+        Services.nav.composition?.main.push(controller:.Home, info:info)
+        Services.nav.composition?.main.popToRootController()
+        Services.nav.composition?.main.push(controller:.Home, info:info)
+        Services.nav.composition?.main.push(controller:.Home, info:info)
+        Services.nav.composition?.main.push(controller:.Home, info:info)
+        Services.nav.composition?.main.popToRootController()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

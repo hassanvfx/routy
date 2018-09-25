@@ -11,7 +11,7 @@ import UIKit
 public class NavStack {
     
     public private(set) var stack:[NavContext] = []
-    public private(set) var locked = false
+    static public private(set) var locked = false
     
     public static let stackQueue:OperationQueue = {
         let queue = OperationQueue()
@@ -71,15 +71,15 @@ public class NavStack {
 
 extension NavStack {
     
-    public func lock(){
+    static public func lock(){
         locked = true
     }
     
-    public func unlock(){
+    static public func unlock(){
         locked = false
     }
     
-    public func enqueue(_ closure:@escaping ()->Void){
+    static public func enqueue(_ closure:@escaping ()->Void){
         NavStack.stackQueue.addOperation { 
             closure()
         }
