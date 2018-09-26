@@ -13,7 +13,7 @@ class StackLayer {
     static let ACCESORY = "accesory"
     
     static func Main()->String{
-        return "main"
+        return "nav"
     }
     static func Tab(_ name:String) -> String{
         return "\(TAB).\(name)"

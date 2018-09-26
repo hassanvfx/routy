@@ -1,6 +1,6 @@
 //
 //  Substance.swift
-//  FlaskNav
+//  Roots
 //
 //  Created by hassan uriostegui on 9/18/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -28,7 +28,7 @@ class NavigationSubstance: ReactiveSubstance<NavigationState,NavMixers>{
     
     override func defineMixers() {
         define(mix: .Controller) { (payload, react, abort) in
-            let context = payload!["main"]  as! String
+            let context = payload!["nav"]  as! String
             self.prop.currentController = context
             react()
         }

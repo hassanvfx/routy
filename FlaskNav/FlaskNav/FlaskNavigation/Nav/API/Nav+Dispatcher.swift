@@ -1,7 +1,7 @@
 
 //
 //  Nav+Dispatcher.swift
-//  FlaskNav
+//  Roots
 //
 //  Created by hassan uriostegui on 9/24/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -10,7 +10,7 @@
 import UIKit
 import Flask
 
-extension FlaskNav{
+extension Roots{
  
     func applyContext(){
         
@@ -35,10 +35,10 @@ extension FlaskNav{
             }
         }
         
-        let main = self.stack(forLayer: StackLayer.Main()).current()
+        let nav = self.stack(forLayer: StackLayer.Main()).current()
 
         let payload:[String : Any] = [
-            "main":main.toString(),
+            "nav":nav.toString(),
             "tabs":tabs,
             "accesories":accesories
         ]

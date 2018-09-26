@@ -1,6 +1,6 @@
 //
 //  Nav+Display.swift
-//  FlaskNav
+//  Roots
 //
 //  Created by hassan uriostegui on 9/21/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension FlaskNav{
+extension Roots{
     
     func pushController(_ controller:UIViewController, context:NavContext){
         DispatchQueue.main.async { [weak self] in
@@ -27,7 +27,7 @@ extension FlaskNav{
     
 }
 
-extension FlaskNav {
+extension Roots {
     
     
     func presentAccessory(_ controller:UIViewController,  context:NavContext){

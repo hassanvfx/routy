@@ -1,6 +1,6 @@
 //
-//  FlaskNav.swift
-//  FlaskNav
+//  Roots.swift
+//  Roots
 //
 //  Created by hassan uriostegui on 9/15/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import Flask
 
-public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepresentable,  ACCS:Hashable & RawRepresentable > : NSObject, UINavigationControllerDelegate{
+public class Roots<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepresentable,  ACCS:Hashable & RawRepresentable > : NSObject, UINavigationControllerDelegate{
   
     let FIRST_NAVIGATION_ROOT_COUNT = 2
     let UNDEFINED_CONTEXT_ID = -1
@@ -58,7 +58,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
         return queue
     }()
     
-    var operations:[String:[FlaskNavOperation]] = [:]
+    var operations:[String:[RootsOperation]] = [:]
     
     // MARK : INIT
     

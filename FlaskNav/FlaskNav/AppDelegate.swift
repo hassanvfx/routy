@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  FlaskNav
+//  Roots
 //
 //  Created by hassan uriostegui on 9/15/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -18,8 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
        
         
-        window = UIWindow(frame: UIScreen.main.bounds)
-        Services.nav.setup(withWindow: window!)
+        window = UIWindow(frame: UIScreen.nav.bounds)
+        Services.roots.setup(withWindow: window!)
         
         testTransaction()
 //        testAPI()
@@ -28,37 +28,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func testTransaction(){
     
-        Services.nav.transaction { (batch) in
-            batch.main.push( controller:.Home, info:NavInfo(params:["color":"red"]))
-            batch.main.push( controller:.Home, info:NavInfo(params:["color":"blue"]))
+        Services.roots.transaction { (batch) in
+            batch.nav.push( controller:.Home, info:NavInfo(params:["color":"red"]))
+            batch.nav.push( controller:.Home, info:NavInfo(params:["color":"blue"]))
         }
-        Services.nav.transaction { (batch) in
-            batch.main.push(controller:.Home, info:NavInfo(params:["color":"white"]))
+        Services.roots.transaction { (batch) in
+            batch.nav.push(controller:.Home, info:NavInfo(params:["color":"white"]))
         }
-        Services.nav.transaction { (batch) in
-            batch.main.popCurrentControler()
-            batch.main.popCurrentControler()
+        Services.roots.transaction { (batch) in
+            batch.nav.popCurrentControler()
+            batch.nav.popCurrentControler()
         }
         
-        Services.nav.main.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
-        Services.nav.main.popToRootController()
+        Services.roots.nav.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
+        Services.roots.nav.popToRootController()
 //
-//        Services.nav.tab(.Main).push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
-//        Services.nav.accesory().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))
+//        Services.roots.tab(.Main).push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
+//        Services.roots.accesory().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))
         
     }
     
     func testAPI(){
         let info = Info(title: "test", color: "red")
         
-        Services.nav.composition?.main.push(controller:.Home, info:info)
-        Services.nav.composition?.main.popToRootController()
-        Services.nav.composition?.main.push(controller:.Home, info:info)
-        Services.nav.composition?.main.popToRootController()
-        Services.nav.composition?.main.push(controller:.Home, info:info)
-        Services.nav.composition?.main.push(controller:.Home, info:info)
-        Services.nav.composition?.main.push(controller:.Home, info:info)
-        Services.nav.composition?.main.popToRootController()
+        Services.roots.composition?.nav.push(controller:.Home, info:info)
+        Services.roots.composition?.nav.popToRootController()
+        Services.roots.composition?.nav.push(controller:.Home, info:info)
+        Services.roots.composition?.nav.popToRootController()
+        Services.roots.composition?.nav.push(controller:.Home, info:info)
+        Services.roots.composition?.nav.push(controller:.Home, info:info)
+        Services.roots.composition?.nav.push(controller:.Home, info:info)
+        Services.roots.composition?.nav.popToRootController()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

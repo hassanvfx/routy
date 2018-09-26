@@ -1,6 +1,6 @@
 //
 //  Operation.swift
-//  FlaskNav
+//  Roots
 //
 //  Created by hassan uriostegui on 9/21/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import Flask
 
-class FlaskNavOperation : NSObject {
+class RootsOperation : NSObject {
     
     weak var operation:FlaskOperation?
     public let fluxLock : FluxLock

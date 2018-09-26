@@ -1,6 +1,6 @@
 //
 //  Factory.swift
-//  FlaskNav
+//  Roots
 //
 //  Created by hassan uriostegui on 9/21/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension FlaskNav{
+extension Roots{
     
     func controllerConstructor(for controller:String)->ControllerConstructor{
         if let constructor = _controllers[controller]{
@@ -17,7 +17,7 @@ extension FlaskNav{
         fatalError("constuctor for `\(controller)` not defined")
     }
     
-    func cachedControllerFrom(context:NavContext, navOperation:FlaskNavOperation)->(controller:UIViewController,cached:Bool){
+    func cachedControllerFrom(context:NavContext, navOperation:RootsOperation)->(controller:UIViewController,cached:Bool){
         
         let key = context.toString()
         if let value = cachedControllers[key]?.value{
@@ -37,7 +37,7 @@ extension FlaskNav{
         
     }
     
-    func controllerFrom(context:NavContext, navOperation:FlaskNavOperation)->UIViewController{
+    func controllerFrom(context:NavContext, navOperation:RootsOperation)->UIViewController{
         
         let key = context.toString()
 
@@ -52,14 +52,14 @@ extension FlaskNav{
     
     func contextInitIntent(controller:UIViewController, context:NavContext){
         
-        if let instanceAsyncSetup = controller as? FlaskNavSetup {
+        if let instanceAsyncSetup = controller as? RootsSetup {
             instanceAsyncSetup.navContextInit(withContext: context)
         }
     }
     
     func setupEmptyStateIntent(controller:UIViewController, context:NavContext){
         
-        if let instanceAsyncSetup = controller as? FlaskNavSetup {
+        if let instanceAsyncSetup = controller as? RootsSetup {
             
             DispatchQueue.main.async {
                 instanceAsyncSetup.setupEmptyState()
@@ -68,9 +68,9 @@ extension FlaskNav{
     }
     
     
-    func setupContentIntent(controller:UIViewController, context:NavContext, navOperation:FlaskNavOperation){
+    func setupContentIntent(controller:UIViewController, context:NavContext, navOperation:RootsOperation){
         
-        if let instanceAsyncSetup = controller as? FlaskNavSetup {
+        if let instanceAsyncSetup = controller as? RootsSetup {
             
             let completion = { [weak self] in
                 _ = self?.contentQueue.addOperation {

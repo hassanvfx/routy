@@ -1,6 +1,6 @@
 //
 //  Nav+API.swift
-//  FlaskNav
+//  Roots
 //
 //  Created by hassan uriostegui on 9/21/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import Flask
 
-extension FlaskNav{
+extension Roots{
  
     func stack(forLayer name:String)->NavStack{
         if let stack = stackLayers[name] {
@@ -22,7 +22,7 @@ extension FlaskNav{
 }
 
 
-extension FlaskNav: NavStackAPI{
+extension Roots: NavStackAPI{
     
     func push(layer:String, controller:String , resourceId:String?, info:CodableInfo? = nil, batched:Bool = false){
         queueIntent(batched:batched) { [weak self] in

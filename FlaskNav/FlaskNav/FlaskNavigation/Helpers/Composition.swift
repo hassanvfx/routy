@@ -1,6 +1,6 @@
 //
 //  Composition.swift
-//  FlaskNav
+//  Roots
 //
 //  Created by hassan uriostegui on 9/24/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-/// This protocol is shared with the main `FlaskNav` object to facilitate accesing this defintion as a direct shorthand
+/// This protocol is shared with the nav `Roots` object to facilitate accesing this defintion as a direct shorthand
 protocol NavCompositionAPI:AnyObject{
     
     associatedtype COMP_CONT_TYPE:RawRepresentable
@@ -18,14 +18,14 @@ protocol NavCompositionAPI:AnyObject{
     var compDelegate:NavStackAPI? {get}
     var compBatched:Bool{get}
     
-    var main:NavInterface<COMP_CONT_TYPE>{get}
+    var nav:NavInterface<COMP_CONT_TYPE>{get}
     func tab(_ tab:COMP_TABS_TYPE)->NavInterface<COMP_CONT_TYPE>
     func accesory(_ layer:Int)->NavInterface<COMP_ACCS_TYPE>
 }
 
 extension NavCompositionAPI{
     
-    public var main:NavInterface<COMP_CONT_TYPE>{
+    public var nav:NavInterface<COMP_CONT_TYPE>{
         return NavInterface<COMP_CONT_TYPE>(batch:compBatched,layer: StackLayer.Main(), delegate: self as? NavStackAPI)
     }
     

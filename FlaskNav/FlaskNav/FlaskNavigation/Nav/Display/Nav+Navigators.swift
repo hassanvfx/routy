@@ -1,6 +1,6 @@
 //
 //  Nav+Navigators.swift
-//  FlaskNav
+//  Roots
 //
 //  Created by hassan uriostegui on 9/24/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -9,13 +9,13 @@
 import UIKit
 import Flask
 
-extension FlaskNav {
+extension Roots {
     
     func activeRootController()->UIViewController?{
         return navController?.viewControllers.first
     }
     
-    func navigateToRootView(navOperation:FlaskNavOperation){
+    func navigateToRootView(navOperation:RootsOperation){
         //TODO: animated parametrization?
         let rootController = activeRootController()
         startOperationFor(controller:rootController!,navOperation: navOperation) {[weak self] (operation) in
@@ -30,7 +30,7 @@ extension FlaskNav {
         let stringContext = navigation.state.currentController
         let context = NavContext(fromString: stringContext)
         
-        let navOperation = FlaskNavOperation(fluxLock: fluxLock, name: context.controller)
+        let navOperation = RootsOperation(fluxLock: fluxLock, name: context.controller)
         
         print("--> navigation \(context.path())")
         guard context.controller != ROOT_CONTROLLER else{

@@ -1,6 +1,6 @@
 //
 //  Operations.swift
-//  FlaskNav
+//  Roots
 //
 //  Created by hassan uriostegui on 9/21/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -9,10 +9,10 @@
 import UIKit
 import Flask
 
-extension FlaskNav{
+extension Roots{
     
     
-    func operationsFor(key:String)->[FlaskNavOperation]{
+    func operationsFor(key:String)->[RootsOperation]{
         if let references = operations[key] {
             return references
         }
@@ -26,7 +26,7 @@ extension FlaskNav{
     }
     
     @discardableResult
-    func startOperationFor(controller:UIViewController, navOperation:FlaskNavOperation, _ closure:@escaping (FlaskOperation)->Void) -> FlaskNavOperation{
+    func startOperationFor(controller:UIViewController, navOperation:RootsOperation, _ closure:@escaping (FlaskOperation)->Void) -> RootsOperation{
         
         let key = pointerKey(controller)
         
@@ -67,7 +67,7 @@ extension FlaskNav{
         print("pending operations for \(key) =\(references.count)")
         
         print("[-] removing operation for key \(String(describing: navOperation.name)) \(key)")
-        DispatchQueue.main.async {
+        DispatchQueue.nav.async {
             navOperation.releaseFlux()
             print("pending operations for queue =\(self.operationQueue.operations.count)")
         }

@@ -1,6 +1,6 @@
 //
 //  MyNav.swift
-//  FlaskNav
+//  Roots
 //
 //  Created by hassan uriostegui on 9/15/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -22,7 +22,7 @@ enum Accesories:String {
 
 
 
-class AppNav: FlaskNav<Tabs, Controllers,Accesories> {
+class MyRoots: Roots<Tabs, Controllers,Accesories> {
     
     override func rootController()->UIViewController{
         return ViewController()
