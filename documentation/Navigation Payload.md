@@ -1,3 +1,15 @@
+## FRAMEWORK NAME
+
+RUTY
+
+## Using modal presentation for RootController
+
+We may not inlcude the tabController inside the navController but instead  present the tabBarController as a modal controller.
+
+http://www.alexmedearis.com/uitabbarcontroller-inside-a-uinavigationcontroller/
+
+https://developer.apple.com/documentation/uikit/uimodalpresentationstyle?language=objc
+
 ## RootController
 
 We may create a root controller that will define the complete empty state of the application.
