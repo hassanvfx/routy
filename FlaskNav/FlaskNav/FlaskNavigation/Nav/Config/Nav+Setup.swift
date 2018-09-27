@@ -42,12 +42,14 @@ extension Roots{
     
     
     func initNavController(){
+       
         let controller = rootController()
         controller.view.backgroundColor = .green
         
         navController = UINavigationController(rootViewController: controller)
         navController?.setNavigationBarHidden(navBarHidden(), animated: false)
         navController?.delegate = self
+        
     }
     
     func initTabController(){
@@ -59,10 +61,13 @@ extension Roots{
         let tab2 = tabNav(for: 1)
         
         tabController?.viewControllers = [tab1, tab2]
+        
+        assert(navController != nil, "first intantiate the tab controller!")
+//        Roots.add(child: tabController!, to: navController!)
     }
     
     func mainController()->UIViewController{
-        return tabController!
+        return navController!
     }
     
     public func setup(withWindow aWindow:UIWindow){
@@ -72,6 +77,7 @@ extension Roots{
         
         initNavController() // do this optionally
         initTabController() // do this optionally
+      
         
         window?.rootViewController = navController!
         window?.makeKeyAndVisible()

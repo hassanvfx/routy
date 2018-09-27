@@ -11,16 +11,21 @@ import UIKit
 extension Roots{
     
     public func displayNav(){
+        
         DispatchQueue.main.async { [weak self] in
-            self?.window?.rootViewController = self?.navController!
-            self?.window?.makeKeyAndVisible()
+            self?.dismissViewController(animated: false, completion: {})
+//            self?.tabController?.view.isHidden = true
+//            self?.navController?.view.isHidden = false
         }
     }
     
     public func displayTab(_ index:Int){
         DispatchQueue.main.async {  [weak self] in
-            self?.window?.rootViewController = self?.tabController!
-            self?.window?.makeKeyAndVisible()
+            self?.present((self?.tabController!)!, animated: false, completion:{})
+//            self?.tabController?.view.isHidden = false
+//            self?.navController?.view.isHidden = true
+//            self?.window?.rootViewController = self?.tabController!
+//            self?.window?.makeKeyAndVisible()
         }
     }
 }
