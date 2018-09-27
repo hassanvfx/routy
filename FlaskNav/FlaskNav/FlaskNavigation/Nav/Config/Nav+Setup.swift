@@ -62,6 +62,10 @@ extension Roots{
         
         tabController?.viewControllers = [tab1, tab2]
         
+        let testController = UIViewController()
+        testController.view.backgroundColor = .red
+        tab1.pushViewController( testController, animated: false)
+        
         assert(navController != nil, "first intantiate the tab controller!")
 //        Roots.add(child: tabController!, to: navController!)
     }

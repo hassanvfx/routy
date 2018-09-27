@@ -53,6 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.roots.nav.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
         Services.roots.nav.popToRootController()
         
+         Services.roots.showTab(0)
         
 //
 //        Services.roots.tab(.Main).push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
