@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
        
         
-        window = UIWindow(frame: UIScreen.nav.bounds)
+        window = UIWindow(frame: UIScreen.main.bounds)
         Services.roots.setup(withWindow: window!)
         
         testTransaction()
@@ -28,20 +28,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func testTransaction(){
     
+       
+      
         Services.roots.transaction { (batch) in
             batch.nav.push( controller:.Home, info:NavInfo(params:["color":"red"]))
             batch.nav.push( controller:.Home, info:NavInfo(params:["color":"blue"]))
         }
+        
+        
         Services.roots.transaction { (batch) in
             batch.nav.push(controller:.Home, info:NavInfo(params:["color":"white"]))
         }
+        
+       Services.roots.showTab(0)
+       Services.roots.showNav() ///this causes  a crash but we need to fix it!
+        
         Services.roots.transaction { (batch) in
             batch.nav.popCurrentControler()
             batch.nav.popCurrentControler()
         }
         
+        
+        
         Services.roots.nav.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
         Services.roots.nav.popToRootController()
+        
+        
 //
 //        Services.roots.tab(.Main).push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
 //        Services.roots.accesory().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))

@@ -39,7 +39,7 @@ class AsyncViewController: UIViewController, RootsController {
         print("payload = \(String(describing: navInfo))")
         print("frame = \(String(describing: view.frame))")
         
-        DispatchQueue.nav.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
              completionHandle()
         }
        

@@ -10,22 +10,73 @@ import UIKit
 
 extension Roots{
     
+    //    public func setup(withWindow aWindow:UIWindow){
+    //
+    //        assert(window == nil, "This instance is already setup")
+    //        window = aWindow
+    //
+    
+    //
+    //        self.window?.rootViewController = self.navController
+    //        self.window?.makeKeyAndVisible()
+    //
+    //    }
+    
+    func rootController(forTabIndex index:Int)->UIViewController{
+        let controller = UIViewController()
+        controller.title = "Tab \(index)"
+        return controller
+    }
+    
+    
+    func tabNav(for index:Int)->UINavigationController{
+        
+        if let nav = tabNavControllers[index]{
+            return nav
+        }
+        let rootVc = rootController(forTabIndex: index )
+        let aNav = UINavigationController(rootViewController: rootVc)
+        tabNavControllers[index] = aNav
+        return aNav
+    }
+    
+    
+    func initNavController(){
+        let controller = rootController()
+        controller.view.backgroundColor = .green
+        
+        navController = UINavigationController(rootViewController: controller)
+        navController?.setNavigationBarHidden(navBarHidden(), animated: false)
+        navController?.delegate = self
+    }
+    
+    func initTabController(){
+        
+        tabController = UITabBarController()
+        tabController?.tabBar.tintColor = UIColor.black
+        
+        let tab1 = tabNav(for: 0)
+        let tab2 = tabNav(for: 1)
+        
+        tabController?.viewControllers = [tab1, tab2]
+    }
+    
+    
+    
     public func setup(withWindow aWindow:UIWindow){
         
         assert(window == nil, "This instance is already setup")
         window = aWindow
         
-        let rootController = self.rootController()
-        rootController.view.backgroundColor = .green
+        initNavController() // do this optionally
+        initTabController() // do this optionally
         
-        self.navController = UINavigationController(rootViewController: rootController)
-        self.navController?.setNavigationBarHidden(self.navBarHidden(), animated: false)
-        self.navController?.delegate = self
-        
-        self.window?.rootViewController = self.navController
-        self.window?.makeKeyAndVisible()
-        
+        window?.rootViewController = navController!
+        window?.makeKeyAndVisible()
+//        showNav() // or tab if defined
+
     }
+    
     
 }
 

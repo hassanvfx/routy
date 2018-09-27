@@ -25,8 +25,24 @@ extension Roots{
         return "\(Unmanaged.passUnretained(key as AnyObject).toOpaque())"
     }
     
-    @discardableResult
-    func startOperationFor(controller:UIViewController, navOperation:RootsOperation, _ closure:@escaping (FlaskOperation)->Void) -> RootsOperation{
+    
+    func startOperationFor(navOperation:RootsOperation, _ closure:@escaping (FlaskOperation)->Void) {
+       
+        
+        let debugClosure:(FlaskOperation)->Void = { (op) in
+            print("[$] performing operation for key \(navOperation.name)")
+            closure(navOperation.operation!)
+        }
+        
+        let operation = FlaskOperation(block: debugClosure)
+        navOperation.operation = operation
+        
+        operationQueue.addOperation(operation)
+    
+    }
+    
+ 
+    func startOperationFor(controller:UIViewController, navOperation:RootsOperation, _ closure:@escaping (FlaskOperation)->Void) {
         
         let key = pointerKey(controller)
         
@@ -45,7 +61,7 @@ extension Roots{
         operations[key] = references
         
         operationQueue.addOperation(operation)
-        return navOperation
+        
     }
     
     func completeOperationFor(controller:UIViewController){
@@ -67,7 +83,7 @@ extension Roots{
         print("pending operations for \(key) =\(references.count)")
         
         print("[-] removing operation for key \(String(describing: navOperation.name)) \(key)")
-        DispatchQueue.nav.async {
+        DispatchQueue.main.async {
             navOperation.releaseFlux()
             print("pending operations for queue =\(self.operationQueue.operations.count)")
         }

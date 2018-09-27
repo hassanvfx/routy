@@ -18,6 +18,8 @@ public class Roots<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepresen
     
     var window: UIWindow?
     var navController: UINavigationController?
+    var tabController: UITabBarController?
+    var tabNavControllers: [Int:UINavigationController] = [:]
     var cachedControllers:[String:NavWeakRef<UIViewController>] = [:]
     
     // MARK: STACK

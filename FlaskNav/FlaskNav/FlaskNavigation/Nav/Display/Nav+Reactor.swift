@@ -14,6 +14,10 @@ extension Roots: FlaskReactor{
         reaction.on(NavigationState.prop.currentController){[weak self] (change) in
             self?.navigateToCurrentController(fluxLock: reaction.onLock!)
         }
+        
+        reaction.on(NavigationState.prop.navType){[weak self] (change) in
+            self?.applyNavType(fluxLock: reaction.onLock!)
+        }
     }
 }
 

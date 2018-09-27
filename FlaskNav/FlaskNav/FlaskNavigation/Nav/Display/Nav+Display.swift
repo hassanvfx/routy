@@ -10,6 +10,23 @@ import UIKit
 
 extension Roots{
     
+    public func displayNav(){
+        DispatchQueue.main.async { [weak self] in
+            self?.window?.rootViewController = self?.navController!
+            self?.window?.makeKeyAndVisible()
+        }
+    }
+    
+    public func displayTab(_ index:Int){
+        DispatchQueue.main.async {  [weak self] in
+            self?.window?.rootViewController = self?.tabController!
+            self?.window?.makeKeyAndVisible()
+        }
+    }
+}
+
+extension Roots{
+    
     func pushController(_ controller:UIViewController, context:NavContext){
         DispatchQueue.main.async { [weak self] in
             let animated = context.animation != .None

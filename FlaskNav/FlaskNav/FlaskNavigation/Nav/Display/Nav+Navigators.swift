@@ -10,6 +10,54 @@ import UIKit
 import Flask
 
 extension Roots {
+    func applyNavType(fluxLock:FluxLock){
+        
+        let style = navigation.state.navType
+        
+        print("style = \(style)")
+        let tabIndex = navigation.state.currentTab
+         
+        let navOperation = RootsOperation(fluxLock: fluxLock, name: style.rawValue )
+        
+        switch(style){
+        case .NAV:
+            startOperationFor(navOperation: navOperation) { [weak self, weak navOperation] (flaskOperation) in
+                self?.displayNav()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                    
+                    navOperation?.releaseFlux()
+                })
+            }
+        case .TAB:
+            startOperationFor(navOperation: navOperation) { [weak self, weak navOperation] (flaskOperation) in
+                self?.displayTab(tabIndex)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                    print("pending operations for queue =\(self?.operationQueue.operations.count)")
+                    navOperation?.releaseFlux()
+                    print("pending operations for queue =\(self?.operationQueue.operations.count)")
+                })
+            }
+        }
+        
+        
+         
+//            switch(style){
+//            case .NAV:
+//                self?.displayNav()
+//            case .TAB:
+//                self?.displayTab(tabIndex)
+//            }
+        
+        
+            
+//        }
+        
+        
+    }
+    
+}
+
+extension Roots {
     
     func activeRootController()->UIViewController?{
         return navController?.viewControllers.first

@@ -11,7 +11,34 @@ import UIKit
 import Flask
 
 extension Roots{
- 
+    
+    
+    public func showNav(){
+        queueIntent(batched: false){
+            let payload:[String : Any] = [
+                "style":NavType.NAV.rawValue
+            ]
+            
+            Flask.lock(withMixer: NavMixers.NavType, payload: payload )
+            
+        }
+    }
+    
+    public func showTab(_ index:Int){
+        queueIntent(batched: false){
+            let payload:[String : Any] = [
+                "style":NavType.TAB.rawValue,
+                "index":index
+            ]
+            
+            Flask.lock(withMixer: NavMixers.NavType, payload: payload )
+        }
+    }
+    
+    
+    
+   
+    
     func applyContext(){
         
         var tabs:[String:String] = [:]
