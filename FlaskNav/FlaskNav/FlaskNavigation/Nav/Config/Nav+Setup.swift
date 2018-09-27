@@ -61,7 +61,9 @@ extension Roots{
         tabController?.viewControllers = [tab1, tab2]
     }
     
-    
+    func mainController()->UIViewController{
+        return tabController!
+    }
     
     public func setup(withWindow aWindow:UIWindow){
         
