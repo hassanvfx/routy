@@ -102,12 +102,12 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     
     
     //MARK: NavigationControllerDelegate
-    public func substanceController(_ substanceController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+    public func navigationController(_ substanceController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         
         completeOperationFor(controller: viewController)
     }
     
-    public func substanceController(_ substanceController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    public func navigationController(_ substanceController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         
     }
 }

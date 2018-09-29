@@ -30,7 +30,7 @@ extension FlaskNav{
        
         
         let debugClosure:(FlaskOperation)->Void = { (op) in
-            print("[$] performing operation for key \(navOperation.name)")
+            print("[$] performing operation for NAV key \(navOperation.name)")
             closure(navOperation.operation!)
         }
         

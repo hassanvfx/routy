@@ -74,7 +74,7 @@ extension FlaskNav {
         
         let navOperation = FlaskNavOperation(fluxLock: fluxLock, name: context.controller)
         
-        print("--> substance \(context.path())")
+        print("--> navigateTo \(context.path())")
         guard context.controller != ROOT_CONTROLLER else{
             navigateToRootView(navOperation: navOperation)
             return
