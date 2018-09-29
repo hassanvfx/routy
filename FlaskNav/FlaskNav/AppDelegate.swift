@@ -38,8 +38,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             batch.nav.push(controller:.Home, info:NavInfo(params:["color":"white"]))
         }
         
-//        Services.router.tab(0).show()
-//        Services.router.nav.show()
+        Services.router.tab(0).show()
+        Services.router.nav.show()
         
         Services.router.transaction { (batch) in
             batch.nav.popCurrentControler()
@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.nav.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
         Services.router.nav.popToRootController()
         
-//        Services.router.tab(0).show()
+        Services.router.tab(0).show()
         
 //
 //        Services.router.tab(.Main).push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
