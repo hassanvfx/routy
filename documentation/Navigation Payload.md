@@ -1,3 +1,47 @@
+## Next Steps
+
+We refctored the pipes to assume a normalized structure where all different nav components are StackLayers.
+
+This means that 
+
+* main nav
+* tabs
+* accessories
+
+all fo them will have a navigation controller implementation.
+
+The above simplifies the manipulation of the nav stack throught the fluxor pipelines.
+
+To determine the active nav style we are now using `LayerActive` . this property indicated both, the type of navigation (tab, nav, accesory) and also the index. 
+
+> Accesories consideration: We may want to consider to separate `AccesoryActive` so this will better represent the fact that we can have both a `layer` and an `accesory layer` active simultaneously.
+
+The next step is to refactor de navigation definition as stated below in this document so it can be the foundation for the multi-layer nav.
+
+Once the definitions are made (specially the tab definitions) we can work in the encapsulation of the navigation-reactions stack so instead of only responding to the main nav, it pulls the navController for that given corresponding layer.
+
+From there the next step will be to define the accesory controllers composition/clear out system.
+
+```swift
+Services.router.accesory(0).push(.Login)
+```
+Accesory controllers might have a completion block that can be invoked from the inside of the controller. this makes sense as usually accesory controller are meant to pull information from the user.
+
+```swift
+Services.router.accesory(0).push(.Login){ payload in 
+    Services.router.nav.show()
+}
+```
+
+```swift
+class MyAccesory : NavAccessoryController {
+
+    func foo(){
+        dismissAccesory(with: payload)
+    }
+}
+```
+
 ## Presenting the TabController
 
 We can use the navController as the main controller and then present the TabBarController using the `presentViewController` method.
