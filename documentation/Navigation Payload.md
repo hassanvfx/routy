@@ -1,6 +1,33 @@
+## Presenting the TabController
+
+We can use the navController as the main controller and then present the TabBarController using the `presentViewController` method.
+
+During the transition we can revert the composition order to make it seem like the tabBarcontroller is the parent.
+
+This article describes how to implement a custom transitions for this case:
+
+https://medium.com/lifesum-healthy-living-simplified/presenting-a-uiviewcontroller-modally-with-a-transparent-background-the-cool-way-b79eb0abd423
+
+
+## Challenge with changing root controller
+
+If the nav controller is not present, we won't receive the callabcks from its delegate indicating when the presentations are performed.
+
+That's why we need to enforce the nav type whenever that specific nav operations are requested
+
+
+## Changing window rootViewcontroller
+
+It is possible to change the window root view controller, this tutorial shows how to perform this with animations:
+
+https://medium.com/@danielemargutti/animate-uiwindows-rootviewcontroller-transitions-2887ccf3fecc
+
 ## FRAMEWORK NAME
 
+ROOTS
 RUTY
+
+
 
 ## Using modal presentation for RootController
 

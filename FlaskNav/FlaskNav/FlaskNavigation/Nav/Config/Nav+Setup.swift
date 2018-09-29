@@ -82,10 +82,8 @@ extension Roots{
         initNavController() // do this optionally
         initTabController() // do this optionally
       
-        
-        window?.rootViewController = navController!
+        window?.rootViewController = mainController()
         window?.makeKeyAndVisible()
-//        showNav() // or tab if defined
 
     }
     

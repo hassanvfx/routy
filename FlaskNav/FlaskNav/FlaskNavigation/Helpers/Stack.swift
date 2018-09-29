@@ -33,6 +33,7 @@ public class NavStack {
     
     
     public func pop(){
+        if (stack.isEmpty){return}
         _ = stack.removeLast()
     }
     
@@ -44,7 +45,6 @@ public class NavStack {
     }
     
     public func pop(toContext aContext:NavContext){
-        
         
         let aStack = stack
         var result:NavContext? = nil
@@ -60,11 +60,15 @@ public class NavStack {
                     result = aContext
                 }
             }
+            
             _=stack.removeLast()
         }
         
         stack = aStack
         
+        if (stack.isEmpty){
+            push(context: aContext)
+        }
     }
 
 }

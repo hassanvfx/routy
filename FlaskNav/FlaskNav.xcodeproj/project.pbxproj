@@ -180,9 +180,9 @@
 		262599DF2159D057003144ED /* Config */ = {
 			isa = PBXGroup;
 			children = (
-				2622D0E2215C8CEC0060AAE3 /* Nav+Composer.swift */,
 				2616BB7E2155D78600A6AEFB /* Nav+Setup.swift */,
 				2616BB782155D65800A6AEFB /* Nav+Config.swift */,
+				2622D0E2215C8CEC0060AAE3 /* Nav+Composer.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
