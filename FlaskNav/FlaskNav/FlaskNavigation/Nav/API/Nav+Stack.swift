@@ -1,6 +1,6 @@
 //
 //  Nav+API.swift
-//  Roots
+//  FlaskNav
 //
 //  Created by hassan uriostegui on 9/21/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import Flask
 
-extension Roots{
+extension FlaskNav{
  
     func stack(forLayer name:String)->NavStack{
         if let stack = stackLayers[name] {
@@ -22,16 +22,16 @@ extension Roots{
 }
 
 
-extension Roots: NavStackAPI{
+extension FlaskNav: NavStackAPI{
     
-    func push(layer:String, controller:String , resourceId:String?, info:CodableInfo? = nil, batched:Bool = false){
+    func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:CodableInfo? = nil){
         queueIntent(batched:batched) { [weak self] in
             let context = NavContext( controller: controller, resourceId: resourceId, info: info)
             self?.stack(forLayer: layer).push(context: context)
         }
     }
     
-    func pop(layer:String, toController controller:String, resourceId:String?, info:CodableInfo?, batched:Bool = false){
+    func pop(layer:String, batched:Bool = false, toController controller:String, resourceId:String?, info:CodableInfo?){
         queueIntent(batched:batched) { [weak self] in
             let context = NavContext( controller: controller, resourceId: resourceId, info: info)
             self?.stack(forLayer: layer).pop(toContext: context)
@@ -45,6 +45,13 @@ extension Roots: NavStackAPI{
     func popToRootController(layer:String, batched:Bool = false){
         queueIntent(batched:batched) { [weak self] in
             self?.stack(forLayer: layer).clear()
+        }
+    }
+    
+    func show(layer:String, batched:Bool = false){
+        queueIntent(batched:batched) { [weak self] in
+            //TODO: handle show nav or nav
+            self?.stackActive = layer
         }
     }
     

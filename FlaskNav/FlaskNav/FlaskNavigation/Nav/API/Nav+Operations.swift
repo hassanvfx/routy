@@ -1,6 +1,6 @@
 //
 //  Operations.swift
-//  Roots
+//  FlaskNav
 //
 //  Created by hassan uriostegui on 9/21/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -9,10 +9,10 @@
 import UIKit
 import Flask
 
-extension Roots{
+extension FlaskNav{
     
     
-    func operationsFor(key:String)->[RootsOperation]{
+    func operationsFor(key:String)->[FlaskNavOperation]{
         if let references = operations[key] {
             return references
         }
@@ -26,7 +26,7 @@ extension Roots{
     }
     
     
-    func startOperationFor(navOperation:RootsOperation, _ closure:@escaping (FlaskOperation)->Void) {
+    func startOperationFor(navOperation:FlaskNavOperation, _ closure:@escaping (FlaskOperation)->Void) {
        
         
         let debugClosure:(FlaskOperation)->Void = { (op) in
@@ -42,7 +42,7 @@ extension Roots{
     }
     
  
-    func startOperationFor(controller:UIViewController, navOperation:RootsOperation, _ closure:@escaping (FlaskOperation)->Void) {
+    func startOperationFor(controller:UIViewController, navOperation:FlaskNavOperation, _ closure:@escaping (FlaskOperation)->Void) {
         
         let key = pointerKey(controller)
         

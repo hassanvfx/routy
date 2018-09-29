@@ -1,15 +1,15 @@
 //
-//  RootsTests.swift
-//  RootsTests
+//  FlaskNavTests.swift
+//  FlaskNavTests
 //
 //  Created by hassan uriostegui on 9/15/18.
 //  Copyright © 2018 eonflux. All rights reserved.
 //
 
 import XCTest
-@testable import Roots
+@testable import FlaskNav
 
-class RootsTests: XCTestCase {
+class FlaskNavTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

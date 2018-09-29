@@ -1,7 +1,7 @@
 
 //
 //  Nav+Dispatcher.swift
-//  Roots
+//  FlaskNav
 //
 //  Created by hassan uriostegui on 9/24/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -10,66 +10,55 @@
 import UIKit
 import Flask
 
-extension Roots{
+extension FlaskNav{
+
+//    public func showNav(){
+        //TODO: Move this to apply context
+//        queueIntent(batched: false){
+//            let payload:[String : Any] = [
+//                "style":NavType.NAV.rawValue
+//            ]
+//
+//            Flask.lock(withMixer: NavMixers.NavType, payload: payload )
+//
+//        }
+//    }
     
-    
-    public func showNav(){
-        queueIntent(batched: false){
-            let payload:[String : Any] = [
-                "style":NavType.NAV.rawValue
-            ]
-            
-            Flask.lock(withMixer: NavMixers.NavType, payload: payload )
-            
-        }
-    }
-    
-    public func showTab(_ index:Int){
-        queueIntent(batched: false){
-            let payload:[String : Any] = [
-                "style":NavType.TAB.rawValue,
-                "index":index
-            ]
-            
-            Flask.lock(withMixer: NavMixers.NavType, payload: payload )
-        }
-    }
-    
-    
-    
-   
+//    public func showTab(_ index:Int){
+           //TODO: Move this to apply context
+//        queueIntent(batched: false){
+//            let payload:[String : Any] = [
+//                "style":NavType.TAB.rawValue,
+//                "index":index
+//            ]
+//
+//            Flask.lock(withMixer: NavMixers.NavType, payload: payload )
+//        }
+//    }
     
     func applyContext(){
+        applyActiveLayer()
+        applyCurrentLayers()
         
-        var tabs:[String:String] = [:]
-        var accesories:[String:String] = [:]
+    }
+    func applyActiveLayer(){
+        let payload:[String : Any] = [
+            "layerActive":stackActive,
+            ]
+        Flask.lock(withMixer: NavMixers.LayerActive, payload: payload )
+    }
+    
+    func applyCurrentLayers(){
+        var layers:[String:String] = [:]
         
         for (layer,stack) in stackLayers {
-            
-            let oType = layer.split(separator: ".").first
-            
-            guard oType != nil else{
-                continue
-            }
-            
-            let type = oType!
-            
-            if type == StackLayer.TAB{
-                tabs[layer] = stack.current().toString()
-            }
-            if type == StackLayer.ACCESORY{
-                accesories[layer] = stack.current().toString()
-            }
+            layers[layer] = stack.current().toString()
         }
         
-        let nav = self.stack(forLayer: StackLayer.Main()).current()
-
         let payload:[String : Any] = [
-            "nav":nav.toString(),
-            "tabs":tabs,
-            "accesories":accesories
-        ]
-
-        Flask.lock(withMixer: NavMixers.Controller, payload: payload )
+            "layers":layers,
+            ]
+        
+        Flask.lock(withMixer: NavMixers.Layers, payload: payload )
     }
 }

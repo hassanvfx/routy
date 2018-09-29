@@ -1,6 +1,6 @@
 //
 //  Nav+ Queue.swift
-//  Roots
+//  FlaskNav
 //
 //  Created by hassan uriostegui on 9/24/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension Roots{
+extension FlaskNav{
     
     public func queueIntent(batched:Bool,action:@escaping ()->Void){
         if batched {

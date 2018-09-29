@@ -1,6 +1,6 @@
 //
-//  RootsViewController.swift
-//  Roots
+//  FlaskNavViewController.swift
+//  FlaskNav
 //
 //  Created by hassan uriostegui on 9/21/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -9,22 +9,22 @@
 import UIKit
 import Flask
 
-typealias RootsCompletionBlock = ()->Void
+typealias FlaskNavCompletionBlock = ()->Void
 
-protocol RootsSetup:AnyObject {
+protocol FlaskNavSetup:AnyObject {
     var navContext:NavContext?{get set}
     func navContextInit(withContext context:NavContext)
     func setupEmptyState()
-    func setupContent(with completionHandle:@escaping RootsCompletionBlock)
+    func setupContent(with completionHandle:@escaping FlaskNavCompletionBlock)
 }
 
-protocol RootsController: RootsSetup {
+protocol FlaskNavController: FlaskNavSetup {
     associatedtype NavInfoType:CodableInfo
     var navInfo:NavInfoType? {get set}
     var navContext:NavContext?{get set}
 }
 
-extension RootsController{
+extension FlaskNavController{
     func navContextInit(withContext context:NavContext){
         self.navContext = context
         self.navInfo = context.payload()

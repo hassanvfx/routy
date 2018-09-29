@@ -1,6 +1,6 @@
 //
 //  AsyncViewController.swift
-//  Roots
+//  FlaskNav
 //
 //  Created by hassan uriostegui on 9/21/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AsyncViewController: UIViewController, RootsController {
+class AsyncViewController: UIViewController, FlaskNavController {
     
     typealias NavInfoType = NavInfo
     var navContext: NavContext?
@@ -34,7 +34,7 @@ class AsyncViewController: UIViewController, RootsController {
         
     }
     
-    func setupContent(with completionHandle: @escaping RootsCompletionBlock) {
+    func setupContent(with completionHandle: @escaping FlaskNavCompletionBlock) {
         
         print("payload = \(String(describing: navInfo))")
         print("frame = \(String(describing: view.frame))")

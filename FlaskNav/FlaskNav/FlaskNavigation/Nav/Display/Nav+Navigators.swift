@@ -1,6 +1,6 @@
 //
 //  Nav+Navigators.swift
-//  Roots
+//  FlaskNav
 //
 //  Created by hassan uriostegui on 9/24/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -9,18 +9,14 @@
 import UIKit
 import Flask
 
-extension Roots {
+extension FlaskNav {
     func applyNavType(fluxLock:FluxLock){
         
-        let style = navigation.state.navType
         
-        print("style = \(style)")
-        let tabIndex = navigation.state.currentTab
-         
-        let navOperation = RootsOperation(fluxLock: fluxLock, name: style.rawValue )
+        let navOperation = FlaskNavOperation(fluxLock: fluxLock, name: substance.state.layerActive )
         
-        switch(style){
-        case .NAV:
+        if NavLayer.IsNav(substance.state.layerActive){
+            
             startOperationFor(navOperation: navOperation) { [weak self, weak navOperation] (flaskOperation) in
                 self?.displayNav()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
@@ -28,42 +24,37 @@ extension Roots {
                     navOperation?.releaseFlux()
                 })
             }
-        case .TAB:
+            
+        } else if  NavLayer.IsTab(substance.state.layerActive){
+            let index = NavLayer.TabIndex(substance.state.layerActive)
+            
             startOperationFor(navOperation: navOperation) { [weak self, weak navOperation] (flaskOperation) in
-                self?.displayTab(tabIndex)
+                self?.displayTab(index)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                    print("pending operations for queue =\(self?.operationQueue.operations.count)")
+                    print("pending operations for queue =\(String(describing: self?.operationQueue.operations.count))")
                     navOperation?.releaseFlux()
-                    print("pending operations for queue =\(self?.operationQueue.operations.count)")
+                    print("pending operations for queue =\(String(describing: self?.operationQueue.operations.count))")
                 })
             }
+            
+        } else if NavLayer.IsAccesory(substance.state.layerActive){
+//            let index = NavLayer.AccesoryIndex(substance.state.layerActive)
+            //TODO: handle this
         }
         
-        
-         
-//            switch(style){
-//            case .NAV:
-//                self?.displayNav()
-//            case .TAB:
-//                self?.displayTab(tabIndex)
-//            }
-        
-        
-            
-//        }
         
         
     }
     
 }
 
-extension Roots {
+extension FlaskNav {
     
     func activeRootController()->UIViewController?{
         return navController?.viewControllers.first
     }
     
-    func navigateToRootView(navOperation:RootsOperation){
+    func navigateToRootView(navOperation:FlaskNavOperation){
         //TODO: animated parametrization?
         let rootController = activeRootController()
         startOperationFor(controller:rootController!,navOperation: navOperation) {[weak self] (operation) in
@@ -73,14 +64,17 @@ extension Roots {
         }
     }
     
-    func navigateToCurrentController(fluxLock:FluxLock){
+    func navigateToController(layer:String,fluxLock:FluxLock){
         
-        let stringContext = navigation.state.currentController
+      
+        assert(substance.state.layers[layer] != nil, "layer is not defined!")
+        
+        let stringContext = substance.state.layers[layer]! as! String
         let context = NavContext(fromString: stringContext)
         
-        let navOperation = RootsOperation(fluxLock: fluxLock, name: context.controller)
+        let navOperation = FlaskNavOperation(fluxLock: fluxLock, name: context.controller)
         
-        print("--> navigation \(context.path())")
+        print("--> substance \(context.path())")
         guard context.controller != ROOT_CONTROLLER else{
             navigateToRootView(navOperation: navOperation)
             return

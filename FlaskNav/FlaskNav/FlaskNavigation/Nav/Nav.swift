@@ -1,6 +1,6 @@
 //
-//  Roots.swift
-//  Roots
+//  FlaskNav.swift
+//  FlaskNav
 //
 //  Created by hassan uriostegui on 9/15/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import Flask
 
-public class Roots<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepresentable,  ACCS:Hashable & RawRepresentable > : NSObject, UINavigationControllerDelegate{
+public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepresentable,  ACCS:Hashable & RawRepresentable > : NSObject, UINavigationControllerDelegate{
   
     let FIRST_NAVIGATION_ROOT_COUNT = 2
     let UNDEFINED_CONTEXT_ID = -1
@@ -25,6 +25,7 @@ public class Roots<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepresen
     // MARK: STACK
     
     var stackLayers:[String:NavStack] = [:]
+    var stackActive:String = NavLayer.NAV.rawValue
     var composition:NavComposition<TABS,CONT,ACCS>?
     var compositionBatch:NavComposition<TABS,CONT,ACCS>?
     var compDelegate: NavStackAPI? = nil
@@ -33,7 +34,7 @@ public class Roots<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepresen
    
     // MARK: CONFIG
     
-    let navigation = NavigationSubstance()
+    let substance = NavigationSubstance()
 
     public var viewControllers:[CONT:ControllerConstructor] = [:]
     
@@ -60,7 +61,7 @@ public class Roots<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepresen
         return queue
     }()
     
-    var operations:[String:[RootsOperation]] = [:]
+    var operations:[String:[FlaskNavOperation]] = [:]
     
     // MARK : INIT
     
@@ -72,7 +73,7 @@ public class Roots<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepresen
         
         _configControllers()
         
-        AttachFlaskReactor(to: self, mixing: [navigation])
+        AttachFlaskReactor(to: self, mixing: [substance])
     }
     
     
@@ -101,12 +102,12 @@ public class Roots<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepresen
     
     
     //MARK: NavigationControllerDelegate
-    public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+    public func substanceController(_ substanceController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         
         completeOperationFor(controller: viewController)
     }
     
-    public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    public func substanceController(_ substanceController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         
     }
 }

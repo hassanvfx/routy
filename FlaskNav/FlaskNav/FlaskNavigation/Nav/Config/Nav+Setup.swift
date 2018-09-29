@@ -1,6 +1,6 @@
 //
 //  Nav+Setup.swift
-//  Roots
+//  FlaskNav
 //
 //  Created by hassan uriostegui on 9/21/18.
 //  Copyright © 2018 eonflux. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension Roots{
+extension FlaskNav{
     
     //    public func setup(withWindow aWindow:UIWindow){
     //
@@ -67,7 +67,7 @@ extension Roots{
         tab1.pushViewController( testController, animated: false)
         
         assert(navController != nil, "first intantiate the tab controller!")
-//        Roots.add(child: tabController!, to: navController!)
+//        FlaskNav.add(child: tabController!, to: navController!)
     }
     
     func mainController()->UIViewController{
