@@ -1,3 +1,37 @@
+## Managed NavContext
+
+We may consider turning the NavContext into a managed class object. The manager will create and manage the instances, then a serialized version would be rendered with a command like context.toString(). We won't need to actually code/decode but instead we can pull from the factory/manager using the context ID.  This will be useful as now the context is also storing a weak pointer to the controller holding it. We can then have a routine to dispose context where the viewcontroller has turned nil.
+
+## implementation of pop logic
+
+```
+  }else{
+                self?.popToController(controller, context: context)
+            }
+
+```
+
+we started the implementation however the existing navigator method wont work as currently we are always creating a new instance of the controller instead of reusing. W emay need to look into the method used previously using cached controllers from the navController.
+
+The issue remains in that we need to determine the controller as a pointer and not as a type of controller... theoretically we should be able to read the reference from the context but this needs to be stores as the navClosure, then during the pop operation we strack the weakViewcontrolelr pointer from the context!
+
+## navContext disposal
+
+we need to add a handler on the navContext dealloc to remove then the instances in the context manager
+
+## pop navigation
+we should include in the navigationContext a prop indicating if the operation is `push` or `pop` . From there when the Navigator is resolving the action, we call push or pop accordingly.
+
+as we do this we should also include the method `popToController(toController)`as part of the nav iterface and then euqally implement it in the logic above
+
+ideally we could use  popToController always instead of just calling pop.  The behavior of popToController will be to push a new instance of the controller if this is nor present.
+
+still in theory the satck and the nav hiearchy should be always in sync
+
+## pop callback resolution
+
+the popCallback will be assigned similar on the `navInfo` is assigned when conformance to the protocol. This method will be the a `navCallback` and could be called multiple times by the controlller.
+
 ## pop callback
 
 we have partially integrated the pop callback but we need to find a way to call this when the navigation is poping that given controller

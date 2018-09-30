@@ -70,7 +70,7 @@ extension FlaskNav {
         assert(substance.state.layers[layer] != nil, "layer is not defined!")
         
         let stringContext = substance.state.layers[layer]! as! String
-        let context = NavContext(fromString: stringContext)
+        var context = NavContext(fromString: stringContext)
         
         let navOperation = FlaskNavOperation(fluxLock: fluxLock, name: context.controller)
         
@@ -81,12 +81,18 @@ extension FlaskNav {
         }
         
         let controller = controllerFrom(context: context, navOperation:navOperation)
+        context.viewController = controller
         
         startOperationFor(controller: controller, navOperation: navOperation) {[weak self] (operation) in
             
             self?.contextInitIntent(controller: controller, context: context)
             self?.setupEmptyStateIntent(controller: controller, context: context)
-            self?.pushController(controller, context: context)
+            if(context.intention == .Push){
+                self?.pushController(controller, context: context)
+            }else{
+                self?.popToController(controller, context: context)
+            }
+    
             self?.setupContentIntent(controller: controller, context: context, navOperation: navOperation)
             
         }

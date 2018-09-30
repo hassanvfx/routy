@@ -19,8 +19,16 @@ public class NavStack {
         return queue
     }()
     
+    
+    public func current() -> NavContext{
+        if stack.isEmpty {
+            return rootContext()
+        }
+        return stack.last!
+    }
+    
     public func rootContext()->NavContext{
-        return NavContext( controller: ROOT_CONTROLLER, resourceId: nil, info: nil)
+        return NavContext(intention: .Root, controller: ROOT_CONTROLLER, resourceId: nil, info: nil)
     }
     
     public func clear(){
@@ -31,19 +39,12 @@ public class NavStack {
         stack.append(context)
     }
     
-    
     public func pop(){
         if (stack.isEmpty){return}
         _ = stack.removeLast()
+        setLastToPop()
     }
-    
-    public func current() -> NavContext{
-        if stack.isEmpty {
-            return rootContext()
-        }
-        return stack.last!
-    }
-    
+
     public func pop(toContext aContext:NavContext){
         
         let aStack = stack
@@ -66,6 +67,15 @@ public class NavStack {
         if (stack.isEmpty){
             push(context: aContext)
         }
+        setLastToPop()
+    }
+    
+    public func setLastToPop(){
+        if (stack.isEmpty){return}
+        var aContext = stack.removeLast()
+        aContext.intention = .Pop
+        stack.append(aContext)
+        
     }
 
 }

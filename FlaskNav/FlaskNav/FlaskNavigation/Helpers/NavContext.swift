@@ -8,21 +8,24 @@
 
 import UIKit
 
+public enum NavContextType:String,Codable {
+    case Root,Push,Pop
+}
 
 public struct NavContext:Codable {
     
     enum CodingKeys: String, CodingKey {
-        case animation,controller,resourceId,contextId
+        case intention,animation,controller,resourceId,contextId
     }
     
-    
+    weak var viewController:UIViewController?
     public let animation:NavigationAnimations
-    
+    public var intention:NavContextType
     public let controller:String
     public let resourceId:String?
     public let contextId:Int
     
-    public init(controller:String, resourceId:String?,  info:Any?, animation:NavigationAnimations = .Default, _ callback:NavContextCallback? = nil){
+    public init(intention:NavContextType , controller:String, resourceId:String?,  info:Any?, animation:NavigationAnimations = .Default, _ callback:NavContextCallback? = nil){
         
         self.contextId = NavContextManager.shared.nextId()
         NavContextManager.shared.setInfo(contextId: self.contextId, info)
@@ -31,7 +34,7 @@ public struct NavContext:Codable {
         self.animation = animation
         self.controller = controller
         self.resourceId = resourceId
-        
+        self.intention = intention
     }
     
     public init(fromString json:String){
@@ -45,7 +48,7 @@ public struct NavContext:Codable {
             
             self.controller = instance.controller
             self.resourceId = instance.resourceId
-            
+            self.intention = instance.intention
             
         }catch{
             fatalError("Serialization error")
