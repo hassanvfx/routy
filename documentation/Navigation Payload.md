@@ -1,3 +1,24 @@
+## pop callback
+
+we have partially integrated the pop callback but we need to find a way to call this when the navigation is poping that given controller
+
+also an extra issue arised, as when we pop a controller, in reality we always push the previous controller. while common sense would expect the navController to call pop instead o pushing the previous controller again
+
+
+## non codable payload
+
+We replaced the codable by a non codable Any? type for the payload.
+
+The next step is to add the completion closure.
+
+## State Restoration
+
+We should bail in the effort of restoring the whole navigation state. The reason is that this would mix the nav logic with the biz logic beyond a reasonable concern.
+
+For example a user might loggeed out after the app has been closed. Then restoring the previous state would be based in void presumptions.
+
+this means we should consider relaxing the requirements to pass payloads during the nav operations and allow the use of non encodable types. we may also consider including a dismiss block to allow chaining navigation operations once they are resolved.
+
 ## Next Steps
 
 We refctored the pipes to assume a normalized structure where all different nav components are StackLayers.
@@ -34,13 +55,14 @@ Services.router.accesory(0).push(.Login){ payload in
 ```
 
 ```swift
-class MyAccesory : NavAccessoryController {
+class MyAccesoryLogin : NavAccessoryController {
 
     func foo(){
         dismissAccesory(with: payload)
     }
 }
 ```
+
 
 ## Presenting the TabController
 

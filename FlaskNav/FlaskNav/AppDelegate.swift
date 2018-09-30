@@ -28,28 +28,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func testTransaction(){
     
-        Services.router.transaction { (batch) in
-            batch.nav.push( controller:.Home, info:NavInfo(params:["color":"red"]))
-            batch.nav.push( controller:.Home, info:NavInfo(params:["color":"blue"]))
-        }
-        
-        
-        Services.router.transaction { (batch) in
-            batch.nav.push(controller:.Home, info:NavInfo(params:["color":"white"]))
-        }
-        
-       
-        
-        Services.router.transaction { (batch) in
-            batch.nav.popCurrentControler()
-            batch.nav.popCurrentControler()
-        }
+//        Services.router.transaction { (batch) in
+//            batch.nav.push( controller:.Home, info:NavInfo(params:["color":"red"]))
+//            batch.nav.push( controller:.Home, info:NavInfo(params:["color":"blue"]))
+//        }
+//
+//
+//        Services.router.transaction { (batch) in
+//            batch.nav.push(controller:.Home, info:NavInfo(params:["color":"white"]))
+//        }
+//
+//
+//
+//        Services.router.transaction { (batch) in
+//            batch.nav.popCurrentControler()
+//            batch.nav.popCurrentControler()
+//        }
         
     
-        Services.router.nav.push(controller:.Settings, info:NavInfo(params:["color":"yellow"]))
-        Services.router.nav.popToRootController()
+        Services.router.nav.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
+        Services.router.nav.push(controller:.Home, info:NavInfo(params:["color":"red"])){ (any) in
         
-        Services.router.tab(0).show()
+        }
+        Services.router.nav.popCurrentControler()
+        Services.router.nav.popCurrentControler()
+        
+//        Services.router.tab(0).show()
         
 //
 //        Services.router.tab(.Main).push(controller:.Home, info:NavInfo(params:["color":"yellow"]))

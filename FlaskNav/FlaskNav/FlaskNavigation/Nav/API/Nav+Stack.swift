@@ -24,9 +24,9 @@ extension FlaskNav{
 
 extension FlaskNav: NavStackAPI{
     
-    func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:Any? = nil){
+    func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:Any? = nil, callback:NavContextCallback? = nil){
         queueIntent(batched:batched) { [weak self] in
-            let context = NavContext( controller: controller, resourceId: resourceId, info: info)
+            let context = NavContext( controller: controller, resourceId: resourceId, info: info, callback)
             self?.stack(forLayer: layer).push(context: context)
         }
     }

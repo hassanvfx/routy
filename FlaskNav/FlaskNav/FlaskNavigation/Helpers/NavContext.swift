@@ -8,57 +8,6 @@
 
 import UIKit
 
-public class NavContextRef<T> where T: AnyObject {
-    
-    private(set) weak var value: T?
-    
-    init(value: T?) {
-        self.value = value
-    }
-}
-
-class NavContextManager {
-    
-    var payloads:[Int:Any] = [:]
-    var payloadRefs:[Int:NavContextRef<AnyObject>] = [:]
-    
-    static let shared = NavContextManager()
-    var contextCounter = 0
-    var locked = false
-    
-    func nextId()->Int{
-        assert(!locked, "this method is not thread safe!")
-        locked = true
-        defer {
-            locked = false 
-        }
-        
-        contextCounter+=1
-        return contextCounter
-    }
-    
-    func setInfo(contextId:Int,_ payload:Any?){
-        if payload == nil {return}
-        
-        if type(of: payload!) is AnyClass {
-            let object = payload! as AnyObject
-            let ref = NavContextRef(value: object)
-            payloadRefs[contextId] = ref
-        } else {
-            payloads[contextId] = payload!
-        }
-    }
-    
-    func info(forContextId contextId:Int)->Any?{
-        let ref = payloadRefs[contextId]
-        
-        if let ref = ref {
-            return ref.value
-        }
-        
-        return payloads[contextId] ?? nil
-    }
-}
 
 public struct NavContext:Codable {
     
@@ -73,10 +22,11 @@ public struct NavContext:Codable {
     public let resourceId:String?
     public let contextId:Int
     
-    public init(controller:String, resourceId:String?,  info:Any?, animation:NavigationAnimations = .Default){
+    public init(controller:String, resourceId:String?,  info:Any?, animation:NavigationAnimations = .Default, _ callback:NavContextCallback? = nil){
         
         self.contextId = NavContextManager.shared.nextId()
         NavContextManager.shared.setInfo(contextId: self.contextId, info)
+        NavContextManager.shared.setClosure(contextId: self.contextId, callback)
         
         self.animation = animation
         self.controller = controller
@@ -102,10 +52,6 @@ public struct NavContext:Codable {
         }
     }
     
-    public func payload()->Any?{
-        return  NavContextManager.shared.info(forContextId: contextId)
-    }
-    
     public func toString()->String {
         
         do {
@@ -114,6 +60,15 @@ public struct NavContext:Codable {
         }catch{
             fatalError("Serialization error")
         }
+    }
+    
+    //MARK: GETTERS
+    public func callback()->NavContextCallback?{
+        return  NavContextManager.shared.closure(forContextId: contextId)
+    }
+    
+    public func payload()->Any?{
+        return  NavContextManager.shared.info(forContextId: contextId)
     }
     
     public func path()->String {

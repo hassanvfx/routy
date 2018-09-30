@@ -9,12 +9,14 @@
 import UIKit
 
 class AsyncViewController: UIViewController, FlaskNavController {
-    
+   
     typealias NavInfoType = NavInfo
     var navContext: NavContext?
+    var navCallback: NavContextCallback?
     var navInfo: NavInfo?
     
     func setupEmptyState() {
+        
         
         let color = navInfo?.params!["color"]
         print("a frame = \(String(describing: view.frame))")

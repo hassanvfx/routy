@@ -9,7 +9,7 @@
 import UIKit
 
 protocol NavStackAPI:AnyObject{
-    func push(layer:String, batched:Bool, controller:String , resourceId:String?, info:Any?)
+    func push(layer:String, batched:Bool, controller:String , resourceId:String?, info:Any?, callback:NavContextCallback?)
     func pop(layer:String, batched:Bool, toController controller:String, resourceId:String?, info:Any?)
     func popCurrentControler(layer:String, batched:Bool)
     func popToRootController(layer:String, batched:Bool)
@@ -30,8 +30,8 @@ public class NavInterface<T:RawRepresentable> {
         self.batched = batch
     }
     
-    public func push(controller:T, resourceId:String? = nil, info:Any? = nil){
-        delegate?.push(layer:layer, batched: batched, controller: controller.rawValue as! String, resourceId: resourceId, info: info)
+    public func push(controller:T, resourceId:String? = nil, info:Any? = nil, callback:NavContextCallback? = nil){
+        delegate?.push(layer:layer, batched: batched, controller: controller.rawValue as! String, resourceId: resourceId, info: info, callback: callback)
     }
     
     public func pop(controller:T, resourceId:String? = nil, info:Any? = nil){
