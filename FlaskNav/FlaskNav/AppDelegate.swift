@@ -45,9 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             batch.nav.popCurrentControler()
         }
         
-        
-        
-        Services.router.nav.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
+    
+        Services.router.nav.push(controller:.Settings, info:NavInfo(params:["color":"yellow"]))
         Services.router.nav.popToRootController()
         
         Services.router.tab(0).show()

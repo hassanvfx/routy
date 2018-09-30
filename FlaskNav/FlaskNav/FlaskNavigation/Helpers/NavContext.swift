@@ -8,19 +8,29 @@
 
 import UIKit
 
+public class NavContextRef<T> where T: AnyObject {
+    
+    private(set) weak var value: T?
+    
+    init(value: T?) {
+        self.value = value
+    }
+}
+
 class NavContextManager {
     
-    var payloads:[Int:Any?] = [:]
+    var payloads:[Int:Any] = [:]
+    var payloadRefs:[Int:NavContextRef<AnyObject>] = [:]
     
     static let shared = NavContextManager()
     var contextCounter = 0
     var locked = false
     
     func nextId()->Int{
-        assert(locked == false, "this method is not thread safe")
+        assert(!locked, "this method is not thread safe!")
         locked = true
         defer {
-            locked = false
+            locked = false 
         }
         
         contextCounter+=1
@@ -28,10 +38,24 @@ class NavContextManager {
     }
     
     func setInfo(contextId:Int,_ payload:Any?){
-        payloads[contextId] = payload
+        if payload == nil {return}
+        
+        if type(of: payload!) is AnyClass {
+            let object = payload! as AnyObject
+            let ref = NavContextRef(value: object)
+            payloadRefs[contextId] = ref
+        } else {
+            payloads[contextId] = payload!
+        }
     }
     
     func info(forContextId contextId:Int)->Any?{
+        let ref = payloadRefs[contextId]
+        
+        if let ref = ref {
+            return ref.value
+        }
+        
         return payloads[contextId] ?? nil
     }
 }
@@ -79,8 +103,7 @@ public struct NavContext:Codable {
     }
     
     public func payload()->Any?{
-        return  NavContextManager.shared.info(forContextId: self.contextId)
-        
+        return  NavContextManager.shared.info(forContextId: contextId)
     }
     
     public func toString()->String {
