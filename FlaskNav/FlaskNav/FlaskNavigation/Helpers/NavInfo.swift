@@ -8,7 +8,7 @@
 
 import UIKit
 
-public struct NavInfo:CodableInfo {
+public struct NavInfo {
     var name:String?
     var resource:String?
     var resourceId:String?

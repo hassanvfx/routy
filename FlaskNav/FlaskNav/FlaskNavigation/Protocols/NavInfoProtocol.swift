@@ -19,7 +19,7 @@ protocol FlaskNavSetup:AnyObject {
 }
 
 protocol FlaskNavController: FlaskNavSetup {
-    associatedtype NavInfoType:CodableInfo
+    associatedtype NavInfoType:Any
     var navInfo:NavInfoType? {get set}
     var navContext:NavContext?{get set}
 }
@@ -27,7 +27,7 @@ protocol FlaskNavController: FlaskNavSetup {
 extension FlaskNavController{
     func navContextInit(withContext context:NavContext){
         self.navContext = context
-        self.navInfo = context.payload()
+        self.navInfo = context.payload() as? NavInfoType
     }
     func setupEmptyState(){}
 }

@@ -8,24 +8,56 @@
 
 import UIKit
 
+class NavContextManager {
+    
+    var payloads:[Int:Any?] = [:]
+    
+    static let shared = NavContextManager()
+    var contextCounter = 0
+    var locked = false
+    
+    func nextId()->Int{
+        assert(locked == false, "this method is not thread safe")
+        locked = true
+        defer {
+            locked = false
+        }
+        
+        contextCounter+=1
+        return contextCounter
+    }
+    
+    func setInfo(contextId:Int,_ payload:Any?){
+        payloads[contextId] = payload
+    }
+    
+    func info(forContextId contextId:Int)->Any?{
+        return payloads[contextId] ?? nil
+    }
+}
+
 public struct NavContext:Codable {
     
-    public var _payload:String?
+    enum CodingKeys: String, CodingKey {
+        case animation,controller,resourceId,contextId
+    }
+    
+    
     public let animation:NavigationAnimations
     
     public let controller:String
     public let resourceId:String?
+    public let contextId:Int
     
-    
-    public init(controller:String, resourceId:String?,  info:CodableInfo?, animation:NavigationAnimations = .Default){
+    public init(controller:String, resourceId:String?,  info:Any?, animation:NavigationAnimations = .Default){
+        
+        self.contextId = NavContextManager.shared.nextId()
+        NavContextManager.shared.setInfo(contextId: self.contextId, info)
+        
         self.animation = animation
         self.controller = controller
         self.resourceId = resourceId
-        self._payload = nil
         
-        if let info = info {
-            self._payload = info.asJSONString()
-        }
     }
     
     public init(fromString json:String){
@@ -34,24 +66,21 @@ public struct NavContext:Codable {
             let jsonData = json.data(using: .utf8)!
             let instance:NavContext = try JSONDecoder().decode(NavContext.self, from: jsonData)
             
-            self._payload = instance._payload
+            self.contextId = instance.contextId
             self.animation = instance.animation
             
             self.controller = instance.controller
             self.resourceId = instance.resourceId
+            
             
         }catch{
             fatalError("Serialization error")
         }
     }
     
-    public func payload<T:CodableInfo>()->T?{
+    public func payload()->Any?{
+        return  NavContextManager.shared.info(forContextId: self.contextId)
         
-        guard self._payload != nil else{
-            return  nil
-        }
-        
-        return T.instance(withJSON: self._payload!)
     }
     
     public func toString()->String {

@@ -55,10 +55,7 @@ public class NavStack {
             if(lastContext?.controller == aContext.controller &&
                 lastContext?.resourceId == aContext.resourceId){
                 
-                if(aContext._payload == nil ||
-                    aContext._payload == lastContext?._payload){
-                    result = aContext
-                }
+                result = aContext
             }
             
             _=stack.removeLast()

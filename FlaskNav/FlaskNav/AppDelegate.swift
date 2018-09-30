@@ -38,8 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             batch.nav.push(controller:.Home, info:NavInfo(params:["color":"white"]))
         }
         
-        Services.router.tab(0).show()
-        Services.router.nav.show()
+       
         
         Services.router.transaction { (batch) in
             batch.nav.popCurrentControler()
@@ -60,16 +59,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func testAPI(){
-        let info = Info(title: "test", color: "red")
-        
-        Services.router.composition?.nav.push(controller:.Home, info:info)
-        Services.router.composition?.nav.popToRootController()
-        Services.router.composition?.nav.push(controller:.Home, info:info)
-        Services.router.composition?.nav.popToRootController()
-        Services.router.composition?.nav.push(controller:.Home, info:info)
-        Services.router.composition?.nav.push(controller:.Home, info:info)
-        Services.router.composition?.nav.push(controller:.Home, info:info)
-        Services.router.composition?.nav.popToRootController()
+//        let info = Info(title: "test", color: "red")
+//
+//        Services.router.composition?.nav.push(controller:.Home, info:info)
+//        Services.router.composition?.nav.popToRootController()
+//        Services.router.composition?.nav.push(controller:.Home, info:info)
+//        Services.router.composition?.nav.popToRootController()
+//        Services.router.composition?.nav.push(controller:.Home, info:info)
+//        Services.router.composition?.nav.push(controller:.Home, info:info)
+//        Services.router.composition?.nav.push(controller:.Home, info:info)
+//        Services.router.composition?.nav.popToRootController()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

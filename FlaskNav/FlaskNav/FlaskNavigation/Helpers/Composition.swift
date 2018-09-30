@@ -66,11 +66,11 @@ class NavComposition<TABS:RawRepresentable,CONT:RawRepresentable,ACCS:RawReprese
 
 // MARK: - The composition intercepts the StackInterface and injects the boolean `batched` context. This is a requirement for the transactions
 extension NavComposition:NavStackAPI{
-    func push(layer: String, batched: Bool, controller: String, resourceId: String?, info: CodableInfo?) {
+    func push(layer: String, batched: Bool, controller: String, resourceId: String?, info: Any?) {
         self.compDelegate?.push(layer: layer, batched: compBatched, controller: controller, resourceId: resourceId, info: info)
     }
     
-    func pop(layer: String, batched: Bool, toController controller: String, resourceId: String?, info: CodableInfo?) {
+    func pop(layer: String, batched: Bool, toController controller: String, resourceId: String?, info: Any?) {
         self.compDelegate?.push(layer: layer, batched: compBatched, controller: controller, resourceId: resourceId, info: info)
     }
     

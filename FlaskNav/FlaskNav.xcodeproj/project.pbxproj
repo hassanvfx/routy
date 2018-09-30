@@ -19,7 +19,6 @@
 		2616BB7D2155D76700A6AEFB /* Nav+Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB7C2155D76700A6AEFB /* Nav+Stack.swift */; };
 		2616BB7F2155D78600A6AEFB /* Nav+Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB7E2155D78600A6AEFB /* Nav+Setup.swift */; };
 		2616BB81215704E800A6AEFB /* NavSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB80215704E800A6AEFB /* NavSerializer.swift */; };
-		2616BB842157096200A6AEFB /* Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB832157096200A6AEFB /* Info.swift */; };
 		2616BB86215709C500A6AEFB /* CodablePayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB85215709C500A6AEFB /* CodablePayload.swift */; };
 		2616BB892157105100A6AEFB /* NavContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB882157105100A6AEFB /* NavContext.swift */; };
 		2616BB8B21573B4C00A6AEFB /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB8A21573B4C00A6AEFB /* Stack.swift */; };
@@ -71,7 +70,6 @@
 		2616BB7C2155D76700A6AEFB /* Nav+Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Stack.swift"; sourceTree = "<group>"; };
 		2616BB7E2155D78600A6AEFB /* Nav+Setup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Setup.swift"; sourceTree = "<group>"; };
 		2616BB80215704E800A6AEFB /* NavSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavSerializer.swift; sourceTree = "<group>"; };
-		2616BB832157096200A6AEFB /* Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Info.swift; sourceTree = "<group>"; };
 		2616BB85215709C500A6AEFB /* CodablePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodablePayload.swift; sourceTree = "<group>"; };
 		2616BB882157105100A6AEFB /* NavContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavContext.swift; sourceTree = "<group>"; };
 		2616BB8A21573B4C00A6AEFB /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
@@ -164,12 +162,11 @@
 			path = Substance;
 			sourceTree = "<group>";
 		};
-		2616BB822157094400A6AEFB /* Model */ = {
+		2616BB822157094400A6AEFB /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				2616BB832157096200A6AEFB /* Info.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		2616BB87215709D300A6AEFB /* Protocols */ = {
@@ -247,7 +244,7 @@
 			children = (
 				26B8072D214DCAE1008091C2 /* FlaskNavigation */,
 				26B80737214DCEF3008091C2 /* AppNav */,
-				2616BB822157094400A6AEFB /* Model */,
+				2616BB822157094400A6AEFB /* Models */,
 				26B80736214DCEDF008091C2 /* Services */,
 				266CDECC215310EB003B0F11 /* Components */,
 				26B8070D214DC740008091C2 /* AppDelegate.swift */,
@@ -502,7 +499,6 @@
 				2616BB892157105100A6AEFB /* NavContext.swift in Sources */,
 				263B10C62159C81100E6E5C4 /* StackLayers.swift in Sources */,
 				2616BB792155D65800A6AEFB /* Nav+Config.swift in Sources */,
-				2616BB842157096200A6AEFB /* Info.swift in Sources */,
 				263B10CA2159C9BC00E6E5C4 /* Nav+Navigators.swift in Sources */,
 				2616BB7B2155D6F900A6AEFB /* Nav+Display.swift in Sources */,
 				2616BB772155CF8F00A6AEFB /* Operation.swift in Sources */,
