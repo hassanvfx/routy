@@ -34,3 +34,23 @@ extension FlaskNav{
     }
 }
 
+extension FlaskNav{
+    
+    
+    public func defineNavRoot(_ constructor:@escaping ControllerConstructor){
+        navRoot = constructor
+    }
+    public func defineTabRoot(_ tab:TABS, _ constructor:@escaping ControllerConstructor){
+        let stringKey = tab.rawValue as! String
+        tabs[stringKey] = constructor
+    }
+    public func define(controller:CONT,_ constructor:@escaping ControllerConstructor){
+        let stringKey = controller.rawValue as! String
+        _controllers[stringKey] = constructor
+    }
+    public func define(modal:MODS,_ constructor:@escaping ControllerConstructor){
+        let stringKey = modal.rawValue as! String
+        modals[stringKey] = constructor
+    }
+}
+

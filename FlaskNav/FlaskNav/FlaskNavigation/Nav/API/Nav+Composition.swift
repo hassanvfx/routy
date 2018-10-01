@@ -13,7 +13,7 @@ extension FlaskNav:NavCompositionAPI{
   
     typealias COMP_CONT_TYPE = CONT
     typealias COMP_TABS_TYPE = TABS
-    typealias COMP_ACCS_TYPE = ACCS
+    typealias COMP_MODS_TYPE = MODS
     
     public var nav:NavInterface<CONT>{
         return (self.composition?.nav)!
@@ -23,7 +23,7 @@ extension FlaskNav:NavCompositionAPI{
         return (composition?.tab(tab ))!
     }
     
-    public func modal(_ layer:Int=0)->NavInterface<ACCS>{
+    public func modal(_ layer:Int=0)->NavInterface<MODS>{
         return (composition?.modal(layer))!
     }
     

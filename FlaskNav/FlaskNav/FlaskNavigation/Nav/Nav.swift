@@ -9,7 +9,7 @@
 import UIKit
 import Flask
 
-public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepresentable,  ACCS:Hashable & RawRepresentable > : NSObject, UINavigationControllerDelegate{
+public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepresentable,  MODS:Hashable & RawRepresentable > : NSObject, UINavigationControllerDelegate{
   
     let FIRST_NAVIGATION_ROOT_COUNT = 2
     let UNDEFINED_CONTEXT_ID = -1
@@ -25,8 +25,8 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     
     var stackLayers:[String:NavStack] = [:]
     var stackActive:String = NavLayer.NAV.rawValue
-    var composition:NavComposition<TABS,CONT,ACCS>?
-    var compositionBatch:NavComposition<TABS,CONT,ACCS>?
+    var composition:NavComposition<TABS,CONT,MODS>?
+    var compositionBatch:NavComposition<TABS,CONT,MODS>?
     var compDelegate: NavStackAPI? = nil
     var compBatched: Bool = false
     
@@ -37,11 +37,11 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
 
     public var viewControllers:[CONT:ControllerConstructor] = [:]
     
-    public var modalControllers:[ACCS :ControllerConstructor] = [:]
-    public var modalParents:[ACCS: [CONT]] = [:]
-    public var modalLayer:[ ACCS : ModalLayers ] = [:]
     
+    var navRoot:ControllerConstructor? = nil
     var _controllers:[String:ControllerConstructor] = [:]
+    var modals:[String:ControllerConstructor] = [:]
+    var tabs:[String:ControllerConstructor] = [:]
     
     // MARK: QUEUE
  
@@ -67,8 +67,8 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     override init() {
         super.init()
         
-        self.composition = NavComposition<TABS,CONT,ACCS>(delegate: self)
-        self.compositionBatch = NavComposition<TABS,CONT,ACCS>(batch: true, delegate: self)
+        self.composition = NavComposition<TABS,CONT,MODS>(delegate: self)
+        self.compositionBatch = NavComposition<TABS,CONT,MODS>(batch: true, delegate: self)
         
         _configControllers()
         
@@ -77,6 +77,8 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     
     
     // MARK: OPEN OVERRIDES
+    
+    open func defineRouter(){}
     
     /// Should define controllers using controller[.Foo] = Closure
     open func defineControllers(){}

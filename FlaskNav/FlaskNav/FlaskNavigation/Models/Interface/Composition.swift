@@ -13,7 +13,7 @@ protocol NavCompositionAPI:AnyObject{
     
     associatedtype COMP_CONT_TYPE:RawRepresentable
     associatedtype COMP_TABS_TYPE:RawRepresentable
-    associatedtype COMP_ACCS_TYPE:RawRepresentable
+    associatedtype COMP_MODS_TYPE:RawRepresentable
     
     var compDelegate:NavStackAPI? {get}
     var compBatched:Bool{get}
@@ -22,7 +22,7 @@ protocol NavCompositionAPI:AnyObject{
     func tab(_ tab:COMP_TABS_TYPE)->NavInterface<COMP_CONT_TYPE>
     func tab(_ tab:Int)->NavInterface<COMP_CONT_TYPE>
     func tabIndex(from layer:String) -> Int
-    func modal(_ layer:Int)->NavInterface<COMP_ACCS_TYPE>
+    func modal(_ layer:Int)->NavInterface<COMP_MODS_TYPE>
 }
 
 extension NavCompositionAPI{
@@ -42,17 +42,17 @@ extension NavCompositionAPI{
         return NavInterface<COMP_CONT_TYPE>(batch:compBatched, layer: NavLayer.Tab(tab), delegate: self as? NavStackAPI)
     }
     
-    public func modal(_ layer:Int=0)->NavInterface<COMP_ACCS_TYPE>{
-        return NavInterface<COMP_ACCS_TYPE>(batch:compBatched,layer: NavLayer.Modal(), delegate: self as? NavStackAPI)
+    public func modal(_ layer:Int=0)->NavInterface<COMP_MODS_TYPE>{
+        return NavInterface<COMP_MODS_TYPE>(batch:compBatched,layer: NavLayer.Modal(), delegate: self as? NavStackAPI)
     }
 }
 
-class NavComposition<TABS:RawRepresentable,CONT:RawRepresentable,ACCS:RawRepresentable> : NSObject, NavCompositionAPI{
+class NavComposition<TABS:RawRepresentable,CONT:RawRepresentable,MODS:RawRepresentable> : NSObject, NavCompositionAPI{
   
    
     typealias COMP_CONT_TYPE = CONT
     typealias COMP_TABS_TYPE = TABS
-    typealias COMP_ACCS_TYPE = ACCS
+    typealias COMP_MODS_TYPE = MODS
     
     weak var compDelegate:NavStackAPI?
     let compBatched:Bool

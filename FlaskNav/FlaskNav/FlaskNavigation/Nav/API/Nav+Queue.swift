@@ -31,7 +31,7 @@ extension FlaskNav{
     }
     
     
-    func transaction(_ closure:@escaping (NavComposition<TABS,CONT,ACCS>)->Void){
+    func transaction(_ closure:@escaping (NavComposition<TABS,CONT,MODS>)->Void){
         
         NavStack.enqueue { [weak self] in
             assert(NavStack.locked == false, "error the `stack` is currently locked")

@@ -24,29 +24,24 @@ enum Modals:String {
 
 class MyFlaskNav: FlaskNav<Tabs, Controllers,Modals> {
     
-    override func rootController()->UIViewController{
-        return ViewController()
+    override func defineRouter(){
+        
+        defineNavRoot(){ ViewController() }
+        
+        defineTabRoot(.Main){ AsyncViewController() }
+        defineTabRoot(.Friends){ AsyncViewController() }
+    
+        define(controller: .Home){ AsyncViewController()}
+        define(controller: .Settings){ AsyncViewController()}
+        define(controller: .Feed){ AsyncViewController()}
+        
+        define(modal: .Login){ AsyncViewController() }
+        define(modal: .Share){ AsyncViewController() }
+        
     }
     
-    override func defineControllers(){
-       
-        viewControllers[.Home] = { AsyncViewController() }
-        viewControllers[.Settings] = { UIViewController() }
-        viewControllers[.Feed] = { UIViewController() }
-        
-    }
     
-    override func defineModals() {
-        
-        modalControllers[.Login] = { UIViewController() }
-        modalControllers[.Share] = {  UIViewController() }
-        
-        modalParents[.Login] = [ .Home, .Feed]
-        modalParents[.Share] = [ .Feed]
-        
-        modalLayer[.Login] = .First
-        modalLayer[.Share] = .Second
-    }
+   
     
     
     
