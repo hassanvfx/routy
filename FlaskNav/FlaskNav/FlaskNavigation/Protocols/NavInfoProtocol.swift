@@ -28,8 +28,8 @@ protocol FlaskNavController: FlaskNavSetup {
 extension FlaskNavController{
     func navContextInit(withContext context:NavContext){
         self.navContext = context
-        self.navInfo = context.payload() as? NavInfoType
-        self.navCallback = context.callback()
+        self.navInfo = context.info as? NavInfoType
+        self.navCallback = context.callback
     }
     func setupEmptyState(){}
 }

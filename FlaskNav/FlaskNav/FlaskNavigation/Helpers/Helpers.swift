@@ -28,9 +28,7 @@ public enum AccesoryLayers:Int {
     case First, Second, Third, Fourth, Fifth, Sixth, Seventh, Eighth, Ninth, Tenth
 }
 
-public enum NavigationType:String,Codable {
-    case Accesory,PushController,PopToController
-}
+
 
 public enum NavigationAnimations:String,Codable {
     case None, Default

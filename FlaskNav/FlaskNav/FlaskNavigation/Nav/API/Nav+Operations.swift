@@ -12,7 +12,7 @@ import Flask
 extension FlaskNav{
     
     
-    func operationsFor(key:String)->[FlaskNavOperation]{
+    func operationsFor(key:Int)->[FlaskNavOperation]{
         if let references = operations[key] {
             return references
         }
@@ -42,9 +42,9 @@ extension FlaskNav{
     }
     
  
-    func startOperationFor(controller:UIViewController, navOperation:FlaskNavOperation, _ closure:@escaping (FlaskOperation)->Void) {
+    func startOperationFor(context:NavContext, navOperation:FlaskNavOperation, _ closure:@escaping (FlaskOperation)->Void) {
         
-        let key = pointerKey(controller)
+        let key = context.contextId
         
         let debugClosure:(FlaskOperation)->Void = { (op) in
             print("[$] performing operation for key \(navOperation.name) \(key)")
@@ -64,25 +64,27 @@ extension FlaskNav{
         
     }
     
+
     func completeOperationFor(controller:UIViewController){
-        
-        let rootController = activeRootController()
-        let key = pointerKey(controller)
-        
-        if controller == rootController &&
+       
+        if controller == activeRootController() &&
             didShowRootCounter < FIRST_NAVIGATION_ROOT_COUNT {
-            print("[ ] skiping operation for root key \(key)")
+            print("[ ] skiping operation for root key ")
             didShowRootCounter += 1
             return
         }
         
+        let context = NavContext.manager.context(fromViewController: controller)!
+        NavContext.manager.releaseOnPop(context: context)
+        
+        let key = context.contextId
         var references = operationsFor(key:key)
         let navOperation = references.removeFirst()
         operations[key] = references
         
         print("pending operations for \(key) =\(references.count)")
-        
         print("[-] removing operation for key \(String(describing: navOperation.name)) \(key)")
+        
         DispatchQueue.main.async {
             navOperation.releaseFlux()
             print("pending operations for queue =\(self.operationQueue.operations.count)")

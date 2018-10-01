@@ -28,7 +28,7 @@ extension FlaskNav{
         var layers:[String:String] = [:]
         
         for (layer,stack) in stackLayers {
-            layers[layer] = stack.current().toString()
+            layers[layer] = stack.currentContextHash()
         }
         
         let payload:[String : Any] = [

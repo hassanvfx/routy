@@ -20,7 +20,6 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     var navController: UINavigationController?
     var tabController: UITabBarController?
     var tabNavControllers: [Int:UINavigationController] = [:]
-    var cachedControllers:[String:NavWeakRef<UIViewController>] = [:]
     
     // MARK: STACK
     
@@ -61,7 +60,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
         return queue
     }()
     
-    var operations:[String:[FlaskNavOperation]] = [:]
+    var operations:[Int:[FlaskNavOperation]] = [:]
     
     // MARK : INIT
     

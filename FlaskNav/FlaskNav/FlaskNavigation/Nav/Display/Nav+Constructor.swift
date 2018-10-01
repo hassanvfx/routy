@@ -17,34 +17,14 @@ extension FlaskNav{
         fatalError("constuctor for `\(controller)` not defined")
     }
     
-    func cachedControllerFrom(context:NavContext, navOperation:FlaskNavOperation)->(controller:UIViewController,cached:Bool){
-        
-        let key = context.toString()
-        if let value = cachedControllers[key]?.value{
-            if (navController?.viewControllers.contains(value))!{
-                return (controller:value, cached:true)
-            }else{
-                cachedControllers[key] = nil
-            }
+    func controllerFrom(context:NavContext, navOperation:FlaskNavOperation)->UIViewController{
+ 
+        if context.controller == ROOT_CONTROLLER {
+            return activeRootController()!
         }
         
         let constructor = controllerConstructor(for: context.controller)
         let instance = constructor()
-
-        cachedControllers[key] = NavWeakRef(value:instance)
-        
-        return (controller:instance, cached:false)
-        
-    }
-    
-    func controllerFrom(context:NavContext, navOperation:FlaskNavOperation)->UIViewController{
-        
-        let key = context.toString()
-
-        let constructor = controllerConstructor(for: context.controller)
-        let instance = constructor()
-        
-        cachedControllers[key] = NavWeakRef(value:instance)
         
         return instance
         

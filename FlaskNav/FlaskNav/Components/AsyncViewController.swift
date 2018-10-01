@@ -45,6 +45,7 @@ class AsyncViewController: UIViewController, FlaskNavController {
              completionHandle()
         }
        
+        navCallback?("hello")
     }
 
 

@@ -12,7 +12,9 @@ public class NavStack {
     
     public private(set) var stack:[NavContext] = []
     static public private(set) var locked = false
+    public var currentNavigator:NavigatorType = .Root
     
+    static let rootContext = NavContext.manager.context(controller: ROOT_CONTROLLER, resourceId: nil, info: nil)
     public static let stackQueue:OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount=1
@@ -20,34 +22,39 @@ public class NavStack {
     }()
     
     
-    public func current() -> NavContext{
+    public func currentContextHash()->String{
+        let context = currentContext()
+        return NavContext.manager.stateHash(from:context,navigator:currentNavigator)
+    }
+    
+    public func currentContext() -> NavContext{
         if stack.isEmpty {
-            return rootContext()
+            return NavStack.rootContext
         }
         return stack.last!
     }
     
-    public func rootContext()->NavContext{
-        return NavContext(intention: .Root, controller: ROOT_CONTROLLER, resourceId: nil, info: nil)
-    }
-    
     public func clear(){
+        currentNavigator = .Root
         stack = []
     }
     
     public func push(context:NavContext){
+        currentNavigator = .Push
         stack.append(context)
     }
     
     public func pop(){
-        if (stack.isEmpty){return}
+        if (stack.count <= 1 ){clear(); return}
+        
+        currentNavigator = .Pop
         _ = stack.removeLast()
-        setLastToPop()
     }
 
     public func pop(toContext aContext:NavContext){
+        currentNavigator = .Pop
         
-        let aStack = stack
+        var aStack = stack
         var result:NavContext? = nil
         while (result == nil && aStack.count > 0) {
             
@@ -59,7 +66,7 @@ public class NavStack {
                 result = aContext
             }
             
-            _=stack.removeLast()
+            _ = aStack.removeLast()
         }
         
         stack = aStack
@@ -67,17 +74,9 @@ public class NavStack {
         if (stack.isEmpty){
             push(context: aContext)
         }
-        setLastToPop()
     }
     
-    public func setLastToPop(){
-        if (stack.isEmpty){return}
-        var aContext = stack.removeLast()
-        aContext.intention = .Pop
-        stack.append(aContext)
-        
-    }
-
+ 
 }
 
 extension NavStack {
