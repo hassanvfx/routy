@@ -18,6 +18,9 @@ extension FlaskNav{
         
     }
     func applyActiveLayer(){
+        
+        assert(NavLayer.isValid(stackActive),"invalid layer name")
+        
         let payload:[String : Any] = [
             "layerActive":stackActive,
             ]
@@ -28,6 +31,7 @@ extension FlaskNav{
         var layers:[String:String] = [:]
         
         for (layer,stack) in stackLayers {
+            assert(NavLayer.isValid(layer),"invalid layer name")
             layers[layer] = stack.currentContextHash()
         }
         

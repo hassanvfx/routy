@@ -34,6 +34,27 @@ enum NavLayer:String,Codable{
     case ACCESORY8 = "accesory8"
     case ACCESORY9 = "accesory9"
     
+    static let RootLayerLevel = 0
+    static let MaxLayerLevel = 9
+    
+    static func isValid(_ layerName:String)->Bool{
+        if(IsNav(layerName)){
+            return true
+        }
+        
+        if(IsTab(layerName)){
+            let index = TabIndex(layerName)
+            return index >= RootLayerLevel && index <= MaxLayerLevel
+        }
+        
+        if(IsAccesory(layerName)){
+            let index = AccesoryIndex(layerName)
+            return index >= NavLayer.RootLayerLevel && index <= NavLayer.MaxLayerLevel
+        }
+        
+        return false
+    }
+    
     static func LayerNav()->String {
         return "layers.\(Nav())"
     }
@@ -73,20 +94,24 @@ enum NavLayer:String,Codable{
         return (parts.last?.starts(with: "accesory"))!
     }
     
+    
+    
     static func TabIndex(_ layer:String)->Int {
         assert(IsTab(layer),"Not a TAB layer")
         let parts = layer.split(separator: ".")
         let stringIndex = parts.last?.replacingOccurrences(of: "tab", with: "")
-        assert(stringIndex?.count == 1, "invalid index")
-        return Int(stringIndex!)!
+        let index = Int(stringIndex!)!
+        assert( index >= RootLayerLevel && index <= MaxLayerLevel, "invalid index")
+        return index
     }
     
     static func AccesoryIndex(_ layer:String)->Int {
         assert(IsAccesory(layer),"Not an Accesory layer")
         let parts = layer.split(separator: ".")
-        let stringIndex = parts.last?.replacingOccurrences(of: "tab", with: "")
-        assert(stringIndex?.count == 1, "invalid index")
-        return Int(stringIndex!)!
+        let stringIndex = parts.last?.replacingOccurrences(of: "accesory", with: "")
+        let index = Int(stringIndex!)!
+        assert( index >= RootLayerLevel && index <= MaxLayerLevel, "invalid index")
+        return index
     }
     
 }

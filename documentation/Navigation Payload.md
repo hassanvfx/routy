@@ -1,3 +1,26 @@
+## Presentation and dismiss
+
+We should consider adding the following methods:
+
+```swift
+Services.router.nav.show() 
+Services.router.tab().show() 
+Services.router.accesory.show() 
+
+Services.router.accesory.present(controller: .Login){
+   Services.router.accesory.push(controller: .Onboard1){
+   } 
+}
+Services.router.accesory.dismiss()
+```
+* tab().show()  : presents the tab controller as is
+* accesory().present() : instantiates and composes an accesory controller with the given root controller
+
+In this rational we won't need many layers of accesory controllers. As the accesory controller offers its own nav hierarchy this would be equivalent to poping through the comp hierarchy of multilevel accesories.
+
+The above would also make intuitive to call `tab().show()` without passing an index to show the tab component as is.
+
+
 ## Managed NavContext
 
 We may consider turning the NavContext into a managed class object. The manager will create and manage the instances, then a serialized version would be rendered with a command like context.toString(). We won't need to actually code/decode but instead we can pull from the factory/manager using the context ID.  This will be useful as now the context is also storing a weak pointer to the controller holding it. We can then have a routine to dispose context where the viewcontroller has turned nil.
@@ -53,7 +76,7 @@ For example a user might loggeed out after the app has been closed. Then restori
 
 this means we should consider relaxing the requirements to pass payloads during the nav operations and allow the use of non encodable types. we may also consider including a dismiss block to allow chaining navigation operations once they are resolved.
 
-## Next Steps
+## Next Steps Sept 30/18
 
 We refctored the pipes to assume a normalized structure where all different nav components are StackLayers.
 
