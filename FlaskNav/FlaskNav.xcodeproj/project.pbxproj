@@ -18,8 +18,6 @@
 		2616BB7B2155D6F900A6AEFB /* Nav+Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB7A2155D6F900A6AEFB /* Nav+Display.swift */; };
 		2616BB7D2155D76700A6AEFB /* Nav+Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB7C2155D76700A6AEFB /* Nav+Stack.swift */; };
 		2616BB7F2155D78600A6AEFB /* Nav+Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB7E2155D78600A6AEFB /* Nav+Setup.swift */; };
-		2616BB81215704E800A6AEFB /* NavSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB80215704E800A6AEFB /* NavSerializer.swift */; };
-		2616BB86215709C500A6AEFB /* CodablePayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB85215709C500A6AEFB /* CodablePayload.swift */; };
 		2616BB892157105100A6AEFB /* NavContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB882157105100A6AEFB /* NavContext.swift */; };
 		2616BB8B21573B4C00A6AEFB /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB8A21573B4C00A6AEFB /* Stack.swift */; };
 		2616BB8D2157546D00A6AEFB /* NavInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB8C2157546D00A6AEFB /* NavInfo.swift */; };
@@ -70,8 +68,6 @@
 		2616BB7A2155D6F900A6AEFB /* Nav+Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Display.swift"; sourceTree = "<group>"; };
 		2616BB7C2155D76700A6AEFB /* Nav+Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Stack.swift"; sourceTree = "<group>"; };
 		2616BB7E2155D78600A6AEFB /* Nav+Setup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Setup.swift"; sourceTree = "<group>"; };
-		2616BB80215704E800A6AEFB /* NavSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavSerializer.swift; sourceTree = "<group>"; };
-		2616BB85215709C500A6AEFB /* CodablePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodablePayload.swift; sourceTree = "<group>"; };
 		2616BB882157105100A6AEFB /* NavContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavContext.swift; sourceTree = "<group>"; };
 		2616BB8A21573B4C00A6AEFB /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		2616BB8C2157546D00A6AEFB /* NavInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavInfo.swift; sourceTree = "<group>"; };
@@ -142,17 +138,6 @@
 			children = (
 				26B807472151EF83008091C2 /* Helpers.swift */,
 				266CDECA215308DA003B0F11 /* AnyCodable.swift */,
-				2616BB80215704E800A6AEFB /* NavSerializer.swift */,
-				2616BB85215709C500A6AEFB /* CodablePayload.swift */,
-				2667A607216051FA00F87A1B /* NavContextManager.swift */,
-				2616BB882157105100A6AEFB /* NavContext.swift */,
-				2616BB8C2157546D00A6AEFB /* NavInfo.swift */,
-				2616BB8A21573B4C00A6AEFB /* Stack.swift */,
-				263B10C52159C81100E6E5C4 /* StackLayers.swift */,
-				263B10C12159C7CA00E6E5C4 /* Composition.swift */,
-				263B10C32159C7D200E6E5C4 /* Interface.swift */,
-				2616BB762155CF8F00A6AEFB /* Operation.swift */,
-				2667A6052160071000F87A1B /* NavLayer.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -213,6 +198,54 @@
 			path = Display;
 			sourceTree = "<group>";
 		};
+		2667A6092162B6EB00F87A1B /* Context */ = {
+			isa = PBXGroup;
+			children = (
+				2667A607216051FA00F87A1B /* NavContextManager.swift */,
+				2616BB882157105100A6AEFB /* NavContext.swift */,
+				2616BB8C2157546D00A6AEFB /* NavInfo.swift */,
+			);
+			path = Context;
+			sourceTree = "<group>";
+		};
+		2667A60A2162B73300F87A1B /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				2616BB762155CF8F00A6AEFB /* Operation.swift */,
+			);
+			path = Operations;
+			sourceTree = "<group>";
+		};
+		2667A60B2162B74700F87A1B /* LayersStack */ = {
+			isa = PBXGroup;
+			children = (
+				2616BB8A21573B4C00A6AEFB /* Stack.swift */,
+				263B10C52159C81100E6E5C4 /* StackLayers.swift */,
+				2667A6052160071000F87A1B /* NavLayer.swift */,
+			);
+			path = LayersStack;
+			sourceTree = "<group>";
+		};
+		2667A60C2162B75F00F87A1B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2667A60D2162B79300F87A1B /* Interface */,
+				2667A60B2162B74700F87A1B /* LayersStack */,
+				2667A60A2162B73300F87A1B /* Operations */,
+				2667A6092162B6EB00F87A1B /* Context */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2667A60D2162B79300F87A1B /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				263B10C12159C7CA00E6E5C4 /* Composition.swift */,
+				263B10C32159C7D200E6E5C4 /* Interface.swift */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
 		266CDECC215310EB003B0F11 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -270,6 +303,7 @@
 		26B8072D214DCAE1008091C2 /* FlaskNavigation */ = {
 			isa = PBXGroup;
 			children = (
+				2667A60C2162B75F00F87A1B /* Models */,
 				2616BB87215709D300A6AEFB /* Protocols */,
 				2616BB712155A12E00A6AEFB /* Substance */,
 				2616BB702155A12200A6AEFB /* Helpers */,
@@ -517,11 +551,9 @@
 				263B10C22159C7CA00E6E5C4 /* Composition.swift in Sources */,
 				2616BB7D2155D76700A6AEFB /* Nav+Stack.swift in Sources */,
 				26B807482151EF83008091C2 /* Helpers.swift in Sources */,
-				2616BB86215709C500A6AEFB /* CodablePayload.swift in Sources */,
 				26B80735214DCED9008091C2 /* Services.swift in Sources */,
 				2616BB8D2157546D00A6AEFB /* NavInfo.swift in Sources */,
 				2667A608216051FA00F87A1B /* NavContextManager.swift in Sources */,
-				2616BB81215704E800A6AEFB /* NavSerializer.swift in Sources */,
 				26B80733214DCE82008091C2 /* MyNav.swift in Sources */,
 				262599DE2159D000003144ED /* Nav+Dispatcher.swift in Sources */,
 				266CDECB215308DA003B0F11 /* AnyCodable.swift in Sources */,
