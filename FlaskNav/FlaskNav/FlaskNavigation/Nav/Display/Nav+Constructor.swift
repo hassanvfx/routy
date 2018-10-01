@@ -11,7 +11,7 @@ import UIKit
 extension FlaskNav{
     
     func controllerConstructor(for controller:String)->ControllerConstructor{
-        if let constructor = _controllers[controller]{
+        if let constructor = controllers[controller]{
             return constructor
         }
         fatalError("constuctor for `\(controller)` not defined")

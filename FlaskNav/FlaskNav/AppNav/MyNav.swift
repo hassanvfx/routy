@@ -24,7 +24,7 @@ enum Modals:String {
 
 class MyFlaskNav: FlaskNav<Tabs, Controllers,Modals> {
     
-    override func defineRouter(){
+    override func defineRouting(){
         
         defineNavRoot(){ ViewController() }
         

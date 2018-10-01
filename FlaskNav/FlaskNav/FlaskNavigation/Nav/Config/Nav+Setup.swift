@@ -9,19 +9,23 @@
 import UIKit
 
 extension FlaskNav{
-    
-    //    public func setup(withWindow aWindow:UIWindow){
-    //
-    //        assert(window == nil, "This instance is already setup")
-    //        window = aWindow
-    //
-    
-    //
-    //        self.window?.rootViewController = self.navController
-    //        self.window?.makeKeyAndVisible()
-    //
-    //    }
-    
+    public func setup(withWindow aWindow:UIWindow){
+        
+        assert(window == nil, "This instance is already setup")
+        window = aWindow
+        
+        initNavController() // do this optionally
+        initTabController() // do this optionally
+        
+        window?.rootViewController = mainController()
+        window?.makeKeyAndVisible()
+        
+    }
+}
+
+
+extension FlaskNav{
+
     func rootController(forTabIndex index:Int)->UIViewController{
         let controller = UIViewController()
         controller.title = "Tab \(index)"
@@ -43,11 +47,13 @@ extension FlaskNav{
     
     func initNavController(){
        
-        let controller = rootController()
+        let controller = navRoot!()
+        let config = navRootConfig!
+        
         controller.view.backgroundColor = .green
         
         navController = UINavigationController(rootViewController: controller)
-        navController?.setNavigationBarHidden(navBarHidden(), animated: false)
+        navController?.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
         navController?.delegate = self
         
     }
@@ -73,20 +79,5 @@ extension FlaskNav{
     func mainController()->UIViewController{
         return navController!
     }
-    
-    public func setup(withWindow aWindow:UIWindow){
-        
-        assert(window == nil, "This instance is already setup")
-        window = aWindow
-        
-        initNavController() // do this optionally
-        initTabController() // do this optionally
-      
-        window?.rootViewController = mainController()
-        window?.makeKeyAndVisible()
-
-    }
-    
-    
+  
 }
-

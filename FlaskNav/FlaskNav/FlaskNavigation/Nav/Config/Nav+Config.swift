@@ -10,47 +10,48 @@ import UIKit
 
 
 extension FlaskNav{
-    func _configControllers(){
-        viewControllers = [:]
-        defineControllers()
+    
+    
+    public func defineNavRoot(config:NavConfig = NavConfig(navBar: true), _ constructor:@escaping ControllerConstructor){
+        navRoot = constructor
+        navRootConfig = config
+    }
+    public func defineTabRoot(_ tab:TABS, config:NavConfig? = NavConfig(navBar: true, tabBar:true), _ constructor:@escaping ControllerConstructor){
+        let stringKey = tab.rawValue as! String
+        let index = tabs.count
+        tabs[index] = constructor
+        tabsConfig[index] = config
         
-        assert(viewControllers.count > 0, "Ensure to define your controllers using `controllers` example `controllers[.Name] = { (payload) in UIViewController() }`")
-        
-        mapControllers()
+        tabsIndexMap[index] = stringKey
+        tabsNameMap[stringKey] = index
     }
     
-    func _configModals(){
-        
-        defineModals()
+    public func define(controller:CONT,_ constructor:@escaping ControllerConstructor){
+        let stringKey = controller.rawValue as! String
+        controllers[stringKey] = constructor
     }
     
-    func mapControllers(){
-        _controllers = [:]
-        
-        for (key,value) in viewControllers {
-            let stringKey = key.rawValue as! String
-            _controllers[stringKey] = value
-        }
+    public func define(modal:MODS,_ constructor:@escaping ControllerConstructor){
+        let stringKey = modal.rawValue as! String
+        modals[stringKey] = constructor
     }
 }
 
 extension FlaskNav{
     
+    func configRouter(){
+        defineRouting()
+        assertRouting()
+    }
     
-    public func defineNavRoot(_ constructor:@escaping ControllerConstructor){
-        navRoot = constructor
-    }
-    public func defineTabRoot(_ tab:TABS, _ constructor:@escaping ControllerConstructor){
-        let stringKey = tab.rawValue as! String
-        tabs[stringKey] = constructor
-    }
-    public func define(controller:CONT,_ constructor:@escaping ControllerConstructor){
-        let stringKey = controller.rawValue as! String
-        _controllers[stringKey] = constructor
-    }
-    public func define(modal:MODS,_ constructor:@escaping ControllerConstructor){
-        let stringKey = modal.rawValue as! String
-        modals[stringKey] = constructor
+    func assertRouting(){
+        
+        assert(navRoot != nil,"`defineNavRoot` must be called in `defineRouting`")
+       
+        assert(tabs.count == tabsIndexMap.count,"must match")
+        assert(tabs.count == tabsNameMap.count,"must match")
+        
+        //TODO: assert all enums are implemented
     }
 }
 

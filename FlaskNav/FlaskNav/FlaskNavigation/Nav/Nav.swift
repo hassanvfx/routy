@@ -35,13 +35,19 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     
     let substance = NavigationSubstance()
 
-    public var viewControllers:[CONT:ControllerConstructor] = [:]
-    
-    
+    // main nav
     var navRoot:ControllerConstructor? = nil
-    var _controllers:[String:ControllerConstructor] = [:]
+    var navRootConfig:NavConfig? = nil
+    
+    // tabs
+    var tabs:[Int:ControllerConstructor] = [:]
+    var tabsConfig:[Int:NavConfig] = [:]
+    var tabsIndexMap:[Int:String] = [:]
+    var tabsNameMap:[String:Int] = [:]
+    
+    // content
+    var controllers:[String:ControllerConstructor] = [:]
     var modals:[String:ControllerConstructor] = [:]
-    var tabs:[String:ControllerConstructor] = [:]
     
     // MARK: QUEUE
  
@@ -70,38 +76,21 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
         self.composition = NavComposition<TABS,CONT,MODS>(delegate: self)
         self.compositionBatch = NavComposition<TABS,CONT,MODS>(batch: true, delegate: self)
         
-        _configControllers()
-        
         AttachFlaskReactor(to: self, mixing: [substance])
+        
+        self.configRouter()
     }
     
     
     // MARK: OPEN OVERRIDES
+    open func defineRouting(){}
     
-    open func defineRouter(){}
-    
-    /// Should define controllers using controller[.Foo] = Closure
-    open func defineControllers(){}
-    
-    /// Should define controllers using controller[.Foo] = Closure
-    open func defineModals(){}
-    
-
     /// Should define the NavigationBar visibility
-    ///
     /// - Returns: Boolean
     open func  navBarHidden()->Bool{
         return true
     }
-    
-    /// Should define the Root controller consturctor
-    ///
-    /// - Returns: UIViewController instance
-    open func  rootController()->UIViewController{
-        return UIViewController()
-    }
-    
-    
+
     //MARK: NavigationControllerDelegate
     public func navigationController(_ substanceController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         
