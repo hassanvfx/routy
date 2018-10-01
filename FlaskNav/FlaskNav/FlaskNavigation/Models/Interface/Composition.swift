@@ -22,7 +22,7 @@ protocol NavCompositionAPI:AnyObject{
     func tab(_ tab:COMP_TABS_TYPE)->NavInterface<COMP_CONT_TYPE>
     func tab(_ tab:Int)->NavInterface<COMP_CONT_TYPE>
     func tabIndex(from layer:String) -> Int
-    func accesory(_ layer:Int)->NavInterface<COMP_ACCS_TYPE>
+    func modal(_ layer:Int)->NavInterface<COMP_ACCS_TYPE>
 }
 
 extension NavCompositionAPI{
@@ -42,8 +42,8 @@ extension NavCompositionAPI{
         return NavInterface<COMP_CONT_TYPE>(batch:compBatched, layer: NavLayer.Tab(tab), delegate: self as? NavStackAPI)
     }
     
-    public func accesory(_ layer:Int=0)->NavInterface<COMP_ACCS_TYPE>{
-        return NavInterface<COMP_ACCS_TYPE>(batch:compBatched,layer: NavLayer.Accesory(layer), delegate: self as? NavStackAPI)
+    public func modal(_ layer:Int=0)->NavInterface<COMP_ACCS_TYPE>{
+        return NavInterface<COMP_ACCS_TYPE>(batch:compBatched,layer: NavLayer.Modal(), delegate: self as? NavStackAPI)
     }
 }
 

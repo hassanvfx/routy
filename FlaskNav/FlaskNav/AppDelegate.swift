@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //
 //        Services.router.tab(.Main).push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
-//        Services.router.accesory().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))
+//        Services.router.modal().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))
         
     }
     

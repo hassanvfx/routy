@@ -23,8 +23,8 @@ extension FlaskNav:NavCompositionAPI{
         return (composition?.tab(tab ))!
     }
     
-    public func accesory(_ layer:Int=0)->NavInterface<ACCS>{
-        return (composition?.accesory(layer))!
+    public func modal(_ layer:Int=0)->NavInterface<ACCS>{
+        return (composition?.modal(layer))!
     }
     
     func tabIndex(from layer: String) -> Int {

@@ -37,8 +37,8 @@ extension FlaskNav {
                 })
             }
             
-        } else if NavLayer.IsAccesory(substance.state.layerActive){
-//            let index = NavLayer.AccesoryIndex(substance.state.layerActive)
+        } else if NavLayer.IsModal(substance.state.layerActive){
+//            let index = NavLayer.ModalIndex(substance.state.layerActive)
             //TODO: handle this
         }
         

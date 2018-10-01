@@ -10,7 +10,7 @@ import UIKit
 //class StackLayer {
 //    
 //    static let TAB = "tab"
-//    static let ACCESORY = "accesory"
+//    static let ACCESORY = "modal"
 //    
 //    static func Main()->String{
 //        return "nav"
@@ -19,7 +19,7 @@ import UIKit
 //        return "\(TAB).\(name)"
 //    }
 //    
-//    static func Accesory(_ layer:Int)->String{
+//    static func Modal(_ layer:Int)->String{
 //        return "\(ACCESORY).\(layer)"
 //    }
 //    

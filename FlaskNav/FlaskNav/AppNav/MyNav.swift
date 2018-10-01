@@ -16,13 +16,13 @@ enum Controllers:String {
     case Home, Settings, Feed
 }
 
-enum Accesories:String {
+enum Modals:String {
     case Login, Share
 }
 
 
 
-class MyFlaskNav: FlaskNav<Tabs, Controllers,Accesories> {
+class MyFlaskNav: FlaskNav<Tabs, Controllers,Modals> {
     
     override func rootController()->UIViewController{
         return ViewController()
@@ -36,16 +36,16 @@ class MyFlaskNav: FlaskNav<Tabs, Controllers,Accesories> {
         
     }
     
-    override func defineAccesories() {
+    override func defineModals() {
         
-        accesoryControllers[.Login] = { UIViewController() }
-        accesoryControllers[.Share] = {  UIViewController() }
+        modalControllers[.Login] = { UIViewController() }
+        modalControllers[.Share] = {  UIViewController() }
         
-        accesoryParents[.Login] = [ .Home, .Feed]
-        accesoryParents[.Share] = [ .Feed]
+        modalParents[.Login] = [ .Home, .Feed]
+        modalParents[.Share] = [ .Feed]
         
-        accesoryLayer[.Login] = .First
-        accesoryLayer[.Share] = .Second
+        modalLayer[.Login] = .First
+        modalLayer[.Share] = .Second
     }
     
     

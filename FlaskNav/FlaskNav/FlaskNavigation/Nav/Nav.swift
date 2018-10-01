@@ -37,9 +37,9 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
 
     public var viewControllers:[CONT:ControllerConstructor] = [:]
     
-    public var accesoryControllers:[ACCS :ControllerConstructor] = [:]
-    public var accesoryParents:[ACCS: [CONT]] = [:]
-    public var accesoryLayer:[ ACCS : AccesoryLayers ] = [:]
+    public var modalControllers:[ACCS :ControllerConstructor] = [:]
+    public var modalParents:[ACCS: [CONT]] = [:]
+    public var modalLayer:[ ACCS : ModalLayers ] = [:]
     
     var _controllers:[String:ControllerConstructor] = [:]
     
@@ -82,7 +82,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     open func defineControllers(){}
     
     /// Should define controllers using controller[.Foo] = Closure
-    open func defineAccesories(){}
+    open func defineModals(){}
     
 
     /// Should define the NavigationBar visibility

@@ -21,6 +21,12 @@ extension FlaskNav: FlaskReactor{
         reaction.on(NavLayer.LayerNav()){[weak self] (change) in
             self?.navigateToController(layer:NavLayer.NAV.rawValue, fluxLock: reaction.onLock!)
         }
+        
+        // MODAL
+        reaction.on(NavLayer.LayerModal()){[weak self] (change) in
+            self?.navigateToController(layer:NavLayer.NAV.rawValue, fluxLock: reaction.onLock!)
+        }
+        
         // TABS
         reaction.on(NavLayer.LayerTab(0)){[weak self] (change) in
             self?.navigateToController(layer:NavLayer.TAB0.rawValue, fluxLock: reaction.onLock!)
@@ -52,39 +58,6 @@ extension FlaskNav: FlaskReactor{
         reaction.on(NavLayer.LayerTab(9)){[weak self] (change) in
             self?.navigateToController(layer:NavLayer.TAB9.rawValue, fluxLock: reaction.onLock!)
         }
-        // ACCESORIES
-        reaction.on(NavLayer.LayerAccesory(0)){[weak self] (change) in
-            self?.navigateToController(layer:NavLayer.ACCESORY0.rawValue, fluxLock: reaction.onLock!)
-        }
-        reaction.on(NavLayer.LayerAccesory(1)){[weak self] (change) in
-            self?.navigateToController(layer:NavLayer.ACCESORY1.rawValue, fluxLock: reaction.onLock!)
-        }
-        reaction.on(NavLayer.LayerAccesory(2)){[weak self] (change) in
-            self?.navigateToController(layer:NavLayer.ACCESORY2.rawValue, fluxLock: reaction.onLock!)
-        }
-        reaction.on(NavLayer.LayerAccesory(3)){[weak self] (change) in
-            self?.navigateToController(layer:NavLayer.ACCESORY3.rawValue, fluxLock: reaction.onLock!)
-        }
-        reaction.on(NavLayer.LayerAccesory(4)){[weak self] (change) in
-            self?.navigateToController(layer:NavLayer.ACCESORY4.rawValue, fluxLock: reaction.onLock!)
-        }
-        reaction.on(NavLayer.LayerAccesory(5)){[weak self] (change) in
-            self?.navigateToController(layer:NavLayer.ACCESORY5.rawValue, fluxLock: reaction.onLock!)
-        }
-        reaction.on(NavLayer.LayerAccesory(6)){[weak self] (change) in
-            self?.navigateToController(layer:NavLayer.ACCESORY6.rawValue, fluxLock: reaction.onLock!)
-        }
-        reaction.on(NavLayer.LayerAccesory(7)){[weak self] (change) in
-            self?.navigateToController(layer:NavLayer.ACCESORY7.rawValue, fluxLock: reaction.onLock!)
-        }
-        reaction.on(NavLayer.LayerAccesory(8)){[weak self] (change) in
-            self?.navigateToController(layer:NavLayer.ACCESORY8.rawValue, fluxLock: reaction.onLock!)
-        }
-        reaction.on(NavLayer.LayerAccesory(9)){[weak self] (change) in
-            self?.navigateToController(layer:NavLayer.ACCESORY9.rawValue, fluxLock: reaction.onLock!)
-        }
-        
-      
         
     }
 }

@@ -24,7 +24,7 @@ public class NavWeakRef<T> where T: AnyObject {
     }
 }
 
-public enum AccesoryLayers:Int {
+public enum ModalLayers:Int {
     case First, Second, Third, Fourth, Fifth, Sixth, Seventh, Eighth, Ninth, Tenth
 }
 

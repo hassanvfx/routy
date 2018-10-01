@@ -19,9 +19,9 @@ extension FlaskNav{
         mapControllers()
     }
     
-    func _configAccesories(){
+    func _configModals(){
         
-        defineAccesories()
+        defineModals()
     }
     
     func mapControllers(){
