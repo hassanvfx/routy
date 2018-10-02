@@ -10,21 +10,32 @@ import UIKit
 
 extension FlaskNav{
 
+    
+    public func displayTab(_ index:Int){
+        dismissModal()
+        DispatchQueue.main.async {  [weak self] in
+            if (self?.topMostController())! == self?.tabController! { return}
+            
+            self?.present((self?.tabController!)!, animated: false, completion:{})
+        }
+    }
     public func displayNav(){
+        dismissModal()
         DispatchQueue.main.async { [weak self] in
-            self?.dismissController(animated: false, completion: {})
+            self?.dismiss(animated: false, completion: {})
         }
     }
     public func displayModal(){
         DispatchQueue.main.async {  [weak self] in
-            let modal = self?.navInstance(forLayer: NavLayer.Modal())
-            self?.present(modal!, animated: false, completion:{})
+            let modal = self?.modalNav()
+            self?.presentTop(modal!, animated: false, completion:{})
         }
     }
     
-    public func displayTab(_ index:Int){
+    public func dismissModal(){
         DispatchQueue.main.async {  [weak self] in
-            self?.present((self?.tabController!)!, animated: false, completion:{})
+            if (self?.hasModal())! == false{ return}
+            self?.dismissTop(animated: false, completion: {})
         }
     }
     

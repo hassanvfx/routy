@@ -32,9 +32,6 @@ extension FlaskNav {
                 self?.displayTab(index)
             }
             
-        } else if NavLayer.IsModal(substance.state.layerActive){
-//            let index = NavLayer.ModalIndex(substance.state.layerActive)
-            //TODO: handle this
         }
         
         
@@ -87,9 +84,8 @@ extension FlaskNav {
     
     func navigateRoot(context:NavContext, navOperation:FlaskNavOperation){
         //TODO: animated parametrization?
-        let rootContext = activeRootContext(for: context.layer)
         performOperationFor(navOperation: navOperation) {[weak self] (operation) in
-            self?.popToRoot(context:rootContext)
+            self?.popToRoot(context:context)
         }
     }
     

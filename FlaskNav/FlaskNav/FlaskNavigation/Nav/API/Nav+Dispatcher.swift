@@ -19,10 +19,10 @@ extension FlaskNav{
     }
     func applyActiveLayer(){
         
-        assert(NavLayer.isValid(stackActive),"invalid layer name")
+        assert(NavLayer.isValid(activeLayer()),"invalid layer name")
         
         let payload:[String : Any] = [
-            "layerActive":stackActive,
+            "layerActive":activeLayer(),
             ]
         Flask.lock(withMixer: NavMixers.LayerActive, payload: payload )
     }

@@ -28,15 +28,15 @@ extension FlaskNav{
 extension FlaskNav{
     
     public func topMostController()->UIViewController{
-        if (tabController?.isBeingPresented)! {
+        if (tabController!.presentingViewController != nil) {
             return tabController!
-        }else{
-            return mainNav()
         }
+        
+        return mainNav()
     }
     
     func mainController()->UIViewController{
-        return navInstance(forLayer: NavLayer.Nav())
+        return mainNav()
     }
     
     
@@ -46,6 +46,13 @@ extension FlaskNav{
         return controller
     }
 
+    
+    //////////
+  
+    func hasModal()->Bool{
+        return navControllers[NavLayer.Modal()] != nil
+    }
+    
     //////////
 
     func mainNav()->UINavigationController{

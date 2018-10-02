@@ -19,11 +19,11 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     var window: UIWindow?
     var tabController: UITabBarController?
     var navControllers:[String:UINavigationController] = [:]
-    
     // MARK: STACK
     
     var stackLayers:[String:NavStack] = [:]
-    var stackActive:String = NavLayer.NAV.rawValue
+    var _layerActive:String = NavLayer.NAV.rawValue
+    var _layerInactive:String = NavLayer.NAV.rawValue
     var composition:NavComposition<TABS,CONT,MODS>?
     var compositionBatch:NavComposition<TABS,CONT,MODS>?
     var compDelegate: NavStackAPI? = nil

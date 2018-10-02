@@ -27,9 +27,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func testTransaction(){
-    
-        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"red"]))
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
+
+        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))
+        Services.router.modal.popCurrent()
         
+        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))
+        Services.router.modal.popCurrent()
+        
+        Services.router.nav.show()
+            
         Services.router.transaction { (batch) in
             batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"red"]))
             batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"blue"]))
@@ -41,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         
-        Services.router.tab(0).show()
+        Services.router.tab(.Friends).show()
         Services.router.nav.show()
         
         Services.router.transaction { (batch) in

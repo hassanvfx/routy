@@ -44,9 +44,15 @@ extension FlaskNav {
         child.removeFromParentViewController()
     }
     
+    func presentTop(_ controller:UIViewController, animated:Bool, completion:@escaping ()->Void){
+        present(controller,from: topMostController(),animated: animated,completion: completion)
+    }
     
+    func dismissTop(animated:Bool, completion:@escaping ()->Void){
+        dismiss(fromController: topMostController(), animated: animated, completion: completion)
+    }
     
-    func present(_ controller:UIViewController, animated:Bool, completion:@escaping ()->Void){
+    func present(_ controller:UIViewController, from fromController:UIViewController? = nil, animated:Bool, completion:@escaping ()->Void){
         
         if(
             (
@@ -62,11 +68,14 @@ extension FlaskNav {
             controller.popoverPresentationController?.permittedArrowDirections = .any
         }
         
-        topMostController().present(controller, animated: animated, completion: completion)
+        let main = fromController ?? mainController()
+        main.present(controller, animated: animated, completion: completion)
+       
     }
     
-    func dismissController(animated:Bool, completion:@escaping ()->Void){
-         topMostController().dismiss(animated: animated, completion: completion)
+    func dismiss(fromController:UIViewController? = nil, animated:Bool, completion:@escaping ()->Void){
+        let main = fromController ?? mainController()
+        main.dismiss(animated: animated, completion: completion)
     }
         
 }

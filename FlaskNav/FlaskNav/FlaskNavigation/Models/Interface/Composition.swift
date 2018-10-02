@@ -41,7 +41,7 @@ extension NavCompositionAPI{
         return self.tab(tabIndex)
     }
     
-    public func tab(_ tab:Int)->NavInterface<COMP_CONT_TYPE>{
+    func tab(_ tab:Int)->NavInterface<COMP_CONT_TYPE>{
        
         return NavInterface<COMP_CONT_TYPE>(batch:compBatched, layer: NavLayer.Tab(tab), delegate: self as? NavStackAPI)
     }
