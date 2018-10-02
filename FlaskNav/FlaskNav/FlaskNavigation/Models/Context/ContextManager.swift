@@ -91,25 +91,16 @@ extension NavContextManager{
     
     func context(fromStateHash hash:String)->NavContext{
         
-        do{
-            let jsonData = hash.data(using: .utf8)!
-            let info = try JSONSerialization.jsonObject(with: jsonData, options: []) as! NSDictionary
-            let contextId = info["contextId"] as! String
-            return context(fromContextId: Int(contextId)!)
-        }catch{
-            fatalError("serialization error")
-        }
+        let info =  NavSerializer.stringToDict(hash)
+        let contextId = info["contextId"] as! String
+        return context(fromContextId: Int(contextId)!)
     }
     
     func navigator(fromStateHash hash:String)->NavigatorType{
-        do{
-            let jsonData = hash.data(using: .utf8)!
-            let info = try JSONSerialization.jsonObject(with: jsonData, options: []) as! NSDictionary
-            let navigator = info["navigator"] as! String
-            return NavigatorType(rawValue: navigator)!
-        }catch{
-            fatalError("serialization error")
-        }
+        
+        let info =  NavSerializer.stringToDict(hash)
+        let navigator = info["navigator"] as! String
+        return NavigatorType(rawValue: navigator)!
     }
     
     func stateHash(from context:NavContext, navigator:NavigatorType)->String{
@@ -120,12 +111,8 @@ extension NavContextManager{
             "contextId":String(context.contextId),
             "navigator":navigator.rawValue
         ]
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: info, options: [])
-            return String(data: jsonData, encoding: .utf8)!
-        }catch{
-            fatalError("Serialization error")
-        }
+        
+        return  NavSerializer.dictToString(info as NSDictionary)
     }
 }
 

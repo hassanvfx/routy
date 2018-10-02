@@ -15,17 +15,21 @@ protocol RawInitializable{
 
 class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorClass {
     
-    var _intensity:Double = 0.2
+    var _intensity:Double
     var _style:STYLE
     
-    init(style:STYLE){
+    init(style:STYLE, intensity:Double? = nil){
         _style = style
+        _intensity = intensity ?? 0.5
     }
-    
 
     override open func name()->String{
         return "slide"
     }
+    
+    open func applyTransformStyle(controller:UIViewController, parent:UIViewController,in containerView:UIView){}
+    open func preferredIntensity()->Double{return _intensity}
+
     
     override open func setParameters(_ params:NSDictionary){
         if let aStyle = params["style"] as? String{
@@ -54,7 +58,7 @@ class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorCl
         let animationDuration = transitionDuration(using: context)
         
         applyTransformStyle(controller: controller, parent: fromController, in: containerView)
-        controller.view.alpha = 0
+        
         
         UIView.animate(withDuration: animationDuration, animations: {
             
@@ -72,15 +76,11 @@ class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorCl
         UIView.animate(withDuration: animationDuration, animations: {
             
             self.applyTransformStyle(controller: controller, parent: toController, in: containerView)
-            controller.view.alpha = 0
+        
             
         }) { finished in
             context.completeTransition(!context.transitionWasCancelled)
         }
     }
 
-    open func applyTransformStyle(controller:UIViewController, parent:UIViewController,in containerView:UIView){
-        
-     
-    }
 }

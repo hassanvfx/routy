@@ -11,7 +11,7 @@ import UIKit
 class NavAnimations: NSObject {
 
     static func animator(from:String?) -> NavAnimatorClass{
-        return NavAnimatorZoom(style: .zoomIn)
+        return NavAnimatorZoom(style: .zoomIn,intensity:0.2)
     }
  
     static func presentation(from:String?,for presented:UIViewController,from presenting:UIViewController) -> NavPresentationController{

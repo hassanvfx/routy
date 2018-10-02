@@ -8,58 +8,14 @@
 
 import UIKit
 
-open class NavAnimatorClass: NSObject, UIViewControllerAnimatedTransitioning {
-    
-
+open class NavAnimatorClass: NSObject {
     public var presenter = true
     public var _duration = 0.4
-    
-    public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-      
-        return _duration
-
-    }
-
-    
-    public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        
-        let toController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
-        let fromController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)!
-        let container = transitionContext.containerView
- 
-        if presenter {
-            present(controller: toController, from: fromController, in: container, withContext: transitionContext)
-        }else{
-            dismiss(controller: fromController, to: toController, in: container, withContext: transitionContext)
-        }
-    }
-    
-    func asParameter()->String{
-        let params = getParameters()
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: params, options: [])
-            return String(data: jsonData, encoding: .utf8)!
-        }catch{
-            fatalError("Serialization error")
-        }
-    }
-    func withParameters(_ params:String){
-        
-        do{
-            let jsonData = params.data(using: .utf8)!
-            let info = try JSONSerialization.jsonObject(with: jsonData, options: []) as! NSDictionary
-            setParameters(info)
-        }catch{
-            fatalError("serialization error")
-        }
-    }
     
     //MARK: subclass methods
     open func name()->String{
         return "animator"
     }
-    
-    
     open func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
         assert(false,"use a subclass instead")
     }
@@ -76,6 +32,38 @@ open class NavAnimatorClass: NSObject, UIViewControllerAnimatedTransitioning {
                 "duration":_duration]
     }
     
+}
+
+extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
+    
+    public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        return _duration
+    }
+    
+    public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        
+        let toController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
+        let fromController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)!
+        let container = transitionContext.containerView
+        
+        if presenter {
+            present(controller: toController, from: fromController, in: container, withContext: transitionContext)
+        }else{
+            dismiss(controller: fromController, to: toController, in: container, withContext: transitionContext)
+        }
+    }
+}
+
+extension NavAnimatorClass{
+    func asParameter()->String{
+        let params = getParameters()
+        return NavSerializer.dictToString(params)
+        
+    }
+    func withParameters(_ string:String){
+        let info = NavSerializer.stringToDict(string)
+        setParameters(info)
+    }
 }
 
 

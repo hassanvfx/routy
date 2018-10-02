@@ -17,8 +17,14 @@ class NavAnimatorZoom: NavAnimatorBasic<NavAnimatorZoomStyle>{
     override open func name()->String{
         return "zoom"
     }
+    
+    override open func preferredIntensity() -> Double {
+        return 0.2
+    }
  
     override func applyTransformStyle(controller:UIViewController, parent:UIViewController,in containerView:UIView){
+       
+        controller.view.alpha = 0
         
         switch _style {
         case .zoomIn:
