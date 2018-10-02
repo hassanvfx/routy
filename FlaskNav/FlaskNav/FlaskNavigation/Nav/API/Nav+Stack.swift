@@ -28,6 +28,7 @@ extension FlaskNav: NavStackAPI{
     func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:Any? = nil, callback:NavContextCallback? = nil){
         queueIntent(batched:batched) { [weak self] in
             let context = NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, callback)
+            self?.stackActive = layer
             self?.stack(forLayer: layer).push(context: context)
         }
     }
@@ -35,16 +36,19 @@ extension FlaskNav: NavStackAPI{
     func pop(layer:String, batched:Bool = false, toController controller:String, resourceId:String?, info:Any?){
         queueIntent(batched:batched) { [weak self] in
             let context =  NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info)
+            self?.stackActive = layer
             self?.stack(forLayer: layer).pop(toContextRef: context)
         }
     }
     func popCurrentControler(layer:String, batched:Bool = false){
         queueIntent(batched:batched) { [weak self] in
+            self?.stackActive = layer
             self?.stack(forLayer: layer).pop()
         }
     }
     func popToRootController(layer:String, batched:Bool = false){
         queueIntent(batched:batched) { [weak self] in
+            self?.stackActive = layer
             self?.stack(forLayer: layer).clear()
         }
     }
