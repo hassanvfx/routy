@@ -24,6 +24,10 @@ class NavAnimatorSlide: NavAnimatorBasic<NavAnimatorSlideStyle>{
     
     override func applyTransformStyle(controller:UIViewController, parent:UIViewController,in containerView:UIView){
         
+        if _intensity < 0.9 {
+            controller.view.alpha = 0
+        }
+        
         let xDisp = Double(containerView.bounds.width) * _intensity
         let yDisp = Double(containerView.bounds.height) * _intensity
         
