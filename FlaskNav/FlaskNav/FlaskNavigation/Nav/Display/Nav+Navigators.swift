@@ -17,14 +17,14 @@ extension FlaskNav {
         
         if NavLayer.IsNav(substance.state.layerActive){
             
-            performOperationFor(navOperation: navOperation) { [weak self, weak navOperation] (flaskOperation) in
+            performOperationFor(navOperation: navOperation) { [weak self] (flaskOperation) in
                 self?.displayNav()
             }
             
         } else if  NavLayer.IsTab(substance.state.layerActive){
             let index = NavLayer.TabIndex(substance.state.layerActive)
             
-            performOperationFor(navOperation: navOperation) { [weak self, weak navOperation] (flaskOperation) in
+            performOperationFor(navOperation: navOperation) { [weak self] (flaskOperation) in
                 self?.displayTab(index)
             }
             

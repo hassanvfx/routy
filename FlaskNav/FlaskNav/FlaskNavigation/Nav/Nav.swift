@@ -40,8 +40,8 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     // tabs
     var tabs:[Int:ControllerConstructor] = [:]
     var tabsConfig:[Int:NavConfig] = [:]
-    var tabsIndexMap:[Int:String] = [:]
-    var tabsNameMap:[String:Int] = [:]
+    var tabsNameMap:[Int:String] = [:]
+    var tabsIndexMap:[String:Int] = [:]
     
     // content
     var controllers:[String:ControllerConstructor] = [:]

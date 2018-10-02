@@ -22,8 +22,8 @@ extension FlaskNav{
         tabs[index] = constructor
         tabsConfig[index] = config
         
-        tabsIndexMap[index] = stringKey
-        tabsNameMap[stringKey] = index
+        tabsNameMap[index] = stringKey
+        tabsIndexMap[stringKey] = index
     }
     
     public func define(controller:CONT,_ constructor:@escaping ControllerConstructor){
@@ -48,8 +48,8 @@ extension FlaskNav{
         
         assert(navRoot != nil,"`defineNavRoot` must be called in `defineRouting`")
        
-        assert(tabs.count == tabsIndexMap.count,"must match")
         assert(tabs.count == tabsNameMap.count,"must match")
+        assert(tabs.count == tabsIndexMap.count,"must match")
         
         //TODO: assert all enums are implemented
     }

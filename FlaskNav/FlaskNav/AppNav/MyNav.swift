@@ -9,11 +9,11 @@
 import UIKit
 
 enum Tabs:String {
-    case Main, Friends
+    case Home, Friends
 }
 
 enum Controllers:String {
-    case Home, Settings, Feed
+    case Feed, Settings
 }
 
 enum Modals:String {
@@ -28,10 +28,9 @@ class MyFlaskNav: FlaskNav<Tabs, Controllers,Modals> {
         
         defineNavRoot(){ ViewController() }
         
-        defineTabRoot(.Main){ AsyncViewController() }
+        defineTabRoot(.Home){ AsyncViewController() }
         defineTabRoot(.Friends){ AsyncViewController() }
     
-        define(controller: .Home){ AsyncViewController()}
         define(controller: .Settings){ AsyncViewController()}
         define(controller: .Feed){ AsyncViewController()}
         

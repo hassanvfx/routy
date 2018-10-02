@@ -56,7 +56,7 @@ extension FlaskNav{
         tabController = UITabBarController()
 
         var navs:[UINavigationController] = []
-        for (index,_) in tabsIndexMap{
+        for (index,_) in tabsNameMap{
             let aNav = navInstance(forLayer: NavLayer.Tab(index))
             navs.append(aNav)
         }
@@ -98,7 +98,7 @@ extension FlaskNav{
         let config = navRootConfig!
         
         root.view.backgroundColor = .green
-        root.title = "main"
+        root.title = "Root"
         
         let nav = UINavigationController(rootViewController: root)
         nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
@@ -118,7 +118,7 @@ extension FlaskNav{
         let root = constructor()
         
         root.view.backgroundColor = .purple
-        root.title = "tab \(index)"
+        root.title = tabsNameMap[index]
         
         let nav = UINavigationController(rootViewController: root)
         nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
