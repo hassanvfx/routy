@@ -55,7 +55,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //        Services.router.tab(0).show()
         Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
-//
+//.
+        
+        Services.router.nav.popToRootController()
 //        Services.router.tab(.Main).push(controller:.Feed, info:NavInfo(params:["color":"yellow"]))
 //        Services.router.modal().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))
         
