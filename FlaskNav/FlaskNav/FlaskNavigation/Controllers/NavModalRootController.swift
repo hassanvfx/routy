@@ -9,5 +9,7 @@
 import UIKit
 
 class NavModalRootController: UIViewController {
-
+    override func loadView() {
+        view = InactiveBackView()
+    }
 }

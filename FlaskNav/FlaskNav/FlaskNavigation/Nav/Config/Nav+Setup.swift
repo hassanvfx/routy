@@ -26,6 +26,10 @@ extension FlaskNav{
 
 
 extension FlaskNav{
+
+    func hasModal()->Bool{
+        return navControllers[NavLayer.Modal()] != nil
+    }
     
     func isTabPresented()->Bool{
         if let tab = tabController {
@@ -52,20 +56,9 @@ extension FlaskNav{
     func mainController()->UIViewController{
         return mainNav()
     }
-    
-    
-    func rootController(forTabIndex index:Int)->UIViewController{
-        let controller = UIViewController()
-        controller.title = "Tab \(index)"
-        return controller
-    }
 
-    
-    //////////
-  
-    func hasModal()->Bool{
-        return navControllers[NavLayer.Modal()] != nil
-    }
+}
+extension FlaskNav{
     
     //////////
 
@@ -100,12 +93,9 @@ extension FlaskNav{
         }
         
         tabController?.viewControllers = navs
-     
-        
+      
     }
-    
-    
-  
+ 
 }
 
 extension FlaskNav{
