@@ -44,15 +44,26 @@ extension FlaskNav {
         child.removeFromParentViewController()
     }
     
-    func presentTop(_ controller:UIViewController, animated:Bool, completion:@escaping ()->Void){
-        present(controller,from: topMostController(),animated: animated,completion: completion)
+    func presentModal(_ controller:FlaskNavigationController, animated:Bool, completion:@escaping ()->Void){
+        let top = topMostController()
+        controller.modalRootView().viewForwarder().forwardingViews = [top.view]
+        
+        _present(controller,from: top,animated: animated,completion: completion)
     }
     
-    func dismissTop(animated:Bool, completion:@escaping ()->Void){
-        dismiss(fromController: topMostController(), animated: animated, completion: completion)
+    func dismissModal(animated:Bool, completion:@escaping ()->Void){
+        _dismiss(fromController: topMostController(), animated: animated, completion: completion)
     }
     
-    func present(_ controller:UIViewController, from fromController:UIViewController? = nil, animated:Bool, completion:@escaping ()->Void){
+    func presentTab(_ controller:UIViewController, animated:Bool, completion:@escaping ()->Void){
+        _present(controller,from: mainController(),animated: animated,completion: completion)
+    }
+    
+    func dismissTab(animated:Bool, completion:@escaping ()->Void){
+        _dismiss(fromController: mainController(), animated: animated, completion: completion)
+    }
+    
+    func _present(_ controller:UIViewController, from fromController:UIViewController? = nil, animated:Bool, completion:@escaping ()->Void){
         
         if(
             (
@@ -73,7 +84,7 @@ extension FlaskNav {
        
     }
     
-    func dismiss(fromController:UIViewController? = nil, animated:Bool, completion:@escaping ()->Void){
+    func _dismiss(fromController:UIViewController? = nil, animated:Bool, completion:@escaping ()->Void){
         let main = fromController ?? mainController()
         main.dismiss(animated: animated, completion: completion)
     }

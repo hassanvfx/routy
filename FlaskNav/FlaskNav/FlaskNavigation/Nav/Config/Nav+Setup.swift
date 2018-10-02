@@ -62,15 +62,15 @@ extension FlaskNav{
     
     //////////
 
-    func mainNav()->UINavigationController{
+    func mainNav()->FlaskNavigationController{
         return navInstance(forLayer: NavLayer.Nav())
     }
     
-    func tabNav(for index:Int)->UINavigationController{
+    func tabNav(for index:Int)->FlaskNavigationController{
         return navInstance(forLayer: NavLayer.Tab(index))
     }
     
-    func modalNav()->UINavigationController{
+    func modalNav()->FlaskNavigationController{
         return navInstance(forLayer: NavLayer.Modal())
     }
 
@@ -86,7 +86,7 @@ extension FlaskNav{
         
         tabController = UITabBarController()
 
-        var navs:[UINavigationController] = []
+        var navs:[FlaskNavigationController] = []
         for (index,_) in tabsNameMap{
             let aNav = navInstance(forLayer: NavLayer.Tab(index))
             navs.append(aNav)
@@ -101,7 +101,7 @@ extension FlaskNav{
 extension FlaskNav{
     
     @discardableResult
-    func navInstance(forLayer layer:String)->UINavigationController{
+    func navInstance(forLayer layer:String)->FlaskNavigationController{
         
         if let nav = navControllers[layer] {
             return nav
@@ -126,7 +126,7 @@ extension FlaskNav{
         
     }
     
-    func newMainNavController()->UINavigationController{
+    func newMainNavController()->FlaskNavigationController{
        
         let root = navRoot!()
         let config = navRootConfig!
@@ -134,7 +134,7 @@ extension FlaskNav{
         root.view.backgroundColor = .green
         root.title = "Root"
         
-        let nav = UINavigationController(rootViewController: root)
+        let nav = FlaskNavigationController(rootViewController: root)
         nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
         nav.delegate = self
         
@@ -149,21 +149,19 @@ extension FlaskNav{
     ///
     /// - Discussion: When presenting a view controller in a popover, this presentation style is supported only if the transition style is UIModalTransitionStyleCoverVertical. Attempting to use a different transition style triggers an exception. However, you may use other transition styles (except the partial curl transition) if the parent view controller is not in a popover.
     /// - Returns: New modal navigationController
-    func newModalController()->UINavigationController{
+    func newModalController()->FlaskNavigationController{
         
-        let root = NavModalRootController()
+        let root = ModalRootController()
         let config = navRootConfig!
         
         root.title = "Modal"
-        root.didTouch = { [weak self] in
-            //if user gets stuck in the root we'll do out best to dismiss it
-            self?.modal.dismiss()
-        }
         
-        let nav = UINavigationController(rootViewController: root)
+        let nav = FlaskNavigationController(rootViewController: root)
         nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
         nav.delegate = self
         nav.modalPresentationStyle = .overCurrentContext
+        
+        
         
         let layer = NavLayer.Modal()
         NavContext.manager.contextRoot(forLayer: layer, viewController: root)
@@ -171,7 +169,7 @@ extension FlaskNav{
         return nav
     }
     
-    func newTabNavController(forTabIndex index:Int)->UINavigationController{
+    func newTabNavController(forTabIndex index:Int)->FlaskNavigationController{
         
         let constructor = tabs[index]!
         let config = tabsConfig[index]!
@@ -181,7 +179,7 @@ extension FlaskNav{
         root.view.backgroundColor = .purple
         root.title = tabsNameMap[index]
         
-        let nav = UINavigationController(rootViewController: root)
+        let nav = FlaskNavigationController(rootViewController: root)
         nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
         nav.delegate = self
         

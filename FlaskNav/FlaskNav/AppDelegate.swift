@@ -12,7 +12,6 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var substanceController: UINavigationController?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -31,8 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
 
 //        Services.router.modal.show()
-        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))
-        Services.router.modal.popCurrent()
+//        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))
+//        Services.router.modal.popCurrent()
         //        Services.router.nav.show()
     }
     func testTransaction(){

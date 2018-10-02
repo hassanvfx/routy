@@ -18,7 +18,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     
     var window: UIWindow?
     var tabController: UITabBarController?
-    var navControllers:[String:UINavigationController] = [:]
+    var navControllers:[String:FlaskNavigationController] = [:]
     // MARK: STACK
     
     var stackLayers:[String:NavStack] = [:]
@@ -90,12 +90,12 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     }
 
     //MARK: NavigationControllerDelegate
-    public func navigationController(_ substanceController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+    public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         
         intentToCompleteOperationFor(controller: viewController)
     }
     
-    public func navigationController(_ substanceController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         
     }
 }

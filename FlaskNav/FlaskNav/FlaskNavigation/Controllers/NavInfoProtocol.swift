@@ -18,14 +18,14 @@ protocol FlaskNavSetup:AnyObject {
     func setupContent(with completionHandle:@escaping FlaskNavCompletionBlock)
 }
 
-protocol FlaskNavController: FlaskNavSetup {
+protocol FlaskNavViewControllerProtocol: FlaskNavSetup {
     associatedtype NavInfoType:Any
     var navInfo:NavInfoType? {get set}
     var navContext:NavContext?{get set}
     var navCallback:NavContextCallback?{get set}
 }
 
-extension FlaskNavController{
+extension FlaskNavViewControllerProtocol{
     func navContextInit(withContext context:NavContext){
         self.navContext = context
         self.navInfo = context.info as? NavInfoType

@@ -1,5 +1,5 @@
 //
-//  NavModalRootController.swift
+//  ModalRootController.swift
 //  FlaskNav
 //
 //  Created by hassan uriostegui on 10/1/18.
@@ -8,33 +8,23 @@
 
 import UIKit
 
-typealias NavModalRootControllerTouch = ()->Void
-class NavModalRootController: UIViewController {
+typealias ModalRootControllerTouch = ()->Void
+class ModalRootController: UIViewController {
     
     var wasNavBarHidden:Bool = false
-    var didTouch:NavModalRootControllerTouch? = {}
-    
-    override func loadView() {
-        view = UIView()
-        view.backgroundColor = .black
-        view.alpha = 0.0
-        UIView.animate(withDuration: 2.0) {
-            self.view.alpha = 0.2
-        }
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(didTouched(_:)))
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(didTouched(_:)))
-        
-        view.addGestureRecognizer(tap)
-        view.addGestureRecognizer(pan)
+  
+    func viewForwarder()->TouchForwardingView{
+        return view as! TouchForwardingView
     }
     
-    @objc
-    func didTouched(_ recognizer:UIGestureRecognizer){
-        if let didTouch = didTouch{
-            didTouch()
+    override func loadView() {
+        view = TouchForwardingView()
+        viewForwarder().touchChilds = false
+        
+        NavDebug.shared.perform{
+            view.backgroundColor = .black
+            view.alpha = 0.25
         }
-        didTouch = nil
     }
     
     override func viewWillAppear(_ animated: Bool) {

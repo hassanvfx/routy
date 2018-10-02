@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AsyncViewController: UIViewController, FlaskNavController {
+class AsyncViewController: UIViewController, FlaskNavViewControllerProtocol {
    
     typealias NavInfoType = NavInfo
     var navContext: NavContext?
