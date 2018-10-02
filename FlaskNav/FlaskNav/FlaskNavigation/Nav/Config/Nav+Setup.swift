@@ -27,8 +27,22 @@ extension FlaskNav{
 
 extension FlaskNav{
     
+    func isTabPresented()->Bool{
+        if let tab = tabController {
+            return tab.presentingViewController != nil
+        }
+        return false
+    }
+    
+    func isModalPresented()->Bool{
+        if hasModal() {
+            return modalNav().presentingViewController != nil
+        }
+        return false
+    }
+    
     public func topMostController()->UIViewController{
-        if (tabController!.presentingViewController != nil) {
+        if (isTabPresented()) {
             return tabController!
         }
         

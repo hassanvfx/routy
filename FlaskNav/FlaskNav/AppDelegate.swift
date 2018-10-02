@@ -30,14 +30,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
 
         Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))
+        Services.router.modal.show()
         Services.router.modal.popCurrent()
         
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]))
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
         
         Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))
         Services.router.modal.popCurrent()
         
-        Services.router.nav.show()
             
         Services.router.transaction { (batch) in
             batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"red"]))

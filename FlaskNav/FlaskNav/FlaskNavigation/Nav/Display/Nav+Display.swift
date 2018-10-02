@@ -14,7 +14,7 @@ extension FlaskNav{
     public func displayTab(_ index:Int){
         dismissModal()
         DispatchQueue.main.async {  [weak self] in
-            if (self?.topMostController())! == self?.tabController! { return}
+            if (self?.isTabPresented())! { return}
             
             self?.present((self?.tabController!)!, animated: false, completion:{})
         }
@@ -27,6 +27,8 @@ extension FlaskNav{
     }
     public func displayModal(){
         DispatchQueue.main.async {  [weak self] in
+            if (self?.isModalPresented())! { return}
+            
             let modal = self?.modalNav()
             self?.presentTop(modal!, animated: false, completion:{})
         }
@@ -34,7 +36,8 @@ extension FlaskNav{
     
     public func dismissModal(){
         DispatchQueue.main.async {  [weak self] in
-            if (self?.hasModal())! == false{ return}
+            if (self?.isModalPresented())! == false { return}
+            
             self?.dismissTop(animated: false, completion: {})
         }
     }
