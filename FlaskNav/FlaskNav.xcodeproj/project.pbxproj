@@ -32,6 +32,7 @@
 		2667A6062160071000F87A1B /* NavLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2667A6052160071000F87A1B /* NavLayer.swift */; };
 		2667A608216051FA00F87A1B /* ContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2667A607216051FA00F87A1B /* ContextManager.swift */; };
 		2667A6102162D39300F87A1B /* NavConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2667A60F2162D39300F87A1B /* NavConfig.swift */; };
+		2667A6142163100000F87A1B /* NavModalRootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2667A6132163100000F87A1B /* NavModalRootController.swift */; };
 		266CDECB215308DA003B0F11 /* AnyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266CDECA215308DA003B0F11 /* AnyCodable.swift */; };
 		26B8070E214DC740008091C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8070D214DC740008091C2 /* AppDelegate.swift */; };
 		26B80710214DC740008091C2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8070F214DC740008091C2 /* ViewController.swift */; };
@@ -83,6 +84,7 @@
 		2667A6052160071000F87A1B /* NavLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavLayer.swift; sourceTree = "<group>"; };
 		2667A607216051FA00F87A1B /* ContextManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextManager.swift; sourceTree = "<group>"; };
 		2667A60F2162D39300F87A1B /* NavConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavConfig.swift; sourceTree = "<group>"; };
+		2667A6132163100000F87A1B /* NavModalRootController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavModalRootController.swift; sourceTree = "<group>"; };
 		266CDECA215308DA003B0F11 /* AnyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCodable.swift; sourceTree = "<group>"; };
 		26B8070A214DC740008091C2 /* FlaskNav.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlaskNav.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26B8070D214DC740008091C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -159,12 +161,13 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		2616BB87215709D300A6AEFB /* Protocols */ = {
+		2616BB87215709D300A6AEFB /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				2616BB692155946D00A6AEFB /* NavInfoProtocol.swift */,
+				2667A6132163100000F87A1B /* NavModalRootController.swift */,
 			);
-			path = Protocols;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		262599DF2159D057003144ED /* Config */ = {
@@ -315,7 +318,7 @@
 			isa = PBXGroup;
 			children = (
 				2667A60C2162B75F00F87A1B /* Models */,
-				2616BB87215709D300A6AEFB /* Protocols */,
+				2616BB87215709D300A6AEFB /* Controllers */,
 				2616BB712155A12E00A6AEFB /* Substance */,
 				2616BB702155A12200A6AEFB /* Helpers */,
 				2616BB6F2155A11200A6AEFB /* Nav */,
@@ -572,6 +575,7 @@
 				26B8070E214DC740008091C2 /* AppDelegate.swift in Sources */,
 				26B8072F214DCAF8008091C2 /* Nav.swift in Sources */,
 				2667A6062160071000F87A1B /* NavLayer.swift in Sources */,
+				2667A6142163100000F87A1B /* NavModalRootController.swift in Sources */,
 				263B10CC2159CCB500E6E5C4 /* Nav+Composition.swift in Sources */,
 				2616BB6C2155963900A6AEFB /* AsyncViewController.swift in Sources */,
 			);

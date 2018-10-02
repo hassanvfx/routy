@@ -23,9 +23,7 @@ extension FlaskNav:NavCompositionAPI{
         return (composition?.tab(tab ))!
     }
     
-    public func modal(_ layer:Int=0)->NavInterface<MODS>{
-        return (composition?.modal(layer))!
-    }
+
     
     func tabIndex(from layer: String) -> Int {
         //TODO: return actual value from mapping

@@ -9,11 +9,16 @@
 import UIKit
 
 extension FlaskNav{
-    
+
     public func displayNav(){
-        
         DispatchQueue.main.async { [weak self] in
-            self?.dismissViewController(animated: false, completion: {})
+            self?.dismissController(animated: false, completion: {})
+        }
+    }
+    public func displayModal(){
+        DispatchQueue.main.async {  [weak self] in
+            let modal = self?.navInstance(forLayer: NavLayer.Modal())
+            self?.present(modal!, animated: false, completion:{})
         }
     }
     
@@ -22,6 +27,7 @@ extension FlaskNav{
             self?.present((self?.tabController!)!, animated: false, completion:{})
         }
     }
+    
 }
 
 extension FlaskNav{

@@ -62,11 +62,11 @@ extension FlaskNav {
             controller.popoverPresentationController?.permittedArrowDirections = .any
         }
         
-        mainController().present(controller, animated: animated, completion: completion)
+        topMostController().present(controller, animated: animated, completion: completion)
     }
     
-    func dismissViewController(animated:Bool, completion:@escaping ()->Void){
-         mainController().dismiss(animated: animated, completion: completion)
+    func dismissController(animated:Bool, completion:@escaping ()->Void){
+         topMostController().dismiss(animated: animated, completion: completion)
     }
         
 }

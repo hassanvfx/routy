@@ -14,8 +14,9 @@ extension FlaskNav{
         assert(window == nil, "This instance is already setup")
         window = aWindow
         
-        initNavController()
-        initTabController()
+        initNav()
+        initTab()
+        initModal()
         
         window?.rootViewController = mainController()
         window?.makeKeyAndVisible()
@@ -26,32 +27,48 @@ extension FlaskNav{
 
 extension FlaskNav{
     
+    public func topMostController()->UIViewController{
+        if (tabController?.isBeingPresented)! {
+            return tabController!
+        }else{
+            return mainNav()
+        }
+    }
+    
     func mainController()->UIViewController{
         return navInstance(forLayer: NavLayer.Nav())
     }
     
-    func initNavController(){
-        navInstance(forLayer: NavLayer.Nav())
-    }
     
-    func mainNav()->UINavigationController{
-        return navInstance(forLayer: NavLayer.Nav())
-    }
-
     func rootController(forTabIndex index:Int)->UIViewController{
         let controller = UIViewController()
         controller.title = "Tab \(index)"
         return controller
     }
-    
+
+    //////////
+
+    func mainNav()->UINavigationController{
+        return navInstance(forLayer: NavLayer.Nav())
+    }
     
     func tabNav(for index:Int)->UINavigationController{
         return navInstance(forLayer: NavLayer.Tab(index))
     }
     
+    func modalNav()->UINavigationController{
+        return navInstance(forLayer: NavLayer.Modal())
+    }
+
+    //////////
   
-    
-    func initTabController(){
+    func initNav(){
+        _=mainNav()
+    }
+    func initModal(){
+        _=modalNav()
+    }
+    func initTab(){
         
         tabController = UITabBarController()
 
@@ -85,6 +102,12 @@ extension FlaskNav{
             return mainNav
         }
         
+        if(NavLayer.IsModal(layer)){
+            let modalNav = newModalController()
+            navControllers[layer] = modalNav
+            return modalNav
+        }
+        
         let index = NavLayer.TabIndex(layer)
         let tabNav = newTabNavController(forTabIndex: index)
         navControllers[layer] = tabNav
@@ -105,6 +128,25 @@ extension FlaskNav{
         nav.delegate = self
         
         let layer = NavLayer.Nav()
+        NavContext.manager.contextRoot(forLayer: layer, viewController: root)
+        
+        return nav
+    }
+    
+    
+    func newModalController()->UINavigationController{
+        
+        let root = NavModalRootController()
+        let config = navRootConfig!
+        
+        root.view.backgroundColor = .orange
+        root.title = "Modal"
+        
+        let nav = UINavigationController(rootViewController: root)
+        nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
+        nav.delegate = self
+        
+        let layer = NavLayer.Modal()
         NavContext.manager.contextRoot(forLayer: layer, viewController: root)
         
         return nav

@@ -14,6 +14,9 @@ extension FlaskNav{
         if let constructor = controllers[controller]{
             return constructor
         }
+        if let constructor = modals[controller]{
+            return constructor
+        }
         fatalError("constuctor for `\(controller)` not defined")
     }
     

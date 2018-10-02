@@ -11,6 +11,7 @@ import UIKit
 enum NavLayer:String,Codable{
     
     case NAV = "nav"
+    case MODAL = "modal"
     
     case TAB0 = "tab0"
     case TAB1 = "tab1"
@@ -31,7 +32,7 @@ enum NavLayer:String,Codable{
             return true
         }
         
-        if(IsNav(layerName)){
+        if(IsModal(layerName)){
             return true
         }
         

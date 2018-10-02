@@ -28,6 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func testTransaction(){
     
+        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"red"]))
+        
         Services.router.transaction { (batch) in
             batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"red"]))
             batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"blue"]))

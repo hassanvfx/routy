@@ -21,6 +21,10 @@ extension FlaskNav {
                 self?.displayNav()
             }
             
+        } else if NavLayer.IsModal(substance.state.layerActive){
+            performOperationFor(navOperation: navOperation) { [weak self] (flaskOperation) in
+                self?.displayModal()
+            }
         } else if  NavLayer.IsTab(substance.state.layerActive){
             let index = NavLayer.TabIndex(substance.state.layerActive)
             
