@@ -145,17 +145,22 @@ extension FlaskNav{
     }
     
     
+    /// Creates a new modal controller
+    ///
+    /// - Discussion: When presenting a view controller in a popover, this presentation style is supported only if the transition style is UIModalTransitionStyleCoverVertical. Attempting to use a different transition style triggers an exception. However, you may use other transition styles (except the partial curl transition) if the parent view controller is not in a popover.
+    /// - Returns: New modal navigationController
     func newModalController()->UINavigationController{
         
         let root = NavModalRootController()
         let config = navRootConfig!
         
-        root.view.backgroundColor = .orange
+        
         root.title = "Modal"
         
         let nav = UINavigationController(rootViewController: root)
         nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
         nav.delegate = self
+        nav.modalPresentationStyle = .overCurrentContext
         
         let layer = NavLayer.Modal()
         NavContext.manager.contextRoot(forLayer: layer, viewController: root)

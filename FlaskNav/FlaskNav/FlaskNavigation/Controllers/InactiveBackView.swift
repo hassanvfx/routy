@@ -11,6 +11,7 @@ import UIKit
 class InactiveBackView: UIView {
 
     public var allowTouches = false
+
     
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         

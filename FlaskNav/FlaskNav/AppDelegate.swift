@@ -21,11 +21,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
         
-        testTransaction()
+        testModal()
+//        testTransaction()
 //        testAPI()
         return true
     }
     
+    func testModal(){
+        Services.router.modal.show()
+        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))
+        Services.router.nav.show()
+    }
     func testTransaction(){
         Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
 
