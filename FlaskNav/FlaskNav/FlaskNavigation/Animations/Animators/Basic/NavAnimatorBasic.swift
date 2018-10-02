@@ -31,7 +31,7 @@ class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorCl
     open func preferredIntensity()->Double{return _intensity}
 
     
-    override open func setParameters(_ params:NSDictionary){
+    override open func _setParams(_ params:NSDictionary){
         if let aStyle = params["style"] as? String{
             _style = STYLE.init(rawValue:aStyle) ?? _style
         }
@@ -43,7 +43,7 @@ class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorCl
             _intensity = aItensity
         }
     }
-    override open func getParameters()->NSDictionary{
+    override open func _getParams()->NSDictionary{
         return [
             "name":name(),
             "style":_style.rawValue,

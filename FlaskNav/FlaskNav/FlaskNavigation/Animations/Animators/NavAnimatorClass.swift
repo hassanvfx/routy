@@ -23,10 +23,10 @@ open class NavAnimatorClass: NSObject {
         assert(false,"use a subclass instead")
     }
     
-    open func setParameters(_ params:NSDictionary){
+    open func _setParams(_ params:NSDictionary){
          assert(false,"use a subclass instead")
     }
-    open func getParameters()->NSDictionary{
+    open func _getParams()->NSDictionary{
         assert(false,"use a subclass instead")
         return ["name":name,
                 "duration":_duration]
@@ -55,14 +55,14 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
 }
 
 extension NavAnimatorClass{
-    func asParameter()->String{
-        let params = getParameters()
+    public func asParameter()->String{
+        let params = _getParams()
         return NavSerializer.dictToString(params)
         
     }
-    func withParameters(_ string:String){
+    public func setParameters(_ string:String){
         let info = NavSerializer.stringToDict(string)
-        setParameters(info)
+        _setParams(info)
     }
 }
 

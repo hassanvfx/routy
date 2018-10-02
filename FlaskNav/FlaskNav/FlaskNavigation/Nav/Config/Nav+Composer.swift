@@ -47,13 +47,53 @@ extension FlaskNav {
 }
 extension FlaskNav{
     
-    func presentModal(animator animatorName:String? = nil, presentator presentatorName:String?=nil, completion:@escaping ()->Void){
-        assert(modalPresentator == nil, "call `dimissModal` first")
+    func tabAnimatorParameter()->String{
+        let animator = NavAnimatorZoom(style: .zoomIn, intensity: 0.2)
+        return animator.asParameter()
+    }
+    
+    func presentTab(animator jsonAnimator:String? = nil, presentator jsonPresentator:String?=nil, completion:@escaping ()->Void){
+        if isTabPresented() {return}
+        
+        let tab = tabController!
+        let top = mainController()
+        let modalJsonAnimator = jsonAnimator ?? tabAnimatorParameter()
+        let animator = NavAnimators.shared.animator(from: modalJsonAnimator)
+        let presentation =  NavAnimators.shared.presentation(from: jsonPresentator, for: tab, from:top)
+        
+        tabPresentator = NavPresentator(presentViewController: tab, from: top, animator: animator, presentation: presentation)
+        tabPresentator?.present(completion)
+        
+    }
+    
+    func dismissTab(completion:@escaping ()->Void = {}){
+        assert(tabPresentator != nil, "call `presentTab` first")
+        
+        let onDismiss = { [weak self] in
+            self?.tabPresentator = nil
+            completion()
+        }
+        tabPresentator?.dismiss(onDismiss)
+    }
+}
+
+
+extension FlaskNav{
+    
+    func modalAnimatorParameter()->String{
+        let animator = NavAnimatorSlide(style: .slideBottom, intensity: 0.5)
+        return animator.asParameter()
+    }
+    
+    func presentModal(animator jsonAnimator:String? = nil, presentator jsonPresentator:String?=nil, completion:@escaping ()->Void){
+        
+        if isModalPresented() {return}
         
         let modal = modalNav()
         let top = topMostController()
-        let animator = NavAnimations.animator(from: animatorName)
-        let presentation =  NavAnimations.presentation(from: presentatorName, for: modal, from:top)
+        let modalJsonAnimator = jsonAnimator ?? modalAnimatorParameter()
+        let animator = NavAnimators.shared.animator(from: modalJsonAnimator)
+        let presentation =  NavAnimators.shared.presentation(from: jsonPresentator, for: modal, from:top)
         
         modal.modalRootView().viewForwarder().forwardingViews = [top.view]
         modal.modalRootView().viewForwarder().didTouchOutside = { [weak self] in
@@ -73,34 +113,10 @@ extension FlaskNav{
             self?.modalPresentator = nil
             completion()
         }
+        modalPresentator?.animator._duration = 0
         modalPresentator?.dismiss(onDismiss)
     }
- 
-}
-extension FlaskNav{
     
-    func presentTab(animator animatorName:String? = nil, presentator presentatorName:String?=nil, completion:@escaping ()->Void){
-        assert(tabPresentator == nil, "call `dismissTab` first")
-        
-        let tab = tabController!
-        let top = mainController()
-        let animator = NavAnimations.animator(from: animatorName)
-        let presentation =  NavAnimations.presentation(from: presentatorName, for: tab, from:top)
-        
-        tabPresentator = NavPresentator(presentViewController: tab, from: top, animator: animator, presentation: presentation)
-        tabPresentator?.present(completion)
-        
-    }
-    
-    func dismissTab(completion:@escaping ()->Void = {}){
-        assert(tabPresentator != nil, "call `presentTab` first")
-        
-        let onDismiss = { [weak self] in
-            self?.tabPresentator = nil
-            completion()
-        }
-        tabPresentator?.dismiss(onDismiss)
-    }
 }
 
 extension FlaskNav{
@@ -132,6 +148,9 @@ extension FlaskNav{
     }
         
 }
+
+
+
 
 
 
