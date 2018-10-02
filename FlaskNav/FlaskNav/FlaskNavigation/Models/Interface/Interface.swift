@@ -11,8 +11,8 @@ import UIKit
 protocol NavStackAPI:AnyObject{
     func push(layer:String, batched:Bool, controller:String , resourceId:String?, info:Any?, callback:NavContextCallback?)
     func pop(layer:String, batched:Bool, toController controller:String, resourceId:String?, info:Any?)
-    func popCurrentControler(layer:String, batched:Bool)
-    func popToRootController(layer:String, batched:Bool)
+    func popCurrent(layer:String, batched:Bool)
+    func popToRoot(layer:String, batched:Bool)
     func show(layer:String, batched:Bool)
     func tabIndex(from layer: String) -> Int
 }
@@ -37,11 +37,11 @@ public class NavInterface<T:RawRepresentable> {
     public func pop(controller:T, resourceId:String? = nil, info:Any? = nil){
         delegate?.pop(layer:layer, batched: batched,toController: controller.rawValue as! String, resourceId: resourceId, info: info)
     }
-    public func popCurrentControler(){
-        delegate?.popCurrentControler(layer:layer,batched: batched)
+    public func popCurrent(){
+        delegate?.popCurrent(layer:layer,batched: batched)
     }
-    public func popToRootController(){
-        delegate?.popToRootController(layer:layer,batched: batched)
+    public func popToRoot(){
+        delegate?.popToRoot(layer:layer,batched: batched)
     }
     public func show(){
         delegate?.show(layer:layer,batched: batched)

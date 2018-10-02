@@ -43,21 +43,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.nav.show()
         
         Services.router.transaction { (batch) in
-            batch.nav.popCurrentControler()
-            batch.nav.popCurrentControler()
+            batch.nav.popCurrent()
+            batch.nav.popCurrent()
         }
         
     
         Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
        
         
-        Services.router.nav.popToRootController()
+        Services.router.nav.popToRoot()
         
 //        Services.router.tab(0).show()
         Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
 //.
         
-        Services.router.nav.popToRootController()
+        Services.router.nav.popToRoot()
+        Services.router.tab(.Home).popToRoot()
+        
 //        Services.router.tab(.Main).push(controller:.Feed, info:NavInfo(params:["color":"yellow"]))
 //        Services.router.modal().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))
         
@@ -67,13 +69,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        let info = Info(title: "test", color: "red")
 //
 //        Services.router.composition?.nav.push(controller:.Feed, info:info)
-//        Services.router.composition?.nav.popToRootController()
+//        Services.router.composition?.nav.popToRoot()
 //        Services.router.composition?.nav.push(controller:.Feed, info:info)
-//        Services.router.composition?.nav.popToRootController()
+//        Services.router.composition?.nav.popToRoot()
 //        Services.router.composition?.nav.push(controller:.Feed, info:info)
 //        Services.router.composition?.nav.push(controller:.Feed, info:info)
 //        Services.router.composition?.nav.push(controller:.Feed, info:info)
-//        Services.router.composition?.nav.popToRootController()
+//        Services.router.composition?.nav.popToRoot()
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

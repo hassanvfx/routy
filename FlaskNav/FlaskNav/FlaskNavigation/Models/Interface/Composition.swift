@@ -74,12 +74,12 @@ extension NavComposition:NavStackAPI{
         self.compDelegate?.pop(layer: layer, batched: compBatched, toController: controller, resourceId: resourceId, info: info)
     }
     
-    func popCurrentControler(layer: String, batched: Bool) {
-        self.compDelegate?.popCurrentControler(layer: layer, batched: compBatched)
+    func popCurrent(layer: String, batched: Bool) {
+        self.compDelegate?.popCurrent(layer: layer, batched: compBatched)
     }
     
-    func popToRootController(layer: String, batched: Bool) {
-        self.compDelegate?.popToRootController(layer: layer, batched: compBatched)
+    func popToRoot(layer: String, batched: Bool) {
+        self.compDelegate?.popToRoot(layer: layer, batched: compBatched)
     }
     
     func show (layer: String, batched: Bool) {

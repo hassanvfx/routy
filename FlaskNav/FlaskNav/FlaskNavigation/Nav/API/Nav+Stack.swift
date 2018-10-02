@@ -40,13 +40,13 @@ extension FlaskNav: NavStackAPI{
             self?.stack(forLayer: layer).pop(toContextRef: context)
         }
     }
-    func popCurrentControler(layer:String, batched:Bool = false){
+    func popCurrent(layer:String, batched:Bool = false){
         queueIntent(batched:batched) { [weak self] in
             self?.stackActive = layer
             self?.stack(forLayer: layer).pop()
         }
     }
-    func popToRootController(layer:String, batched:Bool = false){
+    func popToRoot(layer:String, batched:Bool = false){
         queueIntent(batched:batched) { [weak self] in
             self?.stackActive = layer
             self?.stack(forLayer: layer).clear()
