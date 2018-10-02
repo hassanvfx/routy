@@ -44,8 +44,17 @@ extension FlaskNav {
         child.removeFromParentViewController()
     }
     
-    func presentModal(_ modal:FlaskNavigationController, animated:Bool, completion:@escaping ()->Void){
+}
+extension FlaskNav{
+    
+    func presentModal(animator animatorName:String? = nil, presentator presentatorName:String?=nil, completion:@escaping ()->Void){
+        assert(modalPresentator == nil, "call `dimissModal` first")
+        
+        let modal = modalNav()
         let top = topMostController()
+        let animator = NavAnimations.animator(from: animatorName)
+        let presentation =  NavAnimations.presentation(from: presentatorName, for: modal, from:top)
+        
         modal.modalRootView().viewForwarder().forwardingViews = [top.view]
         modal.modalRootView().viewForwarder().didTouchOutside = { [weak self] in
             if (self?.isModalPresented())! {
@@ -54,20 +63,42 @@ extension FlaskNav {
         }
         
         modal.modalPresentationStyle = .overCurrentContext
-        _present(modal,from: top,animated: animated,completion: completion)
+        
+        modalPresentator = NavPresentator(presentViewController: modal, from: top, animator: animator, presentation: presentation)
+        modalPresentator?.present(completion)
+        
     }
     
-    func dismissModal(animated:Bool, completion:@escaping ()->Void){
-        _dismiss(fromController: topMostController(), animated: animated, completion: completion)
+    func dismissModal(completion:@escaping ()->Void){
+        assert(modalPresentator != nil, "call `presentModal` first")
+        
+        modalPresentator?.dismiss(completion)
+    }
+ 
+}
+extension FlaskNav{
+    
+    func presentTab(animator animatorName:String? = nil, presentator presentatorName:String?=nil, completion:@escaping ()->Void){
+        assert(tabPresentator == nil, "call `dismissTab` first")
+        
+        let tab = tabController!
+        let top = mainController()
+        let animator = NavAnimations.animator(from: animatorName)
+        let presentation =  NavAnimations.presentation(from: presentatorName, for: tab, from:top)
+        
+        tabPresentator = NavPresentator(presentViewController: tab, from: top, animator: animator, presentation: presentation)
+        tabPresentator?.present(completion)
+        
     }
     
-    func presentTab(_ controller:UIViewController, animated:Bool, completion:@escaping ()->Void){
-        _present(controller,from: mainController(),animated: animated,completion: completion)
+    func dismissTab(completion:@escaping ()->Void){
+        assert(tabPresentator != nil, "call `presentTab` first")
+        
+        tabPresentator?.dismiss(completion)
     }
-    
-    func dismissTab(animated:Bool, completion:@escaping ()->Void){
-        _dismiss(fromController: mainController(), animated: animated, completion: completion)
-    }
+}
+
+extension FlaskNav{
     
     func _present(_ controller:UIViewController, from fromController:UIViewController? = nil, animated:Bool, completion:@escaping ()->Void){
         

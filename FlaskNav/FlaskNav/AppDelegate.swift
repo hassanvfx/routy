@@ -26,6 +26,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    func testTabAnimation(){
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
+        
+        //        Services.router.modal.show()
+//        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))
+        //        Services.router.modal.popCurrent()
+        //        Services.router.nav.show()
+    }
+    
     func testModal(){
         Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
 

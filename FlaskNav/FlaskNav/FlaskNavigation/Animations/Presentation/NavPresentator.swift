@@ -1,5 +1,5 @@
 //
-//  NavTransitioner.swift
+//  NavPresentator.swift
 //  FlaskNav
 //
 //  Created by hassan uriostegui on 10/2/18.
@@ -8,10 +8,10 @@
 
 import UIKit
 
-class NavTransitioner:NSObject {
+class NavPresentator:NSObject {
     
     var animator:NavTransitionAnimator
-    var presentator:NavTransitionPresentator
+    var presentation:NavPresentationController
     
     weak var presented:UIViewController!
     weak var presenting:UIViewController!
@@ -19,12 +19,12 @@ class NavTransitioner:NSObject {
     init(presentViewController presented:UIViewController,
          from presenting:UIViewController,
          animator:NavTransitionAnimator? = nil,
-         presentator:NavTransitionPresentator? = nil){
+         presentation:NavPresentationController? = nil){
         
         self.presented = presented
         self.presenting = presenting
         self.animator = animator ?? NavTransitionAnimator()
-        self.presentator = presentator ?? NavTransitionPresentator(presentedViewController: presented, presenting: presenting)
+        self.presentation = presentation ?? NavPresentationController(presentedViewController: presented, presenting: presenting)
     }
     
     func present(_ completion:@escaping ()->Void = {}){
@@ -47,13 +47,13 @@ class NavTransitioner:NSObject {
         presenting.dismiss(animated: true, completion: completion)
     }
 }
-extension NavTransitioner:UIViewControllerTransitioningDelegate{
+extension NavPresentator:UIViewControllerTransitioningDelegate{
    
     func presentationController(forPresentedViewController presented: UIViewController,
                                 presenting: UIViewController?,
                                 sourceViewController source: UIViewController) -> UIPresentationController? {
         
-        return presentator
+        return presentation
     }
     
     func animationController(forPresentedController presented: UIViewController, presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {

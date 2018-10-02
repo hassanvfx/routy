@@ -14,23 +14,22 @@ extension FlaskNav{
     public func displayTab(_ index:Int){
         dismissModal()
         DispatchQueue.main.async {  [weak self] in
-            if (self?.isTabPresented())! { return}
+            if (self?.isTabPresented())! == true { return}
             
-            self?.presentTab((self?.tabController!)!, animated: false, completion:{})
+            self?.presentTab(completion:{})
         }
     }
     public func displayNav(){
         dismissModal()
         DispatchQueue.main.async { [weak self] in
-            self?.dismissTab(animated: false, completion: {})
+            self?.dismissTab(completion: {})
         }
     }
     public func displayModal(){
         DispatchQueue.main.async {  [weak self] in
-            if (self?.isModalPresented())! { return}
+            if (self?.isModalPresented())! == true { return}
             
-            let modal = self?.modalNav()
-            self?.presentModal(modal!, animated: false, completion:{})
+            self?.presentModal(completion:{})
         }
     }
     
@@ -38,7 +37,7 @@ extension FlaskNav{
         DispatchQueue.main.async {  [weak self] in
             if (self?.isModalPresented())! == false { return}
             
-            self?.dismissModal(animated: false, completion: {})
+            self?.dismissModal(completion: {})
         }
     }
     

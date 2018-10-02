@@ -29,6 +29,11 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     var compDelegate: NavStackAPI? = nil
     var compBatched: Bool = false
     
+    // MARK: ANIMATIONS
+    
+    var modalPresentator:NavPresentator?
+    var tabPresentator:NavPresentator?
+    
     // MARK: CONFIG
     
     let substance = NavigationSubstance()

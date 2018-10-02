@@ -1,5 +1,5 @@
 //
-//  NavTransitionPresentator.swift
+//  NavPresentationController.swift
 //  FlaskNav
 //
 //  Created by hassan uriostegui on 10/2/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class NavTransitionPresentator:  UIPresentationController {
+final class NavPresentationController:  UIPresentationController {
 //    var touchForwardingView:TouchForwardingView!
     
     override var frameOfPresentedViewInContainerView:CGRect {
