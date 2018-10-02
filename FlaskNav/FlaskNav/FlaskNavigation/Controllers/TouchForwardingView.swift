@@ -12,7 +12,7 @@ class TouchForwardingView: UIView {
 
     var touchChilds = true
     var forwardingViews:[UIView] = []
-    
+    var didTouchOutside = {}
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         
         if touchChilds {
@@ -25,6 +25,7 @@ class TouchForwardingView: UIView {
         
         for forwardedView in  forwardingViews {
             if let forwardHit = forwardedView.hitTest(point, with: event){
+                didTouchOutside()
                 return forwardHit
             }
         }

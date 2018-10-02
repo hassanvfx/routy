@@ -159,10 +159,7 @@ extension FlaskNav{
         let nav = FlaskNavigationController(rootViewController: root)
         nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
         nav.delegate = self
-        nav.modalPresentationStyle = .overCurrentContext
-        
-        
-        
+
         let layer = NavLayer.Modal()
         NavContext.manager.contextRoot(forLayer: layer, viewController: root)
         

@@ -44,11 +44,17 @@ extension FlaskNav {
         child.removeFromParentViewController()
     }
     
-    func presentModal(_ controller:FlaskNavigationController, animated:Bool, completion:@escaping ()->Void){
+    func presentModal(_ modal:FlaskNavigationController, animated:Bool, completion:@escaping ()->Void){
         let top = topMostController()
-        controller.modalRootView().viewForwarder().forwardingViews = [top.view]
+        modal.modalRootView().viewForwarder().forwardingViews = [top.view]
+        modal.modalRootView().viewForwarder().didTouchOutside = { [weak self] in
+            if (self?.isModalPresented())! {
+                self?.modal.dismiss()
+            }
+        }
         
-        _present(controller,from: top,animated: animated,completion: completion)
+        modal.modalPresentationStyle = .overCurrentContext
+        _present(modal,from: top,animated: animated,completion: completion)
     }
     
     func dismissModal(animated:Bool, completion:@escaping ()->Void){
