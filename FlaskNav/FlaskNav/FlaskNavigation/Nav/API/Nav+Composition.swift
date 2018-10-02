@@ -16,14 +16,16 @@ extension FlaskNav:NavCompositionAPI{
     typealias COMP_MODS_TYPE = MODS
     
     public var nav:NavInterface<CONT>{
-        return (self.composition?.nav)!
+        return (composition?.nav)!
+    }
+    
+    public var modal:NavInterfaceModal<MODS>{
+        return (composition?.modal)!
     }
 
     public func tab(_ tab:TABS)->NavInterface<CONT>{
         return (composition?.tab(tab ))!
     }
-    
-
     
     func tabIndex(from layer: String) -> Int {
         //TODO: return actual value from mapping

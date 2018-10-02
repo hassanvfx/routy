@@ -154,8 +154,11 @@ extension FlaskNav{
         let root = NavModalRootController()
         let config = navRootConfig!
         
-        
         root.title = "Modal"
+        root.didTouch = { [weak self] in
+            //if user gets stuck in the root we'll do out best to dismiss it
+            self?.modal.dismiss()
+        }
         
         let nav = UINavigationController(rootViewController: root)
         nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)

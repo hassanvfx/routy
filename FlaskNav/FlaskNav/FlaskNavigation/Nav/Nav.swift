@@ -92,7 +92,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     //MARK: NavigationControllerDelegate
     public func navigationController(_ substanceController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         
-        completeOperationFor(controller: viewController)
+        intentToCompleteOperationFor(controller: viewController)
     }
     
     public func navigationController(_ substanceController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {

@@ -68,22 +68,22 @@ extension FlaskNav{
     }
     
 
-    func completeOperationFor(controller:UIViewController){
+    func intentToCompleteOperationFor(controller:UIViewController){
        
         let rootContext = NavContext.manager.contextRoot(fromViewController: controller)
         
         if let rootContext = rootContext {
-            completeOperationFor(rootContext:rootContext)
+            intentToCompleteOperationFor(rootContext:rootContext)
         }else{
             let context = NavContext.manager.context(fromViewController: controller)
-            completeOperationFor(context:context)
+            intentToCompleteOperationFor(context:context)
         } 
         
     }
     
-    func completeOperationFor(rootContext:NavContext){}
+    func intentToCompleteOperationFor(rootContext:NavContext){}
     
-    func completeOperationFor(context aContext:NavContext?){
+    func intentToCompleteOperationFor(context aContext:NavContext?){
         
         if aContext == nil{
             assert(false, "context should always be defined")
@@ -94,6 +94,8 @@ extension FlaskNav{
         NavContext.manager.releaseOnPop(context: context)
         let key = context.contextId
         var references = operationsFor(key:key)
+        if(references.isEmpty){ return } // ie tab is presenting a nested nav state
+        
         let navOperation = references.removeFirst()
         operations[key] = references
         

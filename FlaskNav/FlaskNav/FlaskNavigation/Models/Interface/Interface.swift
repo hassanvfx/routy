@@ -17,9 +17,8 @@ protocol NavStackAPI:AnyObject{
     func tabIndex(from layer: String) -> Int
 }
 
+public class NavInterfaceCommon<T:RawRepresentable> {
 
-public class NavInterface<T:RawRepresentable> {
-    
     weak var delegate:NavStackAPI?
     let layer:String
     let batched:Bool
@@ -40,11 +39,24 @@ public class NavInterface<T:RawRepresentable> {
     public func popCurrent(){
         delegate?.popCurrent(layer:layer,batched: batched)
     }
+   
+}
+
+public class NavInterface<T:RawRepresentable>: NavInterfaceCommon<T> {
+    
     public func popToRoot(){
         delegate?.popToRoot(layer:layer,batched: batched)
     }
     public func show(){
         delegate?.show(layer:layer,batched: batched)
+    }
+    
+}
+
+public class NavInterfaceModal<T:RawRepresentable>: NavInterfaceCommon<T> {
+    
+    public func dismiss(){
+        delegate?.popToRoot(layer:layer,batched: batched)
     }
     
 }
