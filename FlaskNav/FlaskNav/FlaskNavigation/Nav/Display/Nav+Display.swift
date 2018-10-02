@@ -14,8 +14,6 @@ extension FlaskNav{
     public func displayTab(_ index:Int){
         dismissModal()
         DispatchQueue.main.async {  [weak self] in
-            if (self?.isTabPresented())! == true { return}
-            
             self?.presentTab(completion:{})
         }
     }

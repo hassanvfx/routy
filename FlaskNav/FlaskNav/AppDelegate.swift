@@ -20,14 +20,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
         
-        testModal()
+        testTabAnimation()
+//        testModal()
 //        testTransaction()
 //        testAPI()
         return true
     }
     
     func testTabAnimation(){
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
+        Services.router.tab(.Home).show()
+        Services.router.nav.show()
+        Services.router.tab(.Home).show()
+        
+//        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
         
         //        Services.router.modal.show()
 //        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))

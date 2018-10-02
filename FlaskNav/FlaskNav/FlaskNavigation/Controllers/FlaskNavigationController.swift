@@ -10,11 +10,14 @@ import UIKit
 
 class FlaskNavigationController: UINavigationController {
 
+    var isModal = false
+    
     func rootView()->UIViewController{
         return viewControllers.first!
     }
     
     func modalRootView()->ModalRootController{
+        assert(isModal,"this controller is not modal")
         return viewControllers.first! as! ModalRootController
     }
 }

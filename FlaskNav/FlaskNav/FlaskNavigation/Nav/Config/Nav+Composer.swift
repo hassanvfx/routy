@@ -62,17 +62,18 @@ extension FlaskNav{
             }
         }
         
-        modal.modalPresentationStyle = .overCurrentContext
-        
         modalPresentator = NavPresentator(presentViewController: modal, from: top, animator: animator, presentation: presentation)
         modalPresentator?.present(completion)
         
     }
     
-    func dismissModal(completion:@escaping ()->Void){
+    func dismissModal(completion:@escaping ()->Void = {}){
         assert(modalPresentator != nil, "call `presentModal` first")
-        
-        modalPresentator?.dismiss(completion)
+        let onDismiss = { [weak self] in
+            self?.modalPresentator = nil
+            completion()
+        }
+        modalPresentator?.dismiss(onDismiss)
     }
  
 }
@@ -91,10 +92,14 @@ extension FlaskNav{
         
     }
     
-    func dismissTab(completion:@escaping ()->Void){
+    func dismissTab(completion:@escaping ()->Void = {}){
         assert(tabPresentator != nil, "call `presentTab` first")
         
-        tabPresentator?.dismiss(completion)
+        let onDismiss = { [weak self] in
+            self?.tabPresentator = nil
+            completion()
+        }
+        tabPresentator?.dismiss(onDismiss)
     }
 }
 

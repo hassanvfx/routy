@@ -10,7 +10,7 @@ import UIKit
 
 class NavPresentator:NSObject {
     
-    var animator:NavTransitionAnimator
+    var animator:NavAnimatorClass
     var presentation:NavPresentationController
     
     weak var presented:UIViewController!
@@ -18,12 +18,12 @@ class NavPresentator:NSObject {
     
     init(presentViewController presented:UIViewController,
          from presenting:UIViewController,
-         animator:NavTransitionAnimator? = nil,
+         animator:NavAnimatorClass? = nil,
          presentation:NavPresentationController? = nil){
         
         self.presented = presented
         self.presenting = presenting
-        self.animator = animator ?? NavTransitionAnimator()
+        self.animator = animator ?? NavAnimatorClass()
         self.presentation = presentation ?? NavPresentationController(presentedViewController: presented, presenting: presenting)
     }
     
@@ -49,19 +49,20 @@ class NavPresentator:NSObject {
 }
 extension NavPresentator:UIViewControllerTransitioningDelegate{
    
-    func presentationController(forPresentedViewController presented: UIViewController,
+    func presentationController(forPresented presented: UIViewController,
                                 presenting: UIViewController?,
-                                sourceViewController source: UIViewController) -> UIPresentationController? {
+                                source: UIViewController) -> UIPresentationController? {
         
         return presentation
     }
     
-    func animationController(forPresentedController presented: UIViewController, presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         animator.presenter = true
         return animator
     }
     
-    func animationController(forDismissedController dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         animator.presenter = false
         return animator
     }
