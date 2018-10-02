@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.nav.push(controller:.Home, info:NavInfo(params:["color":"yellow"]))
        
         
-        Services.router.nav.popCurrentControler()
+        Services.router.nav.popToRootController()
         
         Services.router.tab(0).show()
         

@@ -16,7 +16,7 @@ extension FlaskNav{
         if let stack = stackLayers[name] {
             return stack
         }
-        let newStack = NavStack()
+        let newStack = NavStack(layer:name)
         stackLayers[name] = newStack
         return newStack
     }
@@ -27,15 +27,15 @@ extension FlaskNav: NavStackAPI{
     
     func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:Any? = nil, callback:NavContextCallback? = nil){
         queueIntent(batched:batched) { [weak self] in
-            let context = NavContext.manager.context(controller: controller, resourceId: resourceId, info: info, callback)
+            let context = NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, callback)
             self?.stack(forLayer: layer).push(context: context)
         }
     }
     
     func pop(layer:String, batched:Bool = false, toController controller:String, resourceId:String?, info:Any?){
         queueIntent(batched:batched) { [weak self] in
-            let context =  NavContext.manager.context( controller: controller, resourceId: resourceId, info: info)
-            self?.stack(forLayer: layer).pop(toContext: context)
+            let context =  NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info)
+            self?.stack(forLayer: layer).pop(toContextRef: context)
         }
     }
     func popCurrentControler(layer:String, batched:Bool = false){

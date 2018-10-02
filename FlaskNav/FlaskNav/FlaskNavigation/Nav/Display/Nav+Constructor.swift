@@ -20,7 +20,7 @@ extension FlaskNav{
     func controllerFrom(context:NavContext, navOperation:FlaskNavOperation)->UIViewController{
  
         if context.controller == ROOT_CONTROLLER {
-            return activeRootController()!
+            return activeRootController(for:context.layer)!
         }
         
         let constructor = controllerConstructor(for: context.controller)

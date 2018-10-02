@@ -20,6 +20,7 @@ public class NavContext {
     var viewControllerStrong:UIViewController? = nil
     
     public let animation:NavigationAnimations
+    public let layer:String
     public let controller:String
     public let resourceId:String?
     public let contextId:Int
@@ -27,7 +28,7 @@ public class NavContext {
     public let callback:NavContextCallback?
     public var navigator:NavigatorType?
     
-    init(id contextId: Int, controller:String, resourceId:String?,  info:Any?, animation:NavigationAnimations = .Default, _ callback:NavContextCallback? = nil){
+    init(id contextId: Int, layer:String, controller:String, resourceId:String?,  info:Any?, animation:NavigationAnimations = .Default, _ callback:NavContextCallback? = nil){
         
         self.contextId = contextId
         self.info = info
@@ -35,6 +36,7 @@ public class NavContext {
         self.animation = animation
         self.controller = controller
         self.resourceId = resourceId
+        self.layer = layer
     }
     
 
@@ -49,7 +51,7 @@ public class NavContext {
         return "cid:\(contextId)->\(path)"
     }
     
-    public func setWeakViewController(_ explicit:Bool = false){
+    public func setViewControllerWeak(_ explicit:Bool = false){
         if(!explicit){
             assert(viewControllerStrong != nil,"called to set weak but strong is nil")
         }
@@ -57,12 +59,12 @@ public class NavContext {
         viewControllerStrong = nil
     }
     
-    public func setWeak(viewController:UIViewController?){
+    public func setViewController(weak viewController:UIViewController?){
         viewControllerWeak = viewController
         viewControllerStrong = nil
     }
     
-    public func setStrong(viewController:UIViewController){
+    public func setViewController(strong viewController:UIViewController){
         viewControllerWeak = viewController
         viewControllerStrong = viewController
     }

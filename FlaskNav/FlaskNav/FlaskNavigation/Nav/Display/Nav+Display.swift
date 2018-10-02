@@ -14,36 +14,40 @@ extension FlaskNav{
         
         DispatchQueue.main.async { [weak self] in
             self?.dismissViewController(animated: false, completion: {})
-//            self?.tabController?.view.isHidden = true
-//            self?.navController?.view.isHidden = false
         }
     }
     
     public func displayTab(_ index:Int){
         DispatchQueue.main.async {  [weak self] in
             self?.present((self?.tabController!)!, animated: false, completion:{})
-//            self?.tabController?.view.isHidden = false
-//            self?.navController?.view.isHidden = true
-//            self?.window?.rootViewController = self?.tabController!
-//            self?.window?.makeKeyAndVisible()
         }
     }
 }
 
 extension FlaskNav{
     
+    func popToRoot(context:NavContext){
+        DispatchQueue.main.async { [weak self] in
+            let nav = (self?.navInstance(forLayer: context.layer))!
+            let animated = context.animation != .None
+            nav.popToRootViewController(animated:animated)
+        }
+    }
+    
     func pushController(_ controller:UIViewController, context:NavContext){
         DispatchQueue.main.async { [weak self] in
+            let nav = (self?.navInstance(forLayer: context.layer))!
             let animated = context.animation != .None
-            self?.navController?.pushViewController(controller, animated: animated)
+            nav.pushViewController(controller, animated: animated)
             
         }
     }
     
-    func popToController(_ controller:UIViewController,  context:NavContext){
+    func popToController(_ controller:UIViewController, context:NavContext){
         DispatchQueue.main.async { [weak self] in
+            let nav = (self?.navInstance(forLayer: context.layer))!
             let animated = context.animation != .None
-            self?.navController?.popToViewController(controller, animated: animated)
+            nav.popToViewController(controller, animated: animated)
         }
     }
     

@@ -10,16 +10,25 @@ import UIKit
 
 public class NavStack {
     
-    public private(set) var stack:[NavContext] = []
-    static public private(set) var locked = false
-    public var currentNavigator:NavigatorType = .Root
-    
-    static let rootContext = NavContext.manager.context(controller: ROOT_CONTROLLER, resourceId: nil, info: nil)
     public static let stackQueue:OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount=1
         return queue
     }()
+    
+    public private(set) var stack:[NavContext] = []
+    static public private(set) var locked = false
+    public var currentNavigator:NavigatorType = .Root
+    
+    let rootContext:NavContext
+    let layer:String
+    
+    init(layer:String){
+        self.layer = layer
+        self.rootContext = NavContext.manager.contextRoot(forLayer: layer)!
+    }
+    
+   
     
     
     public func currentContextHash()->String{
@@ -29,7 +38,7 @@ public class NavStack {
     
     public func currentContext() -> NavContext{
         if stack.isEmpty {
-            return NavStack.rootContext
+            return rootContext
         }
         return stack.last!
     }
@@ -51,7 +60,7 @@ public class NavStack {
         _ = stack.removeLast()
     }
 
-    public func pop(toContext aContext:NavContext){
+    public func pop(toContextRef aContext:NavContext){
         currentNavigator = .Pop
         
         var aStack = stack
@@ -63,7 +72,7 @@ public class NavStack {
             if(lastContext?.controller == aContext.controller &&
                 lastContext?.resourceId == aContext.resourceId){
                 
-                result = aContext
+                result = lastContext
             }
             
             _ = aStack.removeLast()

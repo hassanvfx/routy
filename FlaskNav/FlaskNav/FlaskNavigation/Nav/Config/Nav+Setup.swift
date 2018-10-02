@@ -14,8 +14,8 @@ extension FlaskNav{
         assert(window == nil, "This instance is already setup")
         window = aWindow
         
-        initNavController() // do this optionally
-        initTabController() // do this optionally
+        initNavController()
+        initTabController()
         
         window?.rootViewController = mainController()
         window?.makeKeyAndVisible()
@@ -25,6 +25,18 @@ extension FlaskNav{
 
 
 extension FlaskNav{
+    
+    func mainController()->UIViewController{
+        return navInstance(forLayer: NavLayer.Nav())
+    }
+    
+    func initNavController(){
+        navInstance(forLayer: NavLayer.Nav())
+    }
+    
+    func mainNav()->UINavigationController{
+        return navInstance(forLayer: NavLayer.Nav())
+    }
 
     func rootController(forTabIndex index:Int)->UIViewController{
         let controller = UIViewController()
@@ -34,50 +46,89 @@ extension FlaskNav{
     
     
     func tabNav(for index:Int)->UINavigationController{
-        
-        if let nav = tabNavControllers[index]{
-            return nav
-        }
-        let rootVc = rootController(forTabIndex: index )
-        let aNav = UINavigationController(rootViewController: rootVc)
-        tabNavControllers[index] = aNav
-        return aNav
+        return navInstance(forLayer: NavLayer.Tab(index))
     }
     
-    
-    func initNavController(){
-       
-        let controller = navRoot!()
-        let config = navRootConfig!
-        
-        controller.view.backgroundColor = .green
-        
-        navController = UINavigationController(rootViewController: controller)
-        navController?.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
-        navController?.delegate = self
-        
-    }
+  
     
     func initTabController(){
         
         tabController = UITabBarController()
-        tabController?.tabBar.tintColor = UIColor.black
+
+        var navs:[UINavigationController] = []
+        for (index,_) in tabsIndexMap{
+            let aNav = navInstance(forLayer: NavLayer.Tab(index))
+            navs.append(aNav)
+        }
         
-        let tab1 = tabNav(for: 0)
-        let tab2 = tabNav(for: 1)
+        tabController?.viewControllers = navs
+     
         
-        tabController?.viewControllers = [tab1, tab2]
-        
-        let testController = UIViewController()
-        testController.view.backgroundColor = .red
-        tab1.pushViewController( testController, animated: false)
-        
-        assert(navController != nil, "first intantiate the tab controller!")
-//        FlaskNav.add(child: tabController!, to: navController!)
     }
     
-    func mainController()->UIViewController{
-        return navController!
-    }
+    
   
 }
+
+extension FlaskNav{
+    
+    @discardableResult
+    func navInstance(forLayer layer:String)->UINavigationController{
+        
+        if let nav = navControllers[layer] {
+            return nav
+        }
+        
+        if(NavLayer.IsNav(layer)){
+            let mainNav = newMainNavController()
+            navControllers[layer] = mainNav
+            return mainNav
+        }
+        
+        let index = NavLayer.TabIndex(layer)
+        let tabNav = newTabNavController(forTabIndex: index)
+        navControllers[layer] = tabNav
+        return tabNav
+        
+    }
+    
+    func newMainNavController()->UINavigationController{
+       
+        let root = navRoot!()
+        let config = navRootConfig!
+        
+        root.view.backgroundColor = .green
+        root.title = "main"
+        
+        let nav = UINavigationController(rootViewController: root)
+        nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
+        nav.delegate = self
+        
+        let layer = NavLayer.Nav()
+        NavContext.manager.contextRoot(forLayer: layer, viewController: root)
+        
+        return nav
+    }
+    
+    func newTabNavController(forTabIndex index:Int)->UINavigationController{
+        
+        let constructor = tabs[index]!
+        let config = tabsConfig[index]!
+        
+        let root = constructor()
+        
+        root.view.backgroundColor = .purple
+        root.title = "tab \(index)"
+        
+        let nav = UINavigationController(rootViewController: root)
+        nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
+        nav.delegate = self
+        
+        let layer = NavLayer.Tab(index)
+        NavContext.manager.contextRoot(forLayer: layer, viewController: root)
+        
+        return nav
+    }
+}
+
+

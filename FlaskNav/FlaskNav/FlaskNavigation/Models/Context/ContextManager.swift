@@ -22,6 +22,7 @@ public class NavContextRef<T> where T: AnyObject {
 class NavContextManager {
     
     var contexts:[Int:NavContext] = [:]
+    var roots:[String:NavContext] = [:]
     
     static let shared = NavContextManager()
     var contextCounter = 0
@@ -30,10 +31,30 @@ class NavContextManager {
 }
 extension NavContextManager{
    
-    public func context( controller:String, resourceId:String?,  info:Any?, animation:NavigationAnimations = .Default, _ callback:NavContextCallback? = nil) -> NavContext{
+    func contextRoot(fromViewController viewController:UIViewController)->NavContext?{
+        let filtered = roots.filter{ $0.value.viewController() == viewController}
+        assert(filtered.count <= 1,"there should be only one match")
+        return filtered.first?.value
+    }
+    
+    public func contextRoot(forLayer layer:String)->NavContext?{
+        return roots[layer]
+    }
+    
+    @discardableResult
+    public func contextRoot(forLayer layer:String, viewController:UIViewController) -> NavContext{
+        
+        let aContext = context( layer:layer, controller: ROOT_CONTROLLER, resourceId: nil, info: nil)
+        aContext.setViewController(weak: viewController)
+        roots[layer] = aContext
+        
+        return aContext
+    }
+    
+    public func context(layer:String, controller:String, resourceId:String?,  info:Any?, animation:NavigationAnimations = .Default, _ callback:NavContextCallback? = nil) -> NavContext{
         
         let contextId = self.nextId()
-        let context = NavContext(id: contextId, controller: controller, resourceId: resourceId, info: info, animation: animation, callback)
+        let context = NavContext(id: contextId, layer:layer, controller: controller, resourceId: resourceId, info: info, animation: animation, callback)
         register(context: context)
         
         return context
@@ -51,6 +72,8 @@ extension NavContextManager{
     }
     
     
+    
+    
     func register(context:NavContext){
         contexts[context.contextId] = context
     }
@@ -58,7 +81,7 @@ extension NavContextManager{
     public func releaseOnPop(context:NavContext){
         if(context.navigator != .Pop){ return }
         
-        context.setWeakViewController(true)
+        context.setViewControllerWeak(true)
         contexts[context.contextId] = nil
     }
 

@@ -17,9 +17,8 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     // MARK: NAV CONTROLLER
     
     var window: UIWindow?
-    var navController: UINavigationController?
     var tabController: UITabBarController?
-    var tabNavControllers: [Int:UINavigationController] = [:]
+    var navControllers:[String:UINavigationController] = [:]
     
     // MARK: STACK
     
@@ -30,7 +29,6 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     var compDelegate: NavStackAPI? = nil
     var compBatched: Bool = false
     
-   
     // MARK: CONFIG
     
     let substance = NavigationSubstance()

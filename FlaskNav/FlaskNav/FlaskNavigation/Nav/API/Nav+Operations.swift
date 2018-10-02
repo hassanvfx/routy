@@ -26,12 +26,15 @@ extension FlaskNav{
     }
     
     
-    func startOperationFor(navOperation:FlaskNavOperation, _ closure:@escaping (FlaskOperation)->Void) {
+    func performOperationFor(navOperation:FlaskNavOperation, _ closure:@escaping (FlaskOperation)->Void) {
        
         
         let debugClosure:(FlaskOperation)->Void = { (op) in
-            print("[$] performing operation for NAV key \(navOperation.name)")
+            print("[$] performing SYNC operation for NAV key \(navOperation.name)")
             closure(navOperation.operation!)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                navOperation.releaseFlux()
+            })
         }
         
         let operation = FlaskOperation(block: debugClosure)
@@ -47,7 +50,7 @@ extension FlaskNav{
         let key = context.contextId
         
         let debugClosure:(FlaskOperation)->Void = { (op) in
-            print("[$] performing operation for key \(navOperation.name) \(key)")
+            print("[$] performing ASYNC operation for key \(navOperation.name) \(key)")
             closure(navOperation.operation!)
         }
         
@@ -67,16 +70,28 @@ extension FlaskNav{
 
     func completeOperationFor(controller:UIViewController){
        
-        if controller == activeRootController() &&
-            didShowRootCounter < FIRST_NAVIGATION_ROOT_COUNT {
-            print("[ ] skiping operation for root key ")
-            didShowRootCounter += 1
+        let rootContext = NavContext.manager.contextRoot(fromViewController: controller)
+        
+        if let rootContext = rootContext {
+            completeOperationFor(rootContext:rootContext)
+        }else{
+            let context = NavContext.manager.context(fromViewController: controller)
+            completeOperationFor(context:context)
+        } 
+        
+    }
+    
+    func completeOperationFor(rootContext:NavContext){}
+    
+    func completeOperationFor(context aContext:NavContext?){
+        
+        if aContext == nil{
+            assert(false, "context should always be defined")
             return
         }
+        let context = aContext!
         
-        let context = NavContext.manager.context(fromViewController: controller)!
         NavContext.manager.releaseOnPop(context: context)
-        
         let key = context.contextId
         var references = operationsFor(key:key)
         let navOperation = references.removeFirst()
@@ -89,6 +104,5 @@ extension FlaskNav{
             navOperation.releaseFlux()
             print("pending operations for queue =\(self.operationQueue.operations.count)")
         }
-        
     }
 }
