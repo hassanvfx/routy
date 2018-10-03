@@ -18,9 +18,12 @@ public class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAni
     var _intensity:Double
     var _style:STYLE
     
-    init(style:STYLE, intensity:Double? = nil){
+    init(style:STYLE, intensity:Double? = nil, duration:Double? = nil){
         _style = style
         _intensity = intensity ?? 0.5
+        
+         super.init()
+        _duration = duration ?? 0.4
     }
 
     override open func name()->String{
@@ -54,6 +57,7 @@ public class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAni
     
     override open func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
         
+        containerView.addSubview(fromController.view)
         containerView.addSubview(controller.view)
         let animationDuration = transitionDuration(using: context)
         
@@ -71,6 +75,7 @@ public class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAni
     }
     override open func dismiss(controller:UIViewController,to toController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
         
+        containerView.addSubview(controller.view)
         containerView.insertSubview(toController.view, belowSubview: controller.view)
         
         let animationDuration = transitionDuration(using: context)

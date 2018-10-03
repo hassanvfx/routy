@@ -36,9 +36,9 @@ public class NavAnimatorSlide: NavAnimatorBasic<NavAnimatorSlideStyle>{
             controller.view.transform = CGAffineTransform(translationX: CGFloat(xDisp), y: 0)
         case .slideRight:
             controller.view.transform = CGAffineTransform(translationX: CGFloat(-xDisp), y: 0)
-        case .slideBottom:
-            controller.view.transform = CGAffineTransform(translationX : 0, y: CGFloat(yDisp))
         case .slideTop:
+            controller.view.transform = CGAffineTransform(translationX : 0, y: CGFloat(yDisp))
+        case .slideBottom:
             controller.view.transform = CGAffineTransform(translationX : 0, y: CGFloat(-yDisp))
   
         }

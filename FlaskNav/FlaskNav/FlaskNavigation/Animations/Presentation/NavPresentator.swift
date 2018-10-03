@@ -1,5 +1,5 @@
 //
-//  NavPresentator.swift
+//  NavTransition.swift
 //  FlaskNav
 //
 //  Created by hassan uriostegui on 10/2/18.
@@ -8,10 +8,10 @@
 
 import UIKit
 
-class NavPresentator:NSObject {
+class NavTransition:NSObject {
     
     var animator:NavAnimatorClass
-    var presentation:NavPresentationController
+    var presentation:NavPresentationClass
     
     weak var presented:UIViewController!
     weak var presenting:UIViewController!
@@ -19,12 +19,12 @@ class NavPresentator:NSObject {
     init(presentViewController presented:UIViewController,
          from presenting:UIViewController,
          animator:NavAnimatorClass? = nil,
-         presentation:NavPresentationController? = nil){
+         presentation:NavPresentationClass? = nil){
         
         self.presented = presented
         self.presenting = presenting
         self.animator = animator ?? NavAnimatorClass()
-        self.presentation = presentation ?? NavPresentationController(presentedViewController: presented, presenting: presenting)
+        self.presentation = presentation ?? NavPresentationClass(presentedViewController: presented, presenting: presenting)
     }
     
     func present(_ completion:@escaping ()->Void = {}){
@@ -47,7 +47,7 @@ class NavPresentator:NSObject {
         presenting.dismiss(animated: true, completion: completion)
     }
 }
-extension NavPresentator:UIViewControllerTransitioningDelegate{
+extension NavTransition:UIViewControllerTransitioningDelegate{
    
     func presentationController(forPresented presented: UIViewController,
                                 presenting: UIViewController?,

@@ -19,7 +19,8 @@ public class NavContext {
     weak var viewControllerWeak:UIViewController? = nil
     var viewControllerStrong:UIViewController? = nil
     
-    public let animator:String?
+    public let animator:NavAnimatorClass?
+    public let presentation:NavPresentationClass?
     public let layer:String
     public let controller:String
     public let resourceId:String?
@@ -28,12 +29,13 @@ public class NavContext {
     public let callback:NavContextCallback?
     public var navigator:NavigatorType?
     
-    init(id contextId: Int, layer:String, controller:String, resourceId:String?,  info:Any?, animator:String? = nil, _ callback:NavContextCallback? = nil){
+    init(id contextId: Int, layer:String, controller:String, resourceId:String?,  info:Any?, animator:NavAnimatorClass? = nil, presentation:NavPresentationClass? = nil, _ callback:NavContextCallback? = nil){
         
         self.contextId = contextId
         self.info = info
         self.callback = callback
         self.animator = animator
+        self.presentation = presentation
         self.controller = controller
         self.resourceId = resourceId
         self.layer = layer

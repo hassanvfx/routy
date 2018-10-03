@@ -8,76 +8,15 @@
 
 import UIKit
 
-public typealias NavAnimatorConstructor = ()->NavAnimatorClass
-
-public enum NavAnimatorName:String{
-    case Slide, Zoom
-}
-
 public class NavAnimators: NSObject {
     
-    static let shared = NavAnimators()
+    static public let POPUP = {NavAnimatorZoom(style:.zoomIn,intensity:0.2,duration:0.5)}()
     
-    var registry:[String:NavAnimatorConstructor] = [:]
+    static public let SLIDE_LEFT = {NavAnimatorSlide(style:.slideLeft,intensity:1.0)}()
+    static public let SLIDE_RIGHT = {NavAnimatorSlide(style:.slideRight,intensity:1.0)}()
+    static public let SLIDE_TOP = {NavAnimatorSlide(style:.slideTop,intensity:1.0)}()
+    static public let SLIDE_BOTTOM = {NavAnimatorSlide(style:.slideBottom,intensity:1.0)}()
     
-    override init(){
-        super.init()
-        register("slide"){  NavAnimatorSlide(style: .slideLeft,intensity: 1)}
-        register("zoom"){  NavAnimatorZoom(style: .zoomIn,intensity: 0.2)}
-    }
-    
-    public func register(_ name:String,constructor:@escaping NavAnimatorConstructor){
-        registry[name] = constructor
-    }
-    
-    func constructor(named name:NavAnimatorName)->NavAnimatorConstructor?{
-        return registry[name.rawValue]
-    }
-    
-    public func constructor(registeredAs name:String)->NavAnimatorConstructor?{
-        return registry[name]
-    }
-
-    func animator(from aJsonString:String?) -> NavAnimatorClass{
-       
-        guard aJsonString != nil else {
-             return NavAnimatorSlide(style: .slideLeft, intensity: 0.2)
-//            return NavAnimatorZoom(style: .zoomIn, intensity: 0.2)
-        }
-        
-        let jsonString = aJsonString!
-        
-        let params = NavSerializer.stringToDict(jsonString)
-        let name = params["name"] as! String
-        var instance:NavAnimatorClass?
-        
-        if let enumName = NavAnimatorName(rawValue: name){
-            let constructor = self.constructor(named: enumName)
-            instance = constructor!()
-        }
-        
-        if let registeredConstructor = self.constructor(registeredAs: name){
-            instance = registeredConstructor()
-        }
-        
-        assert(instance != nil ,"name not registered")
-        instance?.setParameters(jsonString)
-        
-        return instance!
-    }
- 
-    func presentation(from:String?,for presented:UIViewController,from presenting:UIViewController) -> NavPresentationController{
-        return NavPresentationController(presentedViewController: presented, presenting: presenting)
-    }
-}
-
-extension NavAnimators{
-    
-    static public let SLIDE_LEFT = {NavAnimatorSlide(style:.slideLeft,intensity:1.0).asParameter()}()
-    static public let SLIDE_RIGHT = {NavAnimatorSlide(style:.slideRight,intensity:1.0).asParameter()}()
-    static public let SLIDE_TOP = {NavAnimatorSlide(style:.slideTop,intensity:1.0).asParameter()}()
-    static public let SLIDE_BOTTOM = {NavAnimatorSlide(style:.slideBottom,intensity:1.0).asParameter()}()
-    
-    static public let ZOOM_IN = {NavAnimatorZoom(style:.zoomIn,intensity:0.2).asParameter()}()
-    static public let ZOOM_OUT = {NavAnimatorZoom(style:.zoomOut,intensity:0.2).asParameter()}()
+    static public let ZOOM_IN = {NavAnimatorZoom(style:.zoomIn,intensity:0.2)}()
+    static public let ZOOM_OUT = {NavAnimatorZoom(style:.zoomOut,intensity:0.2)}()
 }

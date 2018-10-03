@@ -31,8 +31,8 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     
     // MARK: ANIMATIONS
     var animators:[String:NavAnimatorClass] = [:]
-    var modalPresentator:NavPresentator?
-    var tabPresentator:NavPresentator?
+    var modalPresentator:NavTransition?
+    var tabPresentator:NavTransition?
     
     // MARK: CONFIG
     
@@ -151,12 +151,20 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
 
 extension FlaskNav{
     
+    func preferredAnimator()->NavAnimatorClass{
+        return NavAnimators.POPUP
+    }
+    
     func getAnimator(for controller:UIViewController)->NavAnimatorClass?{
         return  animators[pointerKey(controller)]
     }
     
-    func setAnimator(_ animator:NavAnimatorClass ,for controller:UIViewController){
-        animators[pointerKey(controller)] = animator
+    func setPreferredAnimator(_ animator:NavAnimatorClass? ,for controller:UIViewController){
+        if animator != nil {
+            animators[pointerKey(controller)] = animator
+        }else {
+            animators[pointerKey(controller)] = preferredAnimator()
+        }
     }
     
     @discardableResult
