@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
         
-        testTabAnimation()
+        testTransaction()
 //        testModal()
 //        testTransaction()
 //        testAPI()
