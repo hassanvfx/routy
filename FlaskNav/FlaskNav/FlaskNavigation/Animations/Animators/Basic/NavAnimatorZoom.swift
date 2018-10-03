@@ -8,11 +8,11 @@
 
 import UIKit
 
-enum NavAnimatorZoomStyle:String,RawInitializable {
+public enum NavAnimatorZoomStyle:String,RawInitializable {
     case zoomIn, zoomOut
 }
 
-class NavAnimatorZoom: NavAnimatorBasic<NavAnimatorZoomStyle>{
+public class NavAnimatorZoom: NavAnimatorBasic<NavAnimatorZoomStyle>{
 
     override open func name()->String{
         return "zoom"
@@ -22,7 +22,7 @@ class NavAnimatorZoom: NavAnimatorBasic<NavAnimatorZoomStyle>{
         return 0.2
     }
  
-    override func applyTransformStyle(controller:UIViewController, parent:UIViewController,in containerView:UIView){
+    override open func applyTransformStyle(controller:UIViewController, parent:UIViewController,in containerView:UIView){
        
         controller.view.alpha = 0
         

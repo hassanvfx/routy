@@ -30,10 +30,6 @@ public enum ModalLayers:Int {
 
 
 
-public enum NavigationAnimations:String,Codable {
-    case None, Default
-}
-
 
 
 

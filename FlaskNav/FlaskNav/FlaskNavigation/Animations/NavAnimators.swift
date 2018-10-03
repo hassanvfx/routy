@@ -41,7 +41,8 @@ public class NavAnimators: NSObject {
     func animator(from aJsonString:String?) -> NavAnimatorClass{
        
         guard aJsonString != nil else {
-            return NavAnimatorZoom(style: .zoomIn, intensity: 0.2)
+             return NavAnimatorSlide(style: .slideLeft, intensity: 0.2)
+//            return NavAnimatorZoom(style: .zoomIn, intensity: 0.2)
         }
         
         let jsonString = aJsonString!
@@ -68,4 +69,15 @@ public class NavAnimators: NSObject {
     func presentation(from:String?,for presented:UIViewController,from presenting:UIViewController) -> NavPresentationController{
         return NavPresentationController(presentedViewController: presented, presenting: presenting)
     }
+}
+
+extension NavAnimators{
+    
+    static public let SLIDE_LEFT = {NavAnimatorSlide(style:.slideLeft,intensity:1.0).asParameter()}()
+    static public let SLIDE_RIGHT = {NavAnimatorSlide(style:.slideRight,intensity:1.0).asParameter()}()
+    static public let SLIDE_TOP = {NavAnimatorSlide(style:.slideTop,intensity:1.0).asParameter()}()
+    static public let SLIDE_BOTTOM = {NavAnimatorSlide(style:.slideBottom,intensity:1.0).asParameter()}()
+    
+    static public let ZOOM_IN = {NavAnimatorZoom(style:.zoomIn,intensity:0.2).asParameter()}()
+    static public let ZOOM_OUT = {NavAnimatorZoom(style:.zoomOut,intensity:0.2).asParameter()}()
 }

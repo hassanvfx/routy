@@ -67,7 +67,7 @@ extension FlaskNav{
     }
     
     func dismissTab(completion:@escaping ()->Void = {}){
-        assert(tabPresentator != nil, "call `presentTab` first")
+         if !isTabPresented() {return}
         
         let onDismiss = { [weak self] in
             self?.tabPresentator = nil
