@@ -8,11 +8,11 @@
 
 import UIKit
 
-enum NavAnimatorSlideStyle:String,RawInitializable {
+public enum NavAnimatorSlideStyle:String,RawInitializable {
     case slideLeft, slideRight, slideTop, slideBottom
 }
 
-class NavAnimatorSlide: NavAnimatorBasic<NavAnimatorSlideStyle>{
+public class NavAnimatorSlide: NavAnimatorBasic<NavAnimatorSlideStyle>{
     
     override open func name()->String{
         return "slide"
@@ -22,7 +22,7 @@ class NavAnimatorSlide: NavAnimatorBasic<NavAnimatorSlideStyle>{
         return 1.0
     }
     
-    override func applyTransformStyle(controller:UIViewController, parent:UIViewController,in containerView:UIView){
+    override open func applyTransformStyle(controller:UIViewController, parent:UIViewController,in containerView:UIView){
         
         if _intensity < 0.9 {
             controller.view.alpha = 0
@@ -36,9 +36,9 @@ class NavAnimatorSlide: NavAnimatorBasic<NavAnimatorSlideStyle>{
             controller.view.transform = CGAffineTransform(translationX: CGFloat(xDisp), y: 0)
         case .slideRight:
             controller.view.transform = CGAffineTransform(translationX: CGFloat(-xDisp), y: 0)
-        case .slideBottom:
-            controller.view.transform = CGAffineTransform(translationX : 0, y: CGFloat(yDisp))
         case .slideTop:
+            controller.view.transform = CGAffineTransform(translationX : 0, y: CGFloat(yDisp))
+        case .slideBottom:
             controller.view.transform = CGAffineTransform(translationX : 0, y: CGFloat(-yDisp))
   
         }

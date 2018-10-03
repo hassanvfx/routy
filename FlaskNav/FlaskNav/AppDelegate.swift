@@ -22,20 +22,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         testTabAnimation()
 //        testModal()
-//        testTransaction()
+//        testNavAnimation()
 //        testAPI()
         return true
     }
+     func testNavAnimation(){
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"]),animator:NavAnimators.SLIDE_TOP)
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"blue"]),animator:NavAnimators.SLIDE_RIGHT)
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"]),animator:NavAnimators.SLIDE_LEFT)
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"blue"]),animator:NavAnimators.SLIDE_BOTTOM)
+//        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]))
+//        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"blue"]))
+        
+    }
+    
     
     func testTabAnimation(){
         Services.router.tab(.Home).show()
         Services.router.nav.show()
-        Services.router.tab(.Home).show()
+//        Services.router.tab(.Home).show()
         
 //        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
         
         //        Services.router.modal.show()
-        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))
+//        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))
         //        Services.router.modal.popCurrent()
         //        Services.router.nav.show()
     }

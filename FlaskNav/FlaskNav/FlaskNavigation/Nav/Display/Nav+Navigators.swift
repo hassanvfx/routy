@@ -67,6 +67,7 @@ extension FlaskNav {
         let navigator = resolveNavigatorFor(context: context, intention: navigatorIntention)
         
         instantiateViewControllerFor(context: context, navOperation: navOperation)
+        instantiateAnimatorFor(context:context)
         
         print("--> will navigateTo \(context.path())")
         switch navigator {
@@ -131,6 +132,13 @@ extension FlaskNav{
         context.setViewController(strong: controller)
         
     }
+    
+    func instantiateAnimatorFor(context:NavContext){
+        let controller = context.viewController()!
+        let animator = context.animator
+        setPreferredAnimator(animator, for: controller)
+    }
+    
     
     func resolveNavigatorFor(context:NavContext, intention:NavigatorType)->NavigatorType{
         

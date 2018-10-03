@@ -52,22 +52,20 @@ extension FlaskNav{
         return animator.asParameter()
     }
     
-    func presentTab(animator jsonAnimator:String? = nil, presentator jsonPresentator:String?=nil, completion:@escaping ()->Void){
+    func presentTab(animator:NavAnimatorClass? = nil, presentation:NavPresentationClass?=nil, completion:@escaping ()->Void){
         if isTabPresented() {return}
         
         let tab = tabController!
         let top = mainController()
-        let modalJsonAnimator = jsonAnimator ?? tabAnimatorParameter()
-        let animator = NavAnimators.shared.animator(from: modalJsonAnimator)
-        let presentation =  NavAnimators.shared.presentation(from: jsonPresentator, for: tab, from:top)
+        let animator = animator ?? preferredAnimator()
         
-        tabPresentator = NavPresentator(presentViewController: tab, from: top, animator: animator, presentation: presentation)
+        tabPresentator = NavTransition(presentViewController: tab, from: top, animator: animator, presentation: presentation)
         tabPresentator?.present(completion)
         
     }
     
     func dismissTab(completion:@escaping ()->Void = {}){
-        assert(tabPresentator != nil, "call `presentTab` first")
+         if !isTabPresented() {return}
         
         let onDismiss = { [weak self] in
             self?.tabPresentator = nil
@@ -85,15 +83,13 @@ extension FlaskNav{
         return animator.asParameter()
     }
     
-    func presentModal(animator jsonAnimator:String? = nil, presentator jsonPresentator:String?=nil, completion:@escaping ()->Void){
+    func presentModal(animator:NavAnimatorClass? = nil, presentation:NavPresentationClass?=nil, completion:@escaping ()->Void){
         
         if isModalPresented() {return}
         
         let modal = modalNav()
         let top = topMostController()
-        let modalJsonAnimator = jsonAnimator ?? modalAnimatorParameter()
-        let animator = NavAnimators.shared.animator(from: modalJsonAnimator)
-        let presentation =  NavAnimators.shared.presentation(from: jsonPresentator, for: modal, from:top)
+        let animator = animator ?? preferredAnimator()
         
         modal.modalRootView().viewForwarder().forwardingViews = [top.view]
         modal.modalRootView().viewForwarder().didTouchOutside = { [weak self] in
@@ -102,7 +98,7 @@ extension FlaskNav{
             }
         }
         
-        modalPresentator = NavPresentator(presentViewController: modal, from: top, animator: animator, presentation: presentation)
+        modalPresentator = NavTransition(presentViewController: modal, from: top, animator: animator, presentation: presentation)
         modalPresentator?.present(completion)
         
     }

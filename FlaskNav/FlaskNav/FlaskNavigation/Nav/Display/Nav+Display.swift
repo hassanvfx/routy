@@ -46,7 +46,7 @@ extension FlaskNav{
     func popToRoot(context:NavContext){
         DispatchQueue.main.async { [weak self] in
             let nav = (self?.navInstance(forLayer: context.layer))!
-            let animated = context.animation != .None
+            let animated = true
             nav.popToRootViewController(animated:animated)
         }
     }
@@ -54,7 +54,7 @@ extension FlaskNav{
     func pushController(_ controller:UIViewController, context:NavContext){
         DispatchQueue.main.async { [weak self] in
             let nav = (self?.navInstance(forLayer: context.layer))!
-            let animated = context.animation != .None
+            let animated = true
             nav.pushViewController(controller, animated: animated)
             
         }
@@ -63,7 +63,7 @@ extension FlaskNav{
     func popToController(_ controller:UIViewController, context:NavContext){
         DispatchQueue.main.async { [weak self] in
             let nav = (self?.navInstance(forLayer: context.layer))!
-            let animated = context.animation != .None
+            let animated = true
             nav.popToViewController(controller, animated: animated)
         }
     }
