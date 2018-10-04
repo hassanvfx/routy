@@ -8,21 +8,21 @@
 
 import UIKit
 
-final class NavPresentationClass:  UIPresentationController {
+public final class NavPresentationClass:  UIPresentationController {
 //    var touchForwardingView:TouchForwardingView!
     
-    override var frameOfPresentedViewInContainerView:CGRect {
+    override public var frameOfPresentedViewInContainerView:CGRect {
         return containerView!.bounds
         
 //        let height: CGFloat = 200
 //        return CGRect(x: 0, y: containerView!.bounds.height - height, width: containerView!.bounds.width, height: height)
     }
     
-    override func containerViewWillLayoutSubviews() {
+    override public func containerViewWillLayoutSubviews() {
         presentedView?.frame = frameOfPresentedViewInContainerView
     }
     
-    override func presentationTransitionWillBegin() {
+    override public func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()
 //        touchForwardingView = TouchForwardingView(frame: containerView!.bounds)
 //        touchForwardingView.forwardingViews = [presentingViewController.view];
