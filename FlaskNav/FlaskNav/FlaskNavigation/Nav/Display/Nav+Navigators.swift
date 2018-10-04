@@ -92,19 +92,16 @@ extension FlaskNav {
     func navigatePush(context:NavContext, navOperation:FlaskNavOperation){
        
         startOperationFor(context: context, navOperation: navOperation) {[weak self] (operation) in
-            if let controller = context.viewController() {
-                
-                context.navigator = .Push
-                
-                self?.contextInitIntent(controller: controller, context: context)
-                self?.setupEmptyStateIntent(controller: controller, context: context)
-                self?.pushController(controller, context: context)
-                self?.setupContentIntent(controller: controller, context: context, navOperation: navOperation)
-                context.setViewControllerWeak()
-                
-            }else{
+            guard let controller = context.viewController() else {
                 assert(false,"controller unexpectedly dellocated")
             }
+            context.navigator = .Push
+            self?.contextInitIntent(controller: controller, context: context)
+            self?.setupEmptyStateIntent(controller: controller, context: context)
+            self?.pushController(controller, context: context)
+            self?.setupContentIntent(controller: controller, context: context, navOperation: navOperation)
+            context.setViewControllerWeak()
+            
         }
     }
     
