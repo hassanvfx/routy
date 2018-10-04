@@ -26,7 +26,7 @@ extension FlaskNav{
     }
     
     func setActive(layer:String){
-        if(_layerActive == layer){return}
+       flushModalStack()
         _layerInactive = _layerActive
         _layerActive = layer
     }
@@ -86,8 +86,14 @@ extension FlaskNav: NavStackAPI{
             self?.setActive(layer:layer)
         }
     }
-    
-    
+
+}
+
+extension FlaskNav{
+
+    func flushModalStack(){
+        self.stack(forLayer: NavLayer.Modal()).clear()
+    }
 }
 
 

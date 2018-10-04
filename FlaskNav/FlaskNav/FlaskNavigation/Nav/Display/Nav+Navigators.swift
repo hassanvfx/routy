@@ -94,6 +94,7 @@ extension FlaskNav {
         startOperationFor(context: context, navOperation: navOperation) {[weak self] (operation) in
             guard let controller = context.viewController() else {
                 assert(false,"controller unexpectedly dellocated")
+                return
             }
             context.navigator = .Push
             self?.contextInitIntent(controller: controller, context: context)
@@ -108,7 +109,8 @@ extension FlaskNav {
     func navigatePop(toContext context:NavContext, navOperation:FlaskNavOperation){
         startOperationFor(context: context, navOperation: navOperation) {[weak self] (operation) in
             guard let controller = context.viewController() else {
-                 assert(false,"controller unexpectedly dellocated")
+                assert(false,"controller unexpectedly dellocated")
+                return
             }
                 
             context.navigator = .Pop

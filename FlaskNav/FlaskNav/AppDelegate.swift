@@ -27,48 +27,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func testTabAnimation(){
-        Services.router.tab(.Home).show()
-        Services.router.nav.show()
-        Services.router.tab(.Home).show()
-        
-//        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
+    
+    func testModal(){
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
         
         //        Services.router.modal.show()
         Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))
         //        Services.router.modal.popCurrent()
         //        Services.router.nav.show()
     }
-    
-    func testModal(){
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
-
-//        Services.router.modal.show()
-        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))
-//        Services.router.modal.popCurrent()
-        //        Services.router.nav.show()
+    func testTabAnimation(){
+        Services.router.tab(.Home).show()
+        Services.router.nav.show()
+        
+        Services.router.tab(.Friends).show()
+        
     }
     func testTransaction(){
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
 
-        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))
+        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
 //        Services.router.modal.show()
         Services.router.modal.popCurrent()
         
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
         
-        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))
+        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
         Services.router.modal.popCurrent()
         
             
         Services.router.transaction { (batch) in
-            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"red"]))
-            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"blue"]))
+            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"red"])){_ in print("line \(#line)")}
+            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"blue"])){_ in print("line \(#line)")}
         }
 
 
         Services.router.transaction { (batch) in
-            batch.nav.push(controller: .Feed, info:NavInfo(params:["color":"white"]))
+            batch.nav.push(controller: .Feed, info:NavInfo(params:["color":"white"])){_ in print("line \(#line)")}
         }
 
         
@@ -81,17 +76,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
     
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
        
         
         Services.router.nav.popToRoot()
         
 //        Services.router.tab(0).show()
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
 //.
         
         Services.router.nav.popToRoot()
-        Services.router.tab(.Home).popToRoot()
+        Services.router.tab(.Friends).show()
         
 //        Services.router.tab(.Main).push(controller:.Feed, info:NavInfo(params:["color":"yellow"]))
 //        Services.router.modal().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))
