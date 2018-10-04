@@ -110,14 +110,13 @@ extension FlaskNav {
     
     func navigatePop(toContext context:NavContext, navOperation:FlaskNavOperation){
         startOperationFor(context: context, navOperation: navOperation) {[weak self] (operation) in
-            if let controller = context.viewController() {
-                
-                context.navigator = .Pop
-                
-                self?.popToController(controller, context: context)
-            }else{
-                assert(false,"controller unexpectedly dellocated")
+            guard let controller = context.viewController() else {
+                 assert(false,"controller unexpectedly dellocated")
             }
+                
+            context.navigator = .Pop
+            self?.popToController(controller, context: context)
+            
         }
     }
 }
