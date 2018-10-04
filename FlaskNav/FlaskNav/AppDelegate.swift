@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
         
-//        testTabAnimation()
+        testTabAnimation()
         testTransaction()
 //        testModal()
 //        testTransaction()
@@ -41,7 +41,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.tab(.Home).show()
         Services.router.nav.show()
         
-        Services.router.tab(.Friends).push(controller: .Feed)
+        Services.router.tab(.Friends).push(controller: .Feed, info:NavInfo(params:["color":"red"])){_ in print("line \(#line)")}
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"blue"])){_ in print("line \(#line)")}
         
     }
     func testTransaction(){

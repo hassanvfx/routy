@@ -64,7 +64,7 @@ extension FlaskNav{
         let top = mainController()
         let animator = animator ?? NavAnimators.ZoomIn()
         
-        tab.selectedIndex = index
+       
         
         tabPresentator = NavPresentator(presentViewController: tab, from: top, animator: animator, presentation: presentation)
         tabPresentator?.present(completion)
