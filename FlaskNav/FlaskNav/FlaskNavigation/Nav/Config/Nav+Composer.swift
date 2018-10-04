@@ -52,7 +52,7 @@ extension FlaskNav{
         return animator.asParameter()
     }
     
-    func presentTab(animator jsonAnimator:String? = nil, presentator jsonPresentator:String?=nil, completion:@escaping ()->Void){
+    func presentTab(index:Int, animator jsonAnimator:String? = nil, presentator jsonPresentator:String?=nil, completion:@escaping ()->Void){
         if isTabPresented() {return}
         
         let tab = tabController!
@@ -60,6 +60,8 @@ extension FlaskNav{
         let modalJsonAnimator = jsonAnimator ?? tabAnimatorParameter()
         let animator = NavAnimators.shared.animator(from: modalJsonAnimator)
         let presentation =  NavAnimators.shared.presentation(from: jsonPresentator, for: tab, from:top)
+        
+        tab.selectedIndex = index
         
         tabPresentator = NavPresentator(presentViewController: tab, from: top, animator: animator, presentation: presentation)
         tabPresentator?.present(completion)
