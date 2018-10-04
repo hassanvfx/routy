@@ -24,7 +24,7 @@ open class NavAnimatorClass: NSObject {
     }
     
     open func _setParams(_ params:NSDictionary){
-         assert(false,"use a subclass instead")
+        assert(false,"use a subclass instead")
     }
     open func _getParams()->NSDictionary{
         assert(false,"use a subclass instead")
@@ -42,8 +42,15 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
     
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
-        let toController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)!
-        let fromController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)!
+        guard
+            let toController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to),
+            let fromController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)
+            else{
+                assert(false,"invalid layer")
+                return
+        }
+        
+        
         let container = transitionContext.containerView
         
         if presenter {

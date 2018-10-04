@@ -92,8 +92,14 @@ enum NavLayer:String,Codable{
     static func TabIndex(_ layer:String)->Int {
         assert(IsTab(layer),"Not a TAB layer")
         let parts = layer.split(separator: ".")
-        let stringIndex = parts.last?.replacingOccurrences(of: "tab", with: "")
-        let index = Int(stringIndex!)!
+        guard
+            let stringIndex = parts.last?.replacingOccurrences(of: "tab", with: ""),
+            let index = Int(stringIndex)
+        else{
+            assert(false,"invalid layer")
+            return 0
+        }
+        
         assert( index >= MinTab && index <= MaxTab, "invalid index")
         return index
     }

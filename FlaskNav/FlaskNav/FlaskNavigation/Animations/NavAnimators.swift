@@ -40,12 +40,9 @@ public class NavAnimators: NSObject {
 
     func animator(from aJsonString:String?) -> NavAnimatorClass{
        
-        guard aJsonString != nil else {
+        guard let jsonString = aJsonString else {
             return NavAnimatorZoom(style: .zoomIn, intensity: 0.2)
         }
-        
-        let jsonString = aJsonString!
-        
         let params = NavSerializer.stringToDict(jsonString)
         let name = params["name"] as! String
         var instance:NavAnimatorClass?

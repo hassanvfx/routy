@@ -67,10 +67,14 @@ public class NavStack {
         var result:NavContext? = nil
         while (result == nil && aStack.count > 0) {
             
-            let lastContext = aStack.last
+            guard
+                let lastContext = aStack.last
+            else{
+                continue
+            }
             
-            if(lastContext?.controller == aContext.controller &&
-                lastContext?.resourceId == aContext.resourceId){
+            if(lastContext.controller == aContext.controller &&
+                lastContext.resourceId == aContext.resourceId){
                 
                 result = lastContext
             }
