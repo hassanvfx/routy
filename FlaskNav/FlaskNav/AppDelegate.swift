@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
         
-        testTabAnimation()
+        testAnimation()
         testTransaction()
         testModal()
         testTransaction()
@@ -28,6 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    func testAnimation (){
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"]),animator: NavAnimators.ZoomIn())
+    }
     
     func testModal(){
         Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))

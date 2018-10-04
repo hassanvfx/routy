@@ -46,6 +46,7 @@
 		2667A62F2164170C00F87A1B /* NavAnimatorBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2667A62E2164170C00F87A1B /* NavAnimatorBasic.swift */; };
 		2667A63221641C0900F87A1B /* NavSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2667A63121641C0900F87A1B /* NavSerializer.swift */; };
 		266CDECB215308DA003B0F11 /* AnyCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266CDECA215308DA003B0F11 /* AnyCodable.swift */; };
+		269B147A2165AAC400208360 /* Nav+Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269B14792165AAC400208360 /* Nav+Animator.swift */; };
 		26B8070E214DC740008091C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8070D214DC740008091C2 /* AppDelegate.swift */; };
 		26B80710214DC740008091C2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8070F214DC740008091C2 /* ViewController.swift */; };
 		26B80715214DC740008091C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26B80714214DC740008091C2 /* Assets.xcassets */; };
@@ -110,6 +111,7 @@
 		2667A62E2164170C00F87A1B /* NavAnimatorBasic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavAnimatorBasic.swift; sourceTree = "<group>"; };
 		2667A63121641C0900F87A1B /* NavSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavSerializer.swift; sourceTree = "<group>"; };
 		266CDECA215308DA003B0F11 /* AnyCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCodable.swift; sourceTree = "<group>"; };
+		269B14792165AAC400208360 /* Nav+Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Animator.swift"; sourceTree = "<group>"; };
 		26B8070A214DC740008091C2 /* FlaskNav.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlaskNav.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26B8070D214DC740008091C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		26B8070F214DC740008091C2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 		262599E12159D075003144ED /* Display */ = {
 			isa = PBXGroup;
 			children = (
+				269B14792165AAC400208360 /* Nav+Animator.swift */,
 				2616BB722155A1BC00A6AEFB /* Nav+Reactor.swift */,
 				263B10C92159C9BC00E6E5C4 /* Nav+Navigators.swift */,
 				2616BB6D2155A0D600A6AEFB /* Nav+Constructor.swift */,
@@ -641,6 +644,7 @@
 				263B10C22159C7CA00E6E5C4 /* Composition.swift in Sources */,
 				2616BB7D2155D76700A6AEFB /* Nav+Stack.swift in Sources */,
 				2667A6162163C41C00F87A1B /* InactiveBackView.swift in Sources */,
+				269B147A2165AAC400208360 /* Nav+Animator.swift in Sources */,
 				2667A62F2164170C00F87A1B /* NavAnimatorBasic.swift in Sources */,
 				26B807482151EF83008091C2 /* Helpers.swift in Sources */,
 				26B80735214DCED9008091C2 /* Services.swift in Sources */,

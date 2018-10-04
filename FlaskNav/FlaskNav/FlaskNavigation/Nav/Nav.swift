@@ -30,7 +30,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     var compBatched: Bool = false
     
     // MARK: ANIMATIONS
-    
+    var animators:[String:NavAnimatorClass] = [:]
     var modalPresentator:NavPresentator?
     var tabPresentator:NavPresentator?
     
@@ -103,4 +103,44 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         
     }
+    
+    //MARK: ANIMATORS
+    public func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        if let animator = self.getAnimator(for: toVC){
+            return animator
+            
+        } else if let animator = self.takeAnimator(for: fromVC){
+             
+            return animator
+        }
+        
+        assert(false, "error all cases should be handled")
+        return nil
+        
+    }
+    
+    //    func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning?{
+    //
+    //        if !self.nextTransitionInteractive{ return nil}
+    //        self.nextTransitionInteractive=false
+    //
+    //
+    //        return self.interactionController;
+    //    }
+    
+    
+    //    func updateInteractiveTransition(_ percent:Double){
+    //        self.interactionController?.update(CGFloat(percent))
+    //    }
+    
+    //    func finishTransition(completed:Bool){
+    //        if(completed){
+    //            self.interactionController?.finish()
+    //        }else{
+    //            self.interactionController?.cancel()
+    //        }
+    
+    //    }
+    
 }

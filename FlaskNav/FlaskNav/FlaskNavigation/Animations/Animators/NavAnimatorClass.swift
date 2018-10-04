@@ -9,7 +9,8 @@
 import UIKit
 
 open class NavAnimatorClass: NSObject {
-    public var presenter = true
+    public private(set) var isPresented = false
+    public var isNavTransition = false
     public var _duration = 0.4
     
     //MARK: subclass methods
@@ -53,9 +54,14 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
         
         let container = transitionContext.containerView
         
-        if presenter {
+        if isPresented == false {
+            isPresented = true
             present(controller: toController, from: fromController, in: container, withContext: transitionContext)
         }else{
+            isPresented = false
+            if isNavTransition {
+                container.insertSubview(toController.view, belowSubview: fromController.view)
+            }
             dismiss(controller: fromController, to: toController, in: container, withContext: transitionContext)
         }
     }

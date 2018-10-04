@@ -44,17 +44,17 @@ extension NavContextManager{
     @discardableResult
     public func contextRoot(forLayer layer:String, viewController:UIViewController) -> NavContext{
         
-        let aContext = context( layer:layer, controller: ROOT_CONTROLLER, resourceId: nil, info: nil)
+        let aContext = self.context( layer:layer, controller: ROOT_CONTROLLER, resourceId: nil, info: nil)
         aContext.setViewController(weak: viewController)
         roots[layer] = aContext
         
         return aContext
     }
     
-    public func context(layer:String, controller:String, resourceId:String?,  info:Any?, animation:NavigationAnimations = .Default, _ callback:NavContextCallback? = nil) -> NavContext{
+    public func context(layer:String, controller:String, resourceId:String?,  info:Any?, animator:NavAnimatorClass? = nil, _ callback:NavContextCallback? = nil) -> NavContext{
         
         let contextId = self.nextId()
-        let context = NavContext(id: contextId, layer:layer, controller: controller, resourceId: resourceId, info: info, animation: animation, callback)
+        let context = NavContext(id: contextId, layer:layer, controller: controller, resourceId: resourceId, info: info, animator: animator, callback)
         register(context: context)
         
         return context
