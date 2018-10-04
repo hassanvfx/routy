@@ -16,21 +16,26 @@ extension FlaskNav {
         let navOperation = FlaskNavOperation(fluxLock: fluxLock, name: substance.state.layerActive )
         
         if NavLayer.IsNav(substance.state.layerActive){
-            
-            performOperationFor(navOperation: navOperation) { [weak self] (flaskOperation) in
-                self?.displayNav()
-            }
+            performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
+                self?.displayNavOperation {
+                    completion()
+                }
+            })
             
         } else if NavLayer.IsModal(substance.state.layerActive){
-            performOperationFor(navOperation: navOperation) { [weak self] (flaskOperation) in
-                self?.displayModal()
-            }
+            performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
+                self?.displayModalOperation {
+                    completion()
+                }
+            })
         } else if  NavLayer.IsTab(substance.state.layerActive){
             let index = NavLayer.TabIndex(substance.state.layerActive)
             
-            performOperationFor(navOperation: navOperation) { [weak self] (flaskOperation) in
-                self?.displayTab(index)
-            }
+            performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
+                self?.displayTabOperation(index) {
+                    completion()
+                }
+            })
             
         }
         
@@ -84,8 +89,11 @@ extension FlaskNav {
     
     func navigateRoot(context:NavContext, navOperation:FlaskNavOperation){
         //TODO: animated parametrization?
-        performOperationFor(navOperation: navOperation) {[weak self] (operation) in
+        performOperationFor(navOperation: navOperation) {[weak self] (completion) in
             self?.popToRoot(context:context)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                completion()
+            })
         }
     }
     

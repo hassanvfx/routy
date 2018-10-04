@@ -36,12 +36,14 @@ class FlaskNavOperation : NSObject {
     }
     
     func releaseFlux(){
-        if navLocked {
-            pendingRelease = true
-            return
+        DispatchQueue.main.async {
+            if self.navLocked {
+                self.pendingRelease = true
+                return
+            }
+            self.operation!.complete()
+            self.fluxLock.release()
         }
-        self.operation!.complete()
-        fluxLock.release()
     }
     
     

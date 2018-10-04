@@ -55,7 +55,10 @@ extension FlaskNav{
  
     func presentTab(index:Int,animator:NavAnimatorClass? = nil, presentation:NavPresentationClass?=nil, completion:@escaping ()->Void){
 
-        if isTabPresented() {return}
+        if isTabPresented() {
+            completion()
+            return
+        }
         
         let tab = tabController!
         let top = mainController()
@@ -69,7 +72,10 @@ extension FlaskNav{
     }
     
     func dismissTab(completion:@escaping ()->Void = {}){
-        if !isTabPresented() {return}
+        if !isTabPresented() {
+            completion()
+            return
+        }
         
         let onDismiss = { [weak self] in
             self?.tabPresentator = nil
@@ -89,7 +95,10 @@ extension FlaskNav{
     
     func presentModal(animator:NavAnimatorClass? = nil, presentation:NavPresentationClass?=nil, completion:@escaping ()->Void){
         
-        if isModalPresented() {return}
+        if isModalPresented() {
+            completion()
+            return
+        }
         
         let modal = modalNav()
         let top = topMostController()
@@ -108,7 +117,12 @@ extension FlaskNav{
     }
     
     func dismissModal(completion:@escaping ()->Void = {}){
-        assert(modalPresentator != nil, "call `presentModal` first")
+        
+        if !isModalPresented() {
+            completion()
+            return
+        }
+        
         let onDismiss = { [weak self] in
             self?.modalPresentator = nil
             completion()

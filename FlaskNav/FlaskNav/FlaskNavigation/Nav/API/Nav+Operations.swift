@@ -26,15 +26,15 @@ extension FlaskNav{
     }
     
     
-    func performOperationFor(navOperation:FlaskNavOperation, _ closure:@escaping (FlaskOperation)->Void) {
+    func performOperationFor(navOperation:FlaskNavOperation, withCompletion closure:@escaping (@escaping ()->Void)->Void) {
        
+        let completed = {
+            navOperation.releaseFlux()
+        }
         
         let debugClosure:(FlaskOperation)->Void = { (op) in
             print("[$] performing SYNC operation for NAV key \(navOperation.name)")
-            closure(navOperation.operation!)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                navOperation.releaseFlux()
-            })
+            closure(completed)
         }
         
         let operation = FlaskOperation(block: debugClosure)
@@ -102,9 +102,9 @@ extension FlaskNav{
         print("pending operations for \(key) =\(references.count)")
         print("[-] removing operation for key \(String(describing: navOperation.name)) \(key)")
         
-        DispatchQueue.main.async {
+      
             navOperation.releaseFlux()
             print("pending operations for queue =\(self.operationQueue.operations.count)")
-        }
+        
     }
 }

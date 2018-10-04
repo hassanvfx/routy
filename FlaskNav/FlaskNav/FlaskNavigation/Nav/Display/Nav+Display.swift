@@ -11,31 +11,40 @@ import UIKit
 extension FlaskNav{
 
     
-    public func displayTab(_ index:Int){
-        dismissModal()
-        DispatchQueue.main.async {  [weak self] in
-            self?.presentTab(index:index, completion:{})
+    public func displayTabOperation(_ index:Int, completion:@escaping ()->Void){
+        dismissModalOperation {
+            DispatchQueue.main.async {  [weak self] in
+                self?.presentTab(index: index, completion: completion)
+            }
+        }
+        
+    }
+    public func displayNavOperation(completion:@escaping ()->Void){
+        dismissModalOperation {
+            DispatchQueue.main.async { [weak self] in
+                self?.dismissTab(completion: completion)
+            }
         }
     }
-    public func displayNav(){
-        dismissModal()
-        DispatchQueue.main.async { [weak self] in
-            self?.dismissTab(completion: {})
-        }
-    }
-    public func displayModal(){
+    public func displayModalOperation(completion:@escaping ()->Void){
         DispatchQueue.main.async {  [weak self] in
-            if (self?.isModalPresented())! == true { return}
+            if (self?.isModalPresented())! == true {
+                completion()
+                return
+            }
             
-            self?.presentModal(completion:{})
+            self?.presentModal(completion: completion)
         }
     }
     
-    public func dismissModal(){
+    public func dismissModalOperation(completion:@escaping ()->Void){
         DispatchQueue.main.async {  [weak self] in
-            if (self?.isModalPresented())! == false { return}
+            if (self?.isModalPresented())! == false {
+                completion()
+                return
+            }
             
-            self?.dismissModal(completion: {})
+            self?.dismissModal(completion: completion)
         }
     }
     
