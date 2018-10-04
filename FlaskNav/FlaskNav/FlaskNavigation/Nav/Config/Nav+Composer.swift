@@ -52,14 +52,14 @@ extension FlaskNav{
         return animator.asParameter()
     }
     
-    func presentTab(index:Int, animator jsonAnimator:String? = nil, presentator jsonPresentator:String?=nil, completion:@escaping ()->Void){
+ 
+    func presentTab(index:Int,animator:NavAnimatorClass? = nil, presentation:NavPresentationClass?=nil, completion:@escaping ()->Void){
+
         if isTabPresented() {return}
         
         let tab = tabController!
         let top = mainController()
-        let modalJsonAnimator = jsonAnimator ?? tabAnimatorParameter()
-        let animator = NavAnimators.shared.animator(from: modalJsonAnimator)
-        let presentation =  NavAnimators.shared.presentation(from: jsonPresentator, for: tab, from:top)
+        let animator = animator ?? NavAnimators.ZoomIn()
         
         tab.selectedIndex = index
         
@@ -87,15 +87,13 @@ extension FlaskNav{
         return animator.asParameter()
     }
     
-    func presentModal(animator jsonAnimator:String? = nil, presentator jsonPresentator:String?=nil, completion:@escaping ()->Void){
+    func presentModal(animator:NavAnimatorClass? = nil, presentation:NavPresentationClass?=nil, completion:@escaping ()->Void){
         
         if isModalPresented() {return}
         
         let modal = modalNav()
         let top = topMostController()
-        let modalJsonAnimator = jsonAnimator ?? modalAnimatorParameter()
-        let animator = NavAnimators.shared.animator(from: modalJsonAnimator)
-        let presentation =  NavAnimators.shared.presentation(from: jsonPresentator, for: modal, from:top)
+        let animator = animator ?? NavAnimators.ZoomIn()
         
         modal.modalRootView().viewForwarder().forwardingViews = [top.view]
         modal.modalRootView().viewForwarder().didTouchOutside = { [weak self] in

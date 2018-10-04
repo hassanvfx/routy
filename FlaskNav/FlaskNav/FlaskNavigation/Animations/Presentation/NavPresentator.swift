@@ -11,7 +11,7 @@ import UIKit
 class NavPresentator:NSObject {
     
     var animator:NavAnimatorClass
-    var presentation:NavPresentationController
+    var presentation:NavPresentationClass
     
     weak var presented:UIViewController!
     weak var presenting:UIViewController!
@@ -19,12 +19,12 @@ class NavPresentator:NSObject {
     init(presentViewController presented:UIViewController,
          from presenting:UIViewController,
          animator:NavAnimatorClass? = nil,
-         presentation:NavPresentationController? = nil){
+         presentation:NavPresentationClass? = nil){
         
         self.presented = presented
         self.presenting = presenting
         self.animator = animator ?? NavAnimatorClass()
-        self.presentation = presentation ?? NavPresentationController(presentedViewController: presented, presenting: presenting)
+        self.presentation = presentation ?? NavPresentationClass(presentedViewController: presented, presenting: presenting)
     }
     
     func present(_ completion:@escaping ()->Void = {}){
