@@ -11,7 +11,7 @@ import UIKit
 extension FlaskNav{
     
     func preferredAnimator()->NavAnimatorClass{
-        return NavAnimators.ZoomIn()
+        return NavAnimators.SlideLeft()
     }
     
     func getAnimator(for controller:UIViewController)->NavAnimatorClass?{
