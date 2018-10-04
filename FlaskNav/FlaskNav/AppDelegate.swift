@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         testTabAnimation()
 //        testModal()
-        testTransaction()
+//        testTransaction()
 //        testAPI()
         return true
     }
@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.tab(.Home).show()
         Services.router.nav.show()
         
-        Services.router.tab(.Friends).show()
+        Services.router.tab(.Friends).push(controller: .Feed)
         
     }
     func testTransaction(){

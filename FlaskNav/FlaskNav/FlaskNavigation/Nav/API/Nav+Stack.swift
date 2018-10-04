@@ -86,6 +86,10 @@ extension FlaskNav: NavStackAPI{
             self?.setActive(layer:layer)
         }
     }
+    
+    func tabIndex(from layer: String) -> Int {
+        return tabsIndexMap[layer]!
+    }
 
 }
 
