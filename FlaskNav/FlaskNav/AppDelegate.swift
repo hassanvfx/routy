@@ -22,8 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         testTabAnimation()
         testTransaction()
-//        testModal()
-//        testTransaction()
+        testModal()
+        testTransaction()
 //        testAPI()
         return true
     }
