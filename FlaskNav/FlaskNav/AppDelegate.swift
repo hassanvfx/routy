@@ -37,15 +37,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]),animator:animator)
    
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            animator.interactionUpdate(percent: 0.25)
+            animator.interactionUpdate(percent: 0.5)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                animator.interactionUpdate(percent: 0.5)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                    animator.interactionUpdate(percent: 0.75)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                        animator.interactionFinished()
-                    }
-                }
+                 animator.interactionCanceled()
             }
             
         }

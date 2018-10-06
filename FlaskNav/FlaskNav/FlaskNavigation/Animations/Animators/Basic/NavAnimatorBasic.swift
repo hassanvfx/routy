@@ -66,7 +66,7 @@ class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorCl
             controller.view.alpha = 1
             
         }, completion: { finished in
-            context.completeTransition(finished)
+            context.completeTransition(!context.transitionWasCancelled)
         })
     }
     override func dismiss(controller:UIViewController,to toController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
