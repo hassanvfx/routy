@@ -57,8 +57,20 @@ extension FlaskNav{
     
     func popToRoot(context:NavContext){
         DispatchQueue.main.async { [weak self] in
-            let nav = (self?.navInstance(forLayer: context.layer))!
-            nav.popToRootViewController(animated:true)
+     
+            guard let this = self else {
+                return
+            }
+            
+            guard let nav = self?.navInstance(forLayer: context.layer) else {
+                return
+            }
+            
+            if(nav.viewControllers.count > 1){
+                nav.popToRootViewController(animated:true)
+            } else{
+                this.intentToCompleteOperationFor(context: context)
+            }
         }
     }
     

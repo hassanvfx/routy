@@ -15,17 +15,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-       
-        
+
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
+
+        testRoot()
         
         testAnimation()
         testTransaction()
         testModal()
         testTransaction()
-//        testAPI()
+        testAPI()
         return true
+    }
+    
+    func testRoot (){
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"]),animator: NavAnimators.ZoomIn())
+        Services.router.nav.popToRoot()
     }
     
     func testAnimation (){

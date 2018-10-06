@@ -81,26 +81,36 @@ extension FlaskNav{
         
     }
     
-    func intentToCompleteOperationFor(rootContext:NavContext){}
+    func intentToCompleteOperationFor(rootContext:NavContext){
+        print("Should complete Root Context: \(rootContext.layer)")
+        intentToCompleteOperationFor(context:rootContext)
+    }
     
     func intentToCompleteOperationFor(context aContext:NavContext?){
         
-        if aContext == nil{
+        guard let context = aContext else {
             assert(false, "context should always be defined")
             return
         }
-        let context = aContext!
         
         NavContext.manager.releaseOnPop(context: context)
         let key = context.contextId
         var references = operationsFor(key:key)
-        if(references.isEmpty){ return } // ie tab is presenting a nested nav state
         
-        let navOperation = references.removeFirst()
+        guard let navOperation = references.first else{
+            return
+        }
+        
+        guard navOperation.operation!.isExecuting else {
+            return
+        }
+        _ = references.removeFirst()
         operations[key] = references
         
-        print("pending operations for \(key) =\(references.count)")
-        print("[-] removing operation for key \(String(describing: navOperation.name)) \(key)")
+        
+        
+        print("pending operations for \(key)  =\(references.count)")
+        print("[-] removing operation for key \(String(describing: navOperation.name)) \(key) \(context.navigator?.rawValue)")
         
       
             navOperation.releaseFlux()

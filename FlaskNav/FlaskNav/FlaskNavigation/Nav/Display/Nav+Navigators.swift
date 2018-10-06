@@ -90,11 +90,8 @@ extension FlaskNav {
     
     func navigateRoot(context:NavContext, navOperation:FlaskNavOperation){
         //TODO: animated parametrization?
-        performOperationFor(navOperation: navOperation) {[weak self] (completion) in
+        startOperationFor(context: context, navOperation: navOperation) {[weak self] (operation) in
             self?.popToRoot(context:context)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                completion()
-            })
         }
     }
     
