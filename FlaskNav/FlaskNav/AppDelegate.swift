@@ -35,12 +35,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        Services.router.nav.popToRoot()
         Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
         Services.router.modal.popCurrent()
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]),animator: NavAnimators.ZoomIn())
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]))
         
     }
     
     func testAnimation (){
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"]),animator: NavAnimators.ZoomIn())
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
     }
     
     func testModal(){

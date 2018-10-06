@@ -111,6 +111,7 @@ extension FlaskNav{
             }
         }
         
+        modalPresentator?.animator._duration = 0.1
         modalPresentator = NavPresentator(presentViewController: modal, from: top, animator: animator, presentation: presentation)
         modalPresentator?.present(completion)
         
@@ -129,7 +130,7 @@ extension FlaskNav{
         }
 
         //TODO: issue here with unbalanced calls
-        modalPresentator?.animator._duration = 0
+        modalPresentator?.animator._duration = 0.1
         modalPresentator?.dismiss(onDismiss)
     }
     
