@@ -31,7 +31,7 @@ extension FlaskNav{
     }
     public func displayModalOperation(completion:@escaping ()->Void){
         DispatchQueue.main.async {  [weak self] in
-            if (self?.isModalPresented())! == true {
+            if (self?._isModalPresented())! == true {
                 completion()
                 return
             }
@@ -42,7 +42,7 @@ extension FlaskNav{
     
     public func dismissModalOperation(completion:@escaping ()->Void){
         DispatchQueue.main.async {  [weak self] in
-            if (self?.isModalPresented())! == false {
+            if (self?._isModalPresented())! == false {
                 completion()
                 return
             }
@@ -59,7 +59,7 @@ extension FlaskNav{
         let nav = self.navInstance(forLayer: context.layer)
         
         let execute = {
-            nav.isPerformingNavOperation = true
+            nav._isPerformingNavOperation = true
             action()
         }
         
@@ -73,7 +73,7 @@ extension FlaskNav{
             
             execute()
             
-            if NavLayer.IsModal(context.layer) &&  self.isModalPresented() == false {
+            if NavLayer.IsModal(context.layer) &&  self._isModalPresented() == false {
                 complete()
             }
             if NavLayer.IsTab(context.layer) &&  self.isTabPresented() == false {

@@ -95,7 +95,7 @@ extension FlaskNav{
     
     func presentModal(animator:NavAnimatorClass? = nil, presentation:NavPresentationClass?=nil, completion:@escaping ()->Void){
         
-        if isModalPresented() {
+        if _isModalPresented() {
             completion()
             return
         }
@@ -106,7 +106,7 @@ extension FlaskNav{
         
         modal.modalRootView().viewForwarder().forwardingViews = [top.view]
         modal.modalRootView().viewForwarder().didTouchOutside = { [weak self] in
-            if (self?.isModalPresented())! {
+            if (self?._isModalPresented())! {
                 self?.modal.dismiss()
             }
         }
@@ -119,7 +119,7 @@ extension FlaskNav{
     
     func dismissModal(completion:@escaping ()->Void = {}){
         
-        if !isModalPresented() {
+        if !_isModalPresented() {
             completion()
             return
         }

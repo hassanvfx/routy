@@ -20,11 +20,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.setup(withWindow: window!)
 
         testNativeSync()
-//        testRoot()
-//        testAnimation()
-//        testTransaction()
-//        testModal()
-//        testTransaction()
+        testRoot()
+        testAnimation()
+        testTransaction()
+        testModal()
+        testTransaction()
 //        testAPI()
         return true
     }

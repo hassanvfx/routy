@@ -35,7 +35,7 @@ extension FlaskNav{
         return tabPresentator != nil
     }
     
-    func isModalPresented()->Bool{
+    func _isModalPresented()->Bool{
         return modalPresentator != nil
     }
     
@@ -194,7 +194,7 @@ extension FlaskNav{
         nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
         nav.delegate = self
         nav.flaskDelegate = self
-        nav.isModal = true 
+        nav._isModal = true 
         
         let layer = NavLayer.Modal()
         NavContext.manager.contextRoot(forLayer: layer, viewController: root)
@@ -213,7 +213,7 @@ extension FlaskNav:FlaskNavigationControllerDelegate{
             return true
         }
         
-        if nav.isPerformingNavOperation == false {
+        if nav._isPerformingNavOperation == false {
             //ie initiated by user tap
             popCurrent(layer: layerName)
             return false

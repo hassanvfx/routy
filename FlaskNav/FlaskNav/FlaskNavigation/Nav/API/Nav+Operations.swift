@@ -121,7 +121,7 @@ extension FlaskNav{
         print("pending operations for queue =\(self.operationQueue.operations.count)")
         
         if let nav = context.viewController()?.navigationController as? FlaskNavigationController {
-            nav.isPerformingNavOperation = false
+            nav._isPerformingNavOperation = false
         }
         
         NavContext.manager.releaseOnPop(context: context)

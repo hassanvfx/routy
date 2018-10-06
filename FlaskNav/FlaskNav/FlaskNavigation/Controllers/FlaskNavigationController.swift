@@ -15,15 +15,15 @@ protocol FlaskNavigationControllerDelegate:AnyObject{
 class FlaskNavigationController: UINavigationController, UINavigationBarDelegate {
 
     public weak var flaskDelegate:FlaskNavigationControllerDelegate?
-    public var isModal = false
-    public var isPerformingNavOperation = false
+    public var _isModal = false
+    public var _isPerformingNavOperation = false
     
     func rootView()->UIViewController{
         return viewControllers.first!
     }
     
     func modalRootView()->ModalRootController{
-        assert(isModal,"this controller is not modal")
+        assert(_isModal,"this controller is not modal")
         return viewControllers.first! as! ModalRootController
     }
     
