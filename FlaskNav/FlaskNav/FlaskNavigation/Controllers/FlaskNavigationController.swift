@@ -10,6 +10,7 @@ import UIKit
 
 protocol FlaskNavigationControllerDelegate:AnyObject{
     func navBarAction(inNav nab:FlaskNavigationController, withBar bar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool
+
 }
 class FlaskNavigationController: UINavigationController, UINavigationBarDelegate {
 
