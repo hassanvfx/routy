@@ -10,6 +10,7 @@ import UIKit
 
 open class NavAnimatorClass: NSObject {
     public private(set) var isPresented = false
+    public private(set) var interactionController:UIPercentDrivenInteractiveTransition? = nil
     public var isNavTransition = false
     public var _duration = 0.4
     
@@ -76,6 +77,26 @@ extension NavAnimatorClass{
     public func setParameters(_ string:String){
         let info = NavSerializer.stringToDict(string)
         _setParams(info)
+    }
+}
+
+extension NavAnimatorClass{
+    public func interactionStart(){
+         interactionController = UIPercentDrivenInteractiveTransition()
+    }
+    
+    public func interactionUpdate(percent:Double){
+        interactionController?.update(CGFloat(percent))
+    }
+    
+    public func interactionCanceled(){
+        interactionController?.cancel()
+        interactionController = nil
+    }
+    
+    public func interactionFinished(){
+        interactionController?.finish()
+        interactionController = nil
     }
 }
 

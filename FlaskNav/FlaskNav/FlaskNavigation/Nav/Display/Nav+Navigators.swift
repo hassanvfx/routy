@@ -71,8 +71,6 @@ extension FlaskNav {
         let navigatorIntention = NavContext.manager.navigator(fromStateHash:stringContext)
         let navigator = resolveNavigatorFor(context: context, intention: navigatorIntention)
         
-        instantiateViewControllerFor(context: context, navOperation: navOperation)
-        instantiateAnimatorFor(context:context)
         
         print("--> will navigateTo \(context.path())")
         switch navigator {
@@ -81,6 +79,9 @@ extension FlaskNav {
         case .Pop:
             navigatePop(toContext:context,navOperation:navOperation)
         case .Push:
+            instantiateViewControllerFor(context: context, navOperation: navOperation)
+            instantiateAnimatorFor(context:context)
+            
             navigatePush(context:context, navOperation:navOperation)
         }
         
