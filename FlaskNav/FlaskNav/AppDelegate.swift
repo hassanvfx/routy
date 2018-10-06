@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func testNativeSync(){
         Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]))
         Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"blue"]))
+        Services.router.nav.popCurrent()
     }
     
     func testRoot (){

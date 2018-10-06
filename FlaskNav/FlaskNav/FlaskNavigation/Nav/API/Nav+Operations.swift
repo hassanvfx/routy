@@ -95,7 +95,9 @@ extension FlaskNav{
             return
         }
         
-        NavContext.manager.releaseOnPop(context: context)
+        
+        
+        
         let key = context.contextId
         var references = operationsFor(key:key)
         
@@ -106,17 +108,23 @@ extension FlaskNav{
         guard navOperation.operation!.isExecuting else {
             return
         }
+        
+        
         _ = references.removeFirst()
         operations[key] = references
-        
-        
-        
+           
         print("pending operations for \(key)  =\(references.count)")
-        print("[-] removing operation for key \(String(describing: navOperation.name)) \(key) \(context.navigator?.rawValue)")
+        print("[-] removing operation for key \(String(describing: navOperation.name)) \(key) \(String(describing: context.navigator?.rawValue))")
         
-      
-            navOperation.releaseFlux()
-            print("pending operations for queue =\(self.operationQueue.operations.count)")
+
+        navOperation.releaseFlux()
+        print("pending operations for queue =\(self.operationQueue.operations.count)")
+        
+        if let nav = context.viewController()?.navigationController as? FlaskNavigationController {
+            nav.isPerformingNavOperation = false
+        }
+        
+        NavContext.manager.releaseOnPop(context: context)
         
     }
 }

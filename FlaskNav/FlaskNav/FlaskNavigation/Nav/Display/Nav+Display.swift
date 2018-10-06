@@ -54,9 +54,14 @@ extension FlaskNav{
 }
 extension FlaskNav{
     
-    func ensureNavCompletion(withContext context:NavContext, _ action:()->Void){
+    func ensureNavCompletion(withContext context:NavContext, _ action:@escaping ()->Void){
         
         let nav = self.navInstance(forLayer: context.layer)
+        
+        let execute = {
+            nav.isPerformingNavOperation = true
+            action()
+        }
         
         let complete = {
             DispatchQueue.main.async {
@@ -66,7 +71,7 @@ extension FlaskNav{
         
         if context.navigator != .Root || (context.navigator == .Root && nav.viewControllers.count > 1){
             
-            action()
+            execute()
             
             if NavLayer.IsModal(context.layer) &&  self.isModalPresented() == false {
                 complete()

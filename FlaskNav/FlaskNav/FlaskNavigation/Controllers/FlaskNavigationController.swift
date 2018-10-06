@@ -8,9 +8,14 @@
 
 import UIKit
 
+protocol FlaskNavigationControllerDelegate:AnyObject{
+    func navBarAction(inNav nab:FlaskNavigationController, withBar bar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool
+}
 class FlaskNavigationController: UINavigationController, UINavigationBarDelegate {
 
-    var isModal = false
+    public weak var flaskDelegate:FlaskNavigationControllerDelegate?
+    public var isModal = false
+    public var isPerformingNavOperation = false
     
     func rootView()->UIViewController{
         return viewControllers.first!
@@ -38,7 +43,10 @@ class FlaskNavigationController: UINavigationController, UINavigationBarDelegate
     
    
     public func navigationBar(_ navigationBar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool{
-         return false
+        guard let delegate = self.flaskDelegate else{
+            return true
+        }
+        return delegate.navBarAction(inNav: self,withBar: navigationBar,shouldPop:item)
     }
     
    

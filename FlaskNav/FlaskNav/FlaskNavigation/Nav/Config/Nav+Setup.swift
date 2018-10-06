@@ -120,6 +120,24 @@ extension FlaskNav{
         
     }
     
+    func layerNameFor(navController: FlaskNavigationController)->String?{
+        
+        var layerName:String? = nil
+        
+        for (layer,nav) in navControllers {
+            
+            if nav == navController {
+                layerName = layer
+                break
+            }
+        }
+        
+        return layerName
+        
+    }
+}
+extension FlaskNav{
+    
     func newMainNavController()->FlaskNavigationController{
        
         let root = navRoot!()
@@ -131,6 +149,7 @@ extension FlaskNav{
         let nav = FlaskNavigationController(rootViewController: root)
         nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
         nav.delegate = self
+        nav.flaskDelegate = self
         
         let layer = NavLayer.Nav()
         NavContext.manager.contextRoot(forLayer: layer, viewController: root)
@@ -151,6 +170,7 @@ extension FlaskNav{
         let nav = FlaskNavigationController(rootViewController: root)
         nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
         nav.delegate = self
+        nav.flaskDelegate = self
         
         let layer = NavLayer.Tab(index)
         NavContext.manager.contextRoot(forLayer: layer, viewController: root)
@@ -173,6 +193,7 @@ extension FlaskNav{
         let nav = FlaskNavigationController(rootViewController: root)
         nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
         nav.delegate = self
+        nav.flaskDelegate = self
         nav.isModal = true 
         
         let layer = NavLayer.Modal()
@@ -180,6 +201,29 @@ extension FlaskNav{
         
         return nav
     }
+}
+
+extension FlaskNav:FlaskNavigationControllerDelegate{
+    
+    
+   
+    func navBarAction(inNav nav: FlaskNavigationController, withBar bar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
+       
+        guard let layerName = layerNameFor(navController: nav) else {
+            return true
+        }
+        
+        if nav.isPerformingNavOperation == false {
+            //ie initiated by user tap
+            popCurrent(layer: layerName)
+            return false
+        }
+        
+        return true
+    }
+    
+    
+  
 }
 
 
