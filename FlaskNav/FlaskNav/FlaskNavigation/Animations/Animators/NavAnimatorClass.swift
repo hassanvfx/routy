@@ -85,6 +85,13 @@ extension NavAnimatorClass{
          interactionController = UIPercentDrivenInteractiveTransition()
     }
     
+    public func interactionPercent()->Double{
+        guard let controller = interactionController else {
+            return 0
+        }
+        return Double(controller.percentComplete)
+    }
+    
     public func interactionUpdate(percent:Double){
         interactionController?.update(CGFloat(percent))
     }
