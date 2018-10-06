@@ -52,7 +52,33 @@ extension FlaskNav{
     }
     
 }
-
+extension FlaskNav{
+    
+    func ensureNavCompletion(withContext context:NavContext, _ action:()->Void){
+        
+        let nav = self.navInstance(forLayer: context.layer)
+        
+        let complete = {
+            DispatchQueue.main.async {
+                self.intentToCompleteOperationFor(context: context)
+            }
+        }
+        
+        if context.navigator != .Root || (context.navigator == .Root && nav.viewControllers.count > 1){
+            
+            action()
+            
+            if NavLayer.IsModal(context.layer) &&  self.isModalPresented() == false {
+                complete()
+            }
+            if NavLayer.IsTab(context.layer) &&  self.isTabPresented() == false {
+                complete()
+            }
+        } else{
+            complete()
+        }
+    }
+}
 extension FlaskNav{
     
     func popToRoot(context:NavContext){
@@ -66,41 +92,48 @@ extension FlaskNav{
                 return
             }
             
-            if(nav.viewControllers.count > 1){
-                nav.popToRootViewController(animated:true)
-            } else{
-                DispatchQueue.main.async { 
-                    this.intentToCompleteOperationFor(context: context)
-                    
-                }
+            this.ensureNavCompletion(withContext: context){
+                   nav.popToRootViewController(animated:true)
             }
         }
     }
     
     func pushController(_ controller:UIViewController, context:NavContext){
         DispatchQueue.main.async { [weak self] in
-            let nav = (self?.navInstance(forLayer: context.layer))!
-            nav.pushViewController(controller, animated: true)
+            guard let this = self else {
+                return
+            }
+            
+            guard let nav = self?.navInstance(forLayer: context.layer) else {
+                return
+            }
+            
+            this.ensureNavCompletion(withContext: context){
+                 nav.pushViewController(controller, animated: true)
+            }
+           
             
         }
     }
     
     func popToController(_ controller:UIViewController, context:NavContext){
         DispatchQueue.main.async { [weak self] in
-            let nav = (self?.navInstance(forLayer: context.layer))!
-            nav.popToViewController(controller, animated: true)
+            guard let this = self else {
+                return
+            }
+            
+            guard let nav = self?.navInstance(forLayer: context.layer) else {
+                return
+            }
+            
+            this.ensureNavCompletion(withContext: context){
+                nav.popToViewController(controller, animated: true)
+            }
+            
         }
     }
     
 }
 
-extension FlaskNav {
-    
-    
-    func presentAccessory(_ controller:UIViewController,  context:NavContext){
-        
-    }
-    
-    
-}
+
 

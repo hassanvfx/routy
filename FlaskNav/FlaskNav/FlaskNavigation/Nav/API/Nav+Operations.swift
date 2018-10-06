@@ -29,6 +29,8 @@ extension FlaskNav{
     func performOperationFor(navOperation:FlaskNavOperation, withCompletion closure:@escaping (@escaping ()->Void)->Void) {
        
         let completed = {
+            print("[-] removing SYNC operation for key \(String(describing: navOperation.name)) ")
+            
             navOperation.releaseFlux()
         }
         

@@ -21,10 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         testRoot()
         
-//        testAnimation()
-//        testTransaction()
-//        testModal()
-//        testTransaction()
+        testAnimation()
+        testTransaction()
+        testModal()
+        testTransaction()
 //        testAPI()
         return true
     }
@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        Services.router.nav.popToRoot()
         Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
         Services.router.modal.popCurrent()
-//        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]),animator: NavAnimators.ZoomIn())
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]),animator: NavAnimators.ZoomIn())
         
     }
     
