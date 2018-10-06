@@ -69,7 +69,10 @@ extension FlaskNav{
             if(nav.viewControllers.count > 1){
                 nav.popToRootViewController(animated:true)
             } else{
-                this.intentToCompleteOperationFor(context: context)
+                DispatchQueue.main.async { 
+                    this.intentToCompleteOperationFor(context: context)
+                    
+                }
             }
         }
     }

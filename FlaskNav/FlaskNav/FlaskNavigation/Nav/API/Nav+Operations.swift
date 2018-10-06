@@ -33,7 +33,7 @@ extension FlaskNav{
         }
         
         let debugClosure:(FlaskOperation)->Void = { (op) in
-            print("[$] performing SYNC operation for NAV key \(navOperation.name)")
+            print("[$] performing SYNC operation for key \(navOperation.name)")
             closure(completed)
         }
         

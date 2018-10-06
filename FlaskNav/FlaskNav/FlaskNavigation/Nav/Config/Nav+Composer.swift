@@ -127,6 +127,8 @@ extension FlaskNav{
             self?.modalPresentator = nil
             completion()
         }
+
+        //TODO: issue here with unbalanced calls
         modalPresentator?.animator._duration = 0
         modalPresentator?.dismiss(onDismiss)
     }

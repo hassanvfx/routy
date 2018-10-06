@@ -21,17 +21,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         testRoot()
         
-        testAnimation()
-        testTransaction()
-        testModal()
-        testTransaction()
-        testAPI()
+//        testAnimation()
+//        testTransaction()
+//        testModal()
+//        testTransaction()
+//        testAPI()
         return true
     }
     
+    
     func testRoot (){
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"]),animator: NavAnimators.ZoomIn())
-        Services.router.nav.popToRoot()
+//        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"]),animator: NavAnimators.ZoomIn())
+//        Services.router.nav.popToRoot()
+        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
+        Services.router.modal.popCurrent()
+//        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]),animator: NavAnimators.ZoomIn())
+        
     }
     
     func testAnimation (){
@@ -57,9 +62,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func testTransaction(){
         Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
 
-        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
+        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"red"])){_ in print("line \(#line)")}
 //        Services.router.modal.show()
-        Services.router.modal.popCurrent()
+        Services.router.modal.popCurrent()  //TODO: THIS LINE IS STUCK
         
         Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
         
