@@ -8,10 +8,15 @@
 
 import UIKit
 
+public typealias NavAnimatorInteraction = ()->Void
+
 open class NavAnimatorClass: NSObject {
     public private(set) var isPresented = false
+    public private(set) var _interactionController:UIPercentDrivenInteractiveTransition? = nil
     public var isNavTransition = false
     public var _duration = 0.4
+    public var popInteractor:NavAnimatorInteraction?
+    public var pushInteractor:NavAnimatorInteraction?
     
     //MARK: subclass methods
     open func name()->String{
@@ -76,6 +81,49 @@ extension NavAnimatorClass{
     public func setParameters(_ string:String){
         let info = NavSerializer.stringToDict(string)
         _setParams(info)
+    }
+}
+
+extension NavAnimatorClass{
+    
+    public func interactor()->UIPercentDrivenInteractiveTransition?{
+       
+        if !isPresented && (pushInteractor != nil) {
+            startInteraction()
+            return _interactionController
+        }
+        
+        if isPresented && (popInteractor != nil) {
+            startInteraction()
+            return _interactionController
+        }
+        
+        return nil
+    }
+    
+    func startInteraction(){
+         _interactionController = UIPercentDrivenInteractiveTransition()
+    }
+    
+    public func interactionPercent()->Double{
+        guard let controller = _interactionController else {
+            return 0.0
+        }
+        return Double(controller.percentComplete)
+    }
+    
+    public func interactionUpdate(percent:Double){
+        _interactionController?.update(CGFloat(percent))
+    }
+    
+    public func interactionCanceled(){
+        _interactionController?.cancel()
+        _interactionController = nil
+    }
+    
+    public func interactionFinished(){
+        _interactionController?.finish()
+        _interactionController = nil
     }
 }
 

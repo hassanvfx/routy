@@ -19,15 +19,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-        testNativeSync()
-        testRoot()
-        testAnimation()
-        testTransaction()
-        testModal()
-        testTransaction()
-//        testAPI()
+        testInteractivePopComplete()
+//        testNativeSync()
+//        testRoot()
+//        testAnimation()
+//        testTransaction()
+//        testModal()
+//        testTransaction()
         return true
     }
+    
+    func testInteractivePopComplete(){
+        
+        let animator = NavAnimators.SlideTop()
+
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]),animator:animator)
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"blue"]))
+
+        
+    }
+    
     
     func testNativeSync(){
         Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]))
