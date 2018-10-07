@@ -79,7 +79,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
         self.composition = NavComposition<TABS,CONT,MODS>(delegate: self)
         self.compositionBatch = NavComposition<TABS,CONT,MODS>(batch: true, delegate: self)
         
-        AttachFlaskReactor(to: self, mixing: [substance])
+        Flask.attachReactor(to: self, mixing: [substance])
         
         self.configRouter()
     }

@@ -10,7 +10,8 @@ import UIKit
 import Flask
 
 extension FlaskNav: FlaskReactor{
-    public func flaskReactor(reaction: FlaskReaction) {
+    
+    public func flaskReactions(reaction: FlaskReaction) {
        
         // ACTIVE LAYER
         reaction.on(NavigationState.prop.layerActive){[weak self] (change) in
