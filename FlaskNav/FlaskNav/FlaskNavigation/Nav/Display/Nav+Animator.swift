@@ -14,12 +14,10 @@ extension FlaskNav{
         return NavAnimators.SlideLeft()
     }
     
-    func getAnimator(for controller:UIViewController)->NavAnimatorClass?{
-        return  animators[pointerKey(controller)]
-    }
+    
     
     func setPreferredAnimator(_ animator:NavAnimatorClass? ,for controller:UIViewController){
-       let key = pointerKey(controller)
+        let key = pointerKey(controller)
         if animator != nil {
             animators[key] = animator
         }else {
@@ -28,9 +26,20 @@ extension FlaskNav{
         animators[key]?.isNavTransition = true
     }
     
+    func getNotPresentedAnimator(for controller:UIViewController)->NavAnimatorClass?{
+        guard let animator = animators[pointerKey(controller)] else{
+            return nil
+        }
+        if animator.isPresented { return nil }
+        return animator
+    }
+  
     @discardableResult
-    func takeAnimator(for controller:UIViewController)->NavAnimatorClass?{
-        let animator = animators[pointerKey(controller)]
+    func takePresentedAnimator(for controller:UIViewController)->NavAnimatorClass?{
+        guard let animator = animators[pointerKey(controller)] else{
+            return nil
+        }
+        if animator.isPresented == false { return nil }
         animators[pointerKey(controller)] = nil
         return animator
     }
