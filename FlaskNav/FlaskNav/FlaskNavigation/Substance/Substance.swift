@@ -14,7 +14,7 @@ import Flask
 struct NavigationState: State {
     
     enum prop : StateProp{
-        case layerActive
+        case layerActive,layers
     }
     
     var layers:FlaskDictRef = FlaskDictRef()
