@@ -10,7 +10,7 @@ import UIKit
 import Flask
 
 extension FlaskNav: FlaskReactor{
-    
+
     public func flaskReactions(reaction: FlaskReaction) {
        
         // ACTIVE LAYER

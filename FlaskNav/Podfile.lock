@@ -1,6 +1,10 @@
 PODS:
   - Delayed (2.3.6)
+<<<<<<< HEAD
   - Flask (1.1.24):
+=======
+  - Flask (1.1.25):
+>>>>>>> wiring actions
     - Delayed (> 2.2.2)
 
 DEPENDENCIES:
@@ -13,7 +17,11 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Delayed: 84ce53e7a16a9fb93fdda058e2a21334a6567645
+<<<<<<< HEAD
   Flask: 134f9beb76670a1c00a532a6ee20ab97e7896be7
+=======
+  Flask: d863a8dcd4734887b3d0c3dc114a376a06206a15
+>>>>>>> wiring actions
 
 PODFILE CHECKSUM: b2e17beba73eb91a3be3dc29e1dac7ad71799e36
 

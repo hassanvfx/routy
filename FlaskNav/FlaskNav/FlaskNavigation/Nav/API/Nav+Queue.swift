@@ -27,8 +27,7 @@ extension FlaskNav{
             NavStack.lock()
             closure()
             NavStack.unlock()
-            self?.applyContext()
-//            operation.complete()
+            self?.dispatchStack(with: operation)
         }
         
         let operation = FlaskOperation(block: action)
@@ -47,8 +46,7 @@ extension FlaskNav{
                 closure(my.compositionBatch!)
             }
             NavStack.unlock()
-            self?.applyContext()
-//            operation.complete()
+            self?.dispatchStack(with: operation)
         }
         let operation = FlaskOperation(block: action)
         NavStack.enqueue(operation: operation)
