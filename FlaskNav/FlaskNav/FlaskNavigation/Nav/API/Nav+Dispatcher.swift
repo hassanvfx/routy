@@ -12,7 +12,7 @@ import Flask
 
 extension FlaskNav{
     
-    func applyContext(){
+    func applyContext(with operation:FlaskOperation){
         applyActiveLayer()
         applyCurrentLayers()
         

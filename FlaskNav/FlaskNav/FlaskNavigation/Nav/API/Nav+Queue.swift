@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Flask
 
 extension FlaskNav{
     
@@ -20,20 +21,25 @@ extension FlaskNav{
     
     func queueNow(_ closure:@escaping ()->Void){
         
-        NavStack.enqueue { [weak self] in
+        let action:(FlaskOperation)->Void = { [weak self] operation in
             assert(NavStack.locked == false, "error the `stack` is currently locked")
             
             NavStack.lock()
             closure()
             NavStack.unlock()
             self?.applyContext()
+//            operation.complete()
         }
+        
+        let operation = FlaskOperation(block: action)
+        NavStack.enqueue(operation: operation)
     }
     
     
     func transaction(_ closure:@escaping (NavComposition<TABS,CONT,MODS>)->Void){
         
-        NavStack.enqueue { [weak self] in
+         let action:(FlaskOperation)->Void = { [weak self] operation in
+        
             assert(NavStack.locked == false, "error the `stack` is currently locked")
             
             NavStack.lock()
@@ -42,7 +48,10 @@ extension FlaskNav{
             }
             NavStack.unlock()
             self?.applyContext()
+//            operation.complete()
         }
+        let operation = FlaskOperation(block: action)
+        NavStack.enqueue(operation: operation)
         
     }
     

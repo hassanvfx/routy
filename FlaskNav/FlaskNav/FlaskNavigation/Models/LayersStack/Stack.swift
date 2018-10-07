@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Flask
 
 public class NavStack {
     
@@ -102,9 +103,7 @@ extension NavStack {
         locked = false
     }
     
-    static public func enqueue(_ closure:@escaping ()->Void){
-        NavStack.stackQueue.addOperation { 
-            closure()
-        }
+    static public func enqueue(operation:FlaskOperation){
+        NavStack.stackQueue.addOperation(operation)
     }
 }
