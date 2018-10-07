@@ -8,11 +8,15 @@
 
 import UIKit
 
+public typealias NavAnimatorInteraction = ()->Void
+
 open class NavAnimatorClass: NSObject {
     public private(set) var isPresented = false
-    public private(set) var interactionController:UIPercentDrivenInteractiveTransition? = nil
+    public private(set) var _interactionController:UIPercentDrivenInteractiveTransition? = nil
     public var isNavTransition = false
     public var _duration = 0.4
+    public var popInteractor:NavAnimatorInteraction?
+    public var pushInteractor:NavAnimatorInteraction?
     
     //MARK: subclass methods
     open func name()->String{
@@ -81,29 +85,45 @@ extension NavAnimatorClass{
 }
 
 extension NavAnimatorClass{
-    public func interactionStart(){
-         interactionController = UIPercentDrivenInteractiveTransition()
+    
+    public func interactor()->UIPercentDrivenInteractiveTransition?{
+       
+        if !isPresented && (pushInteractor != nil) {
+            startInteraction()
+            return _interactionController
+        }
+        
+        if isPresented && (popInteractor != nil) {
+            startInteraction()
+            return _interactionController
+        }
+        
+        return nil
+    }
+    
+    func startInteraction(){
+         _interactionController = UIPercentDrivenInteractiveTransition()
     }
     
     public func interactionPercent()->Double{
-        guard let controller = interactionController else {
+        guard let controller = _interactionController else {
             return 0.0
         }
         return Double(controller.percentComplete)
     }
     
     public func interactionUpdate(percent:Double){
-        interactionController?.update(CGFloat(percent))
+        _interactionController?.update(CGFloat(percent))
     }
     
     public func interactionCanceled(){
-        interactionController?.cancel()
-        interactionController = nil
+        _interactionController?.cancel()
+        _interactionController = nil
     }
     
     public func interactionFinished(){
-        interactionController?.finish()
-        interactionController = nil
+        _interactionController?.finish()
+        _interactionController = nil
     }
 }
 

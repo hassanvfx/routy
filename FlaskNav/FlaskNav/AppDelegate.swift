@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-        testInteractive()
+        testInteractivePopComplete()
 //        testNativeSync()
 //        testRoot()
 //        testAnimation()
@@ -29,49 +29,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func testInteractivePushCancel(){
-        
-        let animator = NavAnimators.SlideTop()
-        animator.interactionStart()
-        
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]),animator:animator)
-   
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            animator.interactionUpdate(percent: 0.5)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                 animator.interactionCanceled()
-            }
-        }
-    }
-    
-    func testInteractivePushComplete(){
-        
-        let animator = NavAnimators.SlideTop()
-        animator.interactionStart()
-        
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]),animator:animator)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            animator.interactionUpdate(percent: 0.5)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                animator.interactionFinished()
-            }
-        }
-    }
-    
     func testInteractivePopComplete(){
         
         let animator = NavAnimators.SlideTop()
 
         Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]),animator:animator)
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]),animator:animator)
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"blue"]))
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            animator.interactionUpdate(percent: 0.5)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                animator.interactionFinished()
-            }
-        }
+        
     }
     
     
