@@ -12,15 +12,18 @@ import Flask
 extension FlaskNav{
 
     
-    public func queueIntent(batched:Bool,action:@escaping ()->Void){
+    public func queueIntent(batched:Bool, completion:CompletionClosure?, action:@escaping ()->Void){
+
         if batched {
+            assert(completion == nil, "Completion is not supported in batch transactions")
             action()
         } else{
-            queueNow(action)
+            let completionClosure = completion ?? { _ in }
+            queueNow(action,completion: completionClosure)
         }
     }
     
-    func queueNow(_ closure:@escaping ()->Void){
+    func queueNow(_ closure:@escaping ()->Void, completion:@escaping (Bool)->Void){
         
         
         let action:(FlaskOperation)->Void = { [weak self] operation in
@@ -36,6 +39,8 @@ extension FlaskNav{
                     //NavStack.restore()
                     print("dispatch canceled")
                 }
+                
+                completion(completed)
             }
         }
         
