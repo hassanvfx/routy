@@ -39,23 +39,23 @@ extension FlaskNav{
 
 extension FlaskNav: NavStackAPI{
     
-    func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:Any? = nil, animator: NavAnimatorClass? = nil, presentation: NavPresentationClass? = nil, callback: NavContextCallback?) {
-        queueIntent(batched:batched) { [weak self] in
+    func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:Any? = nil, animator: NavAnimatorClass? = nil, presentation: NavPresentationClass? = nil, completion:CompletionClosure? = nil, callback: NavContextCallback?) {
+        queueIntent(batched:batched, completion: completion ) { [weak self] in
             let context = NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, animator:animator, callback)
             self?.setActive(layer:layer)
             self?.stack(forLayer: layer).push(context: context)
         }
     }
     
-    func pop(layer:String, batched:Bool = false, toController controller:String, resourceId:String?, info:Any?){
-        queueIntent(batched:batched) { [weak self] in
+    func pop(layer:String, batched:Bool = false, toController controller:String, resourceId:String?, info:Any?, completion:CompletionClosure? = nil){
+        queueIntent(batched:batched, completion: completion) { [weak self] in
             let context =  NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info)
             self?.setActive(layer:layer)
             self?.stack(forLayer: layer).pop(toContextRef: context)
         }
     }
-    func popCurrent(layer:String, batched:Bool = false){
-        queueIntent(batched:batched) { [weak self] in
+    func popCurrent(layer:String, batched:Bool = false, completion:CompletionClosure? = nil){
+        queueIntent(batched:batched, completion: completion) { [weak self] in
            
             self?.stack(forLayer: layer).pop()
             
@@ -68,8 +68,8 @@ extension FlaskNav: NavStackAPI{
             
         }
     }
-    func popToRoot(layer:String, batched:Bool = false){
-        queueIntent(batched:batched) { [weak self] in
+    func popToRoot(layer:String, batched:Bool = false, completion:CompletionClosure? = nil){
+        queueIntent(batched:batched, completion: completion) { [weak self] in
             self?.stack(forLayer: layer).clear()
             
             if(NavLayer.IsModal(layer)){
@@ -80,8 +80,8 @@ extension FlaskNav: NavStackAPI{
         }
     }
     
-    func show(layer:String, batched:Bool = false){
-        queueIntent(batched:batched) { [weak self] in
+    func show(layer:String, batched:Bool = false, completion:CompletionClosure? = nil){
+        queueIntent(batched:batched, completion: completion) { [weak self] in
             //TODO: handle show nav or nav
             self?.setActive(layer:layer)
         }

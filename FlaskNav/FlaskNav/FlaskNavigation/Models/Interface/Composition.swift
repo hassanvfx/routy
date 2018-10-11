@@ -68,24 +68,24 @@ class NavComposition<TABS:RawRepresentable,CONT:RawRepresentable,MODS:RawReprese
 
 // MARK: - The composition intercepts the StackInterface and injects the boolean `batched` context. This is a requirement for the transactions
 extension NavComposition:NavStackAPI{
-    func push(layer: String, batched: Bool, controller: String, resourceId: String?, info: Any?, animator: NavAnimatorClass?, presentation: NavPresentationClass?, callback: NavContextCallback?) {
-        self.compDelegate?.push(layer: layer, batched: compBatched, controller: controller, resourceId: resourceId, info: info, animator: animator, presentation: presentation, callback: callback)
+    func push(layer: String, batched: Bool, controller: String, resourceId: String?, info: Any?, animator: NavAnimatorClass?, presentation: NavPresentationClass?, completion:CompletionClosure?, callback: NavContextCallback?) {
+        self.compDelegate?.push(layer: layer, batched: compBatched, controller: controller, resourceId: resourceId, info: info, animator: animator, presentation: presentation, completion: completion, callback: callback)
     }
     
-    func pop(layer: String, batched: Bool, toController controller: String, resourceId: String?, info: Any?) {
-        self.compDelegate?.pop(layer: layer, batched: compBatched, toController: controller, resourceId: resourceId, info: info)
+    func pop(layer: String, batched: Bool, toController controller: String, resourceId: String?, info: Any?, completion:CompletionClosure?) {
+        self.compDelegate?.pop(layer: layer, batched: compBatched, toController: controller, resourceId: resourceId, info: info, completion: completion)
     }
     
-    func popCurrent(layer: String, batched: Bool) {
-        self.compDelegate?.popCurrent(layer: layer, batched: compBatched)
+    func popCurrent(layer: String, batched: Bool, completion:CompletionClosure?) {
+        self.compDelegate?.popCurrent(layer: layer, batched: compBatched, completion: completion)
     }
     
-    func popToRoot(layer: String, batched: Bool) {
-        self.compDelegate?.popToRoot(layer: layer, batched: compBatched)
+    func popToRoot(layer: String, batched: Bool, completion:CompletionClosure?) {
+        self.compDelegate?.popToRoot(layer: layer, batched: compBatched, completion: completion)
     }
     
-    func show (layer: String, batched: Bool) {
-        self.compDelegate?.show (layer: layer, batched: compBatched)
+    func show (layer: String, batched: Bool, completion:CompletionClosure?) {
+        self.compDelegate?.show (layer: layer, batched: compBatched, completion: completion)
     }
    
     func tabIndex(from layer: String) -> Int {

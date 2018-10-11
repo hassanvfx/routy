@@ -19,15 +19,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-        testAsyncStack()
-        testNativeSync()
-        testRoot()
-        testAnimation()
-        testTransaction()
-        testModal()
-        testTransaction()
+        testCompletion()
+//        testAsyncStack()
+//        testNativeSync()
+//        testRoot()
+//        testAnimation()
+//        testTransaction()
+//        testModal()
+//        testTransaction()
 //        testAPI()
         return true
+    }
+    
+    func testCompletion(){
+        
+        
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
+        Services.router.tab(.Friends).show(){ completed in
+            
+        }
+        Services.router.nav.show(){ completed in
+            
+        }
     }
     
     func testAsyncStack(){
