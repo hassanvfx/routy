@@ -106,4 +106,5 @@ extension NavStack {
     static public func enqueue(operation:FlaskOperation){
         NavStack.stackQueue.addOperation(operation)
     }
+    
 }

@@ -13,6 +13,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
   
     let FIRST_NAVIGATION_ROOT_COUNT = 2
     let UNDEFINED_CONTEXT_ID = -1
+    let CANCELED_OPERATION_NAME = "canceledOperation"
     
     // MARK: NAV CONTROLLER
     
