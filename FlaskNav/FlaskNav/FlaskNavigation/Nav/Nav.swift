@@ -13,6 +13,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
   
     let FIRST_NAVIGATION_ROOT_COUNT = 2
     let UNDEFINED_CONTEXT_ID = -1
+    let CANCELED_OPERATION_NAME = "canceledOperation"
     
     // MARK: NAV CONTROLLER
     
@@ -79,7 +80,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
         self.composition = NavComposition<TABS,CONT,MODS>(delegate: self)
         self.compositionBatch = NavComposition<TABS,CONT,MODS>(batch: true, delegate: self)
         
-        AttachFlaskReactor(to: self, mixing: [substance])
+        Flask.attachReactor(to: self, mixing: [substance])
         
         self.configRouter()
     }

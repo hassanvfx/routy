@@ -35,14 +35,14 @@ class FlaskNavOperation : NSObject {
         }
     }
     
-    func releaseFlux(){
+    func releaseFlux(completed:Bool = true){
         DispatchQueue.main.async {
             if self.navLocked {
                 self.pendingRelease = true
                 return
             }
             self.operation!.complete()
-            self.fluxLock.release()
+            self.fluxLock.release(context: completed)
         }
     }
     

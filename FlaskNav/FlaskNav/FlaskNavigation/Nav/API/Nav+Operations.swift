@@ -88,7 +88,7 @@ extension FlaskNav{
         intentToCompleteOperationFor(context:rootContext)
     }
     
-    func intentToCompleteOperationFor(context aContext:NavContext?){
+    func intentToCompleteOperationFor(context aContext:NavContext?,canceled:Bool = false){
         
         guard let context = aContext else {
             assert(false, "context should always be defined")
@@ -116,8 +116,8 @@ extension FlaskNav{
         print("pending operations for \(key)  =\(references.count)")
         print("[-] removing operation for key \(String(describing: navOperation.name)) \(key) \(String(describing: context.navigator?.rawValue))")
         
-
-        navOperation.releaseFlux()
+        
+        navOperation.releaseFlux(completed: !canceled)
         print("pending operations for queue =\(self.operationQueue.operations.count)")
         
         if let nav = context.viewController()?.navigationController as? FlaskNavigationController {

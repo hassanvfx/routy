@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
+        testAsyncStack()
         testNativeSync()
         testRoot()
         testAnimation()
@@ -27,6 +28,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         testTransaction()
 //        testAPI()
         return true
+    }
+    
+    func testAsyncStack(){
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
+        Services.router.transaction { (batch) in
+            batch.nav.push(controller: .Feed, info:NavInfo(params:["color":"white"])){_ in print("line \(#line)")}
+        }
+        Services.router.tab(.Friends).show()
+        Services.router.nav.show()
     }
     
     func testNativeSync(){

@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import Flask
 
 extension FlaskNav{
+
     
     public func queueIntent(batched:Bool,action:@escaping ()->Void){
         if batched {
@@ -20,30 +22,53 @@ extension FlaskNav{
     
     func queueNow(_ closure:@escaping ()->Void){
         
-        NavStack.enqueue { [weak self] in
+        
+        let action:(FlaskOperation)->Void = { [weak self] operation in
             assert(NavStack.locked == false, "error the `stack` is currently locked")
             
             NavStack.lock()
+            //NavStack.capture()
             closure()
             NavStack.unlock()
-            self?.applyContext()
+            self?.dispatchStack(with: operation){ (completed) in
+                
+                if completed == false {
+                    //NavStack.restore()
+                    print("dispatch canceled")
+                }
+            }
         }
+        
+        let operation = FlaskOperation(block: action)
+        NavStack.enqueue(operation: operation)
     }
     
     
     func transaction(_ closure:@escaping (NavComposition<TABS,CONT,MODS>)->Void){
         
-        NavStack.enqueue { [weak self] in
+         let action:(FlaskOperation)->Void = { [weak self] operation in
+        
             assert(NavStack.locked == false, "error the `stack` is currently locked")
             
             NavStack.lock()
-            if let my = self {
-                closure(my.compositionBatch!)
+            if let this = self {
+                closure(this.compositionBatch!)
             }
-            NavStack.unlock()
-            self?.applyContext()
+            self?.dispatchStack(with: operation){ (completed) in
+                NavStack.unlock()
+            }
         }
+        let operation = FlaskOperation(block: action)
+        NavStack.enqueue(operation: operation)
         
+    }
+    
+
+    func isCanceled(operation:FlaskOperation)->Bool{
+        if let name = operation.name {
+            return name == CANCELED_OPERATION_NAME
+        }
+        return false
     }
     
     

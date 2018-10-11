@@ -1,6 +1,6 @@
 PODS:
   - Delayed (2.3.6)
-  - Flask (1.1.15):
+  - Flask (1.1.26):
     - Delayed (> 2.2.2)
 
 DEPENDENCIES:
@@ -13,7 +13,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Delayed: 84ce53e7a16a9fb93fdda058e2a21334a6567645
-  Flask: 5e7bfb0e411947f2d3a54c5f4b54ef364b862267
+  Flask: 3a78c9de68f42d47537d9e1d135349a9720f8512
 
 PODFILE CHECKSUM: b2e17beba73eb91a3be3dc29e1dac7ad71799e36
 
