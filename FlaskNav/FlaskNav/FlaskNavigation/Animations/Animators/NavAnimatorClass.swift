@@ -12,12 +12,12 @@ public enum NavAnimatorClassType: String{
     case Show,Hide
 }
 public enum NavAnimatorControllerType: String{
-    case Navigation,Presentation
+    case Navigation,ViewController
 }
 
 open class NavAnimatorClass: NSObject {
     public private(set) var type:NavAnimatorClassType = .Show
-    public private(set) var controller:NavAnimatorControllerType = .Presentation
+    public private(set) var controller:NavAnimatorControllerType = .ViewController
     public var _duration = 0.4
     
     //MARK: subclass methods
@@ -101,7 +101,7 @@ extension NavAnimatorClass{
     }
     
     open func prepareForViewController(){
-        controller = .Presentation
+        controller = .ViewController
     }
 }
 

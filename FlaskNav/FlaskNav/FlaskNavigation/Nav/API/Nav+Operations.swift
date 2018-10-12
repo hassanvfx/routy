@@ -10,8 +10,7 @@ import UIKit
 import Flask
 
 extension FlaskNav{
-    
-    
+
     func operationsFor(key:Int)->[FlaskNavOperation]{
         if let references = operations[key] {
             return references
@@ -19,12 +18,9 @@ extension FlaskNav{
         return []
     }
     
-
-    
     func pointerKey(_ key:Any)->String{
         return "\(Unmanaged.passUnretained(key as AnyObject).toOpaque())"
     }
-    
     
     func performOperationFor(navOperation:FlaskNavOperation, withCompletion closure:@escaping (@escaping ()->Void)->Void) {
        
@@ -88,15 +84,12 @@ extension FlaskNav{
         intentToCompleteOperationFor(context:rootContext)
     }
     
-    func intentToCompleteOperationFor(context aContext:NavContext?,canceled:Bool = false){
+    func intentToCompleteOperationFor(context aContext:NavContext?,completed:Bool = true){
         
         guard let context = aContext else {
             assert(false, "context should always be defined")
             return
         }
-        
-        
-        
         
         let key = context.contextId
         var references = operationsFor(key:key)
@@ -109,15 +102,13 @@ extension FlaskNav{
             return
         }
         
-        
         _ = references.removeFirst()
         operations[key] = references
            
         print("pending operations for \(key)  =\(references.count)")
         print("[-] removing operation for key \(String(describing: navOperation.name)) \(key) \(String(describing: context.navigator?.rawValue))")
         
-        
-        navOperation.releaseFlux(completed: !canceled)
+        navOperation.releaseFlux(completed: completed)
         print("pending operations for queue =\(self.operationQueue.operations.count)")
         
         if let nav = context.viewController()?.navigationController as? FlaskNavigationController {
