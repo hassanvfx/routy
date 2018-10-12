@@ -23,7 +23,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     // MARK: STACK
     
     var stackLayers:[String:NavStack] = [:]
-    var stackActiveLayer:NavActiveLayer = NavActiveLayer()
+    var stackActive:NavActiveLayer = NavActiveLayer()
     
     var composition:NavComposition<TABS,CONT,MODS>?
     var compositionBatch:NavComposition<TABS,CONT,MODS>?
@@ -87,7 +87,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     }
     
     func setupActiveLayer(){
-        stackActiveLayer.onActiveChange = { [weak self] in
+        stackActive.onActiveChange = { [weak self] in
             self?.flushModalStack()
         }
     }

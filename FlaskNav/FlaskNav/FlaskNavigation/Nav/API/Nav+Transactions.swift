@@ -14,9 +14,9 @@ extension FlaskNav{
         
         var onCompletion:CompletionClosure? = { [weak self] completed in
             if completed {
-                self?.stackActiveLayer.commit()
+                self?.stackActive.commit()
             } else {
-                self?.stackActiveLayer.rollback()
+                self?.stackActive.rollback()
             }
             if let userCompletion = completion {
                 userCompletion(completed)
@@ -25,7 +25,7 @@ extension FlaskNav{
         if batched { onCompletion = nil }
         
         stackOperation(batched:batched, completion: onCompletion ) { [weak self] in
-            self?.stackActiveLayer.capture()
+            self?.stackActive.capture()
             action(layer)
         }
         

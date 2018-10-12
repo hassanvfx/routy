@@ -16,7 +16,7 @@ extension FlaskNav: NavStackAPI{
 
         stackTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer,stack) in
             let context = NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, animator:animator, callback)
-            self?.stackActiveLayer.setActive(layer:layer)
+            self?.stackActive.setActive(layer:layer)
             stack.push(context: context)
         }
     }
@@ -25,7 +25,7 @@ extension FlaskNav: NavStackAPI{
         
         stackTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer,stack) in
             let context =  NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, animator: animator)
-            self?.stackActiveLayer.setActive(layer:layer)
+            self?.stackActive.setActive(layer:layer)
             stack.pop(toContextRef: context)
         }
     }
@@ -37,9 +37,9 @@ extension FlaskNav: NavStackAPI{
             
             if(NavLayer.IsModal(layer) &&
                 stack.currentNavigator == .Root){
-                self?.stackActiveLayer.restoreActive()
+                self?.stackActive.restoreActive()
             }else{
-                self?.stackActiveLayer.setActive(layer:layer)
+                self?.stackActive.setActive(layer:layer)
             }
             
         }
@@ -51,9 +51,9 @@ extension FlaskNav: NavStackAPI{
             stack.clear(withAnimator: animator)
             
             if(NavLayer.IsModal(layer)){
-                self?.stackActiveLayer.restoreActive()
+                self?.stackActive.restoreActive()
             }else{
-                self?.stackActiveLayer.setActive(layer:layer)
+                self?.stackActive.setActive(layer:layer)
             }
         }
     }
@@ -62,7 +62,7 @@ extension FlaskNav: NavStackAPI{
         
        activeLayerTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer) in
             //TODO: handle show nav or nav
-            self?.stackActiveLayer.setActive(layer:layer)
+            self?.stackActive.setActive(layer:layer)
         }
     }
     

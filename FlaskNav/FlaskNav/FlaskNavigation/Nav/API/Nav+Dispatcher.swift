@@ -28,10 +28,10 @@ extension FlaskNav{
     func dispatchActiveLayer(_ completion:@escaping CompletionClosure){
 
         
-        assert(NavLayer.isValid(stackActiveLayer.active),"invalid layer name")
+        assert(NavLayer.isValid(stackActive.active),"invalid layer name")
         
         let payload:[String : Any] = [
-            "layerActive":stackActiveLayer.active,
+            "layerActive":stackActive.active,
             ]
         let lock = Flask.lock(withMixer: NavMixers.LayerActive, payload: payload, autorelease: true)
         lock.onRelease = { (payload) in
