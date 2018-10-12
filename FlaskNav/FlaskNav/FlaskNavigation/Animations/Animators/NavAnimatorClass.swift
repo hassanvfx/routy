@@ -12,7 +12,7 @@ public enum NavAnimatorClassType: String{
     case Show,Hide
 }
 public enum NavAnimatorControllerType: String{
-    case Navigation,Presentation
+    case Navigation,ViewController
 }
 
 open class NavAnimatorClass: NSObject {
@@ -101,7 +101,7 @@ extension NavAnimatorClass{
     }
     
     open func prepareForViewController(){
-        controller = .Presentation
+        controller = .ViewController
     }
 }
 
