@@ -21,6 +21,7 @@ extension FlaskNav{
             if let userCompletion = completion {
                 userCompletion(completed)
             }
+            
         }
         if batched { onCompletion = nil }
         
@@ -31,7 +32,7 @@ extension FlaskNav{
         
     }
     
-    func stackTransaction(for layer:String, batched:Bool,  completion:CompletionClosure?, action:@escaping (String,NavStack)->Void){
+    func stackTransaction(for layer:String, batched:Bool,  completion:CompletionClosure? = nil, action:@escaping (String,NavStack)->Void){
         
         var onCompletion:CompletionClosure? = { completed in
             let stack = self.stack(forLayer: layer)

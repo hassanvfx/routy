@@ -17,6 +17,7 @@ public class NavAnimators: NSObject {
     static let SlideRight = { NavAnimatorSlide(style: .slideRight, intensity:1.0)}
     static let SlideTop = { NavAnimatorSlide(style: .slideTop, intensity:1.0)}
     static let SlideBottom = { NavAnimatorSlide(style: .slideBottom, intensity:1.0)}
+    static let Fade = { NavAnimatorFade(style: .FadeOut, intensity:1.0)}
     
     
 }

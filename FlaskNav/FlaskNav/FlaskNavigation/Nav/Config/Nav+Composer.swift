@@ -109,9 +109,7 @@ extension FlaskNav{
         
         let modal = modalNav()
         let top = topMostController()
-        let transitionAnimator = takeActiveLayerAnimator(for: NavLayer.Modal(), withType: .Show)
-        let defaultAnimator = NavAnimators.ZoomIn() //TODO: move this to config
-        let animator = transitionAnimator ?? defaultAnimator
+        let animator = NavAnimators.Fade()
         
         modal.modalRootView().viewForwarder().forwardingViews = [top.view]
         modal.modalRootView().viewForwarder().didTouchOutside = { [weak self] in

@@ -30,6 +30,10 @@ public class NavStack {
         self.rootContext = NavContext.manager.contextRoot(forLayer: layer)!
     }
 
+    public func isEmpty()->Bool{
+        return stack.isEmpty
+    }
+    
     public func currentContextHash()->String{
         let context = currentContext()
         return NavContext.manager.stateHash(from:context,navigator:currentNavigator)

@@ -14,9 +14,6 @@ enum NavAnimatorSlideStyle:String,RawInitializable {
 
 class NavAnimatorSlide: NavAnimatorBasic<NavAnimatorSlideStyle>{
     
-    override open func name()->String{
-        return "slide"
-    }
     
     override open func preferredIntensity() -> Double {
         return 1.0

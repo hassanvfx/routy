@@ -31,6 +31,7 @@ class MyFlaskNav: FlaskNav<Tabs, Controllers,Modals> {
         defineTabRoot(.Home){ AsyncViewController() }
         defineTabRoot(.Friends){ AsyncViewController() }
     
+        
         define(controller: .Settings){ AsyncViewController()}
         define(controller: .Feed){ AsyncViewController()}
         

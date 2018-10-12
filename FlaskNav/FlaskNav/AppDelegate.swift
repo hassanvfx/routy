@@ -19,7 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-        testShowAnimators()
+        testModalDismiss()
+//        testShowAnimators()
 //        testMixedAnimators()
 //        testCompletion()
 //        testAsyncStack()
@@ -32,6 +33,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    func testModalDismiss(){
+        let slider = NavAnimators.SlideTop()
+        let out = NavAnimators.SlideLeft()
+        
+        Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"]), animator:slider)
+        Services.router.modal.dismiss(animator:out)
+    }
   
     
     func testShowAnimators(){

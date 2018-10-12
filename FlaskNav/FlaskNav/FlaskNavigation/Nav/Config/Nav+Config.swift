@@ -26,6 +26,10 @@ extension FlaskNav{
         tabsIndexMap[stringKey] = index
     }
     
+    public func defineModal( config:NavConfig){
+        modalRootConfig = config
+    }
+    
     public func define(controller:CONT,_ constructor:@escaping ControllerConstructor){
         let stringKey = controller.rawValue as! String
         controllers[stringKey] = constructor
