@@ -41,8 +41,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func testAsyncStack(){
         Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
-        Services.router.transaction { (batch) in
-            batch.nav.push(controller: .Feed, info:NavInfo(params:["color":"white"])){_ in print("line \(#line)")}
+        Services.router.batch { (batch) in
+            batch.nav.push(controller: .Feed, info:NavInfo(params:["color":"white"]))
         }
         Services.router.tab(.Friends).show(){_ in print("line \(#line)")}
         Services.router.nav.show(){_ in print("line \(#line)")}
@@ -95,21 +95,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.modal.popCurrent(){_ in print("line \(#line)")}
         
             
-        Services.router.transaction { (batch) in
-            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"red"])){_ in print("line \(#line)")}
-            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"blue"])){_ in print("line \(#line)")}
+        Services.router.batch { (batch) in
+            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"red"]))
+            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"blue"]))
         }
 
 
-        Services.router.transaction { (batch) in
-            batch.nav.push(controller: .Feed, info:NavInfo(params:["color":"white"])){_ in print("line \(#line)")}
+        Services.router.batch { (batch) in
+            batch.nav.push(controller: .Feed, info:NavInfo(params:["color":"white"]))
         }
 
         
         Services.router.tab(.Friends).show(){_ in print("line \(#line)")}
         Services.router.nav.show(){_ in print("line \(#line)")}
         
-        Services.router.transaction { (batch) in
+        Services.router.batch { (batch) in
             batch.nav.popCurrent()
             batch.nav.popCurrent()
         }

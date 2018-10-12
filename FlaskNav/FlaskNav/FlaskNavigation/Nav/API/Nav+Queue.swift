@@ -49,7 +49,7 @@ extension FlaskNav{
     }
     
     
-    func transaction(_ closure:@escaping (NavComposition<TABS,CONT,MODS>)->Void){
+    func batch(_ closure:@escaping (NavComposition<TABS,CONT,MODS>)->Void){
         
          let action:(FlaskOperation)->Void = { [weak self] operation in
         
