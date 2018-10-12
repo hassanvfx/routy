@@ -61,7 +61,6 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
         let container = transitionContext.containerView
         
         if navigator == .Push {
-            container.addSubview(toController.view)
             present(controller: toController, from: fromController, in: container, withContext: transitionContext)
         }else{
             if isNavTransition {

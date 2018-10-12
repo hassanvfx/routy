@@ -108,6 +108,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     //MARK: ANIMATORS
     public func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
+        return nil
         
         if let animator = self.takeAnimator(for: toVC, withNavigator: .Push){
             animator.navigator = .Push

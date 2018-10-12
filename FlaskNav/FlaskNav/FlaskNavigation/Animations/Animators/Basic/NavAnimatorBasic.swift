@@ -54,10 +54,12 @@ class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorCl
     
     override func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
         
+        containerView.addSubview(controller.view)
         let animationDuration = transitionDuration(using: context)
         
         applyTransformStyle(controller: controller, parent: fromController, in: containerView)
-
+        
+        
         UIView.animate(withDuration: animationDuration, animations: {
             
             controller.view.transform = CGAffineTransform.identity
