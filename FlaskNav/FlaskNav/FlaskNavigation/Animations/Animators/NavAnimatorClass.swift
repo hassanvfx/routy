@@ -8,10 +8,13 @@
 
 import UIKit
 
+public enum NavAnimatorClassType: String{
+    case Show,Hide
+}
 open class NavAnimatorClass: NSObject {
     public private(set) var isQueued = false
+    public private(set) var type:NavAnimatorClassType = .Show
     public var isNavTransition = false
-    public var navigator:NavigatorType = .Push
     public var _duration = 0.4
     
     //MARK: subclass methods
@@ -60,9 +63,9 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
         
         let container = transitionContext.containerView
         
-        if navigator == .Push {
+        if type == .Show {
             present(controller: toController, from: fromController, in: container, withContext: transitionContext)
-        }else{
+        } else if type == .Hide{
             if isNavTransition {
                 container.insertSubview(toController.view, belowSubview: fromController.view)
             }
@@ -80,6 +83,16 @@ extension NavAnimatorClass{
     public func setParameters(_ string:String){
         let info = NavSerializer.stringToDict(string)
         _setParams(info)
+    }
+}
+
+extension NavAnimatorClass{
+
+    open func prepareToShow(){
+        type = .Show
+    }
+    open func prepareToHide(){
+        type = .Hide
     }
 }
 
