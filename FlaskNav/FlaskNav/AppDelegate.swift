@@ -19,17 +19,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-        testShowAnimators()
+         testError()
+//        testShowAnimators()
 //        testMixedAnimators()
 //        testCompletion()
 //        testAsyncStack()
 //        testNativeSync()
 //        testRoot()
 //        testAnimation()
-//        testTransaction()
 //        testModal()
 //        testTransaction()
         return true
+    }
+    
+    func testError(){
+        
+        Services.router.nav.popToRoot(){_ in print("---> line \(#line)")}
+        Services.router.tab(.Friends).show(){_ in print("---> line \(#line)")}
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
+
     }
     
     func testShowAnimators(){

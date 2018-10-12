@@ -12,7 +12,9 @@ extension FlaskNav{
 
     
     public func displayTabOperation(_ index:Int, completion:@escaping ()->Void){
-      
+        DispatchQueue.main.async {
+            self.tabController?.selectedIndex = index
+        }
         dismissModalOperation {
             DispatchQueue.main.async {  [weak self] in
                 self?.presentTab(index: index, completion: completion)

@@ -88,8 +88,8 @@ extension FlaskNav: FlaskReactor{
         }
         
         reaction.on(NavigationState.prop.layers){ (change) in
-            print("dispatch reaction on Layers")
             if !lockHandled {
+                print("dispatch [not handled] reaction on Layers")
                 reaction.onLock?.autorelease()
             }
         }

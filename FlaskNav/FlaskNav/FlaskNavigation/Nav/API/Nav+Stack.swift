@@ -15,7 +15,7 @@ extension FlaskNav: NavStackAPI{
     func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:Any? = nil, animator: NavAnimatorClass? = nil, presentation: NavPresentationClass? = nil, callback: NavContextCallback?, completion:CompletionClosure? = nil) {
 
         stackTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer,stack) in
-            let context = NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, animator:animator, callback)
+            let context = NavContext.manager.context(layer:layer, navigator:.Push, controller: controller, resourceId: resourceId, info: info, animator:animator, callback)
             self?.stackActive.set(layer:layer)
             stack.push(context: context)
         }
@@ -24,7 +24,7 @@ extension FlaskNav: NavStackAPI{
     func pop(layer:String, batched:Bool = false, toController controller:String, resourceId:String?, info:Any?, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
         
         stackTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer,stack) in
-            let context =  NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, animator: animator)
+            let context =  NavContext.manager.context(layer:layer, navigator:.Pop, controller: controller, resourceId: resourceId, info: info, animator: animator)
             self?.stackActive.set(layer:layer)
             stack.pop(toContextRef: context)
         }

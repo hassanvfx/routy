@@ -27,15 +27,16 @@ public class NavContext {
     public let info:Any?
     public let callback:NavContextCallback?
     
-    public var navigator:NavigatorType?
+    public var navigator:NavigatorType
     public var animator:NavAnimatorClass?
     
     public var capturedState = false
     public var capturedNavigator:NavigatorType?
     public var capturedAnimator:NavAnimatorClass?
     
-    init(id contextId: Int, layer:String, controller:String, resourceId:String?,  info:Any?, animator:NavAnimatorClass? = nil, _ callback:NavContextCallback? = nil){
+    init(id contextId: Int, layer:String, navigator:NavigatorType, controller:String, resourceId:String?,  info:Any?, animator:NavAnimatorClass? = nil, _ callback:NavContextCallback? = nil){
         
+        self.navigator = navigator
         self.contextId = contextId
         self.info = info
         self.callback = callback
@@ -51,6 +52,10 @@ public class NavContext {
             return "\(controller).\(resourceId)"
         }
         return controller
+    }
+    
+    public func desc()->String {
+        return "CTX:\(contextId).\(String(describing: navigator)).\(layer).\(controller).\(String(describing: resourceId))"
     }
     
     public func operationName()->String {
@@ -93,7 +98,7 @@ public class NavContext {
     public func rollbackState(){
         assert(capturedState == true, "state not captured")
         capturedState = false
-        navigator = capturedNavigator
+        navigator = capturedNavigator!
         animator = capturedAnimator
     }
     
