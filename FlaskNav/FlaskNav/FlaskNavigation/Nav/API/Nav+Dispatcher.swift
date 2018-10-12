@@ -12,7 +12,7 @@ import Flask
 
 extension FlaskNav{
     
-    func dispatchStack(with operation:FlaskOperation,_ completion:@escaping (Bool)->Void){
+    func dispatchStack(with operation:FlaskOperation,_ completion:@escaping CompletionClosure){
         print("dispatch start")
         applyActiveLayer(){ [weak self] activeCompleted in
             self?.applyCurrentLayers(){ layersCompleted in
@@ -23,7 +23,7 @@ extension FlaskNav{
         }
         
     }
-    func applyActiveLayer(_ completion:@escaping (Bool)->Void){
+    func applyActiveLayer(_ completion:@escaping CompletionClosure){
         
         assert(NavLayer.isValid(activeLayer()),"invalid layer name")
         
@@ -32,16 +32,13 @@ extension FlaskNav{
             ]
         let lock = Flask.lock(withMixer: NavMixers.LayerActive, payload: payload, autorelease: true)
         lock.onRelease = { (payload) in
-            if let payload = payload {
-                completion(payload as! Bool)
-                return
-            }
-            completion(true)
+            let info = (payload as? Bool) ?? true
+            completion(info)
         }
         print("dispatch applyActiveLayer: \(payload)")
     }
     
-    func applyCurrentLayers(_ completion:@escaping (Bool)->Void){
+    func applyCurrentLayers(_ completion:@escaping CompletionClosure){
         var layers:[String:String] = [:]
         
         for (layer,stack) in stackLayers {
@@ -55,11 +52,8 @@ extension FlaskNav{
         
         let lock = Flask.lock(withMixer: NavMixers.Layers, payload: payload, autorelease: true )
         lock.onRelease = { (payload) in
-            if let payload = payload {
-                completion(payload as! Bool)
-                return
-            }
-            completion(true)
+            let info = (payload as? Bool) ?? true
+            completion(info)
         }
         
         print("dispatch applyCurrentLayers: \(payload)")
