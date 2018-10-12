@@ -19,8 +19,8 @@ protocol NavStackAPI:AnyObject{
     func tabIndex(from layer: String) -> Int
 }
 
-public class NavInterfaceCommon<T:RawRepresentable> {
-
+public class NavInterfaceAbstract<T:RawRepresentable> {
+    
     weak var delegate:NavStackAPI?
     let layer:String
     let batched:Bool
@@ -30,7 +30,10 @@ public class NavInterfaceCommon<T:RawRepresentable> {
         self.delegate = delegate
         self.batched = batch
     }
-    
+}
+
+public class NavInterfaceCommon<T:RawRepresentable> : NavInterfaceAbstract<T> {
+
     public func push(controller:T, resourceId:String? = nil, info:Any? = nil, animator:NavAnimatorClass? = nil, presentation:NavPresentationClass? = nil, callback:NavContextCallback? = nil, completion:CompletionClosure? = nil){
         delegate?.push(layer:layer, batched: batched, controller: controller.rawValue as! String, resourceId: resourceId, info: info, animator: animator, presentation: presentation, callback: callback, completion: completion)
     }
@@ -62,7 +65,7 @@ public class NavInterfaceModal<T:RawRepresentable>: NavInterfaceCommon<T> {
     }
 }
 
-public class NavInterfaceTabAny<T:RawRepresentable>: NavInterfaceCommon<T> {
+public class NavInterfaceTabAny<T:RawRepresentable>: NavInterfaceAbstract<T> {
 
     public func hide(animator:NavAnimatorClass? = nil, explicit:Bool = false, completion:CompletionClosure? = nil){
         delegate?.hide(layer:layer, batched: batched, explicit: explicit, animator:animator, completion: completion)
