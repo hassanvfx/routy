@@ -42,8 +42,9 @@ public class NavStack {
         return stack.last!
     }
     
-    public func clear(){
+    public func clear(withAnimator animator:NavAnimatorClass? = nil){
         currentNavigator = .Root
+        rootContext.animator = animator
         stack = []
     }
     
@@ -53,7 +54,7 @@ public class NavStack {
     }
     
     public func pop(withAnimator animator:NavAnimatorClass?){
-        if (stack.count <= 1 ){clear(); return}
+        if (stack.count <= 1 ){clear(withAnimator: animator); return}
         
         currentNavigator = .Pop
         _ = stack.removeLast()

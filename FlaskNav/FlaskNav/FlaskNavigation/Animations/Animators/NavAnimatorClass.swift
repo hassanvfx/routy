@@ -9,17 +9,14 @@
 import UIKit
 
 open class NavAnimatorClass: NSObject {
-    public private(set) var isPresented = false
     public private(set) var isQueued = false
     public var isNavTransition = false
+    public var navigator:NavigatorType = .Push
     public var _duration = 0.4
     
     //MARK: subclass methods
     open func name()->String{
         return "animator"
-    }
-    open func prepareForDismiss(){
-        isPresented = true
     }
     open func enqueue(){
         assert(isQueued == false, "animators cannot be shared or reused")
@@ -63,11 +60,10 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
         
         let container = transitionContext.containerView
         
-        if isPresented == false {
-            isPresented = true
+        if navigator == .Push {
+            container.addSubview(toController.view)
             present(controller: toController, from: fromController, in: container, withContext: transitionContext)
         }else{
-            isPresented = false
             if isNavTransition {
                 container.insertSubview(toController.view, belowSubview: fromController.view)
             }

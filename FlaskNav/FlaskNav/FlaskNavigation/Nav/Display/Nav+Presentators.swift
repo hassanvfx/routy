@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Flask
 
 extension FlaskNav {
     func applyNavType(fluxLock:FluxLock){

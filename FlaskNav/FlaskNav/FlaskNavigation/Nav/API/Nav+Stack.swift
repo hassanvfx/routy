@@ -99,7 +99,6 @@ extension FlaskNav: NavStackAPI{
     func popCurrent(layer:String, batched:Bool = false, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
        
         animator?.enqueue()
-        animator?.prepareForDismiss()
         
         stackOperation(batched:batched, completion: completion) { [weak self] in
            
@@ -117,10 +116,9 @@ extension FlaskNav: NavStackAPI{
     func popToRoot(layer:String, batched:Bool = false, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
        
         animator?.enqueue()
-        animator?.prepareForDismiss()
         
         stackOperation(batched:batched, completion: completion) { [weak self] in
-            self?.stack(forLayer: layer).clear()
+            self?.stack(forLayer: layer).clear(withAnimator: animator)
             
             if(NavLayer.IsModal(layer)){
                 self?.restoreInactiveLayer()
