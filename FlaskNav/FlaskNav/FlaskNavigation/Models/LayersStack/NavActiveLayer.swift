@@ -17,14 +17,14 @@ class NavActiveLayer {
     
     public var onActiveChange:()->Void = {}
 
-    public func setActive(layer:String){
+    public func set(layer:String){
         inactive = active
         active = layer
         
         onActiveChange()
     }
     
-    public func restoreActive(){
+    public func unset(){
         active = inactive
     }
 
