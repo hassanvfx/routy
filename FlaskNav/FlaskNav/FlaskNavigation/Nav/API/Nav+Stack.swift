@@ -9,101 +9,6 @@
 import UIKit
 import Flask
 
-extension FlaskNav{
- 
-    func stack(forLayer name:String)->NavStack{
-        
-        if let stack = stackLayers[name] {
-            return stack
-        }
-        let newStack = NavStack(layer:name)
-        stackLayers[name] = newStack
-        return newStack
-    }
-    
-    func activeLayer()->String{
-        return _layerActive
-    }
-    
-    func setActive(layer:String){
-       flushModalStack()
-        _layerInactive = _layerActive
-        _layerActive = layer
-    }
-    
-    func restoreActiveLayer(){
-        _layerActive = _layerInactive
-    }
-    
-}
-extension FlaskNav {
-    
-    func captureActiveLayer(){
-        assert(_layerActiveCaptured == nil , "State already captured")
-        _layerActiveCaptured = _layerActive
-        _layerInactiveCaptured = _layerInactive
-    }
-    
-    func rollbackActiveLayer(){
-         assert(_layerActiveCaptured != nil , "State not captured")
-        _layerActive = _layerActiveCaptured!
-        _layerInactive = _layerInactiveCaptured!
-    }
-    
-    func commitActiveLayer(){
-        assert(_layerActiveCaptured != nil , "State not captured")
-        _layerActiveCaptured = nil
-        _layerInactiveCaptured = nil
-    }
-}
-extension FlaskNav{
- 
-    func activeLayerTransaction(for layer:String, batched:Bool,  completion:CompletionClosure?, action:@escaping (String)->Void){
-        
-        var onCompletion:CompletionClosure? = { [weak self] completed in
-            if completed {
-                self?.commitActiveLayer()
-            } else {
-                self?.rollbackActiveLayer()
-            }
-            if let userCompletion = completion {
-                userCompletion(completed)
-            }
-        }
-        if batched { onCompletion = nil }
-        
-        stackOperation(batched:batched, completion: onCompletion ) { [weak self] in
-            self?.captureActiveLayer()
-            action(layer)
-        }
-        
-    }
-    
-    func stackTransaction(for layer:String, batched:Bool,  completion:CompletionClosure?, action:@escaping (String,NavStack)->Void){
-        
-        var onCompletion:CompletionClosure? = { completed in
-            let stack = self.stack(forLayer: layer)
-            if completed {
-                stack.commit()
-            } else {
-                stack.rollback()
-            }
-            if let userCompletion = completion {
-                userCompletion(completed)
-            }
-        }
-        
-        if batched { onCompletion = nil }
-        
-        stackOperation(batched:batched, completion: onCompletion ) {
-            let stack = self.stack(forLayer: layer)
-            
-            if !batched { stack.capture() }
-            action(layer,stack)
-        }
-   
-    }
-}
 
 extension FlaskNav: NavStackAPI{
 
@@ -174,6 +79,34 @@ extension FlaskNav{
     }
 }
 
+
+extension FlaskNav{
+    
+    func stack(forLayer name:String)->NavStack{
+        
+        if let stack = stackLayers[name] {
+            return stack
+        }
+        let newStack = NavStack(layer:name)
+        stackLayers[name] = newStack
+        return newStack
+    }
+    
+    func activeLayer()->String{
+        return _layerActive
+    }
+    
+    func setActive(layer:String){
+        flushModalStack()
+        _layerInactive = _layerActive
+        _layerActive = layer
+    }
+    
+    func restoreActiveLayer(){
+        _layerActive = _layerInactive
+    }
+    
+}
 
 
 
