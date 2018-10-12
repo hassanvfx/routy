@@ -22,10 +22,15 @@ extension FlaskNav:NavCompositionAPI{
     public var modal:NavInterfaceModal<MODS>{
         return (composition?.modal)!
     }
+    
+    public var tab:NavInterfaceTabAny<CONT>{
+        return (composition?.tabAny)!
+    }
 
     public func tab(_ tab:TABS)->NavInterface<CONT>{
         return (composition?.tab(tab ))!
     }
+    
     
     
 }

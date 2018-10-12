@@ -35,6 +35,10 @@ extension NavCompositionAPI{
         return NavInterfaceModal<COMP_MODS_TYPE>(batch:compBatched,layer: NavLayer.Modal(), delegate: self as? NavStackAPI)
     }
     
+    public var tabAny:NavInterfaceTabAny<COMP_CONT_TYPE>{
+        return NavInterfaceTabAny<COMP_CONT_TYPE>(batch:compBatched,layer: NavLayer.TabAny(), delegate: self as? NavStackAPI)
+    }
+    
     public func tab(_ tab:COMP_TABS_TYPE)->NavInterface<COMP_CONT_TYPE>{
         let tabString = tab.rawValue as! String
         let tabIndex = self.tabIndex(from: tabString)
@@ -68,6 +72,8 @@ class NavComposition<TABS:RawRepresentable,CONT:RawRepresentable,MODS:RawReprese
 
 // MARK: - The composition intercepts the StackInterface and injects the boolean `batched` context. This is a requirement for the transactions
 extension NavComposition:NavStackAPI{
+
+    
     func push(layer: String, batched: Bool, controller: String, resourceId: String?, info: Any?, animator: NavAnimatorClass?, presentation: NavPresentationClass?, callback: NavContextCallback?, completion:CompletionClosure?) {
         self.compDelegate?.push(layer: layer, batched: compBatched, controller: controller, resourceId: resourceId, info: info, animator: animator, presentation: presentation, callback: callback, completion: completion)
     }
@@ -85,7 +91,11 @@ extension NavComposition:NavStackAPI{
     }
     
     func show (layer: String, batched: Bool, animator: NavAnimatorClass?, completion:CompletionClosure?) {
-        self.compDelegate?.show (layer: layer, batched: compBatched, animator: animator, completion: completion)
+        self.compDelegate?.show(layer: layer, batched: compBatched, animator: animator, completion: completion)
+    }
+    
+    func hide(layer: String, batched: Bool, explicit: Bool, animator: NavAnimatorClass?, completion: CompletionClosure?) {
+        self.compDelegate?.hide(layer: layer, batched: compBatched, explicit:explicit, animator: animator, completion: completion)
     }
    
     func tabIndex(from layer: String) -> Int {

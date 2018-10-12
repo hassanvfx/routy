@@ -19,18 +19,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-
-        testMixedAnimators()
-        
-        testCompletion()
-        testAsyncStack()
-        testNativeSync()
-        testRoot()
-        testAnimation()
-        testTransaction()
-        testModal()
-        testTransaction()
+        testShowAnimators()
+//        testMixedAnimators()
+//        testCompletion()
+//        testAsyncStack()
+//        testNativeSync()
+//        testRoot()
+//        testAnimation()
+//        testTransaction()
+//        testModal()
+//        testTransaction()
         return true
+    }
+    
+    func testShowAnimators(){
+         let slider = NavAnimators.SlideTop()
+         let out = NavAnimators.SlideLeft()
+        
+         Services.router.tab(.Friends).show(animator: slider)
+         Services.router.tab.hide(animator: out)
+        
+         Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"]), animator:slider)
+         Services.router.modal.dismiss(animator:out)
     }
     
     func testMixedAnimators(){

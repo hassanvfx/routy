@@ -15,6 +15,7 @@ protocol NavStackAPI:AnyObject{
     func popCurrent(layer:String, batched:Bool, animator:NavAnimatorClass?, completion:CompletionClosure?)
     func popToRoot(layer:String, batched:Bool, animator:NavAnimatorClass?, completion:CompletionClosure?)
     func show(layer:String, batched:Bool, animator:NavAnimatorClass?, completion:CompletionClosure?)
+    func hide(layer:String, batched:Bool, explicit:Bool, animator:NavAnimatorClass?, completion:CompletionClosure?)
     func tabIndex(from layer: String) -> Int
 }
 
@@ -52,12 +53,18 @@ public class NavInterface<T:RawRepresentable>: NavInterfaceCommon<T> {
         delegate?.show(layer:layer, batched: batched, animator:animator, completion: completion)
     }
     
+    
 }
 
 public class NavInterfaceModal<T:RawRepresentable>: NavInterfaceCommon<T> {
-    
     public func dismiss(animator:NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
         delegate?.popToRoot(layer:layer,batched: batched, animator:animator, completion: completion)
     }
-    
+}
+
+public class NavInterfaceTabAny<T:RawRepresentable>: NavInterfaceCommon<T> {
+
+    public func hide(animator:NavAnimatorClass? = nil, explicit:Bool = false, completion:CompletionClosure? = nil){
+        delegate?.hide(layer:layer, batched: batched, explicit: explicit, animator:animator, completion: completion)
+    }
 }

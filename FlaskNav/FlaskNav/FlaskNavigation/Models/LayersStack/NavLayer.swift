@@ -68,6 +68,10 @@ enum NavLayer:String,Codable{
         return "modal"
     }
     
+    static func TabAny()->String {
+        return "tab.any"
+    }
+    
     static func Tab(_ index:Int)->String {
         return "tab\(index)"
     }

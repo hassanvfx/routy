@@ -53,7 +53,7 @@ extension FlaskNav{
     }
     
  
-    func presentTab(index:Int,animator:NavAnimatorClass? = nil, presentation:NavPresentationClass?=nil, completion:@escaping ()->Void){
+    func presentTab(index:Int, presentation:NavPresentationClass?=nil, completion:@escaping ()->Void){
 
         if isTabPresented() {
             completion()
@@ -62,9 +62,11 @@ extension FlaskNav{
         
         let tab = tabController!
         let top = mainController()
-        let animator = animator ?? NavAnimators.ZoomIn()
-        
-       
+        let transitionAnimator = takeActiveLayerAnimator(for: NavLayer.TabAny(), withType: .Show)
+        let defaultAnimator = NavAnimators.ZoomIn() //TODO: move this to config
+        let animator = transitionAnimator ?? defaultAnimator
+  
+        tabController?.selectedIndex = index
         
         tabPresentator = NavPresentator(presentViewController: tab, from: top, animator: animator, presentation: presentation)
         tabPresentator?.present(completion)
@@ -81,6 +83,12 @@ extension FlaskNav{
             self?.tabPresentator = nil
             completion()
         }
+        
+        let transitionAnimator = takeActiveLayerAnimator(for: NavLayer.TabAny(), withType: .Hide)
+        let defaultAnimator = NavAnimators.ZoomIn() //TODO: move this to config
+        let animator = transitionAnimator ?? defaultAnimator
+
+        tabPresentator?.animator = animator
         tabPresentator?.dismiss(onDismiss)
     }
 }
@@ -93,7 +101,7 @@ extension FlaskNav{
         return animator.asParameter()
     }
     
-    func presentModal(animator:NavAnimatorClass? = nil, presentation:NavPresentationClass?=nil, completion:@escaping ()->Void){
+    func presentModal( presentation:NavPresentationClass?=nil, completion:@escaping ()->Void){
         
         if _isModalPresented() {
             completion()
@@ -102,7 +110,9 @@ extension FlaskNav{
         
         let modal = modalNav()
         let top = topMostController()
-        let animator = animator ?? NavAnimators.ZoomIn()
+        let transitionAnimator = takeActiveLayerAnimator(for: NavLayer.Modal(), withType: .Show)
+        let defaultAnimator = NavAnimators.ZoomIn() //TODO: move this to config
+        let animator = transitionAnimator ?? defaultAnimator
         
         modal.modalRootView().viewForwarder().forwardingViews = [top.view]
         modal.modalRootView().viewForwarder().didTouchOutside = { [weak self] in
