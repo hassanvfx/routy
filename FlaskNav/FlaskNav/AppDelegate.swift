@@ -20,15 +20,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.setup(withWindow: window!)
 
         testShowAnimators()
-        testMixedAnimators()
-        testCompletion()
-        testAsyncStack()
-        testNativeSync()
-        testRoot()
-        testAnimation()
-        testTransaction()
-        testModal()
-        testError()
+//        testMixedAnimators()
+//        testCompletion()
+//        testAsyncStack()
+//        testNativeSync()
+//        testRoot()
+//        testAnimation()
+//        testTransaction()
+//        testModal()
+//        testError()
         return true
     }
     
@@ -180,7 +180,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         Services.router.nav.popToRoot(){_ in print("---> line \(#line)")}
         Services.router.tab(.Friends).show(){_ in print("---> line \(#line)")}
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"purple"])){_ in print("---> line \(#line)")}
         
     }
 
