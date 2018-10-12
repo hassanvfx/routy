@@ -28,7 +28,6 @@ extension FlaskNav{
         }
         
         
-        animators[key]?.isNavTransition = true
     }
     
     func takeAnimator(for controller:UIViewController, withNavigator navigator:NavigatorType)->NavAnimatorClass?{

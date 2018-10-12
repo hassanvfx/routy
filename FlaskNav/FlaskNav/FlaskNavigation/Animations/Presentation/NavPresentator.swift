@@ -57,13 +57,14 @@ extension NavPresentator:UIViewControllerTransitioningDelegate{
     }
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    
-         animator.prepareToShow()
+        animator.prepareForViewController()
+        animator.prepareToShow()
         return animator
     }
     
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        animator.prepareForViewController()
         animator.prepareToHide()
         return animator
     }

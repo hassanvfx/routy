@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.setup(withWindow: window!)
 
 
-//        testMixedAnimators()
+        testMixedAnimators()
         
         testCompletion()
         testAsyncStack()
@@ -38,9 +38,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let slider = NavAnimators.SlideTop()
         let zoomer = NavAnimators.ZoomOut()
         
+        
+        let modalIn = NavAnimators.SlideBottom()
+        let modalOut = NavAnimators.SlideLeft()
+        
+        
+        let modalOut2 = NavAnimators.SlideLeft()
+        
         Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:slider){_ in print("---> line \(#line)")}
         Services.router.nav.popCurrent(animator: zoomer){_ in print("---> line \(#line)")}
-        
+        Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"]), animator:modalIn){_ in print("---> line \(#line)")}
+        Services.router.nav.show(animator: modalOut)
+        Services.router.tab(.Home).show(animator: modalOut2)
     }
     
     func testCompletion(){
