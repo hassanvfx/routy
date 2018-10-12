@@ -25,15 +25,17 @@ extension FlaskNav{
     func performOperationFor(navOperation:FlaskNavOperation, withCompletion closure:@escaping (@escaping ()->Void)->Void) {
        
         let completed = {
-            print("[-] removing SYNC operation for key \(String(describing: navOperation.name)) ")
+            print("[-] removing PRES operation for key \(String(describing: navOperation.name)) ")
             
             navOperation.releaseFlux()
         }
         
         let debugClosure:(FlaskOperation)->Void = { (op) in
-            print("[$] performing SYNC operation for key \(navOperation.name)")
+            print("[$] performing PRES operation for key \(navOperation.name)")
             closure(completed)
         }
+        
+        print("[+] queueing PRES operation for key \(navOperation.name)")
         
         let operation = FlaskOperation(block: debugClosure)
         navOperation.operation = operation
@@ -48,14 +50,14 @@ extension FlaskNav{
         let key = context.contextId
         
         let debugClosure:(FlaskOperation)->Void = { (op) in
-            print("[$] performing ASYNC operation for key \(navOperation.name) \(key)")
+            print("[$] performing NAV operation for \(context.desc())")
             closure(navOperation.operation!)
         }
         
         let operation = FlaskOperation(block: debugClosure)
         navOperation.operation = operation
         
-        print("[+] setting operation for key \(navOperation.name) \(key)")
+        print("[+] queueing NAV operation for \(context.desc())")
         
         var references = operationsFor(key:key)
         references.append( navOperation )
@@ -106,7 +108,7 @@ extension FlaskNav{
         operations[key] = references
            
         print("pending operations for \(key)  =\(references.count)")
-        print("[-] removing operation for key \(String(describing: navOperation.name)) \(key) \(String(describing: context.navigator?.rawValue))")
+        print("[-] removing operation for \(context.desc())")
         
         navOperation.releaseFlux(completed: completed)
         print("pending operations for queue =\(self.operationQueue.operations.count)")

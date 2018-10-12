@@ -15,7 +15,7 @@ extension FlaskNav: NavStackAPI{
     func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:Any? = nil, animator: NavAnimatorClass? = nil, presentation: NavPresentationClass? = nil, callback: NavContextCallback?, completion:CompletionClosure? = nil) {
 
         stackTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer,stack) in
-            let context = NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, animator:animator, callback)
+            let context = NavContext.manager.context(layer:layer, navigator:.Push, controller: controller, resourceId: resourceId, info: info, animator:animator, callback)
             self?.stackActive.set(layer:layer)
             stack.push(context: context)
         }
@@ -24,7 +24,7 @@ extension FlaskNav: NavStackAPI{
     func pop(layer:String, batched:Bool = false, toController controller:String, resourceId:String?, info:Any?, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
         
         stackTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer,stack) in
-            let context =  NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, animator: animator)
+            let context =  NavContext.manager.context(layer:layer, navigator:.Pop, controller: controller, resourceId: resourceId, info: info, animator: animator)
             self?.stackActive.set(layer:layer)
             stack.pop(toContextRef: context)
         }
@@ -60,9 +60,34 @@ extension FlaskNav: NavStackAPI{
     
     func show(layer:String, batched:Bool = false, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
         
-       activeLayerTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer) in
-            //TODO: handle show nav or nav
-            self?.stackActive.set(layer:layer)
+        activeLayerTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer) in
+            guard let this = self else {
+                return
+            }
+            let layerName = NavLayer.IsTab(layer) ?  NavLayer.TabAny() : layer
+            
+            this.setActiveLayerAnimator(animator, for: layerName, withType: .Show)
+            this.stackActive.set(layer:layer)
+        }
+    }
+    
+    func hide(layer:String, batched:Bool = false, explicit:Bool = false, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
+        
+        activeLayerTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer) in
+            guard let this = self else {
+                return
+            }
+            
+            let layerName = NavLayer.IsTab(layer) ?  NavLayer.TabAny() : layer
+            let currentLayerName = NavLayer.IsTab(this.stackActive.active) ?  NavLayer.TabAny() : this.stackActive.active
+            
+            if currentLayerName != layerName {
+                assert(!explicit,"can't hide a layer that is not shown (active)")
+                return
+            }
+            
+            this.setActiveLayerAnimator(animator, for: layerName, withType: .Hide)
+            this.stackActive.unset()
         }
     }
     

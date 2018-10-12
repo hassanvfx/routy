@@ -25,7 +25,7 @@ extension FlaskNav {
         
         instantiateViewControllerFor(context: context, navOperation: navOperation)
         
-        print("--> will navigateTo \(context.path())")
+        print("--> will navigateTo \(context.desc())")
         switch navigator {
         case .Root:
             setAnimatorFor(context:context,navigator: .Root)

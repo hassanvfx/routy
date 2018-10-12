@@ -15,11 +15,12 @@ protocol NavStackAPI:AnyObject{
     func popCurrent(layer:String, batched:Bool, animator:NavAnimatorClass?, completion:CompletionClosure?)
     func popToRoot(layer:String, batched:Bool, animator:NavAnimatorClass?, completion:CompletionClosure?)
     func show(layer:String, batched:Bool, animator:NavAnimatorClass?, completion:CompletionClosure?)
+    func hide(layer:String, batched:Bool, explicit:Bool, animator:NavAnimatorClass?, completion:CompletionClosure?)
     func tabIndex(from layer: String) -> Int
 }
 
-public class NavInterfaceCommon<T:RawRepresentable> {
-
+public class NavInterfaceAbstract<T:RawRepresentable> {
+    
     weak var delegate:NavStackAPI?
     let layer:String
     let batched:Bool
@@ -29,7 +30,10 @@ public class NavInterfaceCommon<T:RawRepresentable> {
         self.delegate = delegate
         self.batched = batch
     }
-    
+}
+
+public class NavInterfaceCommon<T:RawRepresentable> : NavInterfaceAbstract<T> {
+
     public func push(controller:T, resourceId:String? = nil, info:Any? = nil, animator:NavAnimatorClass? = nil, presentation:NavPresentationClass? = nil, callback:NavContextCallback? = nil, completion:CompletionClosure? = nil){
         delegate?.push(layer:layer, batched: batched, controller: controller.rawValue as! String, resourceId: resourceId, info: info, animator: animator, presentation: presentation, callback: callback, completion: completion)
     }
@@ -52,12 +56,18 @@ public class NavInterface<T:RawRepresentable>: NavInterfaceCommon<T> {
         delegate?.show(layer:layer, batched: batched, animator:animator, completion: completion)
     }
     
+    
 }
 
 public class NavInterfaceModal<T:RawRepresentable>: NavInterfaceCommon<T> {
-    
     public func dismiss(animator:NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
         delegate?.popToRoot(layer:layer,batched: batched, animator:animator, completion: completion)
     }
-    
+}
+
+public class NavInterfaceTabAny<T:RawRepresentable>: NavInterfaceAbstract<T> {
+
+    public func hide(animator:NavAnimatorClass? = nil, explicit:Bool = false, completion:CompletionClosure? = nil){
+        delegate?.hide(layer:layer, batched: batched, explicit: explicit, animator:animator, completion: completion)
+    }
 }
