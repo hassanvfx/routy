@@ -9,56 +9,8 @@
 import UIKit
 import Flask
 
-extension FlaskNav {
-    func applyNavType(fluxLock:FluxLock){
-        
-        
-        let navOperation = FlaskNavOperation(fluxLock: fluxLock, name: substance.state.layerActive )
-        
-        if NavLayer.IsNav(substance.state.layerActive){
-            performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
-                self?.displayNavOperation {
-                    completion()
-                }
-            })
-            
-        } else if NavLayer.IsModal(substance.state.layerActive){
-            performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
-                self?.displayModalOperation {
-                    completion()
-                }
-            })
-        } else if  NavLayer.IsTab(substance.state.layerActive){
-            let index = NavLayer.TabIndex(substance.state.layerActive)
-            
-            performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
-                self?.displayTabOperation(index) {
-                    completion()
-                }
-            })
-            
-        }
-        
-        
-        
-    }
-    
-}
 
 extension FlaskNav {
-    
-    func activeRootController(for layer:String)->UIViewController?{
-        let nav = navInstance(forLayer: layer)
-        return nav.viewControllers.first
-    }
-    
-    func activeRootContext(for layer:String)->NavContext{
-        let controller = activeRootController(for:layer)
-        let context = stack(forLayer: layer).rootContext
-        context.setViewController(weak: controller)
-        return context
-    }
-    
     
     func navigateToController(layer:String,fluxLock:FluxLock){
         
@@ -72,15 +24,17 @@ extension FlaskNav {
         let navigator = resolveNavigatorFor(context: context, intention: navigatorIntention)
         
         instantiateViewControllerFor(context: context, navOperation: navOperation)
-        instantiateAnimatorFor(context:context)
         
         print("--> will navigateTo \(context.path())")
         switch navigator {
         case .Root:
+            setAnimatorFor(context:context,navigator: .Root)
             navigateRoot(context:context, navOperation: navOperation)
         case .Pop:
+            setAnimatorFor(context:context,navigator: .Pop)
             navigatePop(toContext:context,navOperation:navOperation)
         case .Push:
+            setAnimatorFor(context:context,navigator: .Push)
             navigatePush(context:context, navOperation:navOperation)
         }
         
@@ -126,6 +80,24 @@ extension FlaskNav {
     }
 }
 
+
+extension FlaskNav {
+    
+    func activeRootController(for layer:String)->UIViewController?{
+        let nav = navInstance(forLayer: layer)
+        return nav.viewControllers.first
+    }
+    
+    func activeRootContext(for layer:String)->NavContext{
+        let controller = activeRootController(for:layer)
+        let context = stack(forLayer: layer).rootContext
+        context.setViewController(weak: controller)
+        return context
+    }
+    
+    
+}
+
 extension FlaskNav{
     
     func instantiateViewControllerFor(context:NavContext, navOperation:FlaskNavOperation){
@@ -136,10 +108,10 @@ extension FlaskNav{
         
     }
     
-    func instantiateAnimatorFor(context:NavContext){
+    func setAnimatorFor(context:NavContext, navigator:NavigatorType){
         let controller = context.viewController()!
         let animator = context.animator
-        setPreferredAnimator(animator, for: controller)
+        setPreferredAnimator(animator, for: controller, withNavigator: navigator)
     }
     
     func resolveNavigatorFor(context:NavContext, intention:NavigatorType)->NavigatorType{

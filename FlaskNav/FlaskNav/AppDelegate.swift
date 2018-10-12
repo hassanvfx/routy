@@ -19,6 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
+
+        testMixedAnimators()
+        
         testCompletion()
         testAsyncStack()
         testNativeSync()
@@ -27,37 +30,58 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         testTransaction()
         testModal()
         testTransaction()
-        testAPI()
         return true
+    }
+    
+    func testMixedAnimators(){
+        
+        let slider = NavAnimators.SlideTop()
+        let zoomer = NavAnimators.ZoomOut()
+        
+        
+        let modalIn = NavAnimators.SlideBottom()
+        let modalOut = NavAnimators.SlideLeft()
+        
+        
+        let modalOut2 = NavAnimators.SlideLeft()
+        
+        Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:slider){_ in print("---> line \(#line)")}
+        Services.router.nav.popCurrent(animator: zoomer){_ in print("---> line \(#line)")}
+        Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"]), animator:modalIn){_ in print("---> line \(#line)")}
+        Services.router.nav.show(animator: modalOut)
+        Services.router.tab(.Home).show(animator: modalOut2)
     }
     
     func testCompletion(){
         
-        
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
-        Services.router.tab(.Friends).show(){_ in print("line \(#line)")}
-        Services.router.nav.show(){_ in print("line \(#line)")}
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
+        Services.router.tab(.Friends).show(){_ in print("---> line \(#line)")}
+      
+        Services.router.nav.show(){_ in print("---> line \(#line)")}
     }
     
     func testAsyncStack(){
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
         Services.router.batch { (batch) in
-            batch.nav.push(controller: .Feed, info:NavInfo(params:["color":"white"]))
+            batch.nav.push(controller: .Feed, info:NavInfo(params:["color":"white"])){_ in print("---> line \(#line)")}
         }
-        Services.router.tab(.Friends).show(){_ in print("line \(#line)")}
-        Services.router.nav.show(){_ in print("line \(#line)")}
+        Services.router.tab(.Friends).show(){_ in print("---> line \(#line)")}
+        Services.router.nav.show(){_ in print("---> line \(#line)")}
     }
     
     func testNativeSync(){
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]))
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"blue"]))
-        Services.router.nav.popCurrent(){_ in print("line \(#line)")}
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"])){_ in print("---> line \(#line)")}
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"blue"])){_ in print("---> line \(#line)")}
+        Services.router.nav.popCurrent(){_ in print("---> line \(#line)")}
+
     }
     
     func testRoot (){
 
-        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
-        Services.router.modal.popCurrent(){_ in print("line \(#line)")}
+
+        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
+        Services.router.modal.popCurrent(){_ in print("---> line \(#line)")}
+
         Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]))
         
     }
@@ -75,39 +99,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //        Services.router.nav.show()
     }
     func testTabAnimation(){
-        Services.router.tab(.Home).show(){_ in print("line \(#line)")}
-        Services.router.nav.show(){_ in print("line \(#line)")}
+
+        Services.router.tab(.Home).show(){_ in print("---> line \(#line)")}
+        Services.router.nav.show(){_ in print("---> line \(#line)")}
+
         
-        Services.router.tab(.Friends).push(controller: .Feed, info:NavInfo(params:["color":"red"])){_ in print("line \(#line)")}
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"blue"])){_ in print("line \(#line)")}
+        Services.router.tab(.Friends).push(controller: .Feed, info:NavInfo(params:["color":"red"])){_ in print("---> line \(#line)")}
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"blue"])){_ in print("---> line \(#line)")}
         
     }
     func testTransaction(){
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
 
-        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"red"])){_ in print("line \(#line)")}
-//        Services.router.modal.show()
-        Services.router.modal.popCurrent()  //TODO: THIS LINE IS STUCK
+        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"red"])){_ in print("---> line \(#line)")}
+//        Services.router.modal.show(){_ in print("---> line \(#line)")}
+        Services.router.modal.popCurrent(){_ in print("---> line \(#line)")}
         
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
         
-        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
-        Services.router.modal.popCurrent(){_ in print("line \(#line)")}
+
+        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
+        Services.router.modal.popCurrent(){_ in print("---> line \(#line)")}
         
             
         Services.router.batch { (batch) in
-            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"red"]))
-            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"blue"]))
+            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"red"])){_ in print("---> line \(#line)")}
+            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"blue"])){_ in print("---> line \(#line)")}
         }
 
 
         Services.router.batch { (batch) in
-            batch.nav.push(controller: .Feed, info:NavInfo(params:["color":"white"]))
+            batch.nav.push(controller: .Feed, info:NavInfo(params:["color":"white"])){_ in print("---> line \(#line)")}
         }
 
         
-        Services.router.tab(.Friends).show(){_ in print("line \(#line)")}
-        Services.router.nav.show(){_ in print("line \(#line)")}
+        Services.router.tab(.Friends).show(){_ in print("---> line \(#line)")}
+        Services.router.nav.show(){_ in print("---> line \(#line)")}
+
         
         Services.router.batch { (batch) in
             batch.nav.popCurrent()
@@ -115,17 +143,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
     
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
        
         
-        Services.router.nav.popToRoot(){_ in print("line \(#line)")}
+
+        Services.router.nav.popToRoot(){_ in print("---> line \(#line)")}
+
         
 //        Services.router.tab(0).show()
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("line \(#line)")}
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
 //.
         
-        Services.router.nav.popToRoot(){_ in print("line \(#line)")}
-        Services.router.tab(.Friends).show(){_ in print("line \(#line)")}
+
+        Services.router.nav.popToRoot(){_ in print("---> line \(#line)")}
+        Services.router.tab(.Friends).show(){_ in print("---> line \(#line)")}
+
         
 //        Services.router.tab(.Main).push(controller:.Feed, info:NavInfo(params:["color":"yellow"]))
 //        Services.router.modal().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))

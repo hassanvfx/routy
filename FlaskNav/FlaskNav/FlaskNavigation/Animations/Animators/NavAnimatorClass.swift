@@ -8,15 +8,23 @@
 
 import UIKit
 
+public enum NavAnimatorClassType: String{
+    case Show,Hide
+}
+public enum NavAnimatorControllerType: String{
+    case Navigation,Presentation
+}
+
 open class NavAnimatorClass: NSObject {
-    public private(set) var isPresented = false
-    public var isNavTransition = false
+    public private(set) var type:NavAnimatorClassType = .Show
+    public private(set) var controller:NavAnimatorControllerType = .Presentation
     public var _duration = 0.4
     
     //MARK: subclass methods
     open func name()->String{
         return "animator"
     }
+    
     open func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
         assert(false,"use a subclass instead")
     }
@@ -54,14 +62,15 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
         
         let container = transitionContext.containerView
         
-        if isPresented == false {
-            isPresented = true
+        if type == .Show {
+            container.addSubview(toController.view)
             present(controller: toController, from: fromController, in: container, withContext: transitionContext)
-        }else{
-            isPresented = false
-            if isNavTransition {
+        } else if type == .Hide{
+            
+            if controller == .Navigation {
                 container.insertSubview(toController.view, belowSubview: fromController.view)
             }
+            
             dismiss(controller: fromController, to: toController, in: container, withContext: transitionContext)
         }
     }
@@ -76,6 +85,23 @@ extension NavAnimatorClass{
     public func setParameters(_ string:String){
         let info = NavSerializer.stringToDict(string)
         _setParams(info)
+    }
+}
+
+extension NavAnimatorClass{
+
+    open func prepareToShow(){
+        type = .Show
+    }
+    open func prepareToHide(){
+        type = .Hide
+    }
+    open func prepareForNavController(){
+        controller = .Navigation
+    }
+    
+    open func prepareForViewController(){
+        controller = .Presentation
     }
 }
 
