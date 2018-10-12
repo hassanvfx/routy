@@ -9,7 +9,7 @@
 import UIKit
 
 protocol NavStackAPI:AnyObject{
-    func push(layer:String, batched:Bool, controller:String , resourceId:String?, info:Any?, animator:NavAnimatorClass?, presentation:NavPresentationClass?, completion:CompletionClosure?, callback:NavContextCallback?)
+    func push(layer:String, batched:Bool, controller:String , resourceId:String?, info:Any?, animator:NavAnimatorClass?, presentation:NavPresentationClass?, callback:NavContextCallback?, completion:CompletionClosure?)
     func pop(layer:String, batched:Bool, toController controller:String, resourceId:String?, info:Any?, completion:CompletionClosure?)
     func popCurrent(layer:String, batched:Bool, completion:CompletionClosure?)
     func popToRoot(layer:String, batched:Bool, completion:CompletionClosure?)
@@ -29,8 +29,8 @@ public class NavInterfaceCommon<T:RawRepresentable> {
         self.batched = batch
     }
     
-    public func push(controller:T, resourceId:String? = nil, info:Any? = nil, animator:NavAnimatorClass? = nil, presentation:NavPresentationClass? = nil, completion:CompletionClosure? = nil, callback:NavContextCallback? = nil){
-        delegate?.push(layer:layer, batched: batched, controller: controller.rawValue as! String, resourceId: resourceId, info: info, animator: animator, presentation: presentation, completion: completion, callback: callback)
+    public func push(controller:T, resourceId:String? = nil, info:Any? = nil, animator:NavAnimatorClass? = nil, presentation:NavPresentationClass? = nil, callback:NavContextCallback? = nil, completion:CompletionClosure? = nil){
+        delegate?.push(layer:layer, batched: batched, controller: controller.rawValue as! String, resourceId: resourceId, info: info, animator: animator, presentation: presentation, callback: callback, completion: completion)
     }
     
     public func pop(controller:T, resourceId:String? = nil, info:Any? = nil, completion:CompletionClosure? = nil  ){

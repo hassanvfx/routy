@@ -39,7 +39,7 @@ extension FlaskNav{
 
 extension FlaskNav: NavStackAPI{
     
-    func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:Any? = nil, animator: NavAnimatorClass? = nil, presentation: NavPresentationClass? = nil, completion:CompletionClosure? = nil, callback: NavContextCallback?) {
+    func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:Any? = nil, animator: NavAnimatorClass? = nil, presentation: NavPresentationClass? = nil, callback: NavContextCallback?, completion:CompletionClosure? = nil) {
         queueIntent(batched:batched, completion: completion ) { [weak self] in
             let context = NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, animator:animator, callback)
             self?.setActive(layer:layer)
