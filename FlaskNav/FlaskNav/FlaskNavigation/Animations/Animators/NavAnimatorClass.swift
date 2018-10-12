@@ -17,7 +17,7 @@ public enum NavAnimatorControllerType: String{
 
 open class NavAnimatorClass: NSObject {
     public private(set) var type:NavAnimatorClassType = .Show
-    public private(set) var controller:NavAnimatorControllerType = .Presentation
+    public private(set) var controller:NavAnimatorControllerType = .ViewController
     public var _duration = 0.4
     
     //MARK: subclass methods
