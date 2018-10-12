@@ -12,10 +12,11 @@ import Flask
 
 extension FlaskNav{
     
-    func dispatchStack(with operation:FlaskOperation,_ completion:@escaping CompletionClosure){
+    func dispatchStackState(with operation:FlaskOperation,_ completion:@escaping CompletionClosure){
+
         print("dispatch start")
-        applyActiveLayer(){ [weak self] activeCompleted in
-            self?.applyCurrentLayers(){ layersCompleted in
+        dispatchActiveLayer(){ [weak self] activeCompleted in
+            self?.dispatchCurrentLayers(){ layersCompleted in
                 print("dispatch completed")
                 completion(layersCompleted)
                 operation.complete()
@@ -23,7 +24,9 @@ extension FlaskNav{
         }
         
     }
-    func applyActiveLayer(_ completion:@escaping CompletionClosure){
+
+    func dispatchActiveLayer(_ completion:@escaping CompletionClosure){
+
         
         assert(NavLayer.isValid(activeLayer()),"invalid layer name")
         
@@ -38,7 +41,9 @@ extension FlaskNav{
         print("dispatch applyActiveLayer: \(payload)")
     }
     
-    func applyCurrentLayers(_ completion:@escaping CompletionClosure){
+
+    func dispatchCurrentLayers(_ completion:@escaping CompletionClosure){
+
         var layers:[String:String] = [:]
         
         for (layer,stack) in stackLayers {

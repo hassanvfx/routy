@@ -19,7 +19,7 @@ public class NavContext {
     weak var viewControllerWeak:UIViewController? = nil
     var viewControllerStrong:UIViewController? = nil
     
-    
+
     public let layer:String
     public let controller:String
     public let resourceId:String?

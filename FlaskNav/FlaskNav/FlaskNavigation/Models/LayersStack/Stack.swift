@@ -52,14 +52,16 @@ public class NavStack {
         stack.append(context)
     }
     
-    public func pop(){
+    public func pop(withAnimator animator:NavAnimatorClass?){
         if (stack.count <= 1 ){clear(); return}
         
         currentNavigator = .Pop
         _ = stack.removeLast()
+        
+        stack.last?.animator = animator
     }
 
-    public func pop(toContextRef aContext:NavContext){
+    public func pop(toContextRef refContext:NavContext){
         currentNavigator = .Pop
         
         var aStack = stack
@@ -72,10 +74,11 @@ public class NavStack {
                 continue
             }
             
-            if(lastContext.controller == aContext.controller &&
-                lastContext.resourceId == aContext.resourceId){
+            if(lastContext.controller == refContext.controller &&
+                lastContext.resourceId == refContext.resourceId){
                 
                 result = lastContext
+                result?.animator = refContext.animator
             }
             
             _ = aStack.removeLast()
@@ -84,7 +87,7 @@ public class NavStack {
         stack = aStack
         
         if (stack.isEmpty){
-            push(context: aContext)
+            push(context: refContext)
         }
     }
     

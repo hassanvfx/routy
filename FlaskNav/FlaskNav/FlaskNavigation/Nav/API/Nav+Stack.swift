@@ -54,7 +54,7 @@ extension FlaskNav{
         
         if batched { onCompletion = nil }
         
-        queueIntent(batched:batched, completion: onCompletion ) {
+        stackOperation(batched:batched, completion: onCompletion ) {
             let stack = self.stack(forLayer: layer)
             
             if !batched { stack.capture() }
@@ -66,10 +66,10 @@ extension FlaskNav{
 }
 
 extension FlaskNav: NavStackAPI{
-    
-    
+
     func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:Any? = nil, animator: NavAnimatorClass? = nil, presentation: NavPresentationClass? = nil, callback: NavContextCallback?, completion:CompletionClosure? = nil) {
-        
+    
+     animator?.enqueue()
         stackTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer,stack) in
             let context = NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, animator:animator, callback)
             self?.setActive(layer:layer)
@@ -86,17 +86,24 @@ extension FlaskNav: NavStackAPI{
 //        }
     }
     
-    func pop(layer:String, batched:Bool = false, toController controller:String, resourceId:String?, info:Any?, completion:CompletionClosure? = nil){
-        queueIntent(batched:batched, completion: completion) { [weak self] in
-            let context =  NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info)
+    func pop(layer:String, batched:Bool = false, toController controller:String, resourceId:String?, info:Any?, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
+        
+        animator?.enqueue()
+        
+        stackOperation(batched:batched, completion: completion) { [weak self] in
+            let context =  NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, animator: animator)
             self?.setActive(layer:layer)
             self?.stack(forLayer: layer).pop(toContextRef: context)
         }
     }
-    func popCurrent(layer:String, batched:Bool = false, completion:CompletionClosure? = nil){
-        queueIntent(batched:batched, completion: completion) { [weak self] in
+    func popCurrent(layer:String, batched:Bool = false, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
+       
+        animator?.enqueue()
+        animator?.prepareForDismiss()
+        
+        stackOperation(batched:batched, completion: completion) { [weak self] in
            
-            self?.stack(forLayer: layer).pop()
+            self?.stack(forLayer: layer).pop(withAnimator: animator)
             
             if(NavLayer.IsModal(layer) &&
                 self?.stack(forLayer: layer).currentNavigator == .Root){
@@ -107,8 +114,12 @@ extension FlaskNav: NavStackAPI{
             
         }
     }
-    func popToRoot(layer:String, batched:Bool = false, completion:CompletionClosure? = nil){
-        queueIntent(batched:batched, completion: completion) { [weak self] in
+    func popToRoot(layer:String, batched:Bool = false, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
+       
+        animator?.enqueue()
+        animator?.prepareForDismiss()
+        
+        stackOperation(batched:batched, completion: completion) { [weak self] in
             self?.stack(forLayer: layer).clear()
             
             if(NavLayer.IsModal(layer)){
@@ -119,8 +130,11 @@ extension FlaskNav: NavStackAPI{
         }
     }
     
-    func show(layer:String, batched:Bool = false, completion:CompletionClosure? = nil){
-        queueIntent(batched:batched, completion: completion) { [weak self] in
+    func show(layer:String, batched:Bool = false, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
+        
+        animator?.enqueue()
+        
+        stackOperation(batched:batched, completion: completion) { [weak self] in
             //TODO: handle show nav or nav
             self?.setActive(layer:layer)
         }

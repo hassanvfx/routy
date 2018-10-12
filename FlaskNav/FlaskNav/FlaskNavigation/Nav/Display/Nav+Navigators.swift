@@ -9,56 +9,8 @@
 import UIKit
 import Flask
 
-extension FlaskNav {
-    func applyNavType(fluxLock:FluxLock){
-        
-        
-        let navOperation = FlaskNavOperation(fluxLock: fluxLock, name: substance.state.layerActive )
-        
-        if NavLayer.IsNav(substance.state.layerActive){
-            performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
-                self?.displayNavOperation {
-                    completion()
-                }
-            })
-            
-        } else if NavLayer.IsModal(substance.state.layerActive){
-            performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
-                self?.displayModalOperation {
-                    completion()
-                }
-            })
-        } else if  NavLayer.IsTab(substance.state.layerActive){
-            let index = NavLayer.TabIndex(substance.state.layerActive)
-            
-            performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
-                self?.displayTabOperation(index) {
-                    completion()
-                }
-            })
-            
-        }
-        
-        
-        
-    }
-    
-}
 
 extension FlaskNav {
-    
-    func activeRootController(for layer:String)->UIViewController?{
-        let nav = navInstance(forLayer: layer)
-        return nav.viewControllers.first
-    }
-    
-    func activeRootContext(for layer:String)->NavContext{
-        let controller = activeRootController(for:layer)
-        let context = stack(forLayer: layer).rootContext
-        context.setViewController(weak: controller)
-        return context
-    }
-    
     
     func navigateToController(layer:String,fluxLock:FluxLock){
         
@@ -124,6 +76,24 @@ extension FlaskNav {
             
         }
     }
+}
+
+
+extension FlaskNav {
+    
+    func activeRootController(for layer:String)->UIViewController?{
+        let nav = navInstance(forLayer: layer)
+        return nav.viewControllers.first
+    }
+    
+    func activeRootContext(for layer:String)->NavContext{
+        let controller = activeRootController(for:layer)
+        let context = stack(forLayer: layer).rootContext
+        context.setViewController(weak: controller)
+        return context
+    }
+    
+    
 }
 
 extension FlaskNav{

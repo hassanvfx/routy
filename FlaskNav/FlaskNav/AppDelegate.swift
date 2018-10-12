@@ -19,16 +19,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-        testCompletion()
-        testAsyncStack()
-        testNativeSync()
-        testRoot()
-        testAnimation()
-        testTransaction()
-        testModal()
-        testTransaction()
-        testAPI()
+
+        testMixedAnimators()
+        
+//        testCompletion()
+//        testAsyncStack()
+//        testNativeSync()
+//        testRoot()
+//        testAnimation()
+//        testTransaction()
+//        testModal()
+//        testTransaction()
         return true
+    }
+    
+    func testMixedAnimators(){
+        
+        let slider = NavAnimators.SlideTop()
+        let zoomer = NavAnimators.ZoomOut()
+        
+        Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:slider){_ in print("line \(#line)")}
+        Services.router.nav.popCurrent(animator: zoomer)
+        
     }
     
     func testCompletion(){

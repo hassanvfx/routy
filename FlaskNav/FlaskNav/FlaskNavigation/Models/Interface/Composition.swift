@@ -72,20 +72,20 @@ extension NavComposition:NavStackAPI{
         self.compDelegate?.push(layer: layer, batched: compBatched, controller: controller, resourceId: resourceId, info: info, animator: animator, presentation: presentation, callback: callback, completion: completion)
     }
     
-    func pop(layer: String, batched: Bool, toController controller: String, resourceId: String?, info: Any?, completion:CompletionClosure?) {
-        self.compDelegate?.pop(layer: layer, batched: compBatched, toController: controller, resourceId: resourceId, info: info, completion: completion)
+    func pop(layer: String, batched: Bool, toController controller: String, resourceId: String?, info: Any?, animator: NavAnimatorClass?, completion:CompletionClosure?) {
+        self.compDelegate?.pop(layer: layer, batched: compBatched, toController: controller, resourceId: resourceId, info: info, animator: animator, completion: completion)
     }
     
-    func popCurrent(layer: String, batched: Bool, completion:CompletionClosure?) {
-        self.compDelegate?.popCurrent(layer: layer, batched: compBatched, completion: completion)
+    func popCurrent(layer: String, batched: Bool, animator: NavAnimatorClass?, completion:CompletionClosure?) {
+        self.compDelegate?.popCurrent(layer: layer, batched: compBatched, animator: animator, completion: completion)
     }
     
-    func popToRoot(layer: String, batched: Bool, completion:CompletionClosure?) {
-        self.compDelegate?.popToRoot(layer: layer, batched: compBatched, completion: completion)
+    func popToRoot(layer: String, batched: Bool, animator: NavAnimatorClass?, completion:CompletionClosure?) {
+        self.compDelegate?.popToRoot(layer: layer, batched: compBatched, animator: animator, completion: completion)
     }
     
-    func show (layer: String, batched: Bool, completion:CompletionClosure?) {
-        self.compDelegate?.show (layer: layer, batched: compBatched, completion: completion)
+    func show (layer: String, batched: Bool, animator: NavAnimatorClass?, completion:CompletionClosure?) {
+        self.compDelegate?.show (layer: layer, batched: compBatched, animator: animator, completion: completion)
     }
    
     func tabIndex(from layer: String) -> Int {

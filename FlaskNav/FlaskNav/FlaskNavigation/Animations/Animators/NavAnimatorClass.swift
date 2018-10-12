@@ -10,6 +10,7 @@ import UIKit
 
 open class NavAnimatorClass: NSObject {
     public private(set) var isPresented = false
+    public private(set) var isQueued = false
     public var isNavTransition = false
     public var _duration = 0.4
     
@@ -17,6 +18,14 @@ open class NavAnimatorClass: NSObject {
     open func name()->String{
         return "animator"
     }
+    open func prepareForDismiss(){
+        isPresented = true
+    }
+    open func enqueue(){
+        assert(isQueued == false, "animators cannot be shared or reused")
+        isQueued = true
+    }
+    
     open func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
         assert(false,"use a subclass instead")
     }
