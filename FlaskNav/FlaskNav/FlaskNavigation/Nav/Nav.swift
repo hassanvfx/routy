@@ -23,10 +23,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     // MARK: STACK
     
     var stackLayers:[String:NavStack] = [:]
-    var _layerActive:String = NavLayer.NAV.rawValue
-    var _layerInactive:String = NavLayer.NAV.rawValue
-    var _layerActiveCaptured:String? = nil
-    var _layerInactiveCaptured:String? = nil
+    var stackActiveLayer:NavActiveLayer = NavActiveLayer()
     
     var composition:NavComposition<TABS,CONT,MODS>?
     var compositionBatch:NavComposition<TABS,CONT,MODS>?
@@ -78,17 +75,27 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     // MARK : INIT
     
     override init() {
+        
         super.init()
         
-        self.composition = NavComposition<TABS,CONT,MODS>(delegate: self)
-        self.compositionBatch = NavComposition<TABS,CONT,MODS>(batch: true, delegate: self)
-        
+        setupActiveLayer()
+        setupCompositionAPI()
+
         Flask.attachReactor(to: self, mixing: [substance])
         
-        self.configRouter()
+        configRouter()
     }
     
+    func setupActiveLayer(){
+        stackActiveLayer.onActiveChange = { [weak self] in
+            self?.flushModalStack()
+        }
+    }
     
+    func setupCompositionAPI(){
+        composition = NavComposition<TABS,CONT,MODS>(delegate: self)
+        compositionBatch = NavComposition<TABS,CONT,MODS>(batch: true, delegate: self)
+    }
     // MARK: OPEN OVERRIDES
     open func defineRouting(){}
     

@@ -16,7 +16,7 @@ extension FlaskNav: NavStackAPI{
 
         stackTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer,stack) in
             let context = NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, animator:animator, callback)
-            self?.setActive(layer:layer)
+            self?.stackActiveLayer.setActive(layer:layer)
             stack.push(context: context)
         }
     }
@@ -25,7 +25,7 @@ extension FlaskNav: NavStackAPI{
         
         stackTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer,stack) in
             let context =  NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, animator: animator)
-            self?.setActive(layer:layer)
+            self?.stackActiveLayer.setActive(layer:layer)
             stack.pop(toContextRef: context)
         }
     }
@@ -37,9 +37,9 @@ extension FlaskNav: NavStackAPI{
             
             if(NavLayer.IsModal(layer) &&
                 stack.currentNavigator == .Root){
-                self?.restoreActiveLayer()
+                self?.stackActiveLayer.restoreActive()
             }else{
-                self?.setActive(layer:layer)
+                self?.stackActiveLayer.setActive(layer:layer)
             }
             
         }
@@ -51,9 +51,9 @@ extension FlaskNav: NavStackAPI{
             stack.clear(withAnimator: animator)
             
             if(NavLayer.IsModal(layer)){
-                self?.restoreActiveLayer()
+                self?.stackActiveLayer.restoreActive()
             }else{
-                self?.setActive(layer:layer)
+                self?.stackActiveLayer.setActive(layer:layer)
             }
         }
     }
@@ -62,7 +62,7 @@ extension FlaskNav: NavStackAPI{
         
        activeLayerTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer) in
             //TODO: handle show nav or nav
-            self?.setActive(layer:layer)
+            self?.stackActiveLayer.setActive(layer:layer)
         }
     }
     
@@ -91,20 +91,7 @@ extension FlaskNav{
         stackLayers[name] = newStack
         return newStack
     }
-    
-    func activeLayer()->String{
-        return _layerActive
-    }
-    
-    func setActive(layer:String){
-        flushModalStack()
-        _layerInactive = _layerActive
-        _layerActive = layer
-    }
-    
-    func restoreActiveLayer(){
-        _layerActive = _layerInactive
-    }
+  
     
 }
 

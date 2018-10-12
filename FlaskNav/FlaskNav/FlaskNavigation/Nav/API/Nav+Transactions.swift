@@ -14,9 +14,9 @@ extension FlaskNav{
         
         var onCompletion:CompletionClosure? = { [weak self] completed in
             if completed {
-                self?.commitActiveLayer()
+                self?.stackActiveLayer.commit()
             } else {
-                self?.rollbackActiveLayer()
+                self?.stackActiveLayer.rollback()
             }
             if let userCompletion = completion {
                 userCompletion(completed)
@@ -25,7 +25,7 @@ extension FlaskNav{
         if batched { onCompletion = nil }
         
         stackOperation(batched:batched, completion: onCompletion ) { [weak self] in
-            self?.captureActiveLayer()
+            self?.stackActiveLayer.capture()
             action(layer)
         }
         
@@ -57,23 +57,4 @@ extension FlaskNav{
     }
 }
 
-extension FlaskNav {
-    
-    func captureActiveLayer(){
-        assert(_layerActiveCaptured == nil , "State already captured")
-        _layerActiveCaptured = _layerActive
-        _layerInactiveCaptured = _layerInactive
-    }
-    
-    func rollbackActiveLayer(){
-        assert(_layerActiveCaptured != nil , "State not captured")
-        _layerActive = _layerActiveCaptured!
-        _layerInactive = _layerInactiveCaptured!
-    }
-    
-    func commitActiveLayer(){
-        assert(_layerActiveCaptured != nil , "State not captured")
-        _layerActiveCaptured = nil
-        _layerInactiveCaptured = nil
-    }
-}
+
