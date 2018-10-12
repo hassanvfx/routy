@@ -25,6 +25,9 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     var stackLayers:[String:NavStack] = [:]
     var _layerActive:String = NavLayer.NAV.rawValue
     var _layerInactive:String = NavLayer.NAV.rawValue
+    var _layerActiveCaptured:String? = nil
+    var _layerInactiveCaptured:String? = nil
+    
     var composition:NavComposition<TABS,CONT,MODS>?
     var compositionBatch:NavComposition<TABS,CONT,MODS>?
     var compDelegate: NavStackAPI? = nil
