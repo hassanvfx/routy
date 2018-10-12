@@ -19,14 +19,20 @@ public class NavContext {
     weak var viewControllerWeak:UIViewController? = nil
     var viewControllerStrong:UIViewController? = nil
     
-    public let animator:NavAnimatorClass?
+    
     public let layer:String
     public let controller:String
     public let resourceId:String?
     public let contextId:Int
     public let info:Any?
     public let callback:NavContextCallback?
+    
     public var navigator:NavigatorType?
+    public var animator:NavAnimatorClass?
+    
+    public var capturedState = false
+    public var capturedNavigator:NavigatorType?
+    public var capturedAnimator:NavAnimatorClass?
     
     init(id contextId: Int, layer:String, controller:String, resourceId:String?,  info:Any?, animator:NavAnimatorClass? = nil, _ callback:NavContextCallback? = nil){
         
@@ -39,7 +45,7 @@ public class NavContext {
         self.layer = layer
     }
     
-
+    
     public func path()->String {
         if let resourceId = resourceId {
             return "\(controller).\(resourceId)"
@@ -75,6 +81,27 @@ public class NavContext {
         }
         
         return viewControllerWeak
+    }
+    
+    public func captureState(){
+        assert(capturedState == false, "state already captured")
+        capturedState = true
+        capturedNavigator = navigator
+        capturedAnimator = animator
+    }
+    
+    public func rollbackState(){
+        assert(capturedState == true, "state not captured")
+        capturedState = false
+        navigator = capturedNavigator
+        animator = capturedAnimator
+    }
+    
+    public func commitState(){
+        assert(capturedState == true, "state not captured")
+        capturedState = false
+        capturedNavigator = nil
+        capturedAnimator = nil
     }
     
 }

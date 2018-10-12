@@ -17,8 +17,8 @@ extension FlaskNav{
         applyActiveLayer(){ [weak self] activeCompleted in
             self?.applyCurrentLayers(){ layersCompleted in
                 print("dispatch completed")
-                operation.complete()
                 completion(layersCompleted)
+                operation.complete()
             }
         }
         
@@ -34,6 +34,7 @@ extension FlaskNav{
         lock.onRelease = { (payload) in
             if let payload = payload {
                 completion(payload as! Bool)
+                return
             }
             completion(true)
         }
@@ -56,6 +57,7 @@ extension FlaskNav{
         lock.onRelease = { (payload) in
             if let payload = payload {
                 completion(payload as! Bool)
+                return
             }
             completion(true)
         }

@@ -30,13 +30,11 @@ extension FlaskNav{
             assert(NavStack.locked == false, "error the `stack` is currently locked")
             
             NavStack.lock()
-            //NavStack.capture()
             closure()
             NavStack.unlock()
             self?.dispatchStack(with: operation){ (completed) in
                 
                 if completed == false {
-                    //NavStack.restore()
                     print("dispatch canceled")
                 }
                 

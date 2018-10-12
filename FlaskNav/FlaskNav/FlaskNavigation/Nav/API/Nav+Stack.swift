@@ -35,16 +35,55 @@ extension FlaskNav{
         _layerActive = _layerInactive
     }
 }
-
+extension FlaskNav{
+ 
+    func stackTransaction(for layer:String, batched:Bool,  completion:CompletionClosure?, action:@escaping (String,NavStack)->Void){
+        
+        
+        var onCompletion:CompletionClosure? = { completed in
+            let stack = self.stack(forLayer: layer)
+            if completed {
+                stack.commit()
+            } else {
+                stack.rollback()
+            }
+            if let userCompletion = completion {
+                userCompletion(completed)
+            }
+        }
+        
+        if batched { onCompletion = nil }
+        
+        queueIntent(batched:batched, completion: onCompletion ) {
+            let stack = self.stack(forLayer: layer)
+            
+            if !batched { stack.capture() }
+            action(layer,stack)
+        }
+        
+        
+    }
+}
 
 extension FlaskNav: NavStackAPI{
     
+    
     func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:Any? = nil, animator: NavAnimatorClass? = nil, presentation: NavPresentationClass? = nil, callback: NavContextCallback?, completion:CompletionClosure? = nil) {
-        queueIntent(batched:batched, completion: completion ) { [weak self] in
+        
+        stackTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer,stack) in
             let context = NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, animator:animator, callback)
             self?.setActive(layer:layer)
-            self?.stack(forLayer: layer).push(context: context)
+            stack.push(context: context)
         }
+      
+
+//        queueIntent(batched:batched, completion: completion ) { [weak self] in
+//            guard let this = self else { return }
+//            let context = NavContext.manager.context(layer:layer, controller: controller, resourceId: resourceId, info: info, animator:animator, callback)
+//            let stack = this.stack(forLayer: layer)
+//            this.setActive(layer:layer)
+//            stack.push(context: context)
+//        }
     }
     
     func pop(layer:String, batched:Bool = false, toController controller:String, resourceId:String?, info:Any?, completion:CompletionClosure? = nil){

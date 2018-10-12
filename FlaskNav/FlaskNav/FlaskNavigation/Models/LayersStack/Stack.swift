@@ -11,16 +11,17 @@ import Flask
 
 public class NavStack {
     
+    static public private(set) var locked = false
     public static let stackQueue:OperationQueue = {
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount=1
         return queue
     }()
     
-    public private(set) var stack:[NavContext] = []
-    static public private(set) var locked = false
     public var currentNavigator:NavigatorType = .Root
     
+    public private(set) var stack:[NavContext] = []
+    var capturedStack:[NavContext]? = nil
     let rootContext:NavContext
     let layer:String
     
@@ -28,10 +29,7 @@ public class NavStack {
         self.layer = layer
         self.rootContext = NavContext.manager.contextRoot(forLayer: layer)!
     }
-    
-   
-    
-    
+
     public func currentContextHash()->String{
         let context = currentContext()
         return NavContext.manager.stateHash(from:context,navigator:currentNavigator)
@@ -105,6 +103,36 @@ extension NavStack {
     
     static public func enqueue(operation:FlaskOperation){
         NavStack.stackQueue.addOperation(operation)
+    }
+    
+}
+
+
+extension NavStack {
+    
+    public func capture(){
+        assert(capturedStack == nil, "stack already captured")
+        capturedStack = stack
+        for context in capturedStack! {
+            context.captureState()
+        }
+    }
+    
+    public func rollback(){
+        assert(capturedStack != nil, "stack not captured")
+        for context in capturedStack! {
+            context.rollbackState()
+        }
+        stack = capturedStack!
+        capturedStack = nil
+    }
+    
+    public func commit(){
+        assert(capturedStack != nil, "stack not captured")
+        for context in capturedStack! {
+            context.commitState()
+        }
+        capturedStack = nil
     }
     
 }
