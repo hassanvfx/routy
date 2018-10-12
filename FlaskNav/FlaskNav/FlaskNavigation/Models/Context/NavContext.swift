@@ -55,7 +55,7 @@ public class NavContext {
     }
     
     public func desc()->String {
-        return "CTX:\(contextId).\(String(describing: navigator)).\(layer).\(controller).\(String(describing: resourceId))"
+        return "[[ CTX:\(contextId).\(String(describing: navigator)).\(layer).\(controller).\(String(describing: resourceId)) ]]"
     }
     
     public func operationName()->String {

@@ -19,26 +19,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-         testError()
-//        testShowAnimators()
-//        testMixedAnimators()
-//        testCompletion()
-//        testAsyncStack()
-//        testNativeSync()
-//        testRoot()
-//        testAnimation()
-//        testModal()
-//        testTransaction()
+        testShowAnimators()
+        testMixedAnimators()
+        testCompletion()
+        testAsyncStack()
+        testNativeSync()
+        testRoot()
+        testAnimation()
+        testTransaction()
+        testModal()
+        testError()
         return true
     }
     
-    func testError(){
-        
-        Services.router.nav.popToRoot(){_ in print("---> line \(#line)")}
-        Services.router.tab(.Friends).show(){_ in print("---> line \(#line)")}
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
-
-    }
+  
     
     func testShowAnimators(){
          let slider = NavAnimators.SlideTop()
@@ -182,17 +176,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
     
-    func testAPI(){
-//        let info = Info(title: "test", color: "red")
-//
-//        Services.router.composition?.nav.push(controller:.Feed, info:info)
-//        Services.router.composition?.nav.popToRoot()
-//        Services.router.composition?.nav.push(controller:.Feed, info:info)
-//        Services.router.composition?.nav.popToRoot()
-//        Services.router.composition?.nav.push(controller:.Feed, info:info)
-//        Services.router.composition?.nav.push(controller:.Feed, info:info)
-//        Services.router.composition?.nav.push(controller:.Feed, info:info)
-//        Services.router.composition?.nav.popToRoot()
+    func testError(){
+        
+        Services.router.nav.popToRoot(){_ in print("---> line \(#line)")}
+        Services.router.tab(.Friends).show(){_ in print("---> line \(#line)")}
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
+        
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
