@@ -15,20 +15,25 @@ public enum NavAnimatorControllerType: String{
     case Navigation,ViewController
 }
 
+public typealias NavAnimatorInteraction = ()->Void
+
 open class NavAnimatorClass: NSObject {
     public private(set) var type:NavAnimatorClassType = .Show
     public private(set) var controller:NavAnimatorControllerType = .ViewController
     public var _duration = 0.4
     
-
+    //MARK: INTERACTOR
+    public var interactionDidStart:NavAnimatorInteraction?
+    public private(set) var _interactionController:UIPercentDrivenInteractiveTransition? = nil
     
+   //MARK: SUBCLASS OVERRIDES
     open func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
         assert(false,"use a subclass instead")
     }
     open func dismiss(controller:UIViewController,to toController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
         assert(false,"use a subclass instead")
     }
-    
+ 
     open func _setParams(_ params:NSDictionary){
         assert(false,"use a subclass instead")
     }
@@ -69,6 +74,38 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
             
             dismiss(controller: fromController, to: toController, in: container, withContext: transitionContext)
         }
+    }
+}
+
+extension NavAnimatorClass{
+    
+    public func interactionStart()->UIPercentDrivenInteractiveTransition? {
+        guard let onInteraction = interactionDidStart else { return nil }
+        
+        _interactionController = UIPercentDrivenInteractiveTransition()
+        onInteraction()
+        
+        return _interactionController
+        
+    }
+    
+    public func interactionPercent()->Double{
+        guard let interactor = _interactionController else { return 0 }
+        return Double(interactor.percentComplete)
+    }
+    
+    public func interactionUpdate(percent: Double){
+        _interactionController?.update(CGFloat(percent))
+    }
+    
+    public func interactionCanceled(){
+        _interactionController?.cancel()
+        _interactionController = nil
+    }
+    
+    public func interactionFinished(){
+        _interactionController?.finish()
+        _interactionController = nil
     }
 }
 

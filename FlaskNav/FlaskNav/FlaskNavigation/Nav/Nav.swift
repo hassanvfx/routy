@@ -149,14 +149,15 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
         
     }
     
-    //    func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning?{
-    //
-    //        if !self.nextTransitionInteractive{ return nil}
-    //        self.nextTransitionInteractive=false
-    //
-    //
-    //        return self.interactionController;
-    //    }
+    public func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning?{
+    
+            guard let animator = animationController as? NavAnimatorClass else{
+                return nil
+            }
+    
+    
+            return animator.interactionStart();
+        }
     
     
     //    func updateInteractiveTransition(_ percent:Double){
