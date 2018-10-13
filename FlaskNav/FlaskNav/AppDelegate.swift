@@ -20,17 +20,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.setup(withWindow: window!)
 
         testContextCallbacks()
-//        testModalDismiss()
-//        testShowAnimators()
-//        testMixedAnimators()
-//        testCompletion()
-//        testAsyncStack()
-//        testNativeSync()
-//        testRoot()
-//        testAnimation()
-//        testTransaction()
-//        testModal()
-//        testError()
+        testModalDismiss()
+        testShowAnimators()
+        testMixedAnimators()
+        testCompletion()
+        testAsyncStack()
+        testNativeSync()
+        testRoot()
+        testAnimation()
+        testTransaction()
+        testModal()
+        testError()
         return true
     }
     
