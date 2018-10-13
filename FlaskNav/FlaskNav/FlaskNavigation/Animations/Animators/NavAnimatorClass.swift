@@ -20,10 +20,7 @@ open class NavAnimatorClass: NSObject {
     public private(set) var controller:NavAnimatorControllerType = .ViewController
     public var _duration = 0.4
     
-    //MARK: subclass methods
-    open func name()->String{
-        return "animator"
-    }
+
     
     open func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
         assert(false,"use a subclass instead")
@@ -37,8 +34,7 @@ open class NavAnimatorClass: NSObject {
     }
     open func _getParams()->NSDictionary{
         assert(false,"use a subclass instead")
-        return ["name":name,
-                "duration":_duration]
+        return ["duration":_duration]
     }
     
 }

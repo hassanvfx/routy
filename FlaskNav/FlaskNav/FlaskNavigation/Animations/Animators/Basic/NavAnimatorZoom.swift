@@ -14,9 +14,7 @@ enum NavAnimatorZoomStyle:String,RawInitializable {
 
 class NavAnimatorZoom: NavAnimatorBasic<NavAnimatorZoomStyle>{
 
-    override open func name()->String{
-        return "zoom"
-    }
+  
     
     override open func preferredIntensity() -> Double {
         return 0.2

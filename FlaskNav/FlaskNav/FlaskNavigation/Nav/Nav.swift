@@ -42,6 +42,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     // main nav
     var navRoot:ControllerConstructor? = nil
     var navRootConfig:NavConfig? = nil
+    var modalRootConfig:NavConfig = NavConfig(navBar: true, tabBar:true)
     
     // tabs
     var tabs:[Int:ControllerConstructor] = [:]

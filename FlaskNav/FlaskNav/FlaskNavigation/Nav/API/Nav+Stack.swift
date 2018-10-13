@@ -14,49 +14,63 @@ extension FlaskNav: NavStackAPI{
 
     func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:Any? = nil, animator: NavAnimatorClass? = nil, presentation: NavPresentationClass? = nil, callback: NavContextCallback?, completion:CompletionClosure? = nil) {
 
-        stackTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer,stack) in
-            let context = NavContext.manager.context(layer:layer, navigator:.Push, controller: controller, resourceId: resourceId, info: info, animator:animator, callback)
+        activeLayerTransaction(for: layer,batched: batched){ [weak self] (layer) in
             self?.stackActive.set(layer:layer)
+        }
+        
+        navTransaction(for: layer,batched: batched, completion:completion){ (layer,stack) in
+            let context = NavContext.manager.context(layer:layer, navigator:.Push, controller: controller, resourceId: resourceId, info: info, animator:animator, callback)
             stack.push(context: context)
         }
     }
     
     func pop(layer:String, batched:Bool = false, toController controller:String, resourceId:String?, info:Any?, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
         
-        stackTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer,stack) in
+        navTransaction(for: layer,batched: batched){ (layer,stack) in
             let context =  NavContext.manager.context(layer:layer, navigator:.Pop, controller: controller, resourceId: resourceId, info: info, animator: animator)
-            self?.stackActive.set(layer:layer)
             stack.pop(toContextRef: context)
+        }
+        
+        activeLayerTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer) in
+            guard let this = self else { return }
+            
+            if !this.dismissEmptyModal(for: layer) {
+                this.stackActive.set(layer:layer)
+            }
         }
     }
     func popCurrent(layer:String, batched:Bool = false, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
      
-        stackTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer,stack) in
-           
+        navTransaction(for: layer,batched: batched){ (layer,stack) in
             stack.pop(withAnimator: animator)
+        }
+        
+        activeLayerTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer) in
+            guard let this = self else { return }
             
-            if(NavLayer.IsModal(layer) &&
-                stack.currentNavigator == .Root){
-                self?.stackActive.unset()
-            }else{
-                self?.stackActive.set(layer:layer)
+            if !this.dismissEmptyModal(for: layer) {
+                this.stackActive.set(layer:layer)
             }
-            
         }
     }
     func popToRoot(layer:String, batched:Bool = false, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
        
-      
-        stackTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer,stack) in
+        navTransaction(for: layer,batched: batched){ (layer,stack) in
             stack.clear(withAnimator: animator)
+        }
+        
+        activeLayerTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer) in
+            guard let this = self else { return }
             
-            if(NavLayer.IsModal(layer)){
-                self?.stackActive.unset()
-            }else{
-                self?.stackActive.set(layer:layer)
+            if !this.dismissEmptyModal(for: layer) {
+                this.stackActive.set(layer:layer)
             }
         }
     }
+    
+}
+
+extension FlaskNav{
     
     func show(layer:String, batched:Bool = false, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
         
@@ -101,6 +115,19 @@ extension FlaskNav{
 
     func flushModalStack(){
         self.stack(forLayer: NavLayer.Modal()).clear()
+    }
+    
+    func dismissEmptyModal(for layer:String)->Bool{
+        
+        if !NavLayer.IsModal(self.stackActive.active) { return false}
+       
+        let stack = self.stack(forLayer: NavLayer.Modal())
+        if stack.isEmpty() {
+            self.stackActive.unset()
+            return true
+        }
+        return false
+        
     }
 }
 

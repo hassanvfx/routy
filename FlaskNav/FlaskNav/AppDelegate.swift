@@ -19,7 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-        testShowAnimators()
+//        testModalDismiss()
+//        testShowAnimators()
 //        testMixedAnimators()
 //        testCompletion()
 //        testAsyncStack()
@@ -28,10 +29,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        testAnimation()
 //        testTransaction()
 //        testModal()
-//        testError()
+        testError()
         return true
     }
     
+    func testModalDismiss(){
+        let slider = NavAnimators.SlideTop()
+        let out = NavAnimators.SlideLeft()
+        
+        Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"]), animator:slider)
+        Services.router.modal.dismiss(animator:out)
+    }
   
     
     func testShowAnimators(){
@@ -178,8 +186,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func testError(){
         
-        Services.router.nav.popToRoot(){_ in print("---> line \(#line)")}
-        Services.router.tab(.Friends).show(){_ in print("---> line \(#line)")}
+//        Services.router.nav.popToRoot(){_ in print("---> line \(#line)")}
+//        Services.router.tab(.Friends).show(){_ in print("---> line \(#line)")}
         Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"purple"])){_ in print("---> line \(#line)")}
         
     }

@@ -186,9 +186,10 @@ extension FlaskNav{
     func newModalController()->FlaskNavigationController{
         
         let root = ModalRootController()
-        let config = navRootConfig!
+        let config = modalRootConfig
         
         root.title = "Modal"
+        root.config = config
         
         let nav = FlaskNavigationController(rootViewController: root)
         nav.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)

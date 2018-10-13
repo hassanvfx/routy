@@ -11,6 +11,7 @@ import UIKit
 typealias ModalRootControllerTouch = ()->Void
 class ModalRootController: UIViewController {
     
+    var config:NavConfig?
     var wasNavBarHidden:Bool = false
   
     func viewForwarder()->TouchForwardingView{
@@ -23,28 +24,27 @@ class ModalRootController: UIViewController {
         
 //        NavDebug.shared.perform{
 //            view.backgroundColor = .black
-//            view.alpha = 0.25
+//            view.alpha = 0.75
 //        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         view.isUserInteractionEnabled = false
-        view.isHidden = false
+        guard let navController = navigationController else { return }
         
-        if let navController =  navigationController{
-            wasNavBarHidden = navController.isNavigationBarHidden
-            navController.setNavigationBarHidden(true, animated: false)
-        }
+        print("\(navController.viewControllers.count)")
+        navController.setNavigationBarHidden(true, animated: true)
       
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        if let navController =  navigationController{
-            navController.setNavigationBarHidden(wasNavBarHidden, animated: false)
-        }
+        guard let navController = navigationController else { return }
+        guard let config = config else { return }
+        
+        navController.setNavigationBarHidden(!config.navBar, animated: config.navBarAnimated)
+       
     }
     
 //    - (BOOL)prefersStatusBarHidden {

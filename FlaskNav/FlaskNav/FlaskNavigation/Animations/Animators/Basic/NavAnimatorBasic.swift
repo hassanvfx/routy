@@ -23,9 +23,7 @@ class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorCl
         _intensity = intensity ?? 0.5
     }
 
-    override open func name()->String{
-        return "slide"
-    }
+   
     
     open func applyTransformStyle(controller:UIViewController, parent:UIViewController,in containerView:UIView){}
     open func preferredIntensity()->Double{return _intensity}
@@ -45,7 +43,6 @@ class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorCl
     }
     override open func _getParams()->NSDictionary{
         return [
-            "name":name(),
             "style":_style.rawValue,
             "intensity":_intensity,
             "duration":_duration
