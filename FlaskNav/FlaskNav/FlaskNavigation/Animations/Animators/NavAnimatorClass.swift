@@ -18,6 +18,9 @@ public enum NavAnimatorControllerType: String{
 public typealias NavAnimatorInteraction = (_ interactor: NavAnimatorClass)->Void
 
 open class NavAnimatorClass: NSObject {
+    
+    static let WAIT_FOR_ANIMATOR_TO_CANCEL = 0.5
+    
     public private(set) var type:NavAnimatorClassType = .Show
     public private(set) var controller:NavAnimatorControllerType = .ViewController
     public var _duration = 0.4
@@ -86,6 +89,7 @@ extension NavAnimatorClass{
         
         _interactionController = UIPercentDrivenInteractiveTransition()
         onInteractionRequest(self)
+        
         
         return _interactionController
         

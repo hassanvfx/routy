@@ -68,6 +68,40 @@ extension NavPresentator:UIViewControllerTransitioningDelegate{
         animator.prepareToHide()
         return animator
     }
+    
+    func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning?{
+        
+        guard let animator = animator as? NavAnimatorClass else{ return nil }
+        
+        guard let interactor =  animator.interactionStart() else { return nil }
+        
+//        animator.onInteractionCanceled = { [weak self] _ in
+//            guard let this = self else { return }
+//            DispatchQueue.main.asyncAfter(deadline: .now() + NavAnimatorClass.WAIT_FOR_ANIMATOR_TO_CANCEL){
+//                this.intentToCompleteOperationFor(context: animator.navContext, completed: false)
+//            }
+//        }
+        
+        return interactor
+    }
+    
+    
+    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning?{
+        
+        guard let animator = animator as? NavAnimatorClass else{ return nil }
+        
+        guard let interactor =  animator.interactionStart() else { return nil }
+        
+//        animator.onInteractionCanceled = { [weak self] _ in
+//            guard let this = self else { return }
+//            DispatchQueue.main.asyncAfter(deadline: .now() + NavAnimatorClass.WAIT_FOR_ANIMATOR_TO_CANCEL){
+//                                this.intentToCompleteOperationFor(context: animator.navContext, completed: false)
+//            }
+//        }
+        
+        return interactor
+    }
+
 }
 
 
