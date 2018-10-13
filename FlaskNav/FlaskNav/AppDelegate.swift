@@ -58,6 +58,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         info.onDidSetup = { nav, con in
             print("did Setup");
         }
+        info.callback = { _ in
+            
+        }
         
         
         Services.router.modal.push(controller: .Login, info: info)

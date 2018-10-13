@@ -25,7 +25,6 @@ public class NavContext {
     public let resourceId:String?
     public let contextId:Int
     public let info:Any?
-    public let callback:NavContextCallback?
     
     public var navigator:NavigatorType
     public var animator:NavAnimatorClass?
@@ -34,12 +33,11 @@ public class NavContext {
     public var capturedNavigator:NavigatorType?
     public var capturedAnimator:NavAnimatorClass?
     
-    init(id contextId: Int, layer:String, navigator:NavigatorType, controller:String, resourceId:String?,  info:Any?, animator:NavAnimatorClass? = nil, _ callback:NavContextCallback? = nil){
+    init(id contextId: Int, layer:String, navigator:NavigatorType, controller:String, resourceId:String?,  info:Any?, animator:NavAnimatorClass? = nil){
         
         self.navigator = navigator
         self.contextId = contextId
         self.info = info
-        self.callback = callback
         self.animator = animator
         self.controller = controller
         self.resourceId = resourceId

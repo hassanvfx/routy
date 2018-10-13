@@ -12,7 +12,6 @@ class AsyncViewController: UIViewController, FlaskNavViewControllerProtocol {
    
     typealias NavInfoType = NavInfo
     var navContext: NavContext?
-    var navCallback: NavContextCallback?
     var navInfo: NavInfo?
     
     func setupEmptyState() {
@@ -45,7 +44,7 @@ class AsyncViewController: UIViewController, FlaskNavViewControllerProtocol {
              completionHandle()
         }
        
-        navCallback?("hello")
+        navInfo?.callback?("callback from controller")
     }
 
 
