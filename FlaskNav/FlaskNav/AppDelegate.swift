@@ -19,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-        testInteractorPush()
-//        testInteractorShowTabs()
+//        testInteractorPush()
+        testInteractorShowTabs()
 //        testContextCallbacks()
 //        testModalDismiss()
 //        testShowAnimators()
@@ -58,16 +58,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let animator = NavAnimators.SlideTop()
         animator.onInteractionRequest = { interactor  in
             
-//            interactor._interactionController.
-//            interactor.interactionUpdate(percent: 0.25)
-//             interactor.interactionCanceled()
-            
-            //            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-            //                interactor.interactionUpdate(percent: 0.5)
-            //            })
-            //            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-            //                interactor.interactionCanceled()
-            //            })
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                interactor.interactionUpdate(percent: 0.5)
+            })
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                interactor.interactionCanceled()
+            })
             
         }
         

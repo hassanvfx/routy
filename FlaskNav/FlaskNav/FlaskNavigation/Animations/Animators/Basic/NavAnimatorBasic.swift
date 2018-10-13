@@ -49,7 +49,7 @@ class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorCl
         ]
     }
     
-    override func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
+    override func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning)->UIViewPropertyAnimator?{
         
         let animationDuration = transitionDuration(using: context)
         
@@ -66,20 +66,27 @@ class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorCl
     
         let viewAnimator = UIViewPropertyAnimator(duration: animationDuration, curve: .linear, animations: animations)
         viewAnimator.addCompletion(completion)
-        viewAnimator.startAnimation()
+        
+        return viewAnimator
+        
     }
-    override func dismiss(controller:UIViewController,to toController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
+    override func dismiss(controller:UIViewController,to toController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning)->UIViewPropertyAnimator{
         
         let animationDuration = transitionDuration(using: context)
         
-        UIView.animate(withDuration: animationDuration, animations: {
-            
+        let animations = {
             self.applyTransformStyle(controller: controller, parent: toController, in: containerView)
+        }
         
-            
-        }) { finished in
+        let completion = { (finished:UIViewAnimatingPosition) in
             context.completeTransition(!context.transitionWasCancelled)
         }
+        
+        let viewAnimator = UIViewPropertyAnimator(duration: animationDuration, curve: .linear, animations: animations)
+        viewAnimator.addCompletion(completion)
+        viewAnimator.startAnimation()
+        
+        return viewAnimator
     }
 
 }
