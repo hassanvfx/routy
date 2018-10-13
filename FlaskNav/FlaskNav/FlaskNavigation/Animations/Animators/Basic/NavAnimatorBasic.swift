@@ -55,15 +55,18 @@ class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorCl
         
         applyTransformStyle(controller: controller, parent: fromController, in: containerView)
         
-        
-        UIView.animate(withDuration: animationDuration, animations: {
-            
+        let animations = {
             controller.view.transform = CGAffineTransform.identity
             controller.view.alpha = 1
+        }
             
-        }, completion: { finished in
+        let completion = { (finished:UIViewAnimatingPosition) in
             context.completeTransition(!context.transitionWasCancelled)
-        })
+        }
+    
+        let viewAnimator = UIViewPropertyAnimator(duration: animationDuration, curve: .linear, animations: animations)
+        viewAnimator.addCompletion(completion)
+        viewAnimator.startAnimation()
     }
     override func dismiss(controller:UIViewController,to toController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
         

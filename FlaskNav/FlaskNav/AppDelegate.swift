@@ -19,8 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-//        testInteractorPush()
-        testInteractorShowTabs()
+        testInteractorPush()
+//        testInteractorShowTabs()
 //        testContextCallbacks()
 //        testModalDismiss()
 //        testShowAnimators()
