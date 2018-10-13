@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
+        testContextCallbacks()
 //        testModalDismiss()
 //        testShowAnimators()
 //        testMixedAnimators()
@@ -29,8 +30,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        testAnimation()
 //        testTransaction()
 //        testModal()
-        testError()
+//        testError()
         return true
+    }
+    
+    func testContextCallbacks(){
+        let info = NavInfo(params:["color":"yellow"])
+        info.onWillInit = { nav, con in
+            let controller = con as! AsyncViewController
+            print("will init \(String(describing: controller.navInfo?.params))");
+        }
+        info.onDidInit = { nav, con in
+            print("did init");
+        }
+        info.onWillSetupEmptyState = { nav, con in
+            print("will setupEmtpy");
+        }
+        info.onDidSetupEmptyState = { nav, con in
+            print("did setupEmtpy");
+        }
+        info.onWillSetupContent = { nav, con in
+            print("will setupContent");
+        }
+        info.onDidSetupContent = { nav, con in
+            print("did setupContent");
+        }
+        info.onDidSetup = { nav, con in
+            print("did Setup");
+        }
+        
+        
+        Services.router.modal.push(controller: .Login, info: info)
+       
     }
     
     func testModalDismiss(){

@@ -208,7 +208,7 @@ extension FlaskNav:FlaskNavigationControllerDelegate{
     
     
    
-    func navBarAction(inNav nav: FlaskNavigationController, withBar bar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
+    public func navBarAction(inNav nav: FlaskNavigationController, withBar bar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
        
         guard let layerName = layerNameFor(navController: nav) else {
             return true

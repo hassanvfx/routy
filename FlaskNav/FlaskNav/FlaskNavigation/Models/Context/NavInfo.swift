@@ -8,12 +8,30 @@
 
 import UIKit
 
-public struct NavInfo {
+public typealias NavInfoCallbackClosure = (_ nav:FlaskNavigationController,_ controller:UIViewController)->Void
+
+
+public class NavInfo {
+    
     var name:String?
     var resource:String?
     var resourceId:String?
     var params:[String:AnyCodable]?
     var map:[String:AnyCodable]?
+    
+    
+    var onWillInit:NavInfoCallbackClosure?
+    var onDidInit:NavInfoCallbackClosure?
+    
+    var onWillSetupEmptyState:NavInfoCallbackClosure?
+    var onDidSetupEmptyState:NavInfoCallbackClosure?
+    
+    var onWillSetupContent:NavInfoCallbackClosure?
+    var onDidSetupContent:NavInfoCallbackClosure?
+    
+    var onDidSetup:NavInfoCallbackClosure?
+    
+    var callback:NavContextCallback?
     
     init(name:String?=nil,
          resource:String?=nil,

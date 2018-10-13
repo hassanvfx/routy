@@ -8,11 +8,11 @@
 
 import UIKit
 
-protocol FlaskNavigationControllerDelegate:AnyObject{
+public protocol FlaskNavigationControllerDelegate:AnyObject{
     func navBarAction(inNav nab:FlaskNavigationController, withBar bar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool
 
 }
-class FlaskNavigationController: UINavigationController, UINavigationBarDelegate {
+public class FlaskNavigationController: UINavigationController, UINavigationBarDelegate {
 
     public weak var flaskDelegate:FlaskNavigationControllerDelegate?
     public var _isModal = false
@@ -27,7 +27,7 @@ class FlaskNavigationController: UINavigationController, UINavigationBarDelegate
         return viewControllers.first! as! ModalRootController
     }
     
-    override func loadView() {
+    override public func loadView() {
         super.loadView()
         self.interactivePopGestureRecognizer?.isEnabled = false
     }
