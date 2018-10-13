@@ -111,6 +111,8 @@ extension FlaskNav{
     func setAnimatorFor(context:NavContext, navigator:NavigatorType){
         let controller = context.viewController()!
         let animator = context.animator
+        animator?.navContext = context
+        
         setPreferredAnimator(animator, for: controller, withNavigator: navigator)
     }
     

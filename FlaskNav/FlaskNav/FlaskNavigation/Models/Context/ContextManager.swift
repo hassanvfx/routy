@@ -81,6 +81,10 @@ extension NavContextManager{
     public func releaseOnPop(context:NavContext){
         if(context.navigator != .Pop){ return }
         
+       releaseOnCancel(context: context)
+    }
+    
+    public func releaseOnCancel(context:NavContext){
         context.setViewControllerWeak(true)
         contexts[context.contextId] = nil
     }

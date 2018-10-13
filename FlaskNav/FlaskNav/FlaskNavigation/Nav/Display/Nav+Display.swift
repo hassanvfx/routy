@@ -68,7 +68,7 @@ extension FlaskNav{
                 self.intentToCompleteOperationFor(context: context)
             }
         }
-        
+
         if context.navigator != .Root || (context.navigator == .Root && nav.viewControllers.count > 1){
             
             execute()

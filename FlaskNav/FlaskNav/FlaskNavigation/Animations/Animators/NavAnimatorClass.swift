@@ -15,7 +15,7 @@ public enum NavAnimatorControllerType: String{
     case Navigation,ViewController
 }
 
-public typealias NavAnimatorInteraction = ()->Void
+public typealias NavAnimatorInteraction = (_ interactor: NavAnimatorClass)->Void
 
 open class NavAnimatorClass: NSObject {
     public private(set) var type:NavAnimatorClassType = .Show
@@ -23,7 +23,9 @@ open class NavAnimatorClass: NSObject {
     public var _duration = 0.4
     
     //MARK: INTERACTOR
-    public var interactionDidStart:NavAnimatorInteraction?
+    public var onInteractionRequest:NavAnimatorInteraction?
+    var onInteractionCanceled:NavAnimatorInteraction?
+    public weak var navContext:NavContext?
     public private(set) var _interactionController:UIPercentDrivenInteractiveTransition? = nil
     
    //MARK: SUBCLASS OVERRIDES
@@ -80,10 +82,10 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
 extension NavAnimatorClass{
     
     public func interactionStart()->UIPercentDrivenInteractiveTransition? {
-        guard let onInteraction = interactionDidStart else { return nil }
+        guard let onInteractionRequest = onInteractionRequest else { return nil }
         
         _interactionController = UIPercentDrivenInteractiveTransition()
-        onInteraction()
+        onInteractionRequest(self)
         
         return _interactionController
         
@@ -99,8 +101,17 @@ extension NavAnimatorClass{
     }
     
     public func interactionCanceled(){
-        _interactionController?.cancel()
-        _interactionController = nil
+        autoreleasepool(){
+            _interactionController?.cancel()
+            _interactionController = nil
+            
+            if let onCancel = onInteractionCanceled {
+                DispatchQueue.main.async {
+                    onCancel(self)
+                }
+            }
+        }
+        
     }
     
     public func interactionFinished(){

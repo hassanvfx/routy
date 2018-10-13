@@ -19,19 +19,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-        testContextCallbacks()
-        testModalDismiss()
-        testShowAnimators()
-        testMixedAnimators()
-        testCompletion()
-        testAsyncStack()
-        testNativeSync()
-        testRoot()
-        testAnimation()
-        testTransaction()
-        testModal()
-        testError()
+        testInteractor()
+//        testContextCallbacks()
+//        testModalDismiss()
+//        testShowAnimators()
+//        testMixedAnimators()
+//        testCompletion()
+//        testAsyncStack()
+//        testNativeSync()
+//        testRoot()
+//        testAnimation()
+//        testTransaction()
+//        testModal()
+//        testError()
         return true
+    }
+    
+    func testInteractor() {
+        let animator = NavAnimators.SlideTop()
+        animator.onInteractionRequest = { interactor  in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                interactor.interactionUpdate(percent: 0.5)
+            })
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                interactor.interactionCanceled()
+            })
+            
+        }
+        
+        Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:animator){_ in print("---> line \(#line)")}
+        Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"white"])){_ in print("---> line \(#line)")}
+        
     }
     
     func testContextCallbacks(){

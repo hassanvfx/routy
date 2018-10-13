@@ -14,6 +14,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     let FIRST_NAVIGATION_ROOT_COUNT = 2
     let UNDEFINED_CONTEXT_ID = -1
     let CANCELED_OPERATION_NAME = "canceledOperation"
+    let WAIT_FOR_ANIMATOR_TO_CANCEL = 0.5
     
     // MARK: NAV CONTROLLER
     
@@ -150,27 +151,20 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     }
     
     public func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning?{
-    
-            guard let animator = animationController as? NavAnimatorClass else{
-                return nil
+        
+        guard let animator = animationController as? NavAnimatorClass else{ return nil }
+        
+        guard let interactor =  animator.interactionStart() else { return nil }
+        
+        animator.onInteractionCanceled = { [weak self] _ in
+            guard let this = self else { return }
+            DispatchQueue.main.asyncAfter(deadline: .now() + this.WAIT_FOR_ANIMATOR_TO_CANCEL){
+                this.intentToCompleteOperationFor(context: animator.navContext, completed: false)
             }
-    
-    
-            return animator.interactionStart();
         }
+        
+        return interactor
+    }
     
-    
-    //    func updateInteractiveTransition(_ percent:Double){
-    //        self.interactionController?.update(CGFloat(percent))
-    //    }
-    
-    //    func finishTransition(completed:Bool){
-    //        if(completed){
-    //            self.interactionController?.finish()
-    //        }else{
-    //            self.interactionController?.cancel()
-    //        }
-    
-    //    }
     
 }
