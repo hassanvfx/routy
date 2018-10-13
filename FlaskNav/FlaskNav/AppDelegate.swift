@@ -20,16 +20,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.setup(withWindow: window!)
 
         testModalDismiss()
-//        testShowAnimators()
-//        testMixedAnimators()
-//        testCompletion()
-//        testAsyncStack()
-//        testNativeSync()
-//        testRoot()
-//        testAnimation()
-//        testTransaction()
-//        testModal()
-//        testError()
+        testShowAnimators()
+        testMixedAnimators()
+        testCompletion()
+        testAsyncStack()
+        testNativeSync()
+        testRoot()
+        testAnimation()
+        testTransaction()
+        testModal()
+        testError()
         return true
     }
     

@@ -10,7 +10,7 @@ import UIKit
 
 extension FlaskNav{
     
-    func activeLayerTransaction(for layer:String, batched:Bool,  completion:CompletionClosure?, action:@escaping (String)->Void){
+    func activeLayerTransaction(for layer:String, batched:Bool,  completion:CompletionClosure? = nil, action:@escaping (String)->Void){
         
         var onCompletion:CompletionClosure? = { [weak self] completed in
             if completed {
@@ -25,14 +25,14 @@ extension FlaskNav{
         }
         if batched { onCompletion = nil }
         
-        stackOperation(batched:batched, completion: onCompletion ) { [weak self] in
-            self?.stackActive.capture()
+        enqueueNavOperation(type: .Active, batched:batched, completion: onCompletion ) { [weak self] in
+            if !batched { self?.stackActive.capture() }
             action(layer)
         }
         
     }
     
-    func stackTransaction(for layer:String, batched:Bool,  completion:CompletionClosure? = nil, action:@escaping (String,NavStack)->Void){
+    func navTransaction(for layer:String, batched:Bool,  completion:CompletionClosure? = nil, action:@escaping (String,NavStack)->Void){
         
         var onCompletion:CompletionClosure? = { completed in
             let stack = self.stack(forLayer: layer)
@@ -48,7 +48,7 @@ extension FlaskNav{
         
         if batched { onCompletion = nil }
         
-        stackOperation(batched:batched, completion: onCompletion ) {
+        enqueueNavOperation(type: .Navigation, batched:batched, completion: onCompletion ) {
             let stack = self.stack(forLayer: layer)
             
             if !batched { stack.capture() }

@@ -9,21 +9,24 @@
 import UIKit
 import Flask
 
+enum NavStackOperationType : String {
+    case Active, Navigation, ActiveAndNavigation
+}
+
 extension FlaskNav{
 
-    
-    public func stackOperation(batched:Bool, completion:CompletionClosure?, action:@escaping ()->Void){
+    func enqueueNavOperation(type: NavStackOperationType, batched:Bool, completion:CompletionClosure?, action:@escaping ()->Void){
 
         if batched {
             assert(completion == nil, "Completion is not supported in batch transactions")
             action()
         } else{
             let completionClosure = completion ?? { _ in }
-            stackOperationDispatch(action,completion: completionClosure)
+            enqueueNavOperationNow(type: type, action: action, completion: completionClosure)
         }
     }
     
-    func stackOperationDispatch(_ closure:@escaping ()->Void, completion:@escaping (Bool)->Void){
+    func enqueueNavOperationNow(type: NavStackOperationType, action closure:@escaping ()->Void, completion:@escaping (Bool)->Void){
         
         
         let action:(FlaskOperation)->Void = { [weak self] operation in
@@ -32,7 +35,7 @@ extension FlaskNav{
             NavStack.lock()
             closure()
             NavStack.unlock()
-            self?.dispatchStackState(with: operation){ (completed) in
+            self?.dispatchFlux(type: type, with: operation){ (completed) in
                 
                 if completed == false {
                     print("dispatch canceled")
@@ -57,7 +60,7 @@ extension FlaskNav{
             if let this = self {
                 closure(this.compositionBatch!)
             }
-            self?.dispatchStackState(with: operation){ (completed) in
+            self?.dispatchFlux(type: .ActiveAndNavigation, with: operation){ (completed) in
                 NavStack.unlock()
             }
         }
