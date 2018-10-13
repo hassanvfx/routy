@@ -36,7 +36,20 @@ extension FlaskNav{
     func contextInitIntent(controller:UIViewController, context:NavContext){
         
         if let instanceAsyncSetup = controller as? FlaskNavSetup {
+            
+            let nav = navInstance(forLayer: context.layer)
+            
+            if let info = context.info as? NavInfo {
+                info.onWillInit?(nav, controller)
+                info.onWillInit = nil
+            }
+            
             instanceAsyncSetup.navContextInit(withContext: context)
+            
+            if let info = context.info as? NavInfo {
+                info.onDidInit?(nav, controller)
+                info.onDidInit = nil
+            }
         }
     }
     
@@ -44,10 +57,24 @@ extension FlaskNav{
         
         if let instanceAsyncSetup = controller as? FlaskNavSetup {
             
+            let nav = navInstance(forLayer: context.layer)
+            
             DispatchQueue.main.async {
+                
+                if let info = context.info as? NavInfo {
+                    info.onWillSetupEmptyState?(nav, controller)
+                    info.onWillSetupEmptyState = nil
+                }
+
                 instanceAsyncSetup.setupEmptyState()
+                
+                if let info = context.info as? NavInfo {
+                    info.onDidSetupEmptyState?(nav, controller)
+                    info.onDidSetupEmptyState = nil
+                }
             }
         }
+    
     }
     
     
@@ -62,14 +89,30 @@ extension FlaskNav{
                 }
             }
             
+            let nav = navInstance(forLayer: context.layer)
+            
             self.contentQueue.addOperation { [weak self] in
                 
                 assert(self?.waitingForContentCompletion == false, "Ensure to call the `setupContent(...` `completionHandler()`" )
                 self?.waitingForContentCompletion = true
                
                 navOperation.lockNavigation()
-                DispatchQueue.main.async { 
+      
+                DispatchQueue.main.async {
+                   
+                    if let info = context.info as? NavInfo {
+                        info.onWillSetupContent?(nav, controller)
+                        info.onWillSetupContent = nil
+                    }
+                    
                     instanceAsyncSetup.setupContent(with: completion )
+                    
+                    if let info = context.info as? NavInfo {
+                        info.onDidSetupContent?(nav, controller)
+                        info.onDidSetupContent = nil
+                        info.onDidSetup?(nav, controller)
+                        info.onDidSetup = nil
+                    }
                 }
             }
         }

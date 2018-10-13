@@ -12,14 +12,14 @@ import Flask
 
 extension FlaskNav: NavStackAPI{
 
-    func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:Any? = nil, animator: NavAnimatorClass? = nil, presentation: NavPresentationClass? = nil, callback: NavContextCallback?, completion:CompletionClosure? = nil) {
+    func push(layer:String, batched:Bool = false, controller:String , resourceId:String?, info:Any? = nil, animator: NavAnimatorClass? = nil, presentation: NavPresentationClass? = nil, completion:CompletionClosure? = nil) {
 
         activeLayerTransaction(for: layer,batched: batched){ [weak self] (layer) in
             self?.stackActive.set(layer:layer)
         }
         
         navTransaction(for: layer,batched: batched, completion:completion){ (layer,stack) in
-            let context = NavContext.manager.context(layer:layer, navigator:.Push, controller: controller, resourceId: resourceId, info: info, animator:animator, callback)
+            let context = NavContext.manager.context(layer:layer, navigator:.Push, controller: controller, resourceId: resourceId, info: info, animator:animator)
             stack.push(context: context)
         }
     }

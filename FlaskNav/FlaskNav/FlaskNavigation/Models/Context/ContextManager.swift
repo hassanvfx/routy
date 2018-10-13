@@ -51,10 +51,10 @@ extension NavContextManager{
         return aContext
     }
     
-    public func context(layer:String, navigator:NavigatorType, controller:String, resourceId:String?,  info:Any?, animator:NavAnimatorClass? = nil, _ callback:NavContextCallback? = nil) -> NavContext{
+    public func context(layer:String, navigator:NavigatorType, controller:String, resourceId:String?,  info:Any?, animator:NavAnimatorClass? = nil) -> NavContext{
         
         let contextId = self.nextId()
-        let context = NavContext(id: contextId, layer:layer, navigator:navigator, controller: controller, resourceId: resourceId, info: info, animator: animator, callback)
+        let context = NavContext(id: contextId, layer:layer, navigator:navigator, controller: controller, resourceId: resourceId, info: info, animator: animator)
         register(context: context)
         
         return context

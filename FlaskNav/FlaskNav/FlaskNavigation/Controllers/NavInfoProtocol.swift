@@ -22,14 +22,12 @@ protocol FlaskNavViewControllerProtocol: FlaskNavSetup {
     associatedtype NavInfoType:Any
     var navInfo:NavInfoType? {get set}
     var navContext:NavContext?{get set}
-    var navCallback:NavContextCallback?{get set}
 }
 
 extension FlaskNavViewControllerProtocol{
     func navContextInit(withContext context:NavContext){
-        self.navContext = context
-        self.navInfo = context.info as? NavInfoType
-        self.navCallback = context.callback
+        navContext = context
+        navInfo = context.info as? NavInfoType
     }
     func setupEmptyState(){}
 }
