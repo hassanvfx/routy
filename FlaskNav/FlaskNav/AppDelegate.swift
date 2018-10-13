@@ -19,16 +19,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-        testModalDismiss()
-        testShowAnimators()
-        testMixedAnimators()
-        testCompletion()
-        testAsyncStack()
-        testNativeSync()
-        testRoot()
-        testAnimation()
-        testTransaction()
-        testModal()
+//        testModalDismiss()
+//        testShowAnimators()
+//        testMixedAnimators()
+//        testCompletion()
+//        testAsyncStack()
+//        testNativeSync()
+//        testRoot()
+//        testAnimation()
+//        testTransaction()
+//        testModal()
         testError()
         return true
     }
@@ -186,8 +186,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func testError(){
         
-        Services.router.nav.popToRoot(){_ in print("---> line \(#line)")}
-        Services.router.tab(.Friends).show(){_ in print("---> line \(#line)")}
+//        Services.router.nav.popToRoot(){_ in print("---> line \(#line)")}
+//        Services.router.tab(.Friends).show(){_ in print("---> line \(#line)")}
         Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"purple"])){_ in print("---> line \(#line)")}
         
     }

@@ -25,7 +25,7 @@ extension FlaskNav{
         }
         if batched { onCompletion = nil }
         
-        enqueueNavOperation(type: .Active, batched:batched, completion: onCompletion ) { [weak self] in
+        enqueueNavOperation(batched:batched, completion: onCompletion ) { [weak self] in
             if !batched { self?.stackActive.capture() }
             action(layer)
         }
@@ -48,7 +48,7 @@ extension FlaskNav{
         
         if batched { onCompletion = nil }
         
-        enqueueNavOperation(type: .Navigation, batched:batched, completion: onCompletion ) {
+        enqueueNavOperation(batched:batched, completion: onCompletion ) {
             let stack = self.stack(forLayer: layer)
             
             if !batched { stack.capture() }
