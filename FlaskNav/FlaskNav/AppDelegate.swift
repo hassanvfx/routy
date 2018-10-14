@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.setup(withWindow: window!)
 
         testInteractorPush()
-        testInteractorShowTabs()
+//        testInteractorShowTabs()
         testContextCallbacks()
         testModalDismiss()
         testShowAnimators()

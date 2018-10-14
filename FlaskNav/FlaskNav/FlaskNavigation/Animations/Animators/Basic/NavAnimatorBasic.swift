@@ -49,34 +49,42 @@ class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorCl
         ]
     }
     
-    override func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
+    override func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning)->UIViewPropertyAnimator?{
         
         let animationDuration = transitionDuration(using: context)
         
         applyTransformStyle(controller: controller, parent: fromController, in: containerView)
         
-        
-        UIView.animate(withDuration: animationDuration, animations: {
-            
+        let animations = {
             controller.view.transform = CGAffineTransform.identity
             controller.view.alpha = 1
-            
-        }, completion: { finished in
+        }
+        
+        let completion = {  (finished:UIViewAnimatingPosition) in
             context.completeTransition(!context.transitionWasCancelled)
-        })
+        }
+        
+        let viewAnimator = UIViewPropertyAnimator(duration: animationDuration, curve: .linear, animations: animations)
+        viewAnimator.addCompletion(completion)
+        
+        return viewAnimator
     }
-    override func dismiss(controller:UIViewController,to toController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
+    override func dismiss(controller:UIViewController,to toController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning)->UIViewPropertyAnimator?{
         
         let animationDuration = transitionDuration(using: context)
         
-        UIView.animate(withDuration: animationDuration, animations: {
-            
+        let animations = {
             self.applyTransformStyle(controller: controller, parent: toController, in: containerView)
+        }
         
-            
-        }) { finished in
+        let completion = { (finished:UIViewAnimatingPosition) in
             context.completeTransition(!context.transitionWasCancelled)
         }
+        
+        let viewAnimator = UIViewPropertyAnimator(duration: animationDuration, curve: .linear, animations: animations)
+        viewAnimator.addCompletion(completion)
+        
+        return viewAnimator
     }
-
+    
 }

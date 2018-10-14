@@ -111,7 +111,12 @@ extension FlaskNav{
     func setAnimatorFor(context:NavContext, navigator:NavigatorType){
         let controller = context.viewController()!
         let animator = context.animator
-        animator?.navContext = context
+        animator?.onInteractionCanceled = { [weak self] _ in
+            guard let this = self else { return }
+            DispatchQueue.main.async{
+                this.intentToCompleteOperationFor(context: context, completed: false)
+            }
+        }
         
         setPreferredAnimator(animator, for: controller, withNavigator: navigator)
     }
