@@ -15,20 +15,33 @@ public enum NavAnimatorControllerType: String{
     case Navigation,ViewController
 }
 
+public typealias NavAnimatorInteraction = (_ interactor: NavAnimatorClass)->Void
+
 open class NavAnimatorClass: NSObject {
+    
+    static let WAIT_FOR_ANIMATOR_TO_CANCEL = 0.5
+    
     public private(set) var type:NavAnimatorClassType = .Show
     public private(set) var controller:NavAnimatorControllerType = .ViewController
     public var _duration = 0.4
+    var viewAnimator:UIViewPropertyAnimator?
     
-
+    //MARK: INTERACTOR
+    public var onInteractionRequest:NavAnimatorInteraction?
+    var onInteractionCanceled:NavAnimatorInteraction?
+    public weak var navContext:NavContext?
+    public private(set) var _interactionController:UIPercentDrivenInteractiveTransition? = nil
     
-    open func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
+   //MARK: SUBCLASS OVERRIDES
+    open func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning)->UIViewPropertyAnimator?{
         assert(false,"use a subclass instead")
+        return nil
     }
-    open func dismiss(controller:UIViewController,to toController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
+    open func dismiss(controller:UIViewController,to toController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning)->UIViewPropertyAnimator?{
         assert(false,"use a subclass instead")
+        return nil
     }
-    
+ 
     open func _setParams(_ params:NSDictionary){
         assert(false,"use a subclass instead")
     }
@@ -45,30 +58,83 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
         return _duration
     }
     
-    public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+    public func interruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
+        
+        if let existing = viewAnimator {
+            return existing
+        }
         
         guard
             let toController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to),
             let fromController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)
             else{
                 assert(false,"invalid layer")
-                return
         }
-        
         
         let container = transitionContext.containerView
         
         if type == .Show {
             container.addSubview(toController.view)
-            present(controller: toController, from: fromController, in: container, withContext: transitionContext)
+            viewAnimator = present(controller: toController, from: fromController, in: container, withContext: transitionContext)!
         } else if type == .Hide{
             
             if controller == .Navigation {
                 container.insertSubview(toController.view, belowSubview: fromController.view)
             }
             
-            dismiss(controller: fromController, to: toController, in: container, withContext: transitionContext)
+            viewAnimator =  dismiss(controller: fromController, to: toController, in: container, withContext: transitionContext)!
         }
+        
+        return viewAnimator!
+    }
+    
+    
+    public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+    
+        interruptibleAnimator(using: transitionContext).startAnimation()
+    }
+    
+}
+
+extension NavAnimatorClass{
+    
+    public func interactionStart()->UIPercentDrivenInteractiveTransition? {
+        guard let onInteractionRequest = onInteractionRequest else { return nil }
+        
+        _interactionController = UIPercentDrivenInteractiveTransition()
+        onInteractionRequest(self)
+        
+        
+        return _interactionController
+        
+    }
+    
+    public func interactionPercent()->Double{
+        guard let interactor = _interactionController else { return 0 }
+        return Double(interactor.percentComplete)
+    }
+    
+    public func interactionUpdate(percent: Double){
+        _interactionController?.update(CGFloat(percent))
+    }
+    
+    public func interactionCanceled(){
+        autoreleasepool(){
+            _interactionController?.cancel()
+            _interactionController = nil
+            
+            if let onCancel = onInteractionCanceled {
+                DispatchQueue.main.async {
+                    onCancel(self)
+                }
+            }
+        }
+        
+    }
+    
+    public func interactionFinished(){
+        _interactionController?.finish()
+        _interactionController = nil
     }
 }
 

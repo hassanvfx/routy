@@ -19,9 +19,10 @@ public class NavStack {
     }()
     
     public var currentNavigator:NavigatorType = .Root
-    
     public private(set) var stack:[NavContext] = []
     var capturedStack:[NavContext]? = nil
+    var capturedNavigator:NavigatorType? = nil
+    
     let rootContext:NavContext
     let layer:String
     
@@ -121,6 +122,7 @@ extension NavStack {
     public func capture(){
         assert(capturedStack == nil, "stack already captured")
         capturedStack = stack
+        capturedNavigator = currentNavigator
         for context in capturedStack! {
             context.captureState()
         }
@@ -132,6 +134,7 @@ extension NavStack {
             context.rollbackState()
         }
         stack = capturedStack!
+        currentNavigator = capturedNavigator!
         capturedStack = nil
     }
     
@@ -141,6 +144,7 @@ extension NavStack {
             context.commitState()
         }
         capturedStack = nil
+        capturedNavigator = nil
     }
     
 }
