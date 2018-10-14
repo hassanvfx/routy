@@ -28,7 +28,6 @@ open class NavAnimatorClass: NSObject {
     //MARK: INTERACTOR
     public var onInteractionRequest:NavAnimatorInteraction?
     var onInteractionCanceled:NavAnimatorInteraction?
-    public weak var navContext:NavContext?
     public private(set) var _interactionController:UIPercentDrivenInteractiveTransition? = nil
     
    //MARK: SUBCLASS OVERRIDES

@@ -154,14 +154,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
         guard let animator = animationController as? NavAnimatorClass else{ return nil }
         
         guard let interactor =  animator.interactionStart() else { return nil }
-        
-        animator.onInteractionCanceled = { [weak self] _ in
-            guard let this = self else { return }
-            DispatchQueue.main.async{
-                this.intentToCompleteOperationFor(context: animator.navContext, completed: false)
-            }
-        }
-        
+
         return interactor
     }
     
