@@ -109,15 +109,18 @@ extension FlaskNav{
            
         print("pending operations for \(key)  =\(references.count)")
         print("[-] removing operation for \(context.desc())")
-        
-        navOperation.releaseFlux(completed: completed)
-        print("pending operations for queue =\(self.operationQueue.operations.count)")
-        
+
         if let nav = context.viewController()?.navigationController as? FlaskNavigationController {
             nav._isPerformingNavOperation = false
         }
+        if completed {
+            NavContext.manager.releaseOnPop(context: context)
+        } else{
+            NavContext.manager.releaseOnCancel(context: context)
+        }
         
-        NavContext.manager.releaseOnPop(context: context)
+        navOperation.releaseFlux(completed: completed)
+        print("pending operations for queue =\(self.operationQueue.operations.count)")
         
     }
 }

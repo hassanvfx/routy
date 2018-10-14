@@ -15,20 +15,30 @@ public enum NavAnimatorControllerType: String{
     case Navigation,ViewController
 }
 
+public typealias NavAnimatorInteraction = (_ interactor: NavAnimatorClass)->Void
+
 open class NavAnimatorClass: NSObject {
+    
+    static let WAIT_FOR_ANIMATOR_TO_CANCEL = 0.5
+    
     public private(set) var type:NavAnimatorClassType = .Show
     public private(set) var controller:NavAnimatorControllerType = .ViewController
     public var _duration = 0.4
     
-
+    //MARK: INTERACTOR
+    public var onInteractionRequest:NavAnimatorInteraction?
+    var onInteractionCanceled:NavAnimatorInteraction?
+    public weak var navContext:NavContext?
+    public private(set) var _interactionController:UIPercentDrivenInteractiveTransition? = nil
     
+   //MARK: SUBCLASS OVERRIDES
     open func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
         assert(false,"use a subclass instead")
     }
     open func dismiss(controller:UIViewController,to toController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning){
         assert(false,"use a subclass instead")
     }
-    
+ 
     open func _setParams(_ params:NSDictionary){
         assert(false,"use a subclass instead")
     }
@@ -69,6 +79,48 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
             
             dismiss(controller: fromController, to: toController, in: container, withContext: transitionContext)
         }
+    }
+}
+
+extension NavAnimatorClass{
+    
+    public func interactionStart()->UIPercentDrivenInteractiveTransition? {
+        guard let onInteractionRequest = onInteractionRequest else { return nil }
+        
+        _interactionController = UIPercentDrivenInteractiveTransition()
+        onInteractionRequest(self)
+        
+        
+        return _interactionController
+        
+    }
+    
+    public func interactionPercent()->Double{
+        guard let interactor = _interactionController else { return 0 }
+        return Double(interactor.percentComplete)
+    }
+    
+    public func interactionUpdate(percent: Double){
+        _interactionController?.update(CGFloat(percent))
+    }
+    
+    public func interactionCanceled(){
+        autoreleasepool(){
+            _interactionController?.cancel()
+            _interactionController = nil
+            
+            if let onCancel = onInteractionCanceled {
+                DispatchQueue.main.async {
+                    onCancel(self)
+                }
+            }
+        }
+        
+    }
+    
+    public func interactionFinished(){
+        _interactionController?.finish()
+        _interactionController = nil
     }
 }
 
