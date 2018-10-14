@@ -28,7 +28,7 @@ extension FlaskNav {
         print("--> will navigateTo \(context.desc())")
         switch navigator {
         case .Root:
-            setAnimatorFor(context:context,navigator: .Root)
+//            setAnimatorFor(context:context,navigator: .Root)
             navigateRoot(context:context, navOperation: navOperation)
         case .Pop:
             setAnimatorFor(context:context,navigator: .Pop)
@@ -125,6 +125,12 @@ extension FlaskNav{
             guard let this = self else { return }
             DispatchQueue.main.async{
                 this.intentToCompleteOperationFor(context: context, completed: false)
+            }
+        }
+        animator?.onRequestDismiss = { [weak self]  (navGesture, gesture) in
+        
+            if gesture.state == .began {
+                self?.popCurrent(layer: context.layer)
             }
         }
         

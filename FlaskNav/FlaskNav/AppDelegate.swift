@@ -19,21 +19,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-        testInteractorPush()
-        testInteractorShowTabs()
-        testContextCallbacks()
-        testModalDismiss()
-        testShowAnimators()
-        testMixedAnimators()
-        testCompletion()
-        testAsyncStack()
-        testNativeSync()
-        testRoot()
-        testAnimation()
-        testTransaction()
-        testModal()
-        testError()
+        testInteractorPushGesture()
+//        testInteractorPush()
+//        testInteractorShowTabs()
+//        testContextCallbacks()
+//        testModalDismiss()
+//        testShowAnimators()
+//        testMixedAnimators()
+//        testCompletion()
+//        testAsyncStack()
+//        testNativeSync()
+//        testRoot()
+//        testAnimation()
+//        testTransaction()
+//        testModal()
+//        testError()
         return true
+    }
+    
+    func testInteractorPushGesture() {
+        
+        let animator = NavAnimators.SlideTop()
+        let navGesture = NavGestureZoom(completesAt:0.5){ gesture in
+            
+        }
+        
+        animator.dismissGestures = [navGesture]
+        Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:animator){_ in print("---> line \(#line)")}
+        
     }
     
     func testInteractorPush() {

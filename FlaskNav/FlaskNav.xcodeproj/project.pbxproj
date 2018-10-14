@@ -49,6 +49,9 @@
 		26703784217125C1006CE84F /* Nav+Transactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26703783217125C1006CE84F /* Nav+Transactions.swift */; };
 		2670378621712914006CE84F /* NavActiveLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670378521712914006CE84F /* NavActiveLayer.swift */; };
 		2670378821715796006CE84F /* NavAnimatorFade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670378721715796006CE84F /* NavAnimatorFade.swift */; };
+		2670378D21738AC6006CE84F /* NavGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670378C21738AC6006CE84F /* NavGesture.swift */; };
+		2670379021738C2C006CE84F /* NavGestureZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670378F21738C2C006CE84F /* NavGestureZoom.swift */; };
+		2670379221738C36006CE84F /* NavGesturePan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670379121738C36006CE84F /* NavGesturePan.swift */; };
 		268EC7B3217026C30086A2FC /* Nav+Presentators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268EC7B2217026C30086A2FC /* Nav+Presentators.swift */; };
 		269B147A2165AAC400208360 /* Nav+Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269B14792165AAC400208360 /* Nav+Animator.swift */; };
 		26B8070E214DC740008091C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8070D214DC740008091C2 /* AppDelegate.swift */; };
@@ -118,6 +121,9 @@
 		26703783217125C1006CE84F /* Nav+Transactions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Transactions.swift"; sourceTree = "<group>"; };
 		2670378521712914006CE84F /* NavActiveLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavActiveLayer.swift; sourceTree = "<group>"; };
 		2670378721715796006CE84F /* NavAnimatorFade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavAnimatorFade.swift; sourceTree = "<group>"; };
+		2670378C21738AC6006CE84F /* NavGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavGesture.swift; sourceTree = "<group>"; };
+		2670378F21738C2C006CE84F /* NavGestureZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavGestureZoom.swift; sourceTree = "<group>"; };
+		2670379121738C36006CE84F /* NavGesturePan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavGesturePan.swift; sourceTree = "<group>"; };
 		268EC7B2217026C30086A2FC /* Nav+Presentators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Presentators.swift"; sourceTree = "<group>"; };
 		269B14792165AAC400208360 /* Nav+Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Animator.swift"; sourceTree = "<group>"; };
 		26B8070A214DC740008091C2 /* FlaskNav.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlaskNav.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -307,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				2667A6252163FC2800F87A1B /* NavAnimators.swift */,
+				2670378B21738AB0006CE84F /* Gestures */,
 				2667A629216409E600F87A1B /* Animators */,
 				2667A6222163EFE300F87A1B /* Presentation */,
 			);
@@ -349,6 +356,24 @@
 				2616BB6B2155963900A6AEFB /* AsyncViewController.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		2670378B21738AB0006CE84F /* Gestures */ = {
+			isa = PBXGroup;
+			children = (
+				2670378C21738AC6006CE84F /* NavGesture.swift */,
+				2670378E21738C0F006CE84F /* Basic */,
+			);
+			path = Gestures;
+			sourceTree = "<group>";
+		};
+		2670378E21738C0F006CE84F /* Basic */ = {
+			isa = PBXGroup;
+			children = (
+				2670378F21738C2C006CE84F /* NavGestureZoom.swift */,
+				2670379121738C36006CE84F /* NavGesturePan.swift */,
+			);
+			path = Basic;
 			sourceTree = "<group>";
 		};
 		26B80701214DC740008091C2 = {
@@ -637,6 +662,7 @@
 				2667A62B216409FF00F87A1B /* NavAnimatorSlide.swift in Sources */,
 				2616BB792155D65800A6AEFB /* Nav+Config.swift in Sources */,
 				2667A6102162D39300F87A1B /* NavConfig.swift in Sources */,
+				2670379221738C36006CE84F /* NavGesturePan.swift in Sources */,
 				263B10CA2159C9BC00E6E5C4 /* Nav+Navigators.swift in Sources */,
 				26703784217125C1006CE84F /* Nav+Transactions.swift in Sources */,
 				2667A6242163F18D00F87A1B /* NavAnimatorClass.swift in Sources */,
@@ -648,6 +674,7 @@
 				263B10C42159C7D200E6E5C4 /* Interface.swift in Sources */,
 				2616BB752155A1F000A6AEFB /* Nav+Operations.swift in Sources */,
 				2667A63221641C0900F87A1B /* NavSerializer.swift in Sources */,
+				2670379021738C2C006CE84F /* NavGestureZoom.swift in Sources */,
 				2616BB6E2155A0D600A6AEFB /* Nav+Constructor.swift in Sources */,
 				2667A61F2163E9C800F87A1B /* NavDebug.swift in Sources */,
 				2616BB8B21573B4C00A6AEFB /* NavStack.swift in Sources */,
@@ -666,6 +693,7 @@
 				2667A608216051FA00F87A1B /* ContextManager.swift in Sources */,
 				2670378821715796006CE84F /* NavAnimatorFade.swift in Sources */,
 				26B80733214DCE82008091C2 /* MyNav.swift in Sources */,
+				2670378D21738AC6006CE84F /* NavGesture.swift in Sources */,
 				262599DE2159D000003144ED /* Nav+Dispatcher.swift in Sources */,
 				2667A62D21640BFD00F87A1B /* NavAnimatorZoom.swift in Sources */,
 				266CDECB215308DA003B0F11 /* AnyCodable.swift in Sources */,
