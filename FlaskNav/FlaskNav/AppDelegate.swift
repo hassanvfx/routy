@@ -20,20 +20,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.setup(withWindow: window!)
 
         testInteractorPushGesture()
-//        testInteractorPush()
-//        testInteractorShowTabs()
-//        testContextCallbacks()
-//        testModalDismiss()
-//        testShowAnimators()
-//        testMixedAnimators()
-//        testCompletion()
-//        testAsyncStack()
-//        testNativeSync()
-//        testRoot()
-//        testAnimation()
-//        testTransaction()
-//        testModal()
-//        testError()
+        testInteractorPush()
+        testInteractorShowTabs()
+        testContextCallbacks()
+        testModalDismiss()
+        testShowAnimators()
+        testMixedAnimators()
+        testCompletion()
+        testAsyncStack()
+        testNativeSync()
+        testRoot()
+        testAnimation()
+        testTransaction()
+        testModal()
+        testError()
         return true
     }
     
@@ -44,7 +44,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         animator.dismissGestures = [navGesture]
         
         animator.onHideCompletion = { completed in
-            Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"white"])){_ in print("---> line \(#line)")}
+            print("onHideCompletion")
+            Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"white"])){_ in
+                print("---> line \(#line)")
+                
+            }
         }
         
         Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:animator){_ in print("---> line \(#line)")}

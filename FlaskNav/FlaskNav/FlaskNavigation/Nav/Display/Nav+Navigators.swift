@@ -124,7 +124,7 @@ extension FlaskNav{
         animator?.onInteractionCanceled = { [weak self] _ in
             guard let this = self else { return }
             DispatchQueue.main.async{
-                this.intentToCompleteOperationFor(context: context, completed: false)
+                this.intentToCompleteOperationFor(context: context, completed: false, intentRoot: navigator == .Push)
             }
         }
         animator?.onRequestDismiss = { [weak self]  (navGesture, gesture) in
