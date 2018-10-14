@@ -85,6 +85,8 @@ extension NavContextManager{
     }
     
     public func releaseOnCancel(context:NavContext){
+         if(context.navigator == .Root){ return }
+        
         context.setViewControllerWeak(true)
         contexts[context.contextId] = nil
     }
