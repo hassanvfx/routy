@@ -51,6 +51,14 @@ open class NavAnimatorClass: NSObject {
 
 extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
     
+    public func animationEnded(_ transitionCompleted: Bool) {
+        
+        if !transitionCompleted {
+            onInteractionCanceled?(self)
+        }
+            
+    }
+    
     public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return _duration
     }
@@ -109,11 +117,7 @@ extension NavAnimatorClass{
             _interactionController?.cancel()
             _interactionController = nil
             
-            if let onCancel = onInteractionCanceled {
-                DispatchQueue.main.async {
-                    onCancel(self)
-                }
-            }
+
         }
         
     }
