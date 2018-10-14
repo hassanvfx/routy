@@ -313,8 +313,8 @@
 			isa = PBXGroup;
 			children = (
 				2667A6252163FC2800F87A1B /* NavAnimators.swift */,
-				2670378B21738AB0006CE84F /* Gestures */,
 				2667A629216409E600F87A1B /* Animators */,
+				2670378B21738AB0006CE84F /* Gestures */,
 				2667A6222163EFE300F87A1B /* Presentation */,
 			);
 			path = Animations;

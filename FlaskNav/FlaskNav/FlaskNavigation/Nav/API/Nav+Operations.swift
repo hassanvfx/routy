@@ -97,6 +97,12 @@ extension FlaskNav{
         var references = operationsFor(key:key)
         
         guard let navOperation = references.first else{
+            if context.navigator == .Root { return }
+            
+            let nav = navInstance(forLayer: context.layer)
+            let root = nav.rootView()
+            let rootContext = NavContext.manager.context(fromViewController: root)
+            intentToCompleteOperationFor(context:rootContext, completed: completed)
             return
         }
         

@@ -17,6 +17,7 @@ public enum NavAnimatorControllerType: String{
 
 public typealias NavAnimatorInteraction = (_ interactor: NavAnimatorClass)->Void
 public typealias NavGestureChange = (_ navGesture: NavGestureAbstract, _ gesture:UIGestureRecognizer)->Void
+public typealias NavAnimatorCompletion = (_ completed: Bool)->Void
 
 open class NavAnimatorClass: NSObject {
     
@@ -26,6 +27,8 @@ open class NavAnimatorClass: NSObject {
     public private(set) var controller:NavAnimatorControllerType = .ViewController
     public var _duration = 0.4
     var viewAnimator:UIViewPropertyAnimator?
+    public var onHideCompletion:NavAnimatorCompletion?
+    public var onShowCompletion:NavAnimatorCompletion?
     
     //MARK: INTERACTOR
     public var onInteractionRequest:NavAnimatorInteraction?
@@ -62,9 +65,27 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
         
         viewAnimator = nil
         
-        if !transitionCompleted {
+        if wasCanceled {
             onInteractionCanceled?(self)
         }
+        
+        if type == .Show {
+            if let onShow = onShowCompletion {
+                DispatchQueue.main.async {
+                    onShow(transitionCompleted)
+                }
+            }
+            onShowCompletion = nil
+
+        } else if type == .Hide {
+            if let onHide = onHideCompletion {
+                DispatchQueue.main.async {
+                    onHide(transitionCompleted)
+                }
+            }
+            onHideCompletion = nil
+        }
+       
         
         removeActiveDismissGestures()
             

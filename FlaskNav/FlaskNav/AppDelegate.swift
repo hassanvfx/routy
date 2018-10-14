@@ -40,12 +40,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func testInteractorPushGesture() {
         
         let animator = NavAnimators.SlideTop()
-        let navGesture = NavGestureZoom(completesAt:0.5){ gesture in
-            
+        let navGesture = NavGestureZoom(completesAt:0.5){ gesture in }
+        animator.dismissGestures = [navGesture]
+        
+        animator.onHideCompletion = { completed in
+            Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"white"])){_ in print("---> line \(#line)")}
         }
         
-        animator.dismissGestures = [navGesture]
         Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:animator){_ in print("---> line \(#line)")}
+        
+        
         
     }
     

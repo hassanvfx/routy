@@ -84,7 +84,6 @@ public class NavGesture<T:UIGestureRecognizer>: NavGestureAbstract {
     }
     
     open func onGesturePossible() {}
-    open func onGestureFailed() {}
     
     open func onGestureBegan() {
         self.animator?.dissmisGestureStarted(self,gesture: gesture!)
@@ -104,6 +103,11 @@ public class NavGesture<T:UIGestureRecognizer>: NavGestureAbstract {
     open func onGestureCanceled() {
         animator?.interactionCanceled()
     }
+    
+    open func onGestureFailed() {
+        animator?.interactionCanceled()
+    }
+    
     
     open func progress()->Double {
         assert(false,"must be overriden by subclass")
