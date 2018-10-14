@@ -17,23 +17,23 @@ extension FlaskNav {
         
         if NavLayer.IsNav(substance.state.layerActive){
             performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
-                self?.displayNavOperation {
-                    completion()
+                self?.displayNavOperation { completed in
+                    completion(completed)
                 }
             })
             
         } else if NavLayer.IsModal(substance.state.layerActive){
             performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
                 self?.displayModalOperation {
-                    completion()
+                    completion(true)
                 }
             })
         } else if  NavLayer.IsTab(substance.state.layerActive){
             let index = NavLayer.TabIndex(substance.state.layerActive)
             
             performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
-                self?.displayTabOperation(index) {
-                    completion()
+                self?.displayTabOperation(index) { completed in
+                    completion(completed)
                 }
             })
             

@@ -30,6 +30,7 @@ open class NavAnimatorClass: NSObject {
     public var onInteractionRequest:NavAnimatorInteraction?
     var onInteractionCanceled:NavAnimatorInteraction?
     public private(set) var _interactionController:UIPercentDrivenInteractiveTransition? = nil
+    public private(set) var wasCanceled:Bool = false
     
    //MARK: SUBCLASS OVERRIDES
     open func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning)->UIViewPropertyAnimator?{
@@ -118,12 +119,9 @@ extension NavAnimatorClass{
     }
     
     public func interactionCanceled(){
-        autoreleasepool(){
-            _interactionController?.cancel()
-            _interactionController = nil
-            
-
-        }
+        wasCanceled = true
+        _interactionController?.cancel()
+        _interactionController = nil
         
     }
     

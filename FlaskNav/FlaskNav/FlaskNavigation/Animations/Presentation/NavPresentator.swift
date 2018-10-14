@@ -40,7 +40,8 @@ class NavPresentator:NSObject {
     
     func dismiss(_ completion:@escaping ()->Void = {}){
         if presenting.presentedViewController == nil {
-            assert(false,"nothing to dismiss!")
+            //assert(false,"nothing to dismiss!")
+            completion()
             return;
         }
         
