@@ -42,8 +42,13 @@ extension FlaskNav{
             ]
         let lock = Flask.lock(withMixer: NavMixers.LayerActive, payload: payload, autorelease: true)
         lock.onRelease = { (payload) in
-            let info = (payload as? Bool) ?? true
-            completion(info)
+            
+            if let completed = payload as? Bool {
+                 completion(completed)
+                return
+            }
+            completion(true)
+           
         }
         print("dispatch applyActiveLayer: \(payload)")
     }
@@ -64,8 +69,11 @@ extension FlaskNav{
         
         let lock = Flask.lock(withMixer: NavMixers.Layers, payload: payload, autorelease: true )
         lock.onRelease = { (payload) in
-            let info = (payload as? Bool) ?? true
-            completion(info)
+            if let completed = payload as? Bool {
+                completion(completed)
+                return
+            }
+            completion(true)
         }
         
         print("dispatch applyCurrentLayers: \(payload)")

@@ -53,6 +53,7 @@ extension FlaskNav {
         }else {
             animators[key] = preferredAnimator()
         }
+        
     }
     
     func takeActiveLayerAnimator(for layer:String, withType type:NavAnimatorClassType)->NavAnimatorClass?{

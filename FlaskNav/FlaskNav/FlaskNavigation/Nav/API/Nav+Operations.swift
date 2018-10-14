@@ -22,12 +22,12 @@ extension FlaskNav{
         return "\(Unmanaged.passUnretained(key as AnyObject).toOpaque())"
     }
     
-    func performOperationFor(navOperation:FlaskNavOperation, withCompletion closure:@escaping (@escaping ()->Void)->Void) {
+    func performOperationFor(navOperation:FlaskNavOperation, withCompletion closure:@escaping (@escaping (Bool)->Void)->Void) {
        
-        let completed = {
+        let completed = { (completion:Bool) in
             print("[-] removing PRES operation for key \(String(describing: navOperation.name)) ")
             
-            navOperation.releaseFlux()
+            navOperation.releaseFlux(completed: completion)
         }
         
         let debugClosure:(FlaskOperation)->Void = { (op) in

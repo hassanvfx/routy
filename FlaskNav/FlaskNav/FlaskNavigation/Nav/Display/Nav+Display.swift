@@ -11,7 +11,7 @@ import UIKit
 extension FlaskNav{
 
     
-    public func displayTabOperation(_ index:Int, completion:@escaping ()->Void){
+    public func displayTabOperation(_ index:Int, completion:@escaping (Bool)->Void){
         DispatchQueue.main.async {
             self.tabController?.selectedIndex = index
         }
@@ -22,7 +22,7 @@ extension FlaskNav{
         }
         
     }
-    public func displayNavOperation(completion:@escaping ()->Void){
+    public func displayNavOperation(completion:@escaping (Bool)->Void){
         dismissModalOperation {
             DispatchQueue.main.async { [weak self] in
                 self?.dismissTab(completion: completion)

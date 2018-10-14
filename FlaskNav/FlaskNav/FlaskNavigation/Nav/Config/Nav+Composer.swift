@@ -53,10 +53,10 @@ extension FlaskNav{
     }
     
  
-    func presentTab(index:Int, presentation:NavPresentationClass?=nil, completion:@escaping ()->Void){
+    func presentTab(index:Int, presentation:NavPresentationClass?=nil, completion:@escaping (Bool)->Void){
 
         if isTabPresented() {
-            completion()
+            completion(true)
             return
         }
         
@@ -65,27 +65,35 @@ extension FlaskNav{
         let transitionAnimator = takeActiveLayerAnimator(for: NavLayer.TabAny(), withType: .Show)
         let defaultAnimator = NavAnimators.ZoomIn() //TODO: move this to config
         let animator = transitionAnimator ?? defaultAnimator
-  
+        
+        let myCompletion = {
+            completion(!animator.wasCanceled)
+        }
+        
         tabPresentator = NavPresentator(presentViewController: tab, from: top, animator: animator, presentation: presentation)
-        tabPresentator?.present(completion)
+        tabPresentator?.present(myCompletion)
         
     }
     
-    func dismissTab(completion:@escaping ()->Void = {}){
+    func dismissTab(completion:@escaping (Bool)->Void = {_ in}){
         if !isTabPresented() {
-            completion()
+            completion(true)
             return
-        }
-        
-        let onDismiss = { [weak self] in
-            self?.tabPresentator = nil
-            completion()
         }
         
         let transitionAnimator = takeActiveLayerAnimator(for: NavLayer.TabAny(), withType: .Hide)
         let defaultAnimator = NavAnimators.ZoomIn() //TODO: move this to config
         let animator = transitionAnimator ?? defaultAnimator
 
+        
+        let onDismiss = { [weak self] in
+            if !animator.wasCanceled {
+                self?.tabPresentator = nil
+            }
+            completion(!animator.wasCanceled)
+        }
+        
+       
         tabPresentator?.animator = animator
         tabPresentator?.dismiss(onDismiss)
     }

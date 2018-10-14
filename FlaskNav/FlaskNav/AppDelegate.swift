@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.setup(withWindow: window!)
 
         testInteractorPush()
-//        testInteractorShowTabs()
+        testInteractorShowTabs()
         testContextCallbacks()
         testModalDismiss()
         testShowAnimators()
@@ -51,27 +51,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:animator){_ in print("---> line \(#line)")}
         Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"white"])){_ in print("---> line \(#line)")}
     
+        Services.router.nav.popCurrent(animator:animator)
     }
     
     func testInteractorShowTabs() {
         
         let animator = NavAnimators.SlideTop()
         animator.onInteractionRequest = { interactor  in
-            
-//            interactor._interactionController.
-//            interactor.interactionUpdate(percent: 0.25)
-//             interactor.interactionCanceled()
-            
-            //            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-            //                interactor.interactionUpdate(percent: 0.5)
-            //            })
-            //            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-            //                interactor.interactionCanceled()
-            //            })
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                interactor.interactionUpdate(percent: 0.5)
+            })
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                interactor.interactionCanceled()
+            })
             
         }
         
-        Services.router.tab(.Home).show(animator: animator)
+        Services.router.tab(.Home).show()
+//        Services.router.tab(.Home).show() //this causes error
+        Services.router.tabAny.hide(animator: animator)
+        Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"white"])){_ in print("---> line \(#line)")}
+        
     }
     
     func testContextCallbacks(){
