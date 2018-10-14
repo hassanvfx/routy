@@ -56,6 +56,16 @@ extension FlaskNav {
                 assert(false,"controller unexpectedly dellocated")
                 return
             }
+            
+            let nav = self?.navInstance(forLayer: context.layer)
+            
+            if (nav?.viewControllers.contains(controller))! {
+                DispatchQueue.main.async {
+                    self?.intentToCompleteOperationFor(context: context)
+                }
+                return
+            }
+            
             context.navigator = .Push
             self?.contextInitIntent(controller: controller, context: context)
             self?.setupEmptyStateIntent(controller: controller, context: context)

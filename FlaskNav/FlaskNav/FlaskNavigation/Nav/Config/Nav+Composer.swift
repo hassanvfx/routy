@@ -87,7 +87,9 @@ extension FlaskNav{
 
         
         let onDismiss = { [weak self] in
-            self?.tabPresentator = nil
+            if !animator.wasCanceled {
+                self?.tabPresentator = nil
+            }
             completion(!animator.wasCanceled)
         }
         
