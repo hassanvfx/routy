@@ -46,13 +46,7 @@ extension FlaskNav {
     
 }
 extension FlaskNav{
-    
-    func tabAnimatorParameter()->String{
-        let animator = NavAnimatorZoom(style: .zoomIn, intensity: 0.2)
-        return animator.asParameter()
-    }
-    
- 
+
     func presentTab(index:Int, presentation:NavPresentationClass?=nil, completion:@escaping (Bool)->Void){
 
         if isTabPresented() {
