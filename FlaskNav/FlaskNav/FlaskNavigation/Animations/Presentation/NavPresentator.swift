@@ -75,14 +75,7 @@ extension NavPresentator:UIViewControllerTransitioningDelegate{
         guard let animator = animator as? NavAnimatorClass else{ return nil }
         
         guard let interactor =  animator.interactionStart() else { return nil }
-        
-//        animator.onInteractionCompleted = { [weak self] _ in
-//            guard let this = self else { return }
-//            DispatchQueue.main.asyncAfter(deadline: .now() + NavAnimatorClass.WAIT_FOR_ANIMATOR_TO_CANCEL){
-//                this.intentToCompleteOperationFor(context: animator.navContext, completed: false)
-//            }
-//        }
-        
+
         return interactor
     }
     
@@ -92,14 +85,7 @@ extension NavPresentator:UIViewControllerTransitioningDelegate{
         guard let animator = animator as? NavAnimatorClass else{ return nil }
         
         guard let interactor =  animator.interactionStart() else { return nil }
-        
-//        animator.onInteractionCompleted = { [weak self] _ in
-//            guard let this = self else { return }
-//            DispatchQueue.main.asyncAfter(deadline: .now() + NavAnimatorClass.WAIT_FOR_ANIMATOR_TO_CANCEL){
-//                                this.intentToCompleteOperationFor(context: animator.navContext, completed: false)
-//            }
-//        }
-        
+
         return interactor
     }
 
