@@ -32,6 +32,8 @@ public class NavGesture<T:UIGestureRecognizer>: NavGestureAbstract {
     
     override public func addTo(view aView:UIView, animator:NavAnimatorClass){
         
+        if self.view == aView { return }
+        
         removeFromView()
         
         let aGesture:T = newGesture(with: #selector(onGestureSelector(_:)))

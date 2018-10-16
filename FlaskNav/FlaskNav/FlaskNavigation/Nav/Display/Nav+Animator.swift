@@ -29,13 +29,18 @@ extension FlaskNav{
         }
     }
     
-    func takeAnimator(for controller:UIViewController, withNavigator navigator:NavigatorType)->NavAnimatorClass?{
+    func getAnimator(for controller:UIViewController, withNavigator navigator:NavigatorType)->NavAnimatorClass?{
         let key = animatorKey(for:controller, withNavigator: navigator)
         guard let animator = animators[key] else{
             return nil
         }
-        animators[key] = nil
+//        animators[key] = nil
         return animator
+    }
+    
+    func removePreferredAnimator(for controller:UIViewController, withNavigator navigator:NavigatorType){
+        let key = animatorKey(for:controller, withNavigator: navigator)
+        animators[key] = nil
     }
 
 }

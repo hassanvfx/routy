@@ -32,7 +32,7 @@ open class NavAnimatorClass: NSObject {
     
     //MARK: INTERACTOR
     public var onInteractionRequest:NavAnimatorInteraction?
-    var onInteractionCanceled:NavAnimatorInteraction?
+    var onInteractionCompleted:(Bool)->Void = {_ in}
     public private(set) var _interactionController:UIPercentDrivenInteractiveTransition? = nil
     public private(set) var wasCanceled:Bool = false
     
@@ -62,13 +62,17 @@ open class NavAnimatorClass: NSObject {
 extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
     
     public func animationEnded(_ transitionCompleted: Bool) {
-        
+ 
         viewAnimator = nil
-        
-        if wasCanceled {
-            onInteractionCanceled?(self)
+        completionCallback(transitionCompleted)
+        onInteractionCompleted( (!wasCanceled) )
+      
+        if transitionCompleted && type == .Hide {
+            removeActiveDismissGestures()
         }
-        
+    }
+    
+    func completionCallback(_ transitionCompleted: Bool) {
         if type == .Show {
             if let onShow = onShowCompletion {
                 DispatchQueue.main.async {
@@ -76,7 +80,7 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
                 }
             }
             onShowCompletion = nil
-
+            
         } else if type == .Hide {
             if let onHide = onHideCompletion {
                 DispatchQueue.main.async {
@@ -85,10 +89,6 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
             }
             onHideCompletion = nil
         }
-       
-        
-        removeActiveDismissGestures()
-            
     }
     
     public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -131,7 +131,7 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
 extension NavAnimatorClass{
     
     public func interactionStart()->UIPercentDrivenInteractiveTransition? {
-        guard  (onInteractionRequest != nil) || !activeDismissGestures.isEmpty else { return nil }
+        guard  onInteractionRequest != nil else { return nil }
         
         _interactionController = UIPercentDrivenInteractiveTransition()
         onInteractionRequest?(self)
@@ -167,13 +167,24 @@ extension NavAnimatorClass{
 
 
 extension NavAnimatorClass{
- 
-    func dissmisGestureStarted(_ navGesture:NavGestureAbstract, gesture:UIGestureRecognizer){
     
+    func dissmisGestureStarted(_ navGesture:NavGestureAbstract, gesture:UIGestureRecognizer){
+        enableInteraction()
+        startInteractiveDismiss(navGesture, gesture: gesture)
+    }
+    
+    func enableInteraction() {
+         onInteractionRequest = { _ in }
+    }
+    
+    func startInteractiveDismiss(_ navGesture:NavGestureAbstract, gesture:UIGestureRecognizer){
         onRequestDismiss?(navGesture, gesture)
     }
     
+    
     func addGesturesTo(view:UIView){
+        
+        
         activeDismissGestures = []
         for navGesture in dismissGestures {
             activeDismissGestures.append(navGesture)
