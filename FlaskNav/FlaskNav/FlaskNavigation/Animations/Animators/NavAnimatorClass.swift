@@ -16,6 +16,8 @@ public enum NavAnimatorControllerType: String{
 }
 
 public typealias NavAnimatorInteraction = (_ interactor: NavAnimatorClass)->Void
+public typealias NavGestureChange = (_ navGesture: NavGestureAbstract, _ gesture:UIGestureRecognizer)->Void
+public typealias NavAnimatorCompletion = (_ completed: Bool)->Void
 
 open class NavAnimatorClass: NSObject {
     
@@ -25,12 +27,19 @@ open class NavAnimatorClass: NSObject {
     public private(set) var controller:NavAnimatorControllerType = .ViewController
     public var _duration = 0.4
     var viewAnimator:UIViewPropertyAnimator?
+    public var onHideCompletion:NavAnimatorCompletion?
+    public var onShowCompletion:NavAnimatorCompletion?
     
     //MARK: INTERACTOR
     public var onInteractionRequest:NavAnimatorInteraction?
-    var onInteractionCanceled:NavAnimatorInteraction?
+    var onInteractionCompleted:(Bool)->Void = {_ in}
     public private(set) var _interactionController:UIPercentDrivenInteractiveTransition? = nil
     public private(set) var wasCanceled:Bool = false
+    
+    //MARK: GESTURES
+    public var dismissGestures:[NavGestureAbstract] = []
+    public private(set) var activeDismissGestures:[NavGestureAbstract] = []
+    public var onRequestDismiss:NavGestureChange?
     
    //MARK: SUBCLASS OVERRIDES
     open func present(controller:UIViewController,from fromController:UIViewController,in containerView:UIView, withContext context:UIViewControllerContextTransitioning)->UIViewPropertyAnimator?{
@@ -53,13 +62,33 @@ open class NavAnimatorClass: NSObject {
 extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
     
     public func animationEnded(_ transitionCompleted: Bool) {
-        
+ 
         viewAnimator = nil
-        
-        if !transitionCompleted {
-            onInteractionCanceled?(self)
+        completionCallback(transitionCompleted)
+        onInteractionCompleted( (!wasCanceled) )
+      
+        if transitionCompleted && type == .Hide {
+            removeActiveDismissGestures()
         }
+    }
+    
+    func completionCallback(_ transitionCompleted: Bool) {
+        if type == .Show {
+            if let onShow = onShowCompletion {
+                DispatchQueue.main.async {
+                    onShow(transitionCompleted)
+                }
+            }
+            onShowCompletion = nil
             
+        } else if type == .Hide {
+            if let onHide = onHideCompletion {
+                DispatchQueue.main.async {
+                    onHide(transitionCompleted)
+                }
+            }
+            onHideCompletion = nil
+        }
     }
     
     public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -78,8 +107,11 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
         
         if type == .Show {
             container.addSubview(toController.view)
+            addGesturesTo(view: toController.view)
+            
             viewAnimator = present(controller: toController, from: fromController, in: container, withContext: transitionContext)
         } else if type == .Hide{
+            
             
             if controller == .Navigation {
                 container.insertSubview(toController.view, belowSubview: fromController.view)
@@ -99,11 +131,10 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
 extension NavAnimatorClass{
     
     public func interactionStart()->UIPercentDrivenInteractiveTransition? {
-        guard let onInteractionRequest = onInteractionRequest else { return nil }
+        guard  onInteractionRequest != nil else { return nil }
         
         _interactionController = UIPercentDrivenInteractiveTransition()
-        onInteractionRequest(self)
-        
+        onInteractionRequest?(self)
         
         return _interactionController
         
@@ -115,7 +146,10 @@ extension NavAnimatorClass{
     }
     
     public func interactionUpdate(percent: Double){
-        _interactionController?.update(CGFloat(percent))
+        DispatchQueue.main.async {
+            self._interactionController?.update(CGFloat(percent))
+        }
+        
     }
     
     public func interactionCanceled(){
@@ -128,6 +162,46 @@ extension NavAnimatorClass{
     public func interactionFinished(){
         _interactionController?.finish()
         _interactionController = nil
+    }
+}
+
+
+extension NavAnimatorClass{
+    
+    func dissmisGestureStarted(_ navGesture:NavGestureAbstract, gesture:UIGestureRecognizer){
+        enableInteraction()
+        startInteractiveDismiss(navGesture, gesture: gesture)
+    }
+    
+    func enableInteraction() {
+         onInteractionRequest = { _ in }
+    }
+    
+    func startInteractiveDismiss(_ navGesture:NavGestureAbstract, gesture:UIGestureRecognizer){
+        onRequestDismiss?(navGesture, gesture)
+    }
+    
+    
+    func addGesturesTo(view:UIView){
+        
+        
+        activeDismissGestures = []
+        for navGesture in dismissGestures {
+            activeDismissGestures.append(navGesture)
+            navGesture.addTo(view: view, animator:self)
+            
+        }
+        dismissGestures = []
+    }
+    
+    func removeActiveDismissGestures(){
+        if self.type != .Hide { return }
+        
+        for navGesture in activeDismissGestures {
+            navGesture.removeFromView()
+        }
+        activeDismissGestures = []
+    
     }
 }
 

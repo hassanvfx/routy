@@ -19,6 +19,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
+        testInteractorPushGesture()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4){
+            self.nonInteractiveTests()
+        }
+        return true
+    }
+    
+    func nonInteractiveTests(){
         testInteractorPush()
         testInteractorShowTabs()
         testContextCallbacks()
@@ -33,7 +41,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         testTransaction()
         testModal()
         testError()
-        return true
+    }
+    
+    func testInteractorPushGesture() {
+        
+        let animator = NavAnimators.ZoomIn()
+        let navGesture = NavGestureZoom(completesAt:0.5){ gesture in }
+        animator.dismissGestures = [navGesture]
+        
+        animator.onHideCompletion = { completed in
+            print("onHideCompletion")
+//            Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"white"])){_ in
+//                print("---> line \(#line)")
+//
+//            }
+        }
+        
+        Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:animator){_ in print("---> line \(#line)")}
+        
+//        Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"blue"])){_ in print("---> line \(#line)")}
+        
+        
     }
     
     func testInteractorPush() {

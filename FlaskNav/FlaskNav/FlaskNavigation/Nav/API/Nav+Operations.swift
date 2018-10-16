@@ -86,7 +86,7 @@ extension FlaskNav{
         intentToCompleteOperationFor(context:rootContext)
     }
     
-    func intentToCompleteOperationFor(context aContext:NavContext?,completed:Bool = true){
+    func intentToCompleteOperationFor(context aContext:NavContext?,completed:Bool = true, intentRoot:Bool = false){
         
         guard let context = aContext else {
             assert(false, "context should always be defined")
@@ -97,6 +97,13 @@ extension FlaskNav{
         var references = operationsFor(key:key)
         
         guard let navOperation = references.first else{
+            if context.navigator == .Root { return }
+            if !intentRoot { return }
+            
+            let nav = navInstance(forLayer: context.layer)
+            let root = nav.rootView()
+            let rootContext = NavContext.manager.context(fromViewController: root)
+            intentToCompleteOperationFor(context:rootContext, completed: completed)
             return
         }
         

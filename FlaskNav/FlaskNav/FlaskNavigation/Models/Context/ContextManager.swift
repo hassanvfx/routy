@@ -88,7 +88,6 @@ extension NavContextManager{
          if(context.navigator == .Root){ return }
         
         context.setViewControllerWeak(true)
-        contexts[context.contextId] = nil
     }
 
 }

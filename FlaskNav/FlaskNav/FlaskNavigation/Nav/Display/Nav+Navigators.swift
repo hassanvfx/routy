@@ -28,7 +28,7 @@ extension FlaskNav {
         print("--> will navigateTo \(context.desc())")
         switch navigator {
         case .Root:
-            setAnimatorFor(context:context,navigator: .Root)
+//            setAnimatorFor(context:context,navigator: .Root)
             navigateRoot(context:context, navOperation: navOperation)
         case .Pop:
             setAnimatorFor(context:context,navigator: .Pop)
@@ -118,18 +118,7 @@ extension FlaskNav{
         
     }
     
-    func setAnimatorFor(context:NavContext, navigator:NavigatorType){
-        let controller = context.viewController()!
-        let animator = context.animator
-        animator?.onInteractionCanceled = { [weak self] _ in
-            guard let this = self else { return }
-            DispatchQueue.main.async{
-                this.intentToCompleteOperationFor(context: context, completed: false)
-            }
-        }
-        
-        setPreferredAnimator(animator, for: controller, withNavigator: navigator)
-    }
+    
     
     func resolveNavigatorFor(context:NavContext, intention:NavigatorType)->NavigatorType{
         
@@ -140,5 +129,34 @@ extension FlaskNav{
             return .Push
         }
         return intention
+    }
+    
+    func setAnimatorFor(context:NavContext, navigator:NavigatorType){
+        
+        let controller = context.viewController()!
+        let animator = context.animator
+        
+        animator?.onInteractionCompleted = { [weak self] completed in
+            
+            if completed && animator?.type == .Hide {
+                
+                self?.removePreferredAnimator(for: controller, withNavigator: navigator)
+                
+            }else if !completed {
+                
+                DispatchQueue.main.async{
+                    self?.intentToCompleteOperationFor(context: context, completed: false, intentRoot: navigator == .Push)
+                }
+                
+            }
+        }
+        animator?.onRequestDismiss = { [weak self]  (navGesture, gesture) in
+            
+            if gesture.state == .began {
+                self?.popCurrent(layer: context.layer)
+            }
+        }
+        
+        setPreferredAnimator(animator, for: controller, withNavigator: navigator)
     }
 }
