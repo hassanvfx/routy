@@ -117,35 +117,10 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     }
     
     //MARK: ANIMATORS
+    
     public func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
-        if let animator = self.getAnimator(for: toVC, withNavigator: .Push){
-            
-            animator.prepareForNavController()
-            animator.prepareToShow()
-            
-            setPreferredAnimator(animator, for: fromVC, withNavigator: .Root)
-            setPreferredAnimator(animator, for: toVC, withNavigator: .Pop)
-            
-            return animator
-            
-        }  else if let animator = self.getAnimator(for: toVC, withNavigator: .Root){
-            
-            animator.prepareForNavController()
-            animator.prepareToHide()
-            
-            return animator
-            
-        }else if let animator = self.getAnimator(for: fromVC, withNavigator: .Pop){
-            
-            animator.prepareForNavController()
-            animator.prepareToHide()
-            
-            return animator
-        }
-        
-        assert(false, "error all cases should be handled")
-        return nil
+        return preferredAnimator(for: navigationController,animationControllerFor: operation, from: fromVC, to:toVC )
         
     }
     

@@ -20,6 +20,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.setup(withWindow: window!)
 
         testInteractorPushGesture()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4){
+            self.nonInteractiveTests()
+        }
+        return true
+    }
+    
+    func nonInteractiveTests(){
         testInteractorPush()
         testInteractorShowTabs()
         testContextCallbacks()
@@ -34,7 +41,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         testTransaction()
         testModal()
         testError()
-        return true
     }
     
     func testInteractorPushGesture() {
