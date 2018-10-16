@@ -21,7 +21,9 @@ class NavActiveLayer {
         inactive = active
         active = layer
         
-        onActiveChange()
+        if inactive != active {
+            onActiveChange()
+        }
     }
     
     public func unset(){
