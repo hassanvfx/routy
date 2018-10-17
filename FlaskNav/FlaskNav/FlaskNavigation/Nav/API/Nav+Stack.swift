@@ -111,7 +111,7 @@ extension FlaskNav{
             this.stackActive.unset()
         }
         
-        activeLayerTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer) in
+        activeLayerTransaction(for: layer,batched: batched, completion:completion){ (layer) in
             //resolve state after commit
         }
     }

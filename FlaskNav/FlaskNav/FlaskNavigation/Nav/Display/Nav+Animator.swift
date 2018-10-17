@@ -13,7 +13,7 @@ extension FlaskNav {
     
     func preferredAnimator(for navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
-        if let animator = self.getAnimator(for: toVC, withNavigator: .Push){
+        if let animator = self.getPreferredAnimator(for: toVC, withNavigator: .Push){
             
             animator.prepareForNavController()
             animator.prepareToShow()
@@ -23,14 +23,14 @@ extension FlaskNav {
             
             return animator
             
-        }  else if let animator = self.getAnimator(for: toVC, withNavigator: .Root){
+        }  else if let animator = self.getPreferredAnimator(for: toVC, withNavigator: .Root){
             
             animator.prepareForNavController()
             animator.prepareToHide()
             
             return animator
             
-        }else if let animator = self.getAnimator(for: fromVC, withNavigator: .Pop){
+        }else if let animator = self.getPreferredAnimator(for: fromVC, withNavigator: .Pop){
             
             animator.prepareForNavController()
             animator.prepareToHide()
@@ -54,13 +54,14 @@ extension FlaskNav{
         return "anim.\(pointerKey(controller)).\(navigator.rawValue)"
     }
 
-    func setPreferredAnimator(_ animator:NavAnimatorClass? ,for controller:UIViewController, withNavigator navigator:NavigatorType){
+    func setPreferredAnimator(_ animator:NavAnimatorClass ,for controller:UIViewController, withNavigator navigator:NavigatorType){
         let key = animatorKey(for:controller, withNavigator: navigator)
         print("setting animator for key \(key)")
-        animators[key] = animator ?? preferredAnimator()
+        if navigator != .Push { animator.type = .Hide }
+        animators[key] = animator
     }
     
-    func getAnimator(for controller:UIViewController, withNavigator navigator:NavigatorType)->NavAnimatorClass?{
+    func getPreferredAnimator(for controller:UIViewController, withNavigator navigator:NavigatorType)->NavAnimatorClass?{
         let key = animatorKey(for:controller, withNavigator: navigator)
         print("getting animator for key \(key)")
         return animators[key]
@@ -109,7 +110,7 @@ extension FlaskNav {
         
         guard let animator = animator else { return }
         
-        animator.onInteractionCompleted = { [weak self] completed in
+        animator.onAnimationCompleted = { [weak self] completed in
             
             if completed && animator.type == .Hide {
                 self?.removePreferredAnimator(for: controller, withNavigator: navigator)

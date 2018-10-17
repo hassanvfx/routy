@@ -133,10 +133,12 @@ extension FlaskNav{
     
     func setAnimatorFor(context:NavContext, navigator:NavigatorType){
         
-        print("setting future animator for \(context.desc()) nav \(navigator.rawValue)")
+        print("setting future animator \(String(describing: context.animator)) for \(context.desc()) nav \(navigator.rawValue)")
         guard let controller = context.viewController() else { return }
        
-        bindAnimatorCallbacks(context.animator, controller:controller, context:context, navigator:navigator)
-        setPreferredAnimator(context.animator, for: controller, withNavigator: navigator)
+        context.animator = context.animator ?? preferredAnimator()
+            
+        bindAnimatorCallbacks(context.animator!, controller:controller, context:context, navigator:navigator)
+        setPreferredAnimator(context.animator!, for: controller, withNavigator: navigator)
     }
 }
