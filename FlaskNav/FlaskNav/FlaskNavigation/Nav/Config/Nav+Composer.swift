@@ -56,12 +56,25 @@ extension FlaskNav{
         
         let tab = tabController!
         let top = mainController()
-        let transitionAnimator = takeActiveLayerAnimator(for: NavLayer.TabAny(), withType: .Show)
+        let transitionAnimator = getActiveLayerAnimator(for: NavLayer.TabAny(), withType: .Show)
         let defaultAnimator = NavAnimators.ZoomIn() //TODO: move this to config
         let animator = transitionAnimator ?? defaultAnimator
         
-        let myCompletion = {
+        let myCompletion = { [weak self] in
+            
+            if(!animator.wasCanceled){
+                self?.removeActiveLayerAnimator(for: NavLayer.TabAny(), withType: .Show)
+            }
             completion(!animator.wasCanceled)
+        }
+        
+        animator.onRequestDismiss = { [weak self]  (navGesture, gesture) in
+            
+            animator.enableInteraction()
+            
+            if gesture.state == .began {
+                self?.tabAny.hide()
+            }
         }
         
         tabPresentator = NavPresentator(presentViewController: tab, from: top, animator: animator, presentation: presentation)
@@ -75,18 +88,25 @@ extension FlaskNav{
             return
         }
         
-        let transitionAnimator = takeActiveLayerAnimator(for: NavLayer.TabAny(), withType: .Hide)
+        let transitionAnimator = getActiveLayerAnimator(for: NavLayer.TabAny(), withType: .Hide)
         let defaultAnimator = NavAnimators.ZoomIn() //TODO: move this to config
         let animator = transitionAnimator ?? defaultAnimator
 
         
         let onDismiss = { [weak self] in
             if !animator.wasCanceled {
+                self?.removeActiveLayerAnimator(for: NavLayer.TabAny(), withType: .Hide)
                 self?.tabPresentator = nil
             }
             completion(!animator.wasCanceled)
         }
         
+        animator.onRequestDismiss = { [weak self]  (navGesture, gesture) in
+            
+            if gesture.state == .began {
+                self?.tabAny.hide()
+            }
+        }
        
         tabPresentator?.animator = animator
         tabPresentator?.dismiss(onDismiss)

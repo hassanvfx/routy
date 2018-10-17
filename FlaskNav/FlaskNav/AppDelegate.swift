@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
+        testInteractorTabPushGesture()
         testInteractorModalPushGesture()
         testInteractorPushGesture()
         DispatchQueue.main.asyncAfter(deadline: .now() + 4){
@@ -42,6 +43,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         testTransaction()
         testModal()
         testError()
+    }
+    
+    func testInteractorTabPushGesture() {
+        let animator = NavAnimators.ZoomIn()
+        let navGesture = NavGestureZoom(completesAt:0.5){ gesture in }
+        animator.dismissGestures = [navGesture]
+        
+        animator.onHideCompletion = { completed in
+        }
+        
+//        Services.router.tab(.Home).push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:animator){_ in print("---> line \(#line)")}
+        Services.router.tab(.Home).show(animator: animator)
     }
     
     func testInteractorModalPushGesture() {

@@ -56,25 +56,23 @@ extension FlaskNav{
 
     func setPreferredAnimator(_ animator:NavAnimatorClass? ,for controller:UIViewController, withNavigator navigator:NavigatorType){
         let key = animatorKey(for:controller, withNavigator: navigator)
-        if animator != nil {
-            animators[key] = animator
-        }else {
-            animators[key] = preferredAnimator()
-        }
+        print("setting animator for key \(key)")
+        animators[key] = animator ?? preferredAnimator()
     }
     
     func getAnimator(for controller:UIViewController, withNavigator navigator:NavigatorType)->NavAnimatorClass?{
         let key = animatorKey(for:controller, withNavigator: navigator)
+        print("getting animator for key \(key)")
         return animators[key]
     }
     
     func removePreferredAnimator(for controller:UIViewController, withNavigator navigator:NavigatorType){
         let key = animatorKey(for:controller, withNavigator: navigator)
+         print("removing animator for key \(key)")
         animators[key] = nil
     }
 
 }
-
 
 
 extension FlaskNav {
@@ -87,18 +85,48 @@ extension FlaskNav {
         let key = animatorKey(for:layer, withType: type)
         if animator != nil {
             animators[key] = animator
-        }else {
+        }else if type == .Show{
             animators[key] = preferredAnimator()
         }
         
     }
     
-    func takeActiveLayerAnimator(for layer:String, withType type:NavAnimatorClassType)->NavAnimatorClass?{
+    func getActiveLayerAnimator(for layer:String, withType type:NavAnimatorClassType)->NavAnimatorClass?{
         let key = animatorKey(for:layer, withType: type)
-        guard let animator = animators[key] else{
-            return nil
-        }
+        return animators[key]
+    }
+    
+    func removeActiveLayerAnimator(for layer:String, withType type:NavAnimatorClassType){
+        let key = animatorKey(for:layer, withType: type)
         animators[key] = nil
-        return animator
+    }
+}
+
+
+extension FlaskNav {
+    
+    func bindAnimatorCallbacks(_ animator:NavAnimatorClass?, controller:UIViewController, context:NavContext, navigator:NavigatorType){
+        
+        guard let animator = animator else { return }
+        
+        animator.onInteractionCompleted = { [weak self] completed in
+            
+            if completed && animator.type == .Hide {
+                self?.removePreferredAnimator(for: controller, withNavigator: navigator)
+                
+            }else if !completed {
+                DispatchQueue.main.async{
+                    self?.intentToCompleteOperationFor(context: context, completed: false, intentRoot: navigator == .Push)
+                }
+                
+            }
+        }
+        animator.onRequestDismiss = { [weak self]  (navGesture, gesture) in
+            
+            if gesture.state == .began {
+                self?.popCurrent(layer: context.layer)
+            }
+        }
+        
     }
 }

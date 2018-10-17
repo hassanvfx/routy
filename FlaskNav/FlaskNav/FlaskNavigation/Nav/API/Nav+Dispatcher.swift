@@ -25,7 +25,7 @@ extension FlaskNav{
         
         dispatchActiveLayer(){ [weak self] activeCompleted in
             self?.dispatchCurrentNavigation(){ layersCompleted in
-                finalizer(layersCompleted)
+                finalizer(activeCompleted && layersCompleted)
             }
         }
  

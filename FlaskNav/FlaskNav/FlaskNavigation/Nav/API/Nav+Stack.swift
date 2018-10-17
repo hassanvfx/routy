@@ -87,6 +87,7 @@ extension FlaskNav{
             let layerName = NavLayer.IsTab(layer) ?  NavLayer.TabAny() : layer
             
             this.setActiveLayerAnimator(animator, for: layerName, withType: .Show)
+            this.setActiveLayerAnimator(animator, for: layerName, withType: .Hide)
             this.stackActive.set(layer:layer)
         }
     }
@@ -108,6 +109,10 @@ extension FlaskNav{
             
             this.setActiveLayerAnimator(animator, for: layerName, withType: .Hide)
             this.stackActive.unset()
+        }
+        
+        activeLayerTransaction(for: layer,batched: batched, completion:completion){ [weak self] (layer) in
+            //resolve state after commit
         }
     }
     

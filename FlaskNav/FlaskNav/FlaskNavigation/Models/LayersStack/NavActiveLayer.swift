@@ -40,6 +40,8 @@ class NavActiveLayer {
         assert(activeCaptured != nil , "State not captured")
         active = activeCaptured!
         inactive = inactiveCaptured!
+        activeCaptured = nil
+        inactiveCaptured = nil
     }
     
     func commit(){
