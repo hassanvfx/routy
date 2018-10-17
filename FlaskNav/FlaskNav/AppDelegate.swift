@@ -20,10 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.setup(withWindow: window!)
 
         testInteractorModalPushGesture()
-//        testInteractorPushGesture()
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 4){
-//            self.nonInteractiveTests()
-//        }
+        testInteractorPushGesture()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4){
+            self.nonInteractiveTests()
+        }
         return true
     }
     
