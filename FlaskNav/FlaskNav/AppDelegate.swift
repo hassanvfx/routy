@@ -19,13 +19,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
+        testForever()
+        return true
+    }
+    
+    func testInteractive(){
         testInteractorTabPushGesture()
         testInteractorModalPushGesture()
         testInteractorPushGesture()
+    }
+    
+    func testForever(){
+        testInteractorTabPushGesture()
+        testInteractorModalPushGesture()
+        testInteractorPushGesture()
+        nonInteractiveTests()
         DispatchQueue.main.asyncAfter(deadline: .now() + 4){
-            self.nonInteractiveTests()
+            self.testForever()
         }
-        return true
     }
     
     func nonInteractiveTests(){
