@@ -15,8 +15,10 @@ extension FlaskNav{
         var onCompletion:CompletionClosure? = { [weak self] completed in
             if completed {
                 self?.stackActive.commit()
+                self?.substance.commitState()
             } else {
                 self?.stackActive.rollback()
+                self?.substance.rollbackState()
             }
             if let userCompletion = completion {
                 userCompletion(completed)
@@ -26,7 +28,10 @@ extension FlaskNav{
         if batched { onCompletion = nil }
         
         enqueueNavOperation(batched:batched, completion: onCompletion ) { [weak self] in
-            if !batched { self?.stackActive.capture() }
+            if !batched {
+                self?.stackActive.capture()
+                self?.substance.captureState()
+            }
             action(layer)
         }
         
@@ -34,12 +39,17 @@ extension FlaskNav{
     
     func navTransaction(for layer:String, batched:Bool,  completion:CompletionClosure? = nil, action:@escaping (String,NavStack)->Void){
         
-        var onCompletion:CompletionClosure? = { completed in
-            let stack = self.stack(forLayer: layer)
+        var onCompletion:CompletionClosure? = {  [weak self] completed in
+            
+            guard let this = self else { return }
+            
+            let stack = this.stack(forLayer: layer)
             if completed {
                 stack.commit()
+                this.substance.commitState()
             } else {
                 stack.rollback()
+                this.substance.rollbackState()
             }
             if let userCompletion = completion {
                 userCompletion(completed)
@@ -48,10 +58,17 @@ extension FlaskNav{
         
         if batched { onCompletion = nil }
         
-        enqueueNavOperation(batched:batched, completion: onCompletion ) {
-            let stack = self.stack(forLayer: layer)
+        enqueueNavOperation(batched:batched, completion: onCompletion ) { [weak self] in
             
-            if !batched { stack.capture() }
+            guard let this = self else { return }
+            
+            let stack = this.stack(forLayer: layer)
+            
+            if !batched {
+                stack.capture()
+                this.substance.captureState()
+                
+            }
             action(layer,stack)
         }
         

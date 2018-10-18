@@ -61,6 +61,7 @@ extension FlaskNav{
                 NavStack.unlock()
             }
         }
+        
         let operation = FlaskOperation(block: action)
         NavStack.enqueue(operation: operation)
         

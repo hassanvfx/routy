@@ -19,7 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-        testForever()
+        testOne()
+//        testForevqer()
         return true
     }
     
@@ -29,11 +30,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         testInteractorPushGesture()
     }
     
-    func testForever(){
+    func testOne(){
         testInteractorTabPushGesture()
         testInteractorModalPushGesture()
         testInteractorPushGesture()
         nonInteractiveTests()
+    }
+    func testForever(){
+        testOne()
         DispatchQueue.main.asyncAfter(deadline: .now() + 4){
             self.testForever()
         }
@@ -200,8 +204,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:slider){_ in print("---> line \(#line)")}
         Services.router.nav.popCurrent(animator: zoomer){_ in print("---> line \(#line)")}
         Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"]), animator:modalIn){_ in print("---> line \(#line)")}
-        Services.router.nav.show(animator: modalOut)
-        Services.router.tab(.Home).show(animator: modalOut2)
+        Services.router.nav.show(animator: modalOut){_ in print("---> line \(#line)")}
+        Services.router.tab(.Home).show(animator: modalOut2){_ in print("---> line \(#line)")}
     }
     
     func testCompletion(){
@@ -295,7 +299,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
     
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in
+            print("---> line \(#line)")}
        
         
 

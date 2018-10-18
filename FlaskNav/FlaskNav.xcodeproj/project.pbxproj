@@ -594,7 +594,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-FlaskNav/Pods-FlaskNav-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-FlaskNav/Pods-FlaskNav-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Delayed/Delayed.framework",
 				"${BUILT_PRODUCTS_DIR}/Flask/Flask.framework",
 			);
@@ -605,7 +605,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FlaskNav/Pods-FlaskNav-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FlaskNav/Pods-FlaskNav-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C5068C7419D7496EC873CCEB /* [CP] Check Pods Manifest.lock */ = {
@@ -632,7 +632,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-FlaskNavTests/Pods-FlaskNavTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-FlaskNavTests/Pods-FlaskNavTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Delayed/Delayed.framework",
 				"${BUILT_PRODUCTS_DIR}/Flask/Flask.framework",
 			);
@@ -643,7 +643,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FlaskNavTests/Pods-FlaskNavTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FlaskNavTests/Pods-FlaskNavTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
