@@ -20,9 +20,13 @@ import UIKit
         Services.router.setup(withWindow: window!)
 
         
+//        testInteractorTabPushGesture()
+//        testInteractorModalPushGesture()
+//        testInteractorPushGesture()
+        
 //        nonInteractiveTests()
-//        testOne()
-        testForever()
+        testOne()
+//        testForever()
 //        testBlackRootError()
         return true
     }
@@ -79,8 +83,8 @@ import UIKit
     }
     
     func testInteractorTabPushGesture() {
-        let animator = NavAnimators.ZoomIn()
-        let navGesture = NavGestureZoom(completesAt:0.5){ gesture in }
+        let animator = NavAnimators.SlideLeft()
+        let navGesture = NavGesturePan(completesAt:0.5){ gesture in }
         animator.dismissGestures = [navGesture]
         
         animator.onHideCompletion = { completed in
@@ -92,8 +96,8 @@ import UIKit
     
     func testInteractorModalPushGesture() {
         
-        let animator = NavAnimators.ZoomIn()
-        let navGesture = NavGestureZoom(completesAt:0.5){ gesture in }
+        let animator = NavAnimators.SlideLeft()
+        let navGesture = NavGesturePan(completesAt:0.5){ gesture in }
         animator.dismissGestures = [navGesture]
         
         animator.onHideCompletion = { completed in
@@ -105,8 +109,8 @@ import UIKit
     
     func testInteractorPushGesture() {
         
-        let animator = NavAnimators.ZoomIn()
-        let navGesture = NavGestureZoom(completesAt:0.5){ gesture in }
+        let animator = NavAnimators.SlideLeft()
+        let navGesture = NavGesturePan(completesAt:0.5){ gesture in }
         animator.dismissGestures = [navGesture]
         
         animator.onHideCompletion = { completed in

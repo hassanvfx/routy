@@ -21,7 +21,7 @@
 		2616BB892157105100A6AEFB /* NavContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB882157105100A6AEFB /* NavContext.swift */; };
 		2616BB8B21573B4C00A6AEFB /* NavStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB8A21573B4C00A6AEFB /* NavStack.swift */; };
 		2616BB8D2157546D00A6AEFB /* NavInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB8C2157546D00A6AEFB /* NavInfo.swift */; };
-		2622D0E3215C8CEC0060AAE3 /* Nav+Composer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2622D0E2215C8CEC0060AAE3 /* Nav+Composer.swift */; };
+		2622D0E3215C8CEC0060AAE3 /* Nav+Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2622D0E2215C8CEC0060AAE3 /* Nav+Presenter.swift */; };
 		262599DE2159D000003144ED /* Nav+Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262599DD2159D000003144ED /* Nav+Dispatcher.swift */; };
 		263B10C22159C7CA00E6E5C4 /* Composition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263B10C12159C7CA00E6E5C4 /* Composition.swift */; };
 		263B10C42159C7D200E6E5C4 /* Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263B10C32159C7D200E6E5C4 /* Interface.swift */; };
@@ -93,7 +93,7 @@
 		2616BB882157105100A6AEFB /* NavContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavContext.swift; sourceTree = "<group>"; };
 		2616BB8A21573B4C00A6AEFB /* NavStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavStack.swift; sourceTree = "<group>"; };
 		2616BB8C2157546D00A6AEFB /* NavInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavInfo.swift; sourceTree = "<group>"; };
-		2622D0E2215C8CEC0060AAE3 /* Nav+Composer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Composer.swift"; sourceTree = "<group>"; };
+		2622D0E2215C8CEC0060AAE3 /* Nav+Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Presenter.swift"; sourceTree = "<group>"; };
 		262599DD2159D000003144ED /* Nav+Dispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Dispatcher.swift"; sourceTree = "<group>"; };
 		263B10C12159C7CA00E6E5C4 /* Composition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Composition.swift; sourceTree = "<group>"; };
 		263B10C32159C7D200E6E5C4 /* Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interface.swift; sourceTree = "<group>"; };
@@ -220,7 +220,6 @@
 			children = (
 				2616BB782155D65800A6AEFB /* Nav+Config.swift */,
 				2616BB7E2155D78600A6AEFB /* Nav+Setup.swift */,
-				2622D0E2215C8CEC0060AAE3 /* Nav+Composer.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -242,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				269B14792165AAC400208360 /* Nav+Animator.swift */,
+				2622D0E2215C8CEC0060AAE3 /* Nav+Presenter.swift */,
 				2616BB722155A1BC00A6AEFB /* Nav+Reactor.swift */,
 				268EC7B2217026C30086A2FC /* Nav+Presentators.swift */,
 				263B10C92159C9BC00E6E5C4 /* Nav+Navigators.swift */,
@@ -680,7 +680,7 @@
 				2616BB8B21573B4C00A6AEFB /* NavStack.swift in Sources */,
 				26B80710214DC740008091C2 /* ViewController.swift in Sources */,
 				2616BB7F2155D78600A6AEFB /* Nav+Setup.swift in Sources */,
-				2622D0E3215C8CEC0060AAE3 /* Nav+Composer.swift in Sources */,
+				2622D0E3215C8CEC0060AAE3 /* Nav+Presenter.swift in Sources */,
 				263B10C22159C7CA00E6E5C4 /* Composition.swift in Sources */,
 				2616BB7D2155D76700A6AEFB /* Nav+Stack.swift in Sources */,
 				2667A6162163C41C00F87A1B /* InactiveBackView.swift in Sources */,

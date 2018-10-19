@@ -8,43 +8,6 @@
 
 import UIKit
 
-extension FlaskNav {
-    
-    
-    static func add(child:UIViewController,to parent:UIViewController,forwardAppearance:Bool = false){
-        
-        parent.addChildViewController(child)
-        child.view.frame = parent.view.bounds
-        
-        if(forwardAppearance){
-            child.beginAppearanceTransition(true, animated: false)
-        }
-        
-        parent.view.addSubview(child.view)
-        
-        if(forwardAppearance){
-            child.endAppearanceTransition()
-        }
-        
-        child.didMove(toParentViewController: parent)
-    }
-    
-    static func remove(child:UIViewController,forwardAppearance:Bool=false){
-        if(forwardAppearance){
-            child.beginAppearanceTransition(false, animated: false)
-        }
-        
-        child.willMove(toParentViewController: nil)
-        child.view.removeFromSuperview()
-        
-        if(forwardAppearance){
-            child.endAppearanceTransition()
-        }
-        
-        child.removeFromParentViewController()
-    }
-    
-}
 extension FlaskNav{
 
     func presentTab(index:Int, presentation:NavPresentationClass?=nil, completion:@escaping (Bool)->Void){
@@ -195,6 +158,43 @@ extension FlaskNav{
 }
 
 
+extension FlaskNav {
+    
+    
+    static func add(child:UIViewController,to parent:UIViewController,forwardAppearance:Bool = false){
+        
+        parent.addChildViewController(child)
+        child.view.frame = parent.view.bounds
+        
+        if(forwardAppearance){
+            child.beginAppearanceTransition(true, animated: false)
+        }
+        
+        parent.view.addSubview(child.view)
+        
+        if(forwardAppearance){
+            child.endAppearanceTransition()
+        }
+        
+        child.didMove(toParentViewController: parent)
+    }
+    
+    static func remove(child:UIViewController,forwardAppearance:Bool=false){
+        if(forwardAppearance){
+            child.beginAppearanceTransition(false, animated: false)
+        }
+        
+        child.willMove(toParentViewController: nil)
+        child.view.removeFromSuperview()
+        
+        if(forwardAppearance){
+            child.endAppearanceTransition()
+        }
+        
+        child.removeFromParentViewController()
+    }
+    
+}
 
 
 

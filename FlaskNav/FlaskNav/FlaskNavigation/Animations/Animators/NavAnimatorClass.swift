@@ -107,7 +107,7 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
         
         if type == .Show {
             container.addSubview(toController.view)
-            addGesturesTo(view: toController.view)
+            addDismissGesturesTo(view: toController.view)
             
             viewAnimator = present(controller: toController, from: fromController, in: container, withContext: transitionContext)
         } else if type == .Hide{
@@ -182,7 +182,7 @@ extension NavAnimatorClass{
     }
     
     
-    func addGesturesTo(view:UIView){
+    func addDismissGesturesTo(view:UIView){
         
         
         activeDismissGestures = []

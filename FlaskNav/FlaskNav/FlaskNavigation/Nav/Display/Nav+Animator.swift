@@ -57,7 +57,6 @@ extension FlaskNav{
     func setPreferredAnimator(_ animator:NavAnimatorClass ,for controller:UIViewController, withNavigator navigator:NavigatorType){
         let key = animatorKey(for:controller, withNavigator: navigator)
         print("setting animator for key \(key)")
-        if navigator != .Push { animator.type = .Hide }
         animators[key] = animator
     }
     

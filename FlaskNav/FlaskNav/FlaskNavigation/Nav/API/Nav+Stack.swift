@@ -114,9 +114,9 @@ extension FlaskNav{
             this.stackActive.unset()
         }
         
-        activeLayerTransaction(for: layer,batched: batched, completion:completion){ (layer) in
-            //resolve state after commit
-        }
+//        activeLayerTransaction(for: layer,batched: batched, completion:completion){ (layer) in
+//            //resolve state after commit
+//        }
     }
     
     func tabIndex(from layer: String) -> Int {
