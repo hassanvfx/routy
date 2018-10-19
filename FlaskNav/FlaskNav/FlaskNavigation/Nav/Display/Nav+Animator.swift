@@ -69,7 +69,7 @@ extension FlaskNav{
     func removePreferredAnimator(for controller:UIViewController, withNavigator navigator:NavigatorType){
         let key = animatorKey(for:controller, withNavigator: navigator)
          print("removing animator for key \(key)")
-//         animators[key] = nil
+         animators[key] = nil
     }
 
 }
