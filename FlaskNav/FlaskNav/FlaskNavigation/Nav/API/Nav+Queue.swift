@@ -12,25 +12,15 @@ import Flask
 
 extension FlaskNav{
 
-    func enqueueNavOperation( batched:Bool, completion:OperationCompletionClosure?, action:@escaping ()->Void){
+    func enqueueNavOperation( completion:@escaping OperationCompletionClosure, action:@escaping ()->Void){
 
-        if batched {
-            assert(completion == nil, "Completion is not supported in batch transactions")
-            action()
-        } else{
-            let completionClosure = completion ?? { _,_ in }
-            enqueueNavOperationNow(action: action, completion: completionClosure)
-        }
-    }
-    
-    func enqueueNavOperationNow(action closure:@escaping ()->Void, completion:@escaping OperationCompletionClosure){
-        
+     
         
         let action:(FlaskOperation)->Void = { [weak self] operation in
             assert(NavStack.locked == false, "error the `stack` is currently locked")
             
             NavStack.lock()
-            closure()
+            action()
             NavStack.unlock()
             self?.dispatchFlux(with: operation){ (completed) in
                 
@@ -46,27 +36,7 @@ extension FlaskNav{
         NavStack.enqueue(operation: operation)
     }
     
-    
-//    func batch(_ closure:@escaping (NavComposition<TABS,CONT,MODS>)->Void){
-//        
-//         let action:(FlaskOperation)->Void = { [weak self] operation in
-//        
-//            assert(NavStack.locked == false, "error the `stack` is currently locked")
-//            
-//            NavStack.lock()
-//            if let this = self {
-//                closure(this.compositionBatch!)
-//            }
-//            self?.dispatchFlux(with: operation){ (completed) in
-//                NavStack.unlock()
-//            }
-//        }
-//        
-//        let operation = FlaskOperation(block: action)
-//        NavStack.enqueue(operation: operation)
-//        
-//    }
-    
+
 
     func isCanceled(operation:FlaskOperation)->Bool{
         if let name = operation.name {

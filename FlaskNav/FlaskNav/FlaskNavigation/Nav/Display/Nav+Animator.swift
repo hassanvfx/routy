@@ -13,7 +13,9 @@ extension FlaskNav {
     
     func preferredAnimator(for navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
-        if operation == .push, let animator = self.getPreferredAnimator(for: toVC, withNavigator: .Push){
+        if operation == .push {
+            
+            let animator = self.getPreferredAnimator(for: toVC, withNavigator: .Push)
             
             animator.prepareForNavController()
             animator.prepareToShow()
@@ -23,24 +25,17 @@ extension FlaskNav {
             
             return animator
             
-        } else if let animator = self.getPreferredAnimator(for: toVC, withNavigator: .Root){
-            
-            animator.prepareForNavController()
-            animator.prepareToHide()
-            
-            return animator
-            
-        }else if let animator = self.getPreferredAnimator(for: fromVC, withNavigator: .Pop){
-            
-            animator.prepareForNavController()
-            animator.prepareToHide()
-            
-            return animator
         }
         
-        assert(false, "error: all cases should be handled")
-        return nil
+        let rootAnimator = self.getPreferredAnimator(for: toVC, withNavigator: .Root)
+        let popAnimator = self.getPreferredAnimator(for: fromVC, withNavigator: .Pop)
+        let isRoot = isRootController(nav: navigationController, controller: toVC)
+        let animator = isRoot ? rootAnimator : popAnimator
         
+        animator.prepareForNavController()
+        animator.prepareToHide()
+        
+        return animator
     }
 }
 
@@ -53,13 +48,15 @@ extension FlaskNav{
     func animatorKey(for controller:UIViewController, withNavigator navigator:NavigatorType)->String{
         return "anim.\(pointerKey(controller)).\(navigator.rawValue)"
     }
+    
+    func isRootController(nav:UINavigationController,controller:UIViewController)->Bool{
+        guard let root = nav.viewControllers.first else { return false}
+        return  root == controller
+    }
 
     func setPreferredRootAnimator(_ animator:NavAnimatorClass ,for controller:UIViewController, withNavigator navigator:NavigatorType, nav:UINavigationController){
         
-        guard let root = nav.viewControllers.first else { assert(false,"nav should have controllers at this point")}
-        if root != controller {
-            return
-        }
+        if !isRootController(nav:nav,controller:controller){ return }
         
         print("will Set animator for Root controller")
         setPreferredAnimator(animator,for:controller,withNavigator: navigator)
@@ -71,10 +68,17 @@ extension FlaskNav{
         animators[key] = animator
     }
     
-    func getPreferredAnimator(for controller:UIViewController, withNavigator navigator:NavigatorType)->NavAnimatorClass?{
+
+    
+    func getPreferredAnimator(for controller:UIViewController, withNavigator navigator:NavigatorType)->NavAnimatorClass{
         let key = animatorKey(for:controller, withNavigator: navigator)
         print("getting animator for key \(key)")
-        return animators[key]
+        var animator = animators[key]
+        if animator == nil {
+            print("getting DEFAULT animator for key \(key)")
+            animator = preferredAnimator()
+        }
+        return animator!
     }
     
     func removePreferredAnimator(for controller:UIViewController, withNavigator navigator:NavigatorType){

@@ -10,7 +10,7 @@ import UIKit
 
 extension FlaskNav{
     
-    func activeLayerTransaction(for layer:String, batched:Bool,  completion:CompletionClosure? = nil, action:@escaping (String)->Void){
+    func activeLayerTransaction(for layer:String,  completion:CompletionClosure? = nil, action:@escaping (String)->Void){
         
         let finalize:OperationCompletionClosure = { operation, completed in
             
@@ -21,7 +21,7 @@ extension FlaskNav{
             operation.complete()
         }
         
-        var resolveState:OperationCompletionClosure? = { [weak self] operation, completed in
+        let resolveState:OperationCompletionClosure = { [weak self] operation, completed in
             if completed {
                 self?.stackActive.commit()
                 self?.substance.commitState(){
@@ -34,19 +34,17 @@ extension FlaskNav{
                 }
             }
         }
-        if batched { resolveState = nil }
         
-        enqueueNavOperation(batched:batched, completion: resolveState ) { [weak self] in
-            if !batched {
-                self?.stackActive.capture()
-                self?.substance.captureState()
-            }
+        enqueueNavOperation(completion: resolveState ) { [weak self] in
+            
+            self?.stackActive.capture()
+            self?.substance.captureState()
             action(layer)
         }
         
     }
     
-    func navTransaction(for layer:String, batched:Bool,  completion:CompletionClosure? = nil, action:@escaping (String,NavStack)->Void){
+    func navTransaction(for layer:String,  completion:CompletionClosure? = nil, action:@escaping (String,NavStack)->Void){
         
         let finalize:OperationCompletionClosure = { operation, completed in
             
@@ -57,7 +55,7 @@ extension FlaskNav{
             operation.complete()
         }
         
-        var resolveState:OperationCompletionClosure? = {  [weak self] operation, completed in
+        let resolveState:OperationCompletionClosure = {  [weak self] operation, completed in
             
             guard let this = self else { return }
             
@@ -76,19 +74,15 @@ extension FlaskNav{
             
         }
         
-        if batched { resolveState = nil }
         
-        enqueueNavOperation(batched:batched, completion: resolveState ) { [weak self] in
+        enqueueNavOperation(completion: resolveState ) { [weak self] in
             
             guard let this = self else { return }
             
             let stack = this.stack(forLayer: layer)
+            stack.capture()
+            this.substance.captureState()
             
-            if !batched {
-                stack.capture()
-                this.substance.captureState()
-                
-            }
             action(layer,stack)
         }
         
