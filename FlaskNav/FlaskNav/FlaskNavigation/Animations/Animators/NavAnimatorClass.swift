@@ -34,7 +34,7 @@ open class NavAnimatorClass: NSObject {
     public var onInteractionRequest:NavAnimatorInteraction?
     var onAnimationCompleted:(Bool)->Void = {_ in}
     public private(set) var _interactionController:UIPercentDrivenInteractiveTransition? = nil
-    public private(set) var wasCanceled:Bool = false
+    public private(set) var canceledInteraction:Bool = false
     
     //MARK: GESTURES
     public var dismissGestures:[NavGestureAbstract] = []
@@ -64,8 +64,8 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
     public func animationEnded(_ transitionCompleted: Bool) {
  
         viewAnimator = nil
-        userCompletionCallback( !wasCanceled )
-        onAnimationCompleted  ( !wasCanceled )
+        userCompletionCallback( !canceledInteraction )
+        onAnimationCompleted  ( !canceledInteraction )
       
         if transitionCompleted && type == .Hide {
             removeActiveDismissGestures()
@@ -79,7 +79,6 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
                     onShow(transitionCompleted)
                 }
             }
-            onShowCompletion = nil
             
         } else if type == .Hide {
             if let onHide = onHideCompletion {
@@ -87,7 +86,6 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
                     onHide(transitionCompleted)
                 }
             }
-            onHideCompletion = nil
         }
     }
     
@@ -153,7 +151,7 @@ extension NavAnimatorClass{
     }
     
     public func interactionCanceled(){
-        wasCanceled = true
+        canceledInteraction = true
         _interactionController?.cancel()
         _interactionController = nil
         
@@ -174,6 +172,7 @@ extension NavAnimatorClass{
     }
     
     func enableInteraction() {
+        canceledInteraction = false
          onInteractionRequest = { _ in }
     }
     

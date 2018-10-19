@@ -25,10 +25,10 @@ extension FlaskNav{
         
         let myCompletion = { [weak self] in
             
-            if(!animator.wasCanceled){
+            if(!animator.canceledInteraction){
                 self?.removeActiveLayerAnimator(for: NavLayer.TabAny(), withType: .Show)
             }
-            completion(!animator.wasCanceled)
+            completion(!animator.canceledInteraction)
         }
         
         animator.onRequestDismiss = { [weak self]  (navGesture, gesture) in
@@ -57,11 +57,11 @@ extension FlaskNav{
 
         
         let onDismiss = { [weak self] in
-            if !animator.wasCanceled {
+            if !animator.canceledInteraction {
                 self?.removeActiveLayerAnimator(for: NavLayer.TabAny(), withType: .Hide)
                 self?.tabPresentator = nil
             }
-            completion(!animator.wasCanceled)
+            completion(!animator.canceledInteraction)
         }
         
         animator.onRequestDismiss = { [weak self]  (navGesture, gesture) in

@@ -13,17 +13,17 @@ extension FlaskNav {
     
     func preferredAnimator(for navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         
-        if let animator = self.getPreferredAnimator(for: toVC, withNavigator: .Push){
+        if operation == .push, let animator = self.getPreferredAnimator(for: toVC, withNavigator: .Push){
             
             animator.prepareForNavController()
             animator.prepareToShow()
             
-            setPreferredAnimator(animator, for: fromVC, withNavigator: .Root)
+            setPreferredRootAnimator(animator, for: fromVC, withNavigator: .Root, nav: navigationController)
             setPreferredAnimator(animator, for: toVC, withNavigator: .Pop)
             
             return animator
             
-        }  else if let animator = self.getPreferredAnimator(for: toVC, withNavigator: .Root){
+        } else if let animator = self.getPreferredAnimator(for: toVC, withNavigator: .Root){
             
             animator.prepareForNavController()
             animator.prepareToHide()
@@ -38,7 +38,7 @@ extension FlaskNav {
             return animator
         }
         
-        assert(false, "error all cases should be handled")
+        assert(false, "error: all cases should be handled")
         return nil
         
     }
@@ -54,6 +54,17 @@ extension FlaskNav{
         return "anim.\(pointerKey(controller)).\(navigator.rawValue)"
     }
 
+    func setPreferredRootAnimator(_ animator:NavAnimatorClass ,for controller:UIViewController, withNavigator navigator:NavigatorType, nav:UINavigationController){
+        
+        guard let root = nav.viewControllers.first else { assert(false,"nav should have controllers at this point")}
+        if root != controller {
+            return
+        }
+        
+        print("will Set animator for Root controller")
+        setPreferredAnimator(animator,for:controller,withNavigator: navigator)
+    }
+    
     func setPreferredAnimator(_ animator:NavAnimatorClass ,for controller:UIViewController, withNavigator navigator:NavigatorType){
         let key = animatorKey(for:controller, withNavigator: navigator)
         print("setting animator for key \(key)")

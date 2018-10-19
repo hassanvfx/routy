@@ -19,17 +19,21 @@ import UIKit
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-
-        
-//        testInteractorTabPushGesture()
-        testInteractorModalPushGesture()
-//        testInteractorPushGesture()
-        
 //        nonInteractiveTests()
 //        testOne()
 //        testForever()
 //        testBlackRootError()
         return true
+    }
+    
+    func testInteractivityAndContinue(){
+        testInteractorTabPushGesture(){
+            self.testInteractorModalPushGesture(){
+                self.testInteractorPushGesture(){
+                    self.nonInteractiveTests()
+                }
+            }
+        }
     }
     
     func testInteractive(){
@@ -84,38 +88,46 @@ import UIKit
         
     }
     
-    func testInteractorTabPushGesture() {
+    func testInteractorTabPushGesture(_ completion:@escaping ()->Void = {}) {
         let animator = NavAnimators.SlideLeft()
         let navGesture = NavGesturePan(completesAt:0.5){ gesture in }
         animator.dismissGestures = [navGesture]
         
         animator.onHideCompletion = { completed in
+            if completed {
+                completion()
+            }
         }
         
-//        Services.router.tab(.Home).push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:animator){_ in print("---> line \(#line)")}
         Services.router.tab(.Home).show(animator: animator)
     }
     
-    func testInteractorModalPushGesture() {
+    func testInteractorModalPushGesture(_ completion:@escaping ()->Void = {}) {
         
         let animator = NavAnimators.SlideLeft()
         let navGesture = NavGesturePan(completesAt:0.5){ gesture in }
         animator.dismissGestures = [navGesture]
         
         animator.onHideCompletion = { completed in
+            if completed {
+                completion()
+            }
         }
         
         Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"]), animator:animator){_ in print("---> line \(#line)")}
         
     }
     
-    func testInteractorPushGesture() {
+    func testInteractorPushGesture(_ completion:@escaping ()->Void = {}) {
         
         let animator = NavAnimators.SlideLeft()
         let navGesture = NavGesturePan(completesAt:0.5){ gesture in }
         animator.dismissGestures = [navGesture]
         
         animator.onHideCompletion = { completed in
+            if completed {
+                completion()
+            }
         }
         
         Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:animator){_ in print("---> line \(#line)")}
