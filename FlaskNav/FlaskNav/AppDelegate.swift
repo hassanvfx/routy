@@ -21,11 +21,11 @@ import UIKit
 
         
 //        testInteractorTabPushGesture()
-//        testInteractorModalPushGesture()
+        testInteractorModalPushGesture()
 //        testInteractorPushGesture()
         
 //        nonInteractiveTests()
-        testOne()
+//        testOne()
 //        testForever()
 //        testBlackRootError()
         return true
