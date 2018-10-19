@@ -81,7 +81,8 @@ extension FlaskNav{
         tabController = UITabBarController()
 
         var navs:[FlaskNavigationController] = []
-        for (index,_) in tabsNameMap{
+        
+        for index in 0..<tabsNameMap.count{
             let aNav = navInstance(forLayer: NavLayer.Tab(index))
             navs.append(aNav)
         }

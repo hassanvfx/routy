@@ -49,6 +49,15 @@ extension FlaskNav{
 
     func presentTab(index:Int, presentation:NavPresentationClass?=nil, completion:@escaping (Bool)->Void){
 
+        let selectTabIndex = {
+            DispatchQueue.main.async {
+                print("Display tabIndex: \(index)")
+                self.tabController?.selectedIndex = index
+            }
+        }
+        
+        selectTabIndex()
+        
         if isTabPresented() {
             completion(true)
             return
@@ -61,7 +70,7 @@ extension FlaskNav{
         let animator = transitionAnimator ?? defaultAnimator
         
         let myCompletion = { [weak self] in
-            
+            selectTabIndex()
             if(!animator.wasCanceled){
                 self?.removeActiveLayerAnimator(for: NavLayer.TabAny(), withType: .Show)
             }

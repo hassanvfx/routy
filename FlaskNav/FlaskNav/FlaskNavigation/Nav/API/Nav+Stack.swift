@@ -28,6 +28,8 @@ extension FlaskNav: NavStackAPI{
             let context = NavContext.manager.context(layer:layer, navigator:.Push, controller: controller, resourceId: resourceId, info: info, animator:animator)
             stack.push(context: context)
         }
+        
+      
     }
     
     func pop(layer:String, batched:Bool = false, toController controller:String, resourceId:String?, info:Any?, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
@@ -44,6 +46,7 @@ extension FlaskNav: NavStackAPI{
                 this.stackActive.set(layer:layer)
             }
         }
+        
     }
     func popCurrent(layer:String, batched:Bool = false, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
      

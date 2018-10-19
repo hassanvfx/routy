@@ -9,12 +9,10 @@
 import UIKit
 
 extension FlaskNav{
-
+    
     
     public func displayTabOperation(_ index:Int, completion:@escaping (Bool)->Void){
-        DispatchQueue.main.async {
-            self.tabController?.selectedIndex = index
-        }
+        
         dismissModalOperation {
             DispatchQueue.main.async {  [weak self] in
                 self?.presentTab(index: index, completion: completion)
@@ -59,6 +57,7 @@ extension FlaskNav{
         let nav = self.navInstance(forLayer: context.layer)
         
         let execute = {
+            print("Executing NAV Operation!")
             nav._isPerformingNavOperation = true
             action()
         }
@@ -69,7 +68,7 @@ extension FlaskNav{
                 self.intentToCompleteOperationFor(context: context)
             }
         }
-
+        
         if context.navigator != .Root || (context.navigator == .Root && nav.viewControllers.count > 1){
             
             execute()
@@ -88,59 +87,43 @@ extension FlaskNav{
 extension FlaskNav{
     
     func popToRoot(context:NavContext){
-        DispatchQueue.main.async { [weak self] in
-     
-            guard let this = self else {
-                return
-            }
-            
-            guard let nav = self?.navInstance(forLayer: context.layer) else {
-                return
-            }
-            
-            this.ensureNavCompletion(withContext: context){
-                   nav.popToRootViewController(animated:true)
+        let nav = navInstance(forLayer: context.layer)
+        
+        print("may POP-TO-ROOT \(context.desc())")
+        ensureNavCompletion(withContext: context){
+            DispatchQueue.main.async {
+                print("is POPING-TO-ROOT \(context.desc())")
+                nav.popToRootViewController(animated:true)
             }
         }
     }
     
     func pushController(_ controller:UIViewController, context:NavContext){
-        print("will PUSH future \(context.desc())")
-        DispatchQueue.main.async { [weak self] in
-            guard let this = self else {
-                return
+        
+        let nav = navInstance(forLayer: context.layer)
+        
+        print("may PUSH \(context.desc())")
+        
+        ensureNavCompletion(withContext: context){
+            DispatchQueue.main.async {
+                print("is PUSHING now \(context.desc())")
+                nav.pushViewController(controller, animated: true)
             }
-            
-            guard let nav = self?.navInstance(forLayer: context.layer) else {
-                return
-            }
-            
-            print("will PUSH \(context.desc())")
-            
-            this.ensureNavCompletion(withContext: context){
-                 print("is PUSHING now \(context.desc())")
-                 nav.pushViewController(controller, animated: true)
-            }
-           
-            
         }
     }
     
     func popToController(_ controller:UIViewController, context:NavContext){
-        DispatchQueue.main.async { [weak self] in
-            guard let this = self else {
-                return
-            }
-            
-            guard let nav = self?.navInstance(forLayer: context.layer) else {
-                return
-            }
-            
-            this.ensureNavCompletion(withContext: context){
+        let nav = navInstance(forLayer: context.layer)
+        
+        print("may POP \(context.desc())")
+        
+        ensureNavCompletion(withContext: context){
+            DispatchQueue.main.async {
+                print("is POPING \(context.desc())")
                 nav.popToViewController(controller, animated: true)
             }
-            
         }
+        
     }
     
 }
