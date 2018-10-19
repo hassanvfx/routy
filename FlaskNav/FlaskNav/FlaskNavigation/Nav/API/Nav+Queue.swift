@@ -48,25 +48,25 @@ extension FlaskNav{
     }
     
     
-    func batch(_ closure:@escaping (NavComposition<TABS,CONT,MODS>)->Void){
-        
-         let action:(FlaskOperation)->Void = { [weak self] operation in
-        
-            assert(NavStack.locked == false, "error the `stack` is currently locked")
-            
-            NavStack.lock()
-            if let this = self {
-                closure(this.compositionBatch!)
-            }
-            self?.dispatchFlux(with: operation){ (completed) in
-                NavStack.unlock()
-            }
-        }
-        
-        let operation = FlaskOperation(block: action)
-        NavStack.enqueue(operation: operation)
-        
-    }
+//    func batch(_ closure:@escaping (NavComposition<TABS,CONT,MODS>)->Void){
+//        
+//         let action:(FlaskOperation)->Void = { [weak self] operation in
+//        
+//            assert(NavStack.locked == false, "error the `stack` is currently locked")
+//            
+//            NavStack.lock()
+//            if let this = self {
+//                closure(this.compositionBatch!)
+//            }
+//            self?.dispatchFlux(with: operation){ (completed) in
+//                NavStack.unlock()
+//            }
+//        }
+//        
+//        let operation = FlaskOperation(block: action)
+//        NavStack.enqueue(operation: operation)
+//        
+//    }
     
 
     func isCanceled(operation:FlaskOperation)->Bool{

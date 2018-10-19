@@ -28,6 +28,13 @@ class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorCl
     open func applyTransformStyle(controller:UIViewController, parent:UIViewController,in containerView:UIView){}
     open func preferredIntensity()->Double{return _intensity}
 
+    open func removeTransformStyle(controller:UIViewController, parent:UIViewController,in containerView:UIView){
+        controller.view.alpha = 1.0
+        controller.view.transform = CGAffineTransform.identity
+        
+        parent.view.alpha = 1.0
+        parent.view.transform = CGAffineTransform.identity
+    }
     
     override open func _setParams(_ params:NSDictionary){
         if let aStyle = params["style"] as? String{
@@ -56,11 +63,12 @@ class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorCl
         applyTransformStyle(controller: controller, parent: fromController, in: containerView)
         
         let animations = {
-            controller.view.transform = CGAffineTransform.identity
-            controller.view.alpha = 1
+            self.removeTransformStyle(controller: controller, parent: fromController, in: containerView)
         }
         
         let completion = {  (finished:UIViewAnimatingPosition) in
+            self.removeTransformStyle(controller: controller, parent: fromController, in: containerView)
+            
             context.completeTransition(!context.transitionWasCancelled)
         }
         
@@ -73,11 +81,14 @@ class NavAnimatorBasic<STYLE:RawRepresentable & RawInitializable>: NavAnimatorCl
         
         let animationDuration = transitionDuration(using: context)
         
+        
         let animations = {
             self.applyTransformStyle(controller: controller, parent: toController, in: containerView)
         }
         
         let completion = { (finished:UIViewAnimatingPosition) in
+            self.removeTransformStyle(controller: controller, parent: toController, in: containerView)
+            
             context.completeTransition(!context.transitionWasCancelled)
         }
         
