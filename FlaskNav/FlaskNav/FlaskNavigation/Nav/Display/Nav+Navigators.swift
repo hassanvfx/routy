@@ -60,6 +60,7 @@ extension FlaskNav {
             let nav = self?.navInstance(forLayer: context.layer)
             
             if (nav?.viewControllers.contains(controller))! {
+                print("! aborting push \(context.desc())")
                 DispatchQueue.main.async {
                     self?.intentToCompleteOperationFor(context: context)
                 }

@@ -19,7 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-        testOne()
+        testErrorOct16()
+//        testOne()
 //        testForevqer()
         return true
     }
@@ -58,6 +59,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         testTransaction()
         testModal()
         testError()
+    }
+    
+    func testErrorOct16(){
+        
+         let modalIn = NavAnimators.SlideLeft()
+        let modalOut = NavAnimators.SlideLeft()
+        let modalOut2 = NavAnimators.SlideLeft()
+        
+        Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"]), animator:modalIn){_ in print("---> line \(#line)")}
+        Services.router.nav.show(animator: modalOut){_ in print("---> line \(#line)")}
+        Services.router.tab(.Home).show(){_ in print("---> line \(#line)")}
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
+        
     }
     
     func testInteractorTabPushGesture() {

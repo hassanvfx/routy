@@ -39,6 +39,7 @@ extension FlaskNav{
                 }
                 
                 completion(completed)
+                operation.complete()
             }
         }
         

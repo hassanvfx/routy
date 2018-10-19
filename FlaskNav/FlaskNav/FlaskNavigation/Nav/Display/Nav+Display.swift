@@ -64,6 +64,7 @@ extension FlaskNav{
         }
         
         let complete = {
+            print("Aborting NAV Operation!")
             DispatchQueue.main.async {
                 self.intentToCompleteOperationFor(context: context)
             }
@@ -104,6 +105,7 @@ extension FlaskNav{
     }
     
     func pushController(_ controller:UIViewController, context:NavContext){
+        print("will PUSH future \(context.desc())")
         DispatchQueue.main.async { [weak self] in
             guard let this = self else {
                 return
@@ -113,7 +115,10 @@ extension FlaskNav{
                 return
             }
             
+            print("will PUSH \(context.desc())")
+            
             this.ensureNavCompletion(withContext: context){
+                 print("is PUSHING now \(context.desc())")
                  nav.pushViewController(controller, animated: true)
             }
            
