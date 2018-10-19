@@ -21,8 +21,8 @@ import UIKit
 
         
 //        nonInteractiveTests()
-        testOne()
-//        testForever()
+//        testOne()
+        testForever()
 //        testBlackRootError()
         return true
     }
