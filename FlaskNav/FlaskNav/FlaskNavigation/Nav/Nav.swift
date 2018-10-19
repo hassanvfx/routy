@@ -26,7 +26,6 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     var stackActive:NavActiveLayer = NavActiveLayer()
     
     var composition:NavComposition<TABS,CONT,MODS>?
-    var compositionBatch:NavComposition<TABS,CONT,MODS>?
     var compDelegate: NavStackAPI? = nil
     var compBatched: Bool = false
     
@@ -95,7 +94,6 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     
     func setupCompositionAPI(){
         composition = NavComposition<TABS,CONT,MODS>(delegate: self)
-        compositionBatch = NavComposition<TABS,CONT,MODS>(batch: true, delegate: self)
     }
     // MARK: OPEN OVERRIDES
     open func defineRouting(){}

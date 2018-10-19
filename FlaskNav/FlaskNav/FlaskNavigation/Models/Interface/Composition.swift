@@ -16,7 +16,6 @@ protocol NavCompositionAPI:AnyObject{
     associatedtype COMP_MODS_TYPE:RawRepresentable
     
     var compDelegate:NavStackAPI? {get}
-    var compBatched:Bool{get}
     
     var nav:NavInterface<COMP_CONT_TYPE>{get}
     var modal:NavInterfaceModal<COMP_MODS_TYPE>{get}
@@ -28,15 +27,15 @@ protocol NavCompositionAPI:AnyObject{
 extension NavCompositionAPI{
     
     public var nav:NavInterface<COMP_CONT_TYPE>{
-        return NavInterface<COMP_CONT_TYPE>(batch:compBatched,layer: NavLayer.Nav(), delegate: self as? NavStackAPI)
+        return NavInterface<COMP_CONT_TYPE>(layer: NavLayer.Nav(), delegate: self as? NavStackAPI)
     }
     
     public var modal:NavInterfaceModal<COMP_MODS_TYPE>{
-        return NavInterfaceModal<COMP_MODS_TYPE>(batch:compBatched,layer: NavLayer.Modal(), delegate: self as? NavStackAPI)
+        return NavInterfaceModal<COMP_MODS_TYPE>(layer: NavLayer.Modal(), delegate: self as? NavStackAPI)
     }
     
     public var tabAny:NavInterfaceTabAny<COMP_CONT_TYPE>{
-        return NavInterfaceTabAny<COMP_CONT_TYPE>(batch:compBatched,layer: NavLayer.TabAny(), delegate: self as? NavStackAPI)
+        return NavInterfaceTabAny<COMP_CONT_TYPE>(layer: NavLayer.TabAny(), delegate: self as? NavStackAPI)
     }
     
     public func tab(_ tab:COMP_TABS_TYPE)->NavInterface<COMP_CONT_TYPE>{
@@ -47,7 +46,7 @@ extension NavCompositionAPI{
     
     func tab(_ tab:Int)->NavInterface<COMP_CONT_TYPE>{
        
-        return NavInterface<COMP_CONT_TYPE>(batch:compBatched, layer: NavLayer.Tab(tab), delegate: self as? NavStackAPI)
+        return NavInterface<COMP_CONT_TYPE>(layer: NavLayer.Tab(tab), delegate: self as? NavStackAPI)
     }
     
   
@@ -61,41 +60,38 @@ class NavComposition<TABS:RawRepresentable,CONT:RawRepresentable,MODS:RawReprese
     typealias COMP_MODS_TYPE = MODS
     
     weak var compDelegate:NavStackAPI?
-    let compBatched:Bool
     
-    public init( batch:Bool=false, delegate:NavStackAPI? ){
+    public init( delegate:NavStackAPI? ){
         self.compDelegate = delegate
-        self.compBatched = batch
     }
     
 }
 
-// MARK: - The composition intercepts the StackInterface and injects the boolean `batched` context. This is a requirement for the transactions
 extension NavComposition:NavStackAPI{
 
-    
-    func push(layer: String, batched: Bool, controller: String, resourceId: String?, info: Any?, animator: NavAnimatorClass?, presentation: NavPresentationClass?, completion:CompletionClosure?) {
-        self.compDelegate?.push(layer: layer, batched: compBatched, controller: controller, resourceId: resourceId, info: info, animator: animator, presentation: presentation, completion: completion)
+   
+    func push(layer: String, controller: String, resourceId: String?, info: Any?, animator: NavAnimatorClass?, presentation: NavPresentationClass?, completion:CompletionClosure?) {
+        self.compDelegate?.push(layer: layer, controller: controller, resourceId: resourceId, info: info, animator: animator, presentation: presentation, completion: completion)
     }
     
-    func pop(layer: String, batched: Bool, toController controller: String, resourceId: String?, info: Any?, animator: NavAnimatorClass?, completion:CompletionClosure?) {
-        self.compDelegate?.pop(layer: layer, batched: compBatched, toController: controller, resourceId: resourceId, info: info, animator: animator, completion: completion)
+    func pop(layer: String, toController controller: String, resourceId: String?, info: Any?, animator: NavAnimatorClass?, completion:CompletionClosure?) {
+        self.compDelegate?.pop(layer: layer, toController: controller, resourceId: resourceId, info: info, animator: animator, completion: completion)
     }
     
-    func popCurrent(layer: String, batched: Bool, animator: NavAnimatorClass?, completion:CompletionClosure?) {
-        self.compDelegate?.popCurrent(layer: layer, batched: compBatched, animator: animator, completion: completion)
+    func popCurrent(layer: String, animator: NavAnimatorClass?, completion:CompletionClosure?) {
+        self.compDelegate?.popCurrent(layer: layer, animator: animator, completion: completion)
     }
     
-    func popToRoot(layer: String, batched: Bool, animator: NavAnimatorClass?, completion:CompletionClosure?) {
-        self.compDelegate?.popToRoot(layer: layer, batched: compBatched, animator: animator, completion: completion)
+    func popToRoot(layer: String, animator: NavAnimatorClass?, completion:CompletionClosure?) {
+        self.compDelegate?.popToRoot(layer: layer, animator: animator, completion: completion)
     }
     
-    func show (layer: String, batched: Bool, animator: NavAnimatorClass?, completion:CompletionClosure?) {
-        self.compDelegate?.show(layer: layer, batched: compBatched, animator: animator, completion: completion)
+    func show (layer: String, animator: NavAnimatorClass?, completion:CompletionClosure?) {
+        self.compDelegate?.show(layer: layer, animator: animator, completion: completion)
     }
     
-    func hide(layer: String, batched: Bool, explicit: Bool, animator: NavAnimatorClass?, completion: CompletionClosure?) {
-        self.compDelegate?.hide(layer: layer, batched: compBatched, explicit:explicit, animator: animator, completion: completion)
+    func hide(layer: String, explicit: Bool, animator: NavAnimatorClass?, completion: CompletionClosure?) {
+        self.compDelegate?.hide(layer: layer, explicit:explicit, animator: animator, completion: completion)
     }
    
     func tabIndex(from layer: String) -> Int {

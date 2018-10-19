@@ -21,14 +21,14 @@ extension FlaskNav {
         let navOperation = FlaskNavOperation(fluxLock: fluxLock, name: context.operationName())
     
         let navigatorIntention = NavContext.manager.navigator(fromStateHash:stringContext)
-        let navigator = resolveNavigatorFor(context: context, intention: navigatorIntention)
-        
+       
+        assertNavigatorFor(context: context, intention: navigatorIntention)
         instantiateViewControllerFor(context: context, navOperation: navOperation)
         
         print("--> will navigateTo \(context.desc())")
-        switch navigator {
+        switch navigatorIntention {
         case .Root:
-//            setAnimatorFor(context:context,navigator: .Root)
+            setAnimatorFor(context:context,navigator: .Root)
             navigateRoot(context:context, navOperation: navOperation)
         case .Pop:
             setAnimatorFor(context:context,navigator: .Pop)
@@ -121,25 +121,20 @@ extension FlaskNav{
     
     
     
-    func resolveNavigatorFor(context:NavContext, intention:NavigatorType)->NavigatorType{
+    func assertNavigatorFor(context:NavContext, intention:NavigatorType){
         
-        if  context.viewController() == nil {
-            // for example in a batch action
-            // not all controllers are instantiated until navigation is performed
-            // this may convert a Pop into a Push operation
-            return .Push
+        if  context.viewController() == nil && intention != .Push {
+           assert(false,"error controller must exist")
         }
-        return intention
     }
     
     func setAnimatorFor(context:NavContext, navigator:NavigatorType){
         
         print("setting future animator \(String(describing: context.animator)) for \(context.desc()) nav \(navigator.rawValue)")
         guard let controller = context.viewController() else { return }
-       
-        context.animator = context.animator ?? preferredAnimator()
-            
-        bindAnimatorCallbacks(context.animator!, controller:controller, context:context, navigator:navigator)
-        setPreferredAnimator(context.animator!, for: controller, withNavigator: navigator)
+        guard let animator = context.animator else { return }
+        
+        bindAnimatorCallbacks(animator, controller:controller, context:context, navigator:navigator)
+        setPreferredAnimator(animator, for: controller, withNavigator: navigator)
     }
 }
