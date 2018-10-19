@@ -60,6 +60,7 @@ extension FlaskNav {
             let nav = self?.navInstance(forLayer: context.layer)
             
             if (nav?.viewControllers.contains(controller))! {
+                print("! aborting push \(context.desc())")
                 DispatchQueue.main.async {
                     self?.intentToCompleteOperationFor(context: context)
                 }
@@ -133,30 +134,12 @@ extension FlaskNav{
     
     func setAnimatorFor(context:NavContext, navigator:NavigatorType){
         
-        let controller = context.viewController()!
-        let animator = context.animator
-        
-        animator?.onInteractionCompleted = { [weak self] completed in
+        print("setting future animator \(String(describing: context.animator)) for \(context.desc()) nav \(navigator.rawValue)")
+        guard let controller = context.viewController() else { return }
+       
+        context.animator = context.animator ?? preferredAnimator()
             
-            if completed && animator?.type == .Hide {
-                
-                self?.removePreferredAnimator(for: controller, withNavigator: navigator)
-                
-            }else if !completed {
-                
-                DispatchQueue.main.async{
-                    self?.intentToCompleteOperationFor(context: context, completed: false, intentRoot: navigator == .Push)
-                }
-                
-            }
-        }
-        animator?.onRequestDismiss = { [weak self]  (navGesture, gesture) in
-            
-            if gesture.state == .began {
-                self?.popCurrent(layer: context.layer)
-            }
-        }
-        
-        setPreferredAnimator(animator, for: controller, withNavigator: navigator)
+        bindAnimatorCallbacks(context.animator!, controller:controller, context:context, navigator:navigator)
+        setPreferredAnimator(context.animator!, for: controller, withNavigator: navigator)
     }
 }

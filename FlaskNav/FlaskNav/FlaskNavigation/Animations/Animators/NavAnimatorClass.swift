@@ -23,7 +23,7 @@ open class NavAnimatorClass: NSObject {
     
     static let WAIT_FOR_ANIMATOR_TO_CANCEL = 0.5
     
-    public private(set) var type:NavAnimatorClassType = .Show
+    public var type:NavAnimatorClassType = .Show
     public private(set) var controller:NavAnimatorControllerType = .ViewController
     public var _duration = 0.4
     var viewAnimator:UIViewPropertyAnimator?
@@ -32,7 +32,7 @@ open class NavAnimatorClass: NSObject {
     
     //MARK: INTERACTOR
     public var onInteractionRequest:NavAnimatorInteraction?
-    var onInteractionCompleted:(Bool)->Void = {_ in}
+    var onAnimationCompleted:(Bool)->Void = {_ in}
     public private(set) var _interactionController:UIPercentDrivenInteractiveTransition? = nil
     public private(set) var wasCanceled:Bool = false
     
@@ -64,15 +64,15 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
     public func animationEnded(_ transitionCompleted: Bool) {
  
         viewAnimator = nil
-        completionCallback(transitionCompleted)
-        onInteractionCompleted( (!wasCanceled) )
+        userCompletionCallback( !wasCanceled )
+        onAnimationCompleted  ( !wasCanceled )
       
         if transitionCompleted && type == .Hide {
             removeActiveDismissGestures()
         }
     }
     
-    func completionCallback(_ transitionCompleted: Bool) {
+    func userCompletionCallback(_ transitionCompleted: Bool) {
         if type == .Show {
             if let onShow = onShowCompletion {
                 DispatchQueue.main.async {
@@ -107,7 +107,7 @@ extension NavAnimatorClass:UIViewControllerAnimatedTransitioning{
         
         if type == .Show {
             container.addSubview(toController.view)
-            addGesturesTo(view: toController.view)
+            addDismissGesturesTo(view: toController.view)
             
             viewAnimator = present(controller: toController, from: fromController, in: container, withContext: transitionContext)
         } else if type == .Hide{
@@ -182,7 +182,7 @@ extension NavAnimatorClass{
     }
     
     
-    func addGesturesTo(view:UIView){
+    func addDismissGesturesTo(view:UIView){
         
         
         activeDismissGestures = []

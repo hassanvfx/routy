@@ -20,12 +20,11 @@ extension FlaskNav{
         let finalizer:CompletionClosure = { finallyCompleted in
             print("dispatch completed ")
             completion(finallyCompleted)
-            operation.complete()
         }
         
         dispatchActiveLayer(){ [weak self] activeCompleted in
             self?.dispatchCurrentNavigation(){ layersCompleted in
-                finalizer(layersCompleted)
+                finalizer(activeCompleted && layersCompleted)
             }
         }
  

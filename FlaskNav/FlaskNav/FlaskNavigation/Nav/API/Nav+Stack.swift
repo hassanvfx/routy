@@ -28,6 +28,8 @@ extension FlaskNav: NavStackAPI{
             let context = NavContext.manager.context(layer:layer, navigator:.Push, controller: controller, resourceId: resourceId, info: info, animator:animator)
             stack.push(context: context)
         }
+        
+      
     }
     
     func pop(layer:String, batched:Bool = false, toController controller:String, resourceId:String?, info:Any?, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
@@ -44,6 +46,7 @@ extension FlaskNav: NavStackAPI{
                 this.stackActive.set(layer:layer)
             }
         }
+        
     }
     func popCurrent(layer:String, batched:Bool = false, animator: NavAnimatorClass? = nil, completion:CompletionClosure? = nil){
      
@@ -87,6 +90,7 @@ extension FlaskNav{
             let layerName = NavLayer.IsTab(layer) ?  NavLayer.TabAny() : layer
             
             this.setActiveLayerAnimator(animator, for: layerName, withType: .Show)
+            this.setActiveLayerAnimator(animator, for: layerName, withType: .Hide)
             this.stackActive.set(layer:layer)
         }
     }
@@ -109,6 +113,10 @@ extension FlaskNav{
             this.setActiveLayerAnimator(animator, for: layerName, withType: .Hide)
             this.stackActive.unset()
         }
+        
+//        activeLayerTransaction(for: layer,batched: batched, completion:completion){ (layer) in
+//            //resolve state after commit
+//        }
     }
     
     func tabIndex(from layer: String) -> Int {

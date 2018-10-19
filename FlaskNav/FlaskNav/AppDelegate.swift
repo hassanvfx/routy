@@ -9,7 +9,7 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+    class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
@@ -19,15 +19,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
+        
+//        testInteractorTabPushGesture()
         testInteractorModalPushGesture()
 //        testInteractorPushGesture()
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 4){
-//            self.nonInteractiveTests()
-//        }
+        
+//        nonInteractiveTests()
+//        testOne()
+//        testForever()
+//        testBlackRootError()
         return true
     }
     
+    func testInteractive(){
+        testInteractorTabPushGesture()
+        testInteractorModalPushGesture()
+        testInteractorPushGesture()
+    }
+    
+    func testOne(){
+        testInteractive()
+        nonInteractiveTests()
+    }
+    func testForever(){
+        testOne()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4){
+            self.testForever()
+        }
+    }
+    
     func nonInteractiveTests(){
+        testErrorOct16()
         testInteractorPush()
         testInteractorShowTabs()
         testContextCallbacks()
@@ -44,10 +66,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         testError()
     }
     
+    
+        
+    
+    func testErrorOct16(){
+        
+         let modalIn = NavAnimators.SlideLeft()
+        let modalOut = NavAnimators.SlideLeft()
+        let modalOut2 = NavAnimators.SlideLeft()
+        
+        Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"]), animator:modalIn){_ in print("---> line \(#line)")}
+        Services.router.nav.show(animator: modalOut){_ in print("---> line \(#line)")}
+        Services.router.tab(.Home).show(animator: modalOut2){_ in print("---> line \(#line)")}
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
+        
+    }
+    
+    func testInteractorTabPushGesture() {
+        let animator = NavAnimators.SlideLeft()
+        let navGesture = NavGesturePan(completesAt:0.5){ gesture in }
+        animator.dismissGestures = [navGesture]
+        
+        animator.onHideCompletion = { completed in
+        }
+        
+//        Services.router.tab(.Home).push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:animator){_ in print("---> line \(#line)")}
+        Services.router.tab(.Home).show(animator: animator)
+    }
+    
     func testInteractorModalPushGesture() {
         
-        let animator = NavAnimators.ZoomIn()
-        let navGesture = NavGestureZoom(completesAt:0.5){ gesture in }
+        let animator = NavAnimators.SlideLeft()
+        let navGesture = NavGesturePan(completesAt:0.5){ gesture in }
         animator.dismissGestures = [navGesture]
         
         animator.onHideCompletion = { completed in
@@ -59,8 +109,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func testInteractorPushGesture() {
         
-        let animator = NavAnimators.ZoomIn()
-        let navGesture = NavGestureZoom(completesAt:0.5){ gesture in }
+        let animator = NavAnimators.SlideLeft()
+        let navGesture = NavGesturePan(completesAt:0.5){ gesture in }
         animator.dismissGestures = [navGesture]
         
         animator.onHideCompletion = { completed in
@@ -176,8 +226,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:slider){_ in print("---> line \(#line)")}
         Services.router.nav.popCurrent(animator: zoomer){_ in print("---> line \(#line)")}
         Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"]), animator:modalIn){_ in print("---> line \(#line)")}
-        Services.router.nav.show(animator: modalOut)
-        Services.router.tab(.Home).show(animator: modalOut2)
+        Services.router.nav.show(animator: modalOut){_ in print("---> line \(#line)")}
+        Services.router.tab(.Home).show(animator: modalOut2){_ in print("---> line \(#line)")}
     }
     
     func testCompletion(){
@@ -190,9 +240,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func testAsyncStack(){
         Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
-        Services.router.batch { (batch) in
-            batch.nav.push(controller: .Feed, info:NavInfo(params:["color":"white"])){_ in print("---> line \(#line)")}
-        }
+//        Services.router.batch { (batch) in
+//            batch.nav.push(controller: .Feed, info:NavInfo(params:["color":"white"])){_ in print("---> line \(#line)")}
+//        }
         Services.router.tab(.Friends).show(){_ in print("---> line \(#line)")}
         Services.router.nav.show(){_ in print("---> line \(#line)")}
     }
@@ -250,28 +300,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Services.router.modal.popCurrent(){_ in print("---> line \(#line)")}
         
             
-        Services.router.batch { (batch) in
-            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"red"])){_ in print("---> line \(#line)")}
-            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"blue"])){_ in print("---> line \(#line)")}
-        }
-
-
-        Services.router.batch { (batch) in
-            batch.nav.push(controller: .Feed, info:NavInfo(params:["color":"white"])){_ in print("---> line \(#line)")}
-        }
+//        Services.router.batch { (batch) in
+//            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"red"])){_ in print("---> line \(#line)")}
+//            batch.nav.push( controller: .Feed, info:NavInfo(params:["color":"blue"])){_ in print("---> line \(#line)")}
+//        }
+//
+//
+//        Services.router.batch { (batch) in
+//            batch.nav.push(controller: .Feed, info:NavInfo(params:["color":"white"])){_ in print("---> line \(#line)")}
+//        }
 
         
         Services.router.tab(.Friends).show(){_ in print("---> line \(#line)")}
         Services.router.nav.show(){_ in print("---> line \(#line)")}
 
         
-        Services.router.batch { (batch) in
-            batch.nav.popCurrent()
-            batch.nav.popCurrent()
-        }
+//        Services.router.batch { (batch) in
+//            batch.nav.popCurrent()
+//            batch.nav.popCurrent()
+//        }
         
     
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in print("---> line \(#line)")}
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){_ in
+            print("---> line \(#line)")}
        
         
 

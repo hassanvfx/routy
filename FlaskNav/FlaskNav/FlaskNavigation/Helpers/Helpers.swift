@@ -7,13 +7,14 @@
 //
 
 import UIKit
-
+import Flask
 
 let ROOT_CONTROLLER = "root"
 
 public typealias ControllerConstructor = () -> UIViewController
 public typealias RoutingMap = [String:ControllerConstructor]
 public typealias CompletionClosure = (Bool)->Void
+public typealias OperationCompletionClosure = (FlaskOperation, Bool)->Void
 
 public class NavWeakRef<T> where T: AnyObject {
     

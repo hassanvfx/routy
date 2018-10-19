@@ -19,9 +19,9 @@ class NavGestureZoom: NavGesture<UIPinchGestureRecognizer> {
     override func progress()->Double {
         guard let gesture = gesture else { return 0}
         
-        var percent = min(gesture.scale, 0.75)
-        percent = max(gesture.scale, 0.0)
-        return Double(percent)
+        var percent = min(gesture.scale, 1.0)
+        percent = max(percent, 0.0)
+        return Double(1.0 - percent)
     }
     
     
