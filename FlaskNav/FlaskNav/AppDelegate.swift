@@ -19,6 +19,7 @@ import UIKit
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
+        testInteractivityAndContinue()
 //        nonInteractiveTests()
 //        testOne()
 //        testForever()
@@ -31,6 +32,16 @@ import UIKit
             self.testInteractorModalPushGesture(){
                 self.testInteractorPushGesture(){
                     self.nonInteractiveTests()
+                }
+            }
+        }
+    }
+    
+    func testInteractivity(){
+        testInteractorTabPushGesture(){
+            self.testInteractorModalPushGesture(){
+                self.testInteractorPushGesture(){
+                    self.testInteractivity()
                 }
             }
         }
