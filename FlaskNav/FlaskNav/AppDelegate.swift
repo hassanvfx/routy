@@ -19,6 +19,7 @@ import UIKit
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
+
         
 //        testInteractorTabPushGesture()
         testInteractorModalPushGesture()
@@ -46,6 +47,7 @@ import UIKit
         DispatchQueue.main.asyncAfter(deadline: .now() + 4){
             self.testForever()
         }
+
     }
     
     func nonInteractiveTests(){
