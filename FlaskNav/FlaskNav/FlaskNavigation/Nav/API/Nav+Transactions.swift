@@ -12,22 +12,31 @@ extension FlaskNav{
     
     func activeLayerTransaction(for layer:String, batched:Bool,  completion:CompletionClosure? = nil, action:@escaping (String)->Void){
         
-        var onCompletion:CompletionClosure? = { [weak self] completed in
-            if completed {
-                self?.stackActive.commit()
-                self?.substance.commitState()
-            } else {
-                self?.stackActive.rollback()
-                self?.substance.rollbackState()
-            }
+        let finalize:OperationCompletionClosure = { operation, completed in
+            
             if let userCompletion = completion {
                 userCompletion(completed)
             }
             
+            operation.complete()
         }
-        if batched { onCompletion = nil }
         
-        enqueueNavOperation(batched:batched, completion: onCompletion ) { [weak self] in
+        var resolveState:OperationCompletionClosure? = { [weak self] operation, completed in
+            if completed {
+                self?.stackActive.commit()
+                self?.substance.commitState(){
+                    finalize(operation, completed)
+                }
+            } else {
+                self?.stackActive.rollback()
+                self?.substance.rollbackState(){
+                    finalize(operation, completed)
+                }
+            }
+        }
+        if batched { resolveState = nil }
+        
+        enqueueNavOperation(batched:batched, completion: resolveState ) { [weak self] in
             if !batched {
                 self?.stackActive.capture()
                 self?.substance.captureState()
@@ -39,26 +48,37 @@ extension FlaskNav{
     
     func navTransaction(for layer:String, batched:Bool,  completion:CompletionClosure? = nil, action:@escaping (String,NavStack)->Void){
         
-        var onCompletion:CompletionClosure? = {  [weak self] completed in
+        let finalize:OperationCompletionClosure = { operation, completed in
+            
+            if let userCompletion = completion {
+                userCompletion(completed)
+            }
+            
+            operation.complete()
+        }
+        
+        var resolveState:OperationCompletionClosure? = {  [weak self] operation, completed in
             
             guard let this = self else { return }
             
             let stack = this.stack(forLayer: layer)
             if completed {
                 stack.commit()
-                this.substance.commitState()
+                this.substance.commitState(){
+                    finalize(operation, completed)
+                }
             } else {
                 stack.rollback()
-                this.substance.rollbackState()
+                this.substance.rollbackState(){
+                    finalize(operation, completed)
+                }
             }
-            if let userCompletion = completion {
-                userCompletion(completed)
-            }
+            
         }
         
-        if batched { onCompletion = nil }
+        if batched { resolveState = nil }
         
-        enqueueNavOperation(batched:batched, completion: onCompletion ) { [weak self] in
+        enqueueNavOperation(batched:batched, completion: resolveState ) { [weak self] in
             
             guard let this = self else { return }
             

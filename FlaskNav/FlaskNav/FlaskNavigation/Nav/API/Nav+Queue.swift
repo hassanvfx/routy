@@ -12,18 +12,18 @@ import Flask
 
 extension FlaskNav{
 
-    func enqueueNavOperation( batched:Bool, completion:CompletionClosure?, action:@escaping ()->Void){
+    func enqueueNavOperation( batched:Bool, completion:OperationCompletionClosure?, action:@escaping ()->Void){
 
         if batched {
             assert(completion == nil, "Completion is not supported in batch transactions")
             action()
         } else{
-            let completionClosure = completion ?? { _ in }
+            let completionClosure = completion ?? { _,_ in }
             enqueueNavOperationNow(action: action, completion: completionClosure)
         }
     }
     
-    func enqueueNavOperationNow(action closure:@escaping ()->Void, completion:@escaping (Bool)->Void){
+    func enqueueNavOperationNow(action closure:@escaping ()->Void, completion:@escaping OperationCompletionClosure){
         
         
         let action:(FlaskOperation)->Void = { [weak self] operation in
@@ -38,8 +38,7 @@ extension FlaskNav{
                     print("dispatch canceled")
                 }
                 
-                completion(completed)
-                operation.complete()
+                completion(operation,completed)
             }
         }
         
