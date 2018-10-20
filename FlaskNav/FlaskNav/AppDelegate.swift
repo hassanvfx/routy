@@ -189,7 +189,7 @@ import UIKit
     func testContextCallbacks(){
         let info = NavInfo(params:["color":"yellow"])
         info.onWillInit = { nav, con in
-            let controller = con as! AsyncViewController
+            let controller = con.viewController() as! AsyncViewController
             print("will init \(String(describing: controller.navInfo?.params))");
         }
         info.onDidInit = { nav, con in
@@ -210,8 +210,8 @@ import UIKit
         info.onDidSetup = { nav, con in
             print("did Setup");
         }
-        info.callback = { _ in
-            
+        info.setCallback(){ context, _ in
+            print("callback from \(context.desc())");
         }
         
         

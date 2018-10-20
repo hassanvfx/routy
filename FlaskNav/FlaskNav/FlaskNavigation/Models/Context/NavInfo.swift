@@ -8,7 +8,7 @@
 
 import UIKit
 
-public typealias NavInfoCallbackClosure = (_ nav:FlaskNavigationController,_ controller:UIViewController)->Void
+public typealias NavInfoCallbackClosure = (_ nav:FlaskNavigationController,_ context:NavContext)->Void
 
 
 public class NavInfo {
@@ -31,7 +31,8 @@ public class NavInfo {
     
     var onDidSetup:NavInfoCallbackClosure?
     
-    var callback:NavContextCallback?
+    public private(set) var _callback:NavContextCallback?
+    var context:NavContext?
     
     init(name:String?=nil,
          resource:String?=nil,
@@ -44,5 +45,14 @@ public class NavInfo {
         self.resourceId = resourceId
         self.params = params
         self.map = map
+    }
+    
+    func callback(_ payload:Any?){
+        guard let context = context else { assert(false,"context not set!");  return }
+        _callback?( context, payload)
+    }
+    
+    func setCallback(_ action:@escaping NavContextCallback){
+        _callback = action
     }
 }
