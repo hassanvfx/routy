@@ -12,12 +12,12 @@ import Flask
 
 extension FlaskNav{
     
-    func dispatchFlux(with operation:FlaskOperation,_ completion:@escaping CompletionClosure){
+    func dispatchFlux(with operation:FlaskOperation,_ completion:@escaping NavCompletion){
 
         print("-------------")
         print("dispatch start ")
         
-        let finalizer:CompletionClosure = { finallyCompleted in
+        let finalizer:NavCompletion = { finallyCompleted in
             print("dispatch completed ")
             completion(finallyCompleted)
         }
@@ -31,7 +31,7 @@ extension FlaskNav{
         
     }
 
-    func dispatchActiveLayer(_ completion:@escaping CompletionClosure){
+    func dispatchActiveLayer(_ completion:@escaping NavCompletion){
 
         
         assert(NavLayer.isValid(stackActive.active),"invalid layer name")
@@ -53,7 +53,7 @@ extension FlaskNav{
     }
     
 
-    func dispatchCurrentNavigation(_ completion:@escaping CompletionClosure){
+    func dispatchCurrentNavigation(_ completion:@escaping NavCompletion){
 
         var layers:[String:String] = [:]
         

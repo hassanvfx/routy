@@ -12,7 +12,7 @@ import Flask
 
 extension FlaskNav{
 
-    func enqueueNavOperation( completion:@escaping OperationCompletionClosure, action:@escaping ()->Void){
+    func enqueueNavOperation( completion:@escaping NavOperationCompletion, action:@escaping ()->Void){
 
      
         

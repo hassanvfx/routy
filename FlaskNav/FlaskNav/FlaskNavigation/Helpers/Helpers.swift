@@ -11,10 +11,10 @@ import Flask
 
 let ROOT_CONTROLLER = "root"
 
-public typealias ControllerConstructor = () -> UIViewController
-public typealias RoutingMap = [String:ControllerConstructor]
-public typealias CompletionClosure = (Bool)->Void
-public typealias OperationCompletionClosure = (FlaskOperation, Bool)->Void
+public typealias NavConstructor = () -> UIViewController
+public typealias NavContextCompletion = (NavContext,Bool)->Void
+public typealias NavCompletion = (Bool)->Void
+public typealias NavOperationCompletion = (FlaskOperation, Bool)->Void
 
 public class NavWeakRef<T> where T: AnyObject {
     

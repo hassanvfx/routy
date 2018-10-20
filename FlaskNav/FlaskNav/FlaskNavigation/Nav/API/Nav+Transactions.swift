@@ -10,9 +10,9 @@ import UIKit
 
 extension FlaskNav{
     
-    func activeLayerTransaction(for layer:String,  completion:CompletionClosure? = nil, action:@escaping (String)->Void){
+    func activeLayerTransaction(for layer:String,  completion:NavCompletion? = nil, action:@escaping (String)->Void){
         
-        let finalize:OperationCompletionClosure = { operation, completed in
+        let finalize:NavOperationCompletion = { operation, completed in
             
             if let userCompletion = completion {
                 userCompletion(completed)
@@ -21,7 +21,7 @@ extension FlaskNav{
             operation.complete()
         }
         
-        let resolveState:OperationCompletionClosure = { [weak self] operation, completed in
+        let resolveState:NavOperationCompletion = { [weak self] operation, completed in
             if completed {
                 self?.stackActive.commit()
                 self?.substance.commitState(){
@@ -44,9 +44,9 @@ extension FlaskNav{
         
     }
     
-    func navTransaction(for layer:String,  completion:CompletionClosure? = nil, action:@escaping (String,NavStack)->Void){
+    func navTransaction(for layer:String,  completion:NavCompletion? = nil, action:@escaping (String,NavStack)->Void){
         
-        let finalize:OperationCompletionClosure = { operation, completed in
+        let finalize:NavOperationCompletion = { operation, completed in
             
             if let userCompletion = completion {
                 userCompletion(completed)
@@ -55,11 +55,11 @@ extension FlaskNav{
             operation.complete()
         }
         
-        let resolveState:OperationCompletionClosure = {  [weak self] operation, completed in
+        let resolveState:NavOperationCompletion = {  [weak self] operation, completed in
             
             guard let this = self else { return }
-            
             let stack = this.stack(forLayer: layer)
+            
             if completed {
                 stack.commit()
                 this.substance.commitState(){

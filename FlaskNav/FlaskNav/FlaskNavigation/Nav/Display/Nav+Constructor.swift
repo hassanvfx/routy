@@ -10,7 +10,7 @@ import UIKit
 
 extension FlaskNav{
     
-    func controllerConstructor(for controller:String)->ControllerConstructor{
+    func controllerConstructor(for controller:String)->NavConstructor{
         if let constructor = controllers[controller]{
             return constructor
         }

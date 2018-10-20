@@ -12,7 +12,7 @@ public class NavConfig {
     var navBar:Bool
     var navBarAnimated:Bool = false
     var tabBar:Bool
-    var constructor:ControllerConstructor? = nil
+    var constructor:NavConstructor? = nil
     
     public init(navBar:Bool = false, tabBar:Bool = false) {
         self.navBar = navBar
