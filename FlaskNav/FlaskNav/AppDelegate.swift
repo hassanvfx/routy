@@ -19,9 +19,10 @@ import UIKit
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
+        testOnboard()
 //        testInteractivity()
 //        nonInteractiveTests()
-        testOne()
+//        testOne()
 //        testForever()
 //        testBlackRootError()
         return true
@@ -85,6 +86,22 @@ import UIKit
     
     
     func testOnboard(){
+        
+        let sharedInfo = NavInfo()
+        sharedInfo.setCallback(){ context, payload in
+ 
+            let color = context.contextId % 2 == 0 ? "yellow" : "blue"
+            
+            switch context.controller {
+            case Modals.Login.rawValue:
+                Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":color], callback: sharedInfo.getCallback())){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+                break;
+            default:
+                break;
+            }
+        }
+        
+        Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"], callback: sharedInfo.getCallback())){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         
     }
         

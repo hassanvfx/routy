@@ -17,7 +17,7 @@ class AsyncViewController: UIViewController, FlaskNavViewControllerProtocol {
     func setupEmptyState() {
         
         
-        let color = navInfo?.params!["color"]
+        let color = navInfo?.params!["color"] as! String
         print("a frame = \(String(describing: view.frame))")
         
         switch color {
