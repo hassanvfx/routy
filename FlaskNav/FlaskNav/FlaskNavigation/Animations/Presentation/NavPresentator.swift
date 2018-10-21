@@ -35,7 +35,10 @@ class NavPresentator:NSObject {
         presented.modalPresentationStyle = .custom
         presented.transitioningDelegate = self
         
-        presenting.present(presented, animated: true, completion: completion)
+        DispatchQueue.main.async {
+            self.presenting.present(self.presented, animated: true, completion: completion)
+        }
+        
     }
     
     func dismiss(_ completion:@escaping ()->Void = {}){
@@ -45,7 +48,10 @@ class NavPresentator:NSObject {
             return;
         }
         
-        presenting.dismiss(animated: true, completion: completion)
+        DispatchQueue.main.async {
+            self.presenting.dismiss(animated: true, completion: completion)
+        }
+        
     }
 }
 extension NavPresentator:UIViewControllerTransitioningDelegate{

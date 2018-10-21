@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Delayed
 
 extension FlaskNav{
     
@@ -16,76 +17,20 @@ extension FlaskNav{
             print("Display tabIndex: \(index)")
             self.tabController?.selectedIndex = index
         }
-        dismissModalOperation {
-            DispatchQueue.main.async {  [weak self] in
-                self?.presentTab(index: index, completion: completion)
-            }
-        }
+        presentTab(index: index, completion: completion)
         
     }
     public func displayNavOperation(completion:@escaping (Bool)->Void){
-        dismissModalOperation {
-            DispatchQueue.main.async { [weak self] in
-                self?.dismissTab(completion: completion)
-            }
-        }
+            dismissTab(completion: completion)
     }
     public func displayModalOperation(completion:@escaping ()->Void){
-        DispatchQueue.main.async {  [weak self] in
-            if (self?._isModalPresented())! == true {
-                completion()
-                return
-            }
-            
-            self?.presentModal(completion: completion)
-        }
+            presentModal(completion: completion)
     }
     
     public func dismissModalOperation(completion:@escaping ()->Void){
-        DispatchQueue.main.async {  [weak self] in
-            if (self?._isModalPresented())! == false {
-                completion()
-                return
-            }
-            
-            self?.dismissModal(completion: completion)
-        }
+            dismissModal(completion: completion)
     }
     
-}
-extension FlaskNav{
-    
-    func ensureNavCompletion(withContext context:NavContext, _ action:@escaping ()->Void){
-        
-        let nav = self.navInstance(forLayer: context.layer)
-        
-        let execute = {
-            print("Executing NAV Operation!")
-            nav._isPerformingNavOperation = true
-            action()
-        }
-        
-        let complete = {
-            print("Aborting NAV Operation!")
-            DispatchQueue.main.async {
-                self.intentToCompleteOperationFor(context: context)
-            }
-        }
-        
-        if context.navigator != .Root || (context.navigator == .Root && nav.viewControllers.count > 1){
-            
-            execute()
-            
-            if NavLayer.IsModal(context.layer) &&  self._isModalPresented() == false {
-                complete()
-            }
-            if NavLayer.IsTab(context.layer) &&  self.isTabPresented() == false {
-                complete()
-            }
-        } else{
-            complete()
-        }
-    }
 }
 extension FlaskNav{
     
@@ -111,6 +56,7 @@ extension FlaskNav{
             DispatchQueue.main.async {
                 print("is PUSHING now \(context.desc())")
                 nav.pushViewController(controller, animated: true)
+                
             }
         }
     }
@@ -132,4 +78,66 @@ extension FlaskNav{
 }
 
 
+extension FlaskNav{
+    
+    func assertComposition(context:NavContext){
+        if NavLayer.IsModal(context.layer) &&  !self.isModalPresented()  {
+             assert(false)
+        }else if NavLayer.IsTab(context.layer) &&  !self.isTabPresented() {
+             assert(false)
+        } else if NavLayer.IsNav(context.layer) && (self.isModalPresented() || self.isTabPresented()) {
+            assert(false,"nav may fail if layers are presented")
+        }
+    }
+    
+    func ensureNavCompletion(withContext context:NavContext, _ action:@escaping ()->Void){
+        
+        let nav = self.navInstance(forLayer: context.layer)
+        
+        let execute = {
+            print("Executing NAV Operation!")
+            nav._isPerformingNavOperation = true
+            action()
+        }
+        
+        let complete = {
+            print("Aborting NAV Operation!")
+            DispatchQueue.main.async {
+                self.intentToCompleteOperationFor(context: context)
+            }
+        }
+        
+        if context.navigator != .Root || (context.navigator == .Root && nav.viewControllers.count > 1){
+            
+            assertComposition(context: context)
+            
+            execute()
+            
+            if NavLayer.IsModal(context.layer) &&  self.isModalPresented() == false {
+                complete()
+            }
+            if NavLayer.IsTab(context.layer) &&  self.isTabPresented() == false {
+                complete()
+            }
+        } else{
+            complete()
+        }
+    }
+}
 
+extension FlaskNav{
+    
+    func navOperationKey()->String{
+        return "navOperationWatchdog"
+    }
+    
+    func cancelWatchForNavOperationToComplete(){
+        Kron.watchDogCancel(key:navOperationKey())
+    }
+    
+    func watchForNavOperationToComplete(retry:@escaping (Int)->Void, retryCount:Int = 0){
+        Kron.watchDog(timeOut: 2, resetKey: navOperationKey()){ key,ctx  in
+            retry(retryCount + 1)
+        }
+    }
+}

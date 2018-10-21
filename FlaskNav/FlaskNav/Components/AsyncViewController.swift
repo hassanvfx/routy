@@ -17,21 +17,12 @@ class AsyncViewController: UIViewController, FlaskNavViewControllerProtocol {
     func setupEmptyState() {
         
         
-        let color = navInfo?.params!["color"] as! String
-        print("a frame = \(String(describing: view.frame))")
+        let colors:[UIColor] = [.red, .green, . blue, .yellow, .white, .purple, .orange, .cyan, .magenta]
         
-        switch color {
-        case "red":
-            self.view.backgroundColor = .red
-        case "green":
-            self.view.backgroundColor = .green
-        case "blue":
-            self.view.backgroundColor = .blue
-        case "yellow":
-            self.view.backgroundColor = .yellow
-        default:
-            self.view.backgroundColor = .white
-        }
+        let colorIndex = navContext!.contextId % colors.count
+//        print("a frame = \(String(describing: view.frame))")
+        let color = colors[colorIndex]
+        self.view.backgroundColor = color
         
     }
     

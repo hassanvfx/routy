@@ -10,7 +10,7 @@ import UIKit
 
 extension FlaskNav{
     
-    func activeLayerTransaction(for layer:String,  completion:NavCompletion? = nil, action:@escaping (String)->Void){
+    func compTransaction(for layer:String,  completion:NavCompletion? = nil, action:@escaping (String)->Void){
         
         let finalize:NavOperationCompletion = { operation, completed in
             
@@ -18,7 +18,10 @@ extension FlaskNav{
                 userCompletion(completed)
             }
             
-            operation.complete()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                operation.complete()
+            }
+            
         }
         
         let resolveState:NavOperationCompletion = { [weak self] operation, completed in
@@ -52,7 +55,9 @@ extension FlaskNav{
                 userCompletion(completed)
             }
             
-            operation.complete()
+            DispatchQueue.main.async {
+                operation.complete()
+            }
         }
         
         let resolveState:NavOperationCompletion = {  [weak self] operation, completed in

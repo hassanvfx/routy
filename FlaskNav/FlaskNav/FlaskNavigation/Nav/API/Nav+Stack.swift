@@ -11,14 +11,18 @@ import Flask
 
 
 extension FlaskNav: NavStackAPI{
-
     
+   
     
     func push(layer:String, controller:String , resourceId:String?, info:Any? = nil, animator: NavAnimatorClass? = nil, presentation: NavPresentationClass? = nil, completion:NavContextCompletion? = nil) {
 
         let finalizer:NavCompletion = { result in self.completeContextOperation(layer: layer, result: result, contextCompletion: completion) }
         
-        activeLayerTransaction(for: layer){ [weak self] (layer) in
+//        compTransaction(for: layer){ [weak self] (layer) in
+//            self?.clearModal(for: layer)
+//        }
+        
+        compTransaction(for: layer){ [weak self] (layer) in
             print("-------------")
             print("dispatch STACK start ACTIVE LAYER ")
             
@@ -45,7 +49,7 @@ extension FlaskNav: NavStackAPI{
             stack.pop(toContextRef: context)
         }
         
-        activeLayerTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
+        compTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
             guard let this = self else { return }
             
             if !this.dismissEmptyModal(for: layer) {
@@ -62,7 +66,7 @@ extension FlaskNav: NavStackAPI{
             stack.pop(withAnimator: animator)
         }
         
-        activeLayerTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
+        compTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
             guard let this = self else { return }
             
             if !this.dismissEmptyModal(for: layer) {
@@ -78,7 +82,7 @@ extension FlaskNav: NavStackAPI{
             stack.clear(withAnimator: animator)
         }
         
-        activeLayerTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
+        compTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
             guard let this = self else { return }
             
             if !this.dismissEmptyModal(for: layer) {
@@ -95,7 +99,7 @@ extension FlaskNav{
         
         let finalizer:NavCompletion = { result in self.completeCompOperation(layer: layer, result: result, contextCompletion: completion) }
         
-        activeLayerTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
+        compTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
             guard let this = self else {
                 return
             }
@@ -111,7 +115,7 @@ extension FlaskNav{
         
         let finalizer:NavCompletion = { result in self.completeCompOperation(layer: layer, result: result, contextCompletion: completion) }
         
-        activeLayerTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
+        compTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
             guard let this = self else {
                 return
             }
@@ -128,6 +132,9 @@ extension FlaskNav{
             this.stackActive.unset()
         }
         
+        compTransaction(for: layer, completion:finalizer){ (layer) in
+            //resolve state after commit
+        }
     }
     
     func tabIndex(from layer: String) -> Int {
@@ -154,6 +161,16 @@ extension FlaskNav{
         self.stack(forLayer: NavLayer.Modal()).clear()
     }
     
+    func clearModal(for layer:String)->Bool{
+        
+        if !NavLayer.IsModal(self.stackActive.active) { return false}
+        if !NavLayer.IsModal(layer) { return false}
+        
+        self.stackActive.unset()
+        
+        return true
+        
+    }
     func dismissEmptyModal(for layer:String)->Bool{
         
         if !NavLayer.IsModal(self.stackActive.active) { return false}

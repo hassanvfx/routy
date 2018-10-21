@@ -19,11 +19,12 @@ import UIKit
         window = UIWindow(frame: UIScreen.main.bounds)
         Services.router.setup(withWindow: window!)
 
-        testOnboard()
+//        testInteractorPush()
+//        testOnboard()
 //        testInteractivity()
 //        nonInteractiveTests()
 //        testOne()
-//        testForever()
+        testForever()
 //        testBlackRootError()
         return true
     }
@@ -52,6 +53,8 @@ import UIKit
         testInteractorTabPushGesture()
         testInteractorModalPushGesture()
         testInteractorPushGesture()
+        testInteractorPush()
+        testInteractorShowTabs()
     }
     
     func testOne(){
@@ -59,17 +62,15 @@ import UIKit
         nonInteractiveTests()
     }
     func testForever(){
-        testOne()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4){
+//        testInteractive()
+        nonInteractiveTests(){
             self.testForever()
         }
 
     }
     
-    func nonInteractiveTests(){
+    func nonInteractiveTests(_ completion:@escaping ()->Void = {}){
         testErrorOct16()
-        testInteractorPush()
-        testInteractorShowTabs()
         testContextCallbacks()
         testModalDismiss()
         testShowAnimators()
@@ -79,9 +80,9 @@ import UIKit
         testNativeSync()
         testRoot()
         testAnimation()
-        testTransaction()
         testModal()
         testError()
+        testLast(completion)
     }
     
     
@@ -90,18 +91,17 @@ import UIKit
         let sharedInfo = NavInfo()
         sharedInfo.setCallback(){ context, payload in
  
-            let color = context.contextId % 2 == 0 ? "yellow" : "blue"
             
             switch context.controller {
             case Modals.Login.rawValue:
-                Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":color], callback: sharedInfo.getCallback())){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+                Services.router.modal.push(controller: .Login, info: NavInfo(callback: sharedInfo.getCallback())){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
                 break;
             default:
                 break;
             }
         }
         
-        Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"], callback: sharedInfo.getCallback())){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.modal.push(controller: .Login, info: NavInfo(params:["name":"anyName"], callback: sharedInfo.getCallback())){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         
     }
         
@@ -112,10 +112,10 @@ import UIKit
         let modalOut = NavAnimators.SlideLeft()
         let modalOut2 = NavAnimators.SlideLeft()
         
-        Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"]), animator:modalIn){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.modal.push(controller: .Login, info: NavInfo(params:["name":"anyName"]), animator:modalIn){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         Services.router.nav.show(animator: modalOut){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         Services.router.tab(.Home).show(animator: modalOut2){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["name":"anyName"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         
     }
     
@@ -145,7 +145,7 @@ import UIKit
             }
         }
         
-        Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"]), animator:animator){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.modal.push(controller: .Login, info: NavInfo(params:["name":"anyName"]), animator:animator){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         
     }
     
@@ -161,7 +161,7 @@ import UIKit
             }
         }
         
-        Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:animator){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.nav.push(controller: .Feed, info: NavInfo(params:["name":"anyName"]), animator:animator){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
 
     }
     
@@ -177,7 +177,8 @@ import UIKit
             
         }
         
-        Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:animator){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["name":"anyName"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.nav.push(controller: .Feed, info: NavInfo(params:["name":"anyName"]), animator:animator){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"white"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
     
         Services.router.nav.popCurrent(animator:animator)
@@ -204,7 +205,7 @@ import UIKit
     }
     
     func testContextCallbacks(){
-        let info = NavInfo(params:["color":"yellow"])
+        let info = NavInfo(params:["name":"anyName"])
         info.onWillInit = { nav, con in
             let controller = con.viewController() as! AsyncViewController
             print("will init \(String(describing: controller.navInfo?.params))");
@@ -240,7 +241,7 @@ import UIKit
         let slider = NavAnimators.SlideTop()
         let out = NavAnimators.SlideLeft()
         
-        Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"]), animator:slider)
+        Services.router.modal.push(controller: .Login, info: NavInfo(params:["name":"anyName"]), animator:slider)
         Services.router.modal.dismiss(animator:out)
     }
   
@@ -252,7 +253,7 @@ import UIKit
          Services.router.tab(.Friends).show(animator: slider)
          Services.router.tab.hide(animator: out)
         
-         Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"]), animator:slider)
+         Services.router.modal.push(controller: .Login, info: NavInfo(params:["name":"anyName"]), animator:slider)
          Services.router.modal.dismiss(animator:out)
     }
     
@@ -268,23 +269,23 @@ import UIKit
         
         let modalOut2 = NavAnimators.SlideLeft()
         
-        Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"yellow"]), animator:slider){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.nav.push(controller: .Feed, info: NavInfo(params:["name":"anyName"]), animator:slider){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         Services.router.nav.popCurrent(animator: zoomer){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
-        Services.router.modal.push(controller: .Login, info: NavInfo(params:["color":"yellow"]), animator:modalIn){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.modal.push(controller: .Login, info: NavInfo(params:["name":"anyName"]), animator:modalIn){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         Services.router.nav.show(animator: modalOut){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         Services.router.tab(.Home).show(animator: modalOut2){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
     }
     
     func testCompletion(){
         
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["name":"anyName"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         Services.router.tab(.Friends).show(){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
       
         Services.router.nav.show(){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
     }
     
     func testAsyncStack(){
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["name":"anyName"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
 
         Services.router.tab(.Friends).show(){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         Services.router.nav.show(){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
@@ -300,7 +301,7 @@ import UIKit
     func testRoot (){
 
 
-        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.modal.push(controller: .Login, info:NavInfo(params:["name":"anyName"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         Services.router.modal.popCurrent(){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
 
         Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"red"]))
@@ -308,14 +309,14 @@ import UIKit
     }
     
     func testAnimation (){
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["name":"anyName"]))
     }
     
     func testModal(){
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"]))
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["name":"anyName"]))
         
         //        Services.router.modal.show()
-        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"]))
+        Services.router.modal.push(controller: .Login, info:NavInfo(params:["name":"anyName"]))
         //        Services.router.modal.popCurrent()
         //        Services.router.nav.show()
     }
@@ -329,17 +330,17 @@ import UIKit
         Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"blue"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         
     }
-    func testTransaction(){
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+    func testLast(_ completion:@escaping ()->Void){
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["name":"anyName"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
 
         Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"red"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
 //        Services.router.modal.show(){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         Services.router.modal.popCurrent(){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["name":"anyName"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         
 
-        Services.router.modal.push(controller: .Login, info:NavInfo(params:["color":"yellow"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.modal.push(controller: .Login, info:NavInfo(params:["name":"anyName"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         Services.router.modal.popCurrent(){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         
 
@@ -348,7 +349,7 @@ import UIKit
         Services.router.nav.show(){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
 
     
-        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.nav.push(controller: .Feed, info:NavInfo(params:["name":"anyName"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
        
         
 
@@ -356,16 +357,16 @@ import UIKit
 
         
 //        Services.router.tab(0).show()
-        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["color":"yellow"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.tab(.Home).push(controller: .Feed, info:NavInfo(params:["name":"anyName"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
 //.
         
 
         Services.router.nav.popToRoot(){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
-        Services.router.tab(.Friends).show(){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
+        Services.router.tab(.Friends).show(){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)"); completion() }
 
         
-//        Services.router.tab(.Main).push(controller:.Feed, info:NavInfo(params:["color":"yellow"]))
-//        Services.router.modal().push(controller:.Login, info:NavInfo(params:["color":"yellow"]))
+//        Services.router.tab(.Main).push(controller:.Feed, info:NavInfo(params:["name":"anyName"]))
+//        Services.router.modal().push(controller:.Login, info:NavInfo(params:["name":"anyName"]))
         
     }
     
