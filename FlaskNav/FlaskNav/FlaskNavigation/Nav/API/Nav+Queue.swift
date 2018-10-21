@@ -12,24 +12,28 @@ import Flask
 
 extension FlaskNav{
 
-    func enqueueNavOperation( completion:@escaping NavOperationCompletion, action:@escaping ()->Void){
+    func enqueueNavOperation(nav:Bool, completion:@escaping NavOperationCompletion, action:@escaping ()->Void){
 
-     
-        
+  
         let action:(FlaskOperation)->Void = { [weak self] operation in
             assert(NavStack.locked == false, "error the `stack` is currently locked")
             
             NavStack.lock()
             action()
             NavStack.unlock()
-            self?.dispatchFlux(with: operation){ (completed) in
-                
-                if completed == false {
-                    print("dispatch canceled")
+            
+            if nav {
+                self?.dispatchNavFlux(with: operation){ (completed) in
+                    
+                    completion(operation,completed)
                 }
-                
-                completion(operation,completed)
+            }else{
+                self?.dispatchCompFlux(with: operation){ (completed) in
+                    
+                    completion(operation,completed)
+                }
             }
+            
         }
         
         let operation = FlaskOperation(block: action)

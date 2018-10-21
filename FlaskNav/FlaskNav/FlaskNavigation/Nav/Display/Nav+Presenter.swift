@@ -38,14 +38,19 @@ extension FlaskNav{
             animator.enableInteraction()
             
             if gesture.state == .began {
-                self?.tabAny.hide()
+                self?.tabs.hide()
             }
         }
         
         
         print("will SHOW tab")
+        
         tabPresentator = NavPresentator(presentViewController: tab, from: top, animator: animator, presentation: presentation)
-        tabPresentator?.present(myCompletion)
+        
+        dismissModal(){ [weak self] in
+            self?.tabPresentator?.present(myCompletion)
+        }
+       
         
     }
     
@@ -73,13 +78,16 @@ extension FlaskNav{
         animator.onRequestDismiss = { [weak self]  (navGesture, gesture) in
             
             if gesture.state == .began {
-                self?.tabAny.hide()
+                self?.tabs.hide()
             }
         }
         
         print("will HIDE tab")
         tabPresentator?.animator = animator
-        tabPresentator?.dismiss(onDismiss)
+        dismissModal() { [weak self] in
+            self?.tabPresentator?.dismiss(onDismiss)
+        }
+        
     }
 }
 

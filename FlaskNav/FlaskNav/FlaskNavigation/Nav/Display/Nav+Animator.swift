@@ -64,7 +64,7 @@ extension FlaskNav{
     
     func setPreferredAnimator(_ animator:NavAnimatorClass ,for controller:UIViewController, withNavigator navigator:NavigatorType){
         let key = animatorKey(for:controller, withNavigator: navigator)
-        print("setting animator for key \(key)")
+        print("setting animator for key \(key) - \(animator)")
         animators[key] = animator
     }
     
@@ -98,6 +98,7 @@ extension FlaskNav {
     
     func setActiveLayerAnimator(_ animator:NavAnimatorClass? ,for layer:String, withType type:NavAnimatorClassType){
         let key = animatorKey(for:layer, withType: type)
+        print("setting animator for key \(key) - \(String(describing: animator))")
         if animator != nil {
             animators[key] = animator
         }else if type == .Show{
@@ -108,6 +109,7 @@ extension FlaskNav {
     
     func getActiveLayerAnimator(for layer:String, withType type:NavAnimatorClassType)->NavAnimatorClass?{
         let key = animatorKey(for:layer, withType: type)
+        print("getting animator for key \(key)")
         return animators[key]
     }
     

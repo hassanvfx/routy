@@ -176,6 +176,11 @@ extension NavAnimatorClass{
          onInteractionRequest = { _ in }
     }
     
+    func disableInteraction() {
+        canceledInteraction = false
+        onInteractionRequest = nil
+    }
+    
     func startInteractiveDismiss(_ navGesture:NavGestureAbstract, gesture:UIGestureRecognizer){
         onRequestDismiss?(navGesture, gesture)
     }

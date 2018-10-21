@@ -12,26 +12,32 @@ import Flask
 
 extension FlaskNav: NavStackAPI{
     
-   
+    func disablePendingHideInteraction(){
+        
+        let layerName = NavLayer.IsTab(stackActive.active) ?  NavLayer.TabAny() : stackActive.active
+        
+        if let currentAnimator = getActiveLayerAnimator(for: layerName, withType: .Hide){
+            currentAnimator.disableInteraction()
+        }
+        
+    }
     
     func push(layer:String, controller:String , resourceId:String?, info:Any? = nil, animator: NavAnimatorClass? = nil, presentation: NavPresentationClass? = nil, completion:NavContextCompletion? = nil) {
 
         let finalizer:NavCompletion = { result in self.completeContextOperation(layer: layer, result: result, contextCompletion: completion) }
         
-//        compTransaction(for: layer){ [weak self] (layer) in
-//            self?.clearModal(for: layer)
-//        }
+
         
         compTransaction(for: layer){ [weak self] (layer) in
-            print("-------------")
-            print("dispatch STACK start ACTIVE LAYER ")
+           
+            guard let this = self else { return }
             
-            self?.stackActive.set(layer:layer)
+            this.disablePendingHideInteraction()
+            this.stackActive.set(layer:layer)
         }
         
         navTransaction(for: layer, completion:finalizer){ (layer,stack) in
-            print("-------------")
-            print("dispatch STACK start NAVIGATION")
+          
             
             let context = NavContext.manager.context(layer:layer, navigator:.Push, controller: controller, resourceId: resourceId, info: info, animator:animator)
             stack.push(context: context)
@@ -132,9 +138,6 @@ extension FlaskNav{
             this.stackActive.unset()
         }
         
-        compTransaction(for: layer, completion:finalizer){ (layer) in
-            //resolve state after commit
-        }
     }
     
     func tabIndex(from layer: String) -> Int {

@@ -25,12 +25,21 @@ extension FlaskNav{
         }
         
         let resolveState:NavOperationCompletion = { [weak self] operation, completed in
+            
+            if completed{
+                
+            }else{
+                
+            }
+            
             if completed {
+                print("dispatch ACTIVE LAYER completed")
                 self?.stackActive.commit()
                 self?.substance.commitState(){
                     finalize(operation, completed)
                 }
             } else {
+                print("dispatch ACTIVE LAYER canceled")
                 self?.stackActive.rollback()
                 self?.substance.rollbackState(){
                     finalize(operation, completed)
@@ -38,7 +47,9 @@ extension FlaskNav{
             }
         }
         
-        enqueueNavOperation(completion: resolveState ) { [weak self] in
+        enqueueNavOperation(nav:false, completion: resolveState ) { [weak self] in
+            print("-------------")
+            print("dispatch ACTIVE LAYER \(layer)")
             
             self?.stackActive.capture()
             self?.substance.captureState()
@@ -62,15 +73,19 @@ extension FlaskNav{
         
         let resolveState:NavOperationCompletion = {  [weak self] operation, completed in
             
+          
+            
             guard let this = self else { return }
             let stack = this.stack(forLayer: layer)
             
             if completed {
+                print("dispatch STACK completed")
                 stack.commit()
                 this.substance.commitState(){
                     finalize(operation, completed)
                 }
             } else {
+                print("dispatch STACK canceled")
                 stack.rollback()
                 this.substance.rollbackState(){
                     finalize(operation, completed)
@@ -80,7 +95,10 @@ extension FlaskNav{
         }
         
         
-        enqueueNavOperation(completion: resolveState ) { [weak self] in
+        enqueueNavOperation(nav:true, completion: resolveState ) { [weak self] in
+            
+            print("-------------")
+            print("dispatch STACK start \(layer)")
             
             guard let this = self else { return }
             

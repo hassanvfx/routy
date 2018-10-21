@@ -18,7 +18,6 @@ extension FlaskNav{
         print("dispatch start ")
         
         let finalizer:NavCompletion = { finallyCompleted in
-            print("dispatch completed ")
             completion(finallyCompleted)
         }
         
@@ -28,6 +27,39 @@ extension FlaskNav{
             }
         }
  
+        
+    }
+    
+    
+    func dispatchCompFlux(with operation:FlaskOperation,_ completion:@escaping NavCompletion){
+        
+        print("-------------")
+        print("dispatch COMP-FLUX start ")
+        
+        let finalizer:NavCompletion = { finallyCompleted in
+            completion(finallyCompleted)
+        }
+        
+        dispatchActiveLayer(){  activeCompleted in
+                finalizer(activeCompleted)
+        }
+
+    }
+    
+    
+    func dispatchNavFlux(with operation:FlaskOperation,_ completion:@escaping NavCompletion){
+        
+        print("-------------")
+        print("dispatch NAV-FLUX start ")
+        
+        let finalizer:NavCompletion = { finallyCompleted in
+            completion(finallyCompleted)
+        }
+        
+        dispatchCurrentNavigation(){ layersCompleted in
+            finalizer(layersCompleted)
+        }
+        
         
     }
 

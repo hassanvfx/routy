@@ -33,7 +33,7 @@ extension NavCompositionAPI{
         return NavInterfaceModal<COMP_MODS_TYPE>(layer: NavLayer.Modal(), delegate: self as? NavStackAPI)
     }
     
-    public var tabAny:NavInterfaceTabAny<COMP_CONT_TYPE>{
+    public var tabs:NavInterfaceTabAny<COMP_CONT_TYPE>{
         return NavInterfaceTabAny<COMP_CONT_TYPE>(layer: NavLayer.TabAny(), delegate: self as? NavStackAPI)
     }
     

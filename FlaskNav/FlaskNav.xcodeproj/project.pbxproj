@@ -51,7 +51,7 @@
 		2670378D21738AC6006CE84F /* NavGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670378C21738AC6006CE84F /* NavGesture.swift */; };
 		2670379021738C2C006CE84F /* NavGestureZoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670378F21738C2C006CE84F /* NavGestureZoom.swift */; };
 		2670379221738C36006CE84F /* NavGesturePan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2670379121738C36006CE84F /* NavGesturePan.swift */; };
-		268EC7B3217026C30086A2FC /* Nav+Presentators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268EC7B2217026C30086A2FC /* Nav+Presentators.swift */; };
+		268EC7B3217026C30086A2FC /* Nav+ApplyNavType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268EC7B2217026C30086A2FC /* Nav+ApplyNavType.swift */; };
 		269B147A2165AAC400208360 /* Nav+Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269B14792165AAC400208360 /* Nav+Animator.swift */; };
 		26B8070E214DC740008091C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8070D214DC740008091C2 /* AppDelegate.swift */; };
 		26B80710214DC740008091C2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B8070F214DC740008091C2 /* ViewController.swift */; };
@@ -122,7 +122,7 @@
 		2670378C21738AC6006CE84F /* NavGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavGesture.swift; sourceTree = "<group>"; };
 		2670378F21738C2C006CE84F /* NavGestureZoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavGestureZoom.swift; sourceTree = "<group>"; };
 		2670379121738C36006CE84F /* NavGesturePan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavGesturePan.swift; sourceTree = "<group>"; };
-		268EC7B2217026C30086A2FC /* Nav+Presentators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Presentators.swift"; sourceTree = "<group>"; };
+		268EC7B2217026C30086A2FC /* Nav+ApplyNavType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+ApplyNavType.swift"; sourceTree = "<group>"; };
 		269B14792165AAC400208360 /* Nav+Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Animator.swift"; sourceTree = "<group>"; };
 		26B8070A214DC740008091C2 /* FlaskNav.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlaskNav.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26B8070D214DC740008091C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -240,7 +240,7 @@
 				269B14792165AAC400208360 /* Nav+Animator.swift */,
 				2622D0E2215C8CEC0060AAE3 /* Nav+Presenter.swift */,
 				2616BB722155A1BC00A6AEFB /* Nav+Reactor.swift */,
-				268EC7B2217026C30086A2FC /* Nav+Presentators.swift */,
+				268EC7B2217026C30086A2FC /* Nav+ApplyNavType.swift */,
 				263B10C92159C9BC00E6E5C4 /* Nav+Navigators.swift */,
 				2616BB6D2155A0D600A6AEFB /* Nav+Constructor.swift */,
 				2616BB7A2155D6F900A6AEFB /* Nav+Display.swift */,
@@ -699,7 +699,7 @@
 				26B8072F214DCAF8008091C2 /* Nav.swift in Sources */,
 				2667A6062160071000F87A1B /* NavLayer.swift in Sources */,
 				2667A6142163100000F87A1B /* ModalRootController.swift in Sources */,
-				268EC7B3217026C30086A2FC /* Nav+Presentators.swift in Sources */,
+				268EC7B3217026C30086A2FC /* Nav+ApplyNavType.swift in Sources */,
 				263B10CC2159CCB500E6E5C4 /* Nav+Composition.swift in Sources */,
 				2616BB6C2155963900A6AEFB /* AsyncViewController.swift in Sources */,
 			);

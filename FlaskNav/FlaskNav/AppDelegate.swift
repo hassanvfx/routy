@@ -62,7 +62,7 @@ import UIKit
         nonInteractiveTests()
     }
     func testForever(){
-//        testInteractive()
+        testInteractive()
         nonInteractiveTests(){
             self.testForever()
         }
@@ -181,7 +181,7 @@ import UIKit
         Services.router.nav.push(controller: .Feed, info: NavInfo(params:["name":"anyName"]), animator:animator){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"white"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
     
-        Services.router.nav.popCurrent(animator:animator)
+        Services.router.nav.popCurrent(animator:animator){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
     }
     
     func testInteractorShowTabs() {
@@ -197,9 +197,9 @@ import UIKit
             
         }
         
-        Services.router.tab(.Home).show()
+        Services.router.tab(.Home).show(){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
 //        Services.router.tab(.Home).show() //this causes error
-        Services.router.tabAny.hide(animator: animator)
+        Services.router.tabs.hide(animator: animator){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         Services.router.nav.push(controller: .Feed, info: NavInfo(params:["color":"white"])){ context, completed in print("---> line \(#line) \(context.desc()) \(completed)") }
         
     }

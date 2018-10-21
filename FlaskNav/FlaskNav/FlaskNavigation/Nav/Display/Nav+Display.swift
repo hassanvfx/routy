@@ -11,24 +11,35 @@ import Delayed
 
 extension FlaskNav{
     
+
     
-    public func displayTabOperation(_ index:Int, completion:@escaping (Bool)->Void){
+    func displayTabOperation(_ index:Int, completion:@escaping (Bool)->Void){
         DispatchQueue.main.async {
             print("Display tabIndex: \(index)")
             self.tabController?.selectedIndex = index
         }
-        presentTab(index: index, completion: completion)
+        
+        DispatchQueue.main.async {
+            self.presentTab(index: index, completion: completion)
+        }
         
     }
-    public func displayNavOperation(completion:@escaping (Bool)->Void){
-            dismissTab(completion: completion)
-    }
-    public func displayModalOperation(completion:@escaping ()->Void){
-            presentModal(completion: completion)
+    func dismissTabOperation(completion:@escaping (Bool)->Void){
+        DispatchQueue.main.async {
+            self.dismissTab(completion: completion)
+        }
     }
     
-    public func dismissModalOperation(completion:@escaping ()->Void){
-            dismissModal(completion: completion)
+    func displayModalOperation(completion:@escaping ()->Void){
+        DispatchQueue.main.async {
+            self.presentModal(completion: completion)
+        }
+    }
+    
+    func dismissModalOperation(completion:@escaping ()->Void){
+        DispatchQueue.main.async {
+            self.dismissModal(completion: completion)
+        }
     }
     
 }
@@ -38,7 +49,7 @@ extension FlaskNav{
         let nav = navInstance(forLayer: context.layer)
         
         print("may POP-TO-ROOT \(context.desc())")
-        ensureNavCompletion(withContext: context){
+        ensureNavCompletion(with: context){
             DispatchQueue.main.async {
                 print("is POPING-TO-ROOT \(context.desc())")
                 nav.popToRootViewController(animated:true)
@@ -52,7 +63,7 @@ extension FlaskNav{
         
         print("may PUSH \(context.desc())")
         
-        ensureNavCompletion(withContext: context){
+        ensureNavCompletion(with: context){
             DispatchQueue.main.async {
                 print("is PUSHING now \(context.desc())")
                 nav.pushViewController(controller, animated: true)
@@ -66,7 +77,7 @@ extension FlaskNav{
         
         print("may POP \(context.desc())")
         
-        ensureNavCompletion(withContext: context){
+        ensureNavCompletion(with: context){
             DispatchQueue.main.async {
                 print("is POPING \(context.desc())")
                 nav.popToViewController(controller, animated: true)
@@ -81,16 +92,37 @@ extension FlaskNav{
 extension FlaskNav{
     
     func assertComposition(context:NavContext){
-        if NavLayer.IsModal(context.layer) &&  !self.isModalPresented()  {
+        
+        if NavLayer.IsModal(context.layer) &&  !isModalPresented() && context.navigator != .Root {
              assert(false)
-        }else if NavLayer.IsTab(context.layer) &&  !self.isTabPresented() {
+        }else if NavLayer.IsTab(context.layer) &&  !isTabPresented() {
              assert(false)
-        } else if NavLayer.IsNav(context.layer) && (self.isModalPresented() || self.isTabPresented()) {
-            assert(false,"nav may fail if layers are presented")
+        } else if NavLayer.IsNav(context.layer) && (isModalPresented() || isTabPresented()) {
+            print("nav may fail if layers are presented. modal:\(isModalPresented()) tab:\(isTabPresented())")
+            assert(false)
         }
     }
     
-    func ensureNavCompletion(withContext context:NavContext, _ action:@escaping ()->Void){
+    func ensureNavCompletion(with context:NavContext, _ action:@escaping ()->Void){
+        
+        dismissModalIntent(with: context){ [weak self] in
+            self?._ensureNavCompletion(with: context, action)
+        }
+    }
+    
+    func dismissModalIntent(with context:NavContext, action:@escaping ()->Void){
+        
+        if NavLayer.IsModal(context.layer){
+            action()
+            return
+        }
+        
+        dismissModal() {
+            action()
+        }
+    }
+    
+    func _ensureNavCompletion(with context:NavContext, _ action:@escaping ()->Void){
         
         let nav = self.navInstance(forLayer: context.layer)
         

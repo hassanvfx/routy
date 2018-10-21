@@ -14,21 +14,22 @@ extension FlaskNav {
         
         
         let navOperation = FlaskNavOperation(fluxLock: fluxLock, name: substance.state.layerActive )
+        let activeLayer = substance.state.layerActive
         
-        if NavLayer.IsNav(substance.state.layerActive){
+        if NavLayer.IsNav(activeLayer){
             performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
-                self?.displayNavOperation { completed in
+                self?.dismissTabOperation { completed in
                     completion(completed)
                 }
             })
             
-        } else if NavLayer.IsModal(substance.state.layerActive){
+        } else if NavLayer.IsModal(activeLayer){
             performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
                 self?.displayModalOperation {
                     completion(true)
                 }
             })
-        } else if  NavLayer.IsTab(substance.state.layerActive){
+        } else if  NavLayer.IsTab(activeLayer){
             let index = NavLayer.TabIndex(substance.state.layerActive)
             
             performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
