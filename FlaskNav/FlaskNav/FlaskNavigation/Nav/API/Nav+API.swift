@@ -25,9 +25,7 @@ extension FlaskNav: NavStackAPI{
     func push(layer:String, controller:String , resourceId:String?, info:Any? = nil, animator: NavAnimatorClass? = nil, presentation: NavPresentationClass? = nil, completion:NavContextCompletion? = nil) {
 
         let finalizer:NavCompletion = { result in self.completeContextOperation(layer: layer, result: result, contextCompletion: completion) }
-        
-
-        
+    
         compTransaction(for: layer){ [weak self] (layer) in
            
             guard let this = self else { return }
@@ -50,11 +48,6 @@ extension FlaskNav: NavStackAPI{
         
         let finalizer:NavCompletion = { result in self.completeContextOperation(layer: layer, result: result, contextCompletion: completion) }
         
-        navTransaction(for: layer){ (layer,stack) in
-            let context =  NavContext.manager.context(layer:layer, navigator:.Pop, controller: controller, resourceId: resourceId, info: info, animator: animator)
-            stack.pop(toContextRef: context)
-        }
-        
         compTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
             guard let this = self else { return }
             
@@ -62,16 +55,19 @@ extension FlaskNav: NavStackAPI{
                 this.stackActive.set(layer:layer)
             }
         }
+        
+        navTransaction(for: layer){ (layer,stack) in
+            let context =  NavContext.manager.context(layer:layer, navigator:.Pop, controller: controller, resourceId: resourceId, info: info, animator: animator)
+            stack.pop(toContextRef: context)
+        }
+        
+        
         
     }
     func popCurrent(layer:String, animator: NavAnimatorClass? = nil, completion:NavContextCompletion? = nil){
      
         let finalizer:NavCompletion = { result in self.completeContextOperation(layer: layer, result: result, contextCompletion: completion) }
         
-        navTransaction(for: layer){ (layer,stack) in
-            stack.pop(withAnimator: animator)
-        }
-        
         compTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
             guard let this = self else { return }
             
@@ -79,15 +75,17 @@ extension FlaskNav: NavStackAPI{
                 this.stackActive.set(layer:layer)
             }
         }
+        
+        navTransaction(for: layer){ (layer,stack) in
+            stack.pop(withAnimator: animator)
+        }
+        
+       
     }
     func popToRoot(layer:String, animator: NavAnimatorClass? = nil, completion:NavContextCompletion? = nil){
        
         let finalizer:NavCompletion = { result in self.completeContextOperation(layer: layer, result: result, contextCompletion: completion) }
         
-        navTransaction(for: layer){ (layer,stack) in
-            stack.clear(withAnimator: animator)
-        }
-        
         compTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
             guard let this = self else { return }
             
@@ -95,6 +93,12 @@ extension FlaskNav: NavStackAPI{
                 this.stackActive.set(layer:layer)
             }
         }
+        
+        navTransaction(for: layer){ (layer,stack) in
+            stack.clear(withAnimator: animator)
+        }
+        
+        
     }
     
 }
