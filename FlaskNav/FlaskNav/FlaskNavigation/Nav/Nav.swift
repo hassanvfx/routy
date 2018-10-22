@@ -26,8 +26,6 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     var stackActive:NavActiveLayer = NavActiveLayer()
     
     var composition:NavComposition<TABS,CONT,MODS>?
-    var compDelegate: NavStackAPI? = nil
-    var compBatched: Bool = false
     
     // MARK: ANIMATIONS
     var animators:[String:NavAnimatorClass] = [:]
@@ -39,19 +37,19 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     let substance = NavigationSubstance()
 
     // main nav
-    var navRoot:ControllerConstructor? = nil
+    var navRoot:NavConstructor? = nil
     var navRootConfig:NavConfig? = nil
     var modalRootConfig:NavConfig = NavConfig(navBar: true, tabBar:true)
     
     // tabs
-    var tabs:[Int:ControllerConstructor] = [:]
+    var tabs:[Int:NavConstructor] = [:]
     var tabsConfig:[Int:NavConfig] = [:]
     var tabsNameMap:[Int:String] = [:]
     var tabsIndexMap:[String:Int] = [:]
     
     // content
-    var controllers:[String:ControllerConstructor] = [:]
-    var modals:[String:ControllerConstructor] = [:]
+    var controllers:[String:NavConstructor] = [:]
+    var modals:[String:NavConstructor] = [:]
     
     // MARK: QUEUE
  
@@ -87,7 +85,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     }
     
     func setupActiveLayer(){
-        stackActive.onActiveChange = { [weak self] in
+        stackActive.onModalChange = { [weak self] in
             self?.flushModalStack()
         }
     }

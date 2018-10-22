@@ -10,24 +10,36 @@ import UIKit
 
 extension FlaskNav{
     
-    func activeLayerTransaction(for layer:String,  completion:CompletionClosure? = nil, action:@escaping (String)->Void){
+    func compTransaction(for layer:String,  completion:NavCompletion? = nil, action:@escaping (String)->Void){
         
-        let finalize:OperationCompletionClosure = { operation, completed in
+        let finalize:NavOperationCompletion = { operation, completed in
             
             if let userCompletion = completion {
                 userCompletion(completed)
             }
             
-            operation.complete()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                operation.complete()
+            }
+            
         }
         
-        let resolveState:OperationCompletionClosure = { [weak self] operation, completed in
+        let resolveState:NavOperationCompletion = { [weak self] operation, completed in
+            
+            if completed{
+                
+            }else{
+                
+            }
+            
             if completed {
+                print("dispatch COMP completed")
                 self?.stackActive.commit()
                 self?.substance.commitState(){
                     finalize(operation, completed)
                 }
             } else {
+                print("dispatch COMP canceled")
                 self?.stackActive.rollback()
                 self?.substance.rollbackState(){
                     finalize(operation, completed)
@@ -35,7 +47,9 @@ extension FlaskNav{
             }
         }
         
-        enqueueNavOperation(completion: resolveState ) { [weak self] in
+        enqueueNavOperation(nav:false, completion: resolveState ) { [weak self] in
+            print("-------------")
+            print("dispatch COMP layer:\(layer)")
             
             self?.stackActive.capture()
             self?.substance.captureState()
@@ -44,28 +58,34 @@ extension FlaskNav{
         
     }
     
-    func navTransaction(for layer:String,  completion:CompletionClosure? = nil, action:@escaping (String,NavStack)->Void){
+    func navTransaction(for layer:String,  completion:NavCompletion? = nil, action:@escaping (String,NavStack)->Void){
         
-        let finalize:OperationCompletionClosure = { operation, completed in
+        let finalize:NavOperationCompletion = { operation, completed in
             
             if let userCompletion = completion {
                 userCompletion(completed)
             }
             
-            operation.complete()
+            DispatchQueue.main.async {
+                operation.complete()
+            }
         }
         
-        let resolveState:OperationCompletionClosure = {  [weak self] operation, completed in
+        let resolveState:NavOperationCompletion = {  [weak self] operation, completed in
+            
+          
             
             guard let this = self else { return }
-            
             let stack = this.stack(forLayer: layer)
+            
             if completed {
+                print("dispatch STACK completed")
                 stack.commit()
                 this.substance.commitState(){
                     finalize(operation, completed)
                 }
             } else {
+                print("dispatch STACK canceled")
                 stack.rollback()
                 this.substance.rollbackState(){
                     finalize(operation, completed)
@@ -74,8 +94,10 @@ extension FlaskNav{
             
         }
         
-        
-        enqueueNavOperation(completion: resolveState ) { [weak self] in
+        enqueueNavOperation(nav:true, completion: resolveState ) { [weak self] in
+            
+            print("-------------")
+            print("dispatch STACK start \(layer)")
             
             guard let this = self else { return }
             

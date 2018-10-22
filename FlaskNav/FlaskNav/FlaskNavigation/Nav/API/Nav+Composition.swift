@@ -24,7 +24,7 @@ extension FlaskNav:NavCompositionAPI{
     }
     
     public var tab:NavInterfaceTabAny<CONT>{
-        return (composition?.tabAny)!
+        return (composition?.tabs)!
     }
 
     public func tab(_ tab:TABS)->NavInterface<CONT>{

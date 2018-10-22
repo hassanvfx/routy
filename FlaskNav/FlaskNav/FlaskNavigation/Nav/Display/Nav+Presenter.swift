@@ -13,6 +13,7 @@ extension FlaskNav{
     func presentTab(index:Int, presentation:NavPresentationClass?=nil, completion:@escaping (Bool)->Void){
 
         if isTabPresented() {
+            print("skiped SHOW tab")
             completion(true)
             return
         }
@@ -24,6 +25,7 @@ extension FlaskNav{
         let animator = transitionAnimator ?? defaultAnimator
         
         let myCompletion = { [weak self] in
+            print("did SHOW tab")
             
             if(!animator.canceledInteraction){
                 self?.removeActiveLayerAnimator(for: NavLayer.TabAny(), withType: .Show)
@@ -36,17 +38,25 @@ extension FlaskNav{
             animator.enableInteraction()
             
             if gesture.state == .began {
-                self?.tabAny.hide()
+                self?.tabs.hide()
             }
         }
         
+        
+        print("will SHOW tab")
+        
         tabPresentator = NavPresentator(presentViewController: tab, from: top, animator: animator, presentation: presentation)
-        tabPresentator?.present(myCompletion)
+        
+        dismissModal(){ [weak self] in
+            self?.tabPresentator?.present(myCompletion)
+        }
+       
         
     }
     
     func dismissTab(completion:@escaping (Bool)->Void = {_ in}){
         if !isTabPresented() {
+            print("skiped HIDE tab")
             completion(true)
             return
         }
@@ -57,6 +67,7 @@ extension FlaskNav{
 
         
         let onDismiss = { [weak self] in
+              print("did HIDE tab")
             if !animator.canceledInteraction {
                 self?.removeActiveLayerAnimator(for: NavLayer.TabAny(), withType: .Hide)
                 self?.tabPresentator = nil
@@ -67,12 +78,16 @@ extension FlaskNav{
         animator.onRequestDismiss = { [weak self]  (navGesture, gesture) in
             
             if gesture.state == .began {
-                self?.tabAny.hide()
+                self?.tabs.hide()
             }
         }
-       
+        
+        print("will HIDE tab")
         tabPresentator?.animator = animator
-        tabPresentator?.dismiss(onDismiss)
+        dismissModal() { [weak self] in
+            self?.tabPresentator?.dismiss(onDismiss)
+        }
+        
     }
 }
 
@@ -86,7 +101,8 @@ extension FlaskNav{
     
     func presentModal( presentation:NavPresentationClass?=nil, completion:@escaping ()->Void){
         
-        if _isModalPresented() {
+        if isModalPresented() {
+            print("skiped SHOW modal")
             completion()
             return
         }
@@ -97,30 +113,39 @@ extension FlaskNav{
         
         modal.modalRootView().viewForwarder().forwardingViews = [top.view]
         modal.modalRootView().viewForwarder().didTouchOutside = { [weak self] in
-            if (self?._isModalPresented())! {
+            if (self?.isModalPresented())! {
                 self?.modal.dismiss()
             }
         }
         
+        let onFinish = { 
+            print("did SHOW modal")
+            completion()
+            
+        }
+        
+        print("will SHOW modal")
         modalPresentator?.animator._duration = 0.1
         modalPresentator = NavPresentator(presentViewController: modal, from: top, animator: animator, presentation: presentation)
-        modalPresentator?.present(completion)
+        modalPresentator?.present(onFinish)
         
     }
     
     func dismissModal(completion:@escaping ()->Void = {}){
         
-        if !_isModalPresented() {
+        if !isModalPresented() {
             completion()
             return
         }
         
         let onDismiss = { [weak self] in
+            print("did HIDE modal")
             self?.modalPresentator = nil
             completion()
+            
         }
 
-        //TODO: issue here with unbalanced calls
+        print("will HIDE modal")
         modalPresentator?.animator._duration = 0.1
         modalPresentator?.dismiss(onDismiss)
     }

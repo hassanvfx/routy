@@ -15,7 +15,6 @@ protocol NavCompositionAPI:AnyObject{
     associatedtype COMP_TABS_TYPE:RawRepresentable
     associatedtype COMP_MODS_TYPE:RawRepresentable
     
-    var compDelegate:NavStackAPI? {get}
     
     var nav:NavInterface<COMP_CONT_TYPE>{get}
     var modal:NavInterfaceModal<COMP_MODS_TYPE>{get}
@@ -34,7 +33,7 @@ extension NavCompositionAPI{
         return NavInterfaceModal<COMP_MODS_TYPE>(layer: NavLayer.Modal(), delegate: self as? NavStackAPI)
     }
     
-    public var tabAny:NavInterfaceTabAny<COMP_CONT_TYPE>{
+    public var tabs:NavInterfaceTabAny<COMP_CONT_TYPE>{
         return NavInterfaceTabAny<COMP_CONT_TYPE>(layer: NavLayer.TabAny(), delegate: self as? NavStackAPI)
     }
     
@@ -70,27 +69,27 @@ class NavComposition<TABS:RawRepresentable,CONT:RawRepresentable,MODS:RawReprese
 extension NavComposition:NavStackAPI{
 
    
-    func push(layer: String, controller: String, resourceId: String?, info: Any?, animator: NavAnimatorClass?, presentation: NavPresentationClass?, completion:CompletionClosure?) {
+    func push(layer: String, controller: String, resourceId: String?, info: Any?, animator: NavAnimatorClass?, presentation: NavPresentationClass?, completion:NavContextCompletion?) {
         self.compDelegate?.push(layer: layer, controller: controller, resourceId: resourceId, info: info, animator: animator, presentation: presentation, completion: completion)
     }
     
-    func pop(layer: String, toController controller: String, resourceId: String?, info: Any?, animator: NavAnimatorClass?, completion:CompletionClosure?) {
+    func pop(layer: String, toController controller: String, resourceId: String?, info: Any?, animator: NavAnimatorClass?, completion:NavContextCompletion?) {
         self.compDelegate?.pop(layer: layer, toController: controller, resourceId: resourceId, info: info, animator: animator, completion: completion)
     }
     
-    func popCurrent(layer: String, animator: NavAnimatorClass?, completion:CompletionClosure?) {
+    func popCurrent(layer: String, animator: NavAnimatorClass?, completion:NavContextCompletion?) {
         self.compDelegate?.popCurrent(layer: layer, animator: animator, completion: completion)
     }
     
-    func popToRoot(layer: String, animator: NavAnimatorClass?, completion:CompletionClosure?) {
+    func popToRoot(layer: String, animator: NavAnimatorClass?, completion:NavContextCompletion?) {
         self.compDelegate?.popToRoot(layer: layer, animator: animator, completion: completion)
     }
     
-    func show (layer: String, animator: NavAnimatorClass?, completion:CompletionClosure?) {
+    func show (layer: String, animator: NavAnimatorClass?, completion:NavContextCompletion?) {
         self.compDelegate?.show(layer: layer, animator: animator, completion: completion)
     }
     
-    func hide(layer: String, explicit: Bool, animator: NavAnimatorClass?, completion: CompletionClosure?) {
+    func hide(layer: String, explicit: Bool, animator: NavAnimatorClass?, completion: NavContextCompletion?) {
         self.compDelegate?.hide(layer: layer, explicit:explicit, animator: animator, completion: completion)
     }
    

@@ -10,7 +10,7 @@ import UIKit
 
 extension FlaskNav{
     
-    func controllerConstructor(for controller:String)->ControllerConstructor{
+    func controllerConstructor(for controller:String)->NavConstructor{
         if let constructor = controllers[controller]{
             return constructor
         }
@@ -40,14 +40,15 @@ extension FlaskNav{
             let nav = navInstance(forLayer: context.layer)
             
             if let info = context.info as? NavInfo {
-                info.onWillInit?(nav, controller)
+                info.context = context
+                info.onWillInit?(nav, context)
                 info.onWillInit = nil
             }
             
             instanceAsyncSetup.navContextInit(withContext: context)
             
             if let info = context.info as? NavInfo {
-                info.onDidInit?(nav, controller)
+                info.onDidInit?(nav, context)
                 info.onDidInit = nil
             }
         }
@@ -62,14 +63,14 @@ extension FlaskNav{
             DispatchQueue.main.async {
                 
                 if let info = context.info as? NavInfo {
-                    info.onWillSetupEmptyState?(nav, controller)
+                    info.onWillSetupEmptyState?(nav, context)
                     info.onWillSetupEmptyState = nil
                 }
 
                 instanceAsyncSetup.setupEmptyState()
                 
                 if let info = context.info as? NavInfo {
-                    info.onDidSetupEmptyState?(nav, controller)
+                    info.onDidSetupEmptyState?(nav, context)
                     info.onDidSetupEmptyState = nil
                 }
             }
@@ -101,16 +102,16 @@ extension FlaskNav{
                 DispatchQueue.main.async {
                    
                     if let info = context.info as? NavInfo {
-                        info.onWillSetupContent?(nav, controller)
+                        info.onWillSetupContent?(nav, context)
                         info.onWillSetupContent = nil
                     }
                     
                     instanceAsyncSetup.setupContent(with: completion )
                     
                     if let info = context.info as? NavInfo {
-                        info.onDidSetupContent?(nav, controller)
+                        info.onDidSetupContent?(nav, context)
                         info.onDidSetupContent = nil
-                        info.onDidSetup?(nav, controller)
+                        info.onDidSetup?(nav, context)
                         info.onDidSetup = nil
                     }
                 }

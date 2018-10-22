@@ -12,11 +12,11 @@ import UIKit
 extension FlaskNav{
     
     
-    public func defineNavRoot(config:NavConfig = NavConfig(navBar: true), _ constructor:@escaping ControllerConstructor){
+    public func defineNavRoot(config:NavConfig = NavConfig(navBar: true), _ constructor:@escaping NavConstructor){
         navRoot = constructor
         navRootConfig = config
     }
-    public func defineTabRoot(_ tab:TABS, config:NavConfig? = NavConfig(navBar: true, tabBar:true), _ constructor:@escaping ControllerConstructor){
+    public func defineTabRoot(_ tab:TABS, config:NavConfig? = NavConfig(navBar: true, tabBar:true), _ constructor:@escaping NavConstructor){
         let stringKey = tab.rawValue as! String
         let index = tabs.count
         tabs[index] = constructor
@@ -30,12 +30,12 @@ extension FlaskNav{
         modalRootConfig = config
     }
     
-    public func define(controller:CONT,_ constructor:@escaping ControllerConstructor){
+    public func define(controller:CONT,_ constructor:@escaping NavConstructor){
         let stringKey = controller.rawValue as! String
         controllers[stringKey] = constructor
     }
     
-    public func define(modal:MODS,_ constructor:@escaping ControllerConstructor){
+    public func define(modal:MODS,_ constructor:@escaping NavConstructor){
         let stringKey = modal.rawValue as! String
         modals[stringKey] = constructor
     }

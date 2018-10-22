@@ -35,7 +35,7 @@ extension FlaskNav{
         return tabPresentator != nil
     }
     
-    func _isModalPresented()->Bool{
+    func isModalPresented()->Bool{
         return modalPresentator != nil
     }
     

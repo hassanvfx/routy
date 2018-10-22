@@ -8,7 +8,7 @@
 
 import UIKit
 
-public typealias NavContextCallback = (Any?)->Void
+public typealias NavContextCallback = (NavContext,Any?)->Void
 
 public class NavContextRef<T> where T: AnyObject {
     

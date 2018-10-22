@@ -8,7 +8,7 @@
 
 import UIKit
 
-public typealias NavInfoCallbackClosure = (_ nav:FlaskNavigationController,_ controller:UIViewController)->Void
+public typealias NavInfoCallbackClosure = (_ nav:FlaskNavigationController,_ context:NavContext)->Void
 
 
 public class NavInfo {
@@ -16,8 +16,8 @@ public class NavInfo {
     var name:String?
     var resource:String?
     var resourceId:String?
-    var params:[String:AnyCodable]?
-    var map:[String:AnyCodable]?
+    var params:[String:Any?]?
+    var map:[String:Any?]?
     
     
     var onWillInit:NavInfoCallbackClosure?
@@ -31,18 +31,34 @@ public class NavInfo {
     
     var onDidSetup:NavInfoCallbackClosure?
     
-    var callback:NavContextCallback?
+    public private(set) var _callback:NavContextCallback?
+    var context:NavContext?
     
-    init(name:String?=nil,
-         resource:String?=nil,
-         resourceId:String?=nil,
-         params:[String:AnyCodable]?=nil,
-         map:[String:AnyCodable]?=nil) {
+    init(name:String? = nil,
+         resource:String? = nil,
+         resourceId:String? = nil,
+         params:[String:Any?]? = nil,
+         map:[String:Any?]? = nil,
+         callback:NavContextCallback? = nil) {
         
         self.name = name
         self.resource = resource
         self.resourceId = resourceId
         self.params = params
         self.map = map
+        self._callback = callback
+    }
+    
+    func getCallback()->NavContextCallback?{
+       return _callback
+    }
+    
+    func callback(_ payload:Any?){
+        guard let context = context else { assert(false,"context not set!");  return }
+        _callback?( context, payload)
+    }
+    
+    func setCallback(_ action:@escaping NavContextCallback){
+        _callback = action
     }
 }

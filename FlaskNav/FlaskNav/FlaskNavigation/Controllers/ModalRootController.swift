@@ -24,7 +24,7 @@ class ModalRootController: UIViewController {
         
 //        NavDebug.shared.perform{
 //            view.backgroundColor = .black
-//            view.alpha = 0.75
+//            view.alpha = 0.5
 //        }
     }
     
