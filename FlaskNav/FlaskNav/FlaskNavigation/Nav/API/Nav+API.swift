@@ -29,17 +29,17 @@ extension FlaskNav: NavStackAPI{
         transaction(for: layer, completion: finalizer){ [weak self] transaction in
             guard let this = self else { return }
             
-            this.comp(transaction: transaction){ (transaction) in
+            this.enqueue(transaction: transaction, type: .Composition){ (transaction) in
                 this.disablePendingHideInteraction()
                 this.stackActive.show(layer: transaction.layer)
             }
             
-            this.nav(transaction: transaction){ (transaction) in
+            this.enqueue(transaction: transaction, type: .Navigation){ (transaction) in
                 let context = NavContext.manager.context(layer:transaction.layer, navigator:.Push, controller: controller, resourceId: resourceId, info: info, animator:animator)
                 transaction.stack().push(context: context)
             }
             
-            this.comp(transaction: transaction){ (transaction) in
+            this.enqueue(transaction: transaction, type: .Composition){ (transaction) in
                 this.syncWithDisplay()
             }
         }
@@ -53,16 +53,16 @@ extension FlaskNav: NavStackAPI{
         transaction(for: layer, completion: finalizer){ [weak self] transaction in
             guard let this = self else { return }
             
-            this.comp(transaction: transaction){ (transaction) in
+            this.enqueue(transaction: transaction, type: .Composition){ (transaction) in
                 this.stackActive.show(layer: transaction.layer)
             }
             
-            this.nav(transaction: transaction){ (transaction) in
+            this.enqueue(transaction: transaction, type: .Navigation){ (transaction) in
                 let context =  NavContext.manager.context(layer:transaction.layer, navigator:.Pop, controller: controller, resourceId: resourceId, info: info, animator: animator)
                 transaction.stack().pop(toContextRef: context)
             }
             
-            this.comp(transaction: transaction){ (transaction) in
+            this.enqueue(transaction: transaction, type: .Composition){ (transaction) in
                 this.syncWithDisplay()
             }
         }
@@ -75,15 +75,15 @@ extension FlaskNav: NavStackAPI{
         transaction(for: layer, completion: finalizer){ [weak self] transaction in
             guard let this = self else { return }
             
-            this.comp(transaction: transaction){ (transaction) in
+            this.enqueue(transaction: transaction, type: .Composition){ (transaction) in
                 this.stackActive.show(layer: transaction.layer)
             }
             
-            this.nav(transaction: transaction){ (transaction) in
+            this.enqueue(transaction: transaction, type: .Navigation){ (transaction) in
                 transaction.stack().pop(withAnimator: animator)
             }
             
-            this.comp(transaction: transaction){ (transaction) in
+            this.enqueue(transaction: transaction, type: .Composition){ (transaction) in
                 this.syncWithDisplay()
             }
         }
@@ -96,15 +96,15 @@ extension FlaskNav: NavStackAPI{
         transaction(for: layer, completion: finalizer){ [weak self] transaction in
             guard let this = self else { return }
             
-            this.comp(transaction: transaction){  (transaction) in
+            this.enqueue(transaction: transaction, type: .Composition){ (transaction) in
                 this.stackActive.show(layer: transaction.layer)
             }
             
-            this.nav(transaction: transaction){  (transaction) in
+            this.enqueue(transaction: transaction, type: .Navigation){ (transaction) in
                 transaction.stack().clear(withAnimator: animator)
             }
             
-            this.comp(transaction: transaction){  (transaction) in
+            this.enqueue(transaction: transaction, type: .Composition){ (transaction) in
                 this.syncWithDisplay()
             }
         }
@@ -127,7 +127,7 @@ extension FlaskNav{
         transaction(for: layer, completion: finalizer){ [weak self] transaction in
             guard let this = self else { return }
            
-            this.comp(transaction: transaction){  (transaction) in
+            this.enqueue(transaction: transaction, type: .Composition){ (transaction) in
                
                 let layerName = NavLayer.IsTab(transaction.layer) ?  NavLayer.TabAny() : transaction.layer
                 
@@ -158,7 +158,7 @@ extension FlaskNav{
         transaction(for: layer, completion: finalizer){ [weak self] transaction in
             guard let this = self else { return }
             
-            this.comp(transaction: transaction){  (transaction) in
+            this.enqueue(transaction: transaction, type: .Composition){ (transaction) in
                 
                 let layerName = NavLayer.IsTab(transaction.layer) ?  NavLayer.TabAny() : transaction.layer
                 let currentLayerName = NavLayer.IsTab(this.stackActive.active) ?  NavLayer.TabAny() : this.stackActive.active

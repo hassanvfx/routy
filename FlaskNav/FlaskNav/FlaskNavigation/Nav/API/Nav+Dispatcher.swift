@@ -12,7 +12,7 @@ import Flask
 
 extension FlaskNav{
     
-    func dispatchFlux(nav:Bool, with operation:FlaskOperation,_ completion:@escaping NavCompletion){
+    func dispatchFlux(type:NavOperationType, with operation:FlaskOperation,_ completion:@escaping NavCompletion){
 
       
         
@@ -20,16 +20,20 @@ extension FlaskNav{
             completion(finallyCompleted)
         }
         
-        if nav{
+        if type == .Navigation {
             print("dispatch FLUX nav")
             dispatchNavigation(){ layersCompleted in
                 finalizer(layersCompleted)
             }
-        } else{
+            
+        } else if type == .Composition {
             print("dispatch FLUX comp")
             dispatchComposition(){  activeCompleted in
                 finalizer(activeCompleted)
             }
+        } else{
+            
+            assert(false, "error type nothandled")
         }
  
         

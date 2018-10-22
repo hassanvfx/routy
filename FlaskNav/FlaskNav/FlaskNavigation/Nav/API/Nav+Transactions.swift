@@ -31,11 +31,17 @@ extension FlaskNav{
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
                 operation.complete()
+                print("transaction FINISHED layer:\(transaction.layer)")
+                print("<<<<<<<<<<<<<<")
             }
             
         }
         
         let capture = FlaskOperation() { [weak self] operation in
+           
+            print(">>>>>>>>>>>>")
+            print("transaction START layer:\(transaction.layer)")
+            
             transaction._stack?.capture()
             self?.stackActive.capture()
             self?.substance.captureState()
@@ -64,43 +70,20 @@ extension FlaskNav{
         NavStack.enqueue(operation: resolve)
     }
     
-    func comp(transaction:NavTransaction, action:@escaping (NavTransaction)->Void){
+    func enqueue(transaction:NavTransaction, type:NavOperationType, action:@escaping (NavTransaction)->Void){
         
         let finalize:NavOperationCompletion = { operation, completed in
-            
             transaction.addResult(completed)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
                 operation.complete()
             }
-            
         }
         
-        enqueueNavOperation(nav:false, completion: finalize ) {
+        enqueueNavOperation(type: type, completion: finalize ) {
             print("-------------")
-            print("dispatch COMP layer:\(transaction.layer)")
+            print("dispatch START type:\(type) layer:\(transaction.layer)")
             action(transaction)
         }
-        
-    }
-    
-    func nav(transaction:NavTransaction, action:@escaping (NavTransaction)->Void){
-        
-        let finalize:NavOperationCompletion = { operation, completed in
-            
-            transaction.addResult(completed)
-            
-            DispatchQueue.main.async {
-                operation.complete()
-            }
-        }
-        
-        enqueueNavOperation(nav:true, completion: finalize ) {
-            
-            print("-------------")
-            print("dispatch NAV start \(transaction.layer)")
-            action(transaction)
-        }
-        
     }
 }
 
