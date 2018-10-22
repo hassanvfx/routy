@@ -7,11 +7,22 @@
 //
 
 import UIKit
+import Flask
 
 extension FlaskNav{
     
-    func compTransaction(for layer:String,  completion:NavCompletion? = nil, action:@escaping (String)->Void){
+    func transaction(for layer:String,  completion:NavCompletion? = nil, actions:@escaping (NavTransaction)->Void){
         
+        let transaction:NavTransaction
+        
+        if !NavLayer.IsTabAny(layer){
+             let stack = self.stack(forLayer: layer)
+             transaction = NavTransaction(with: layer, stack: stack)
+        }else{
+             transaction = NavTransaction(with: layer)
+        }
+        
+      
         let finalize:NavOperationCompletion = { operation, completed in
             
             if let userCompletion = completion {
@@ -24,88 +35,70 @@ extension FlaskNav{
             
         }
         
-        let resolveState:NavOperationCompletion = { [weak self] operation, completed in
-            
-            if completed{
-                
-            }else{
-                
-            }
-            
-            if completed {
-                print("dispatch COMP completed")
+        let capture = FlaskOperation() { [weak self] operation in
+            transaction._stack?.capture()
+            self?.stackActive.capture()
+            self?.substance.captureState()
+            operation.complete()
+        }
+        
+        let resolve = FlaskOperation() { [weak self] operation in
+        
+            if transaction.isCompleted() {
+                transaction._stack?.commit()
                 self?.stackActive.commit()
                 self?.substance.commitState(){
-                    finalize(operation, completed)
+                     finalize(operation, true)
                 }
-            } else {
-                print("dispatch COMP canceled")
+            } else{
+                transaction._stack?.rollback()
                 self?.stackActive.rollback()
-                self?.substance.rollbackState(){
-                    finalize(operation, completed)
+                self?.substance.rollbackState {
+                    finalize(operation, false)
                 }
             }
         }
+  
+        NavStack.enqueue(operation: capture)
+        actions(transaction)
+        NavStack.enqueue(operation: resolve)
+    }
+    
+    func comp(transaction:NavTransaction, action:@escaping (NavTransaction)->Void){
         
-        enqueueNavOperation(nav:false, completion: resolveState ) { [weak self] in
-            print("-------------")
-            print("dispatch COMP layer:\(layer)")
+        let finalize:NavOperationCompletion = { operation, completed in
             
-            self?.stackActive.capture()
-            self?.substance.captureState()
-            action(layer)
+            transaction.addResult(completed)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
+                operation.complete()
+            }
+            
+        }
+        
+        enqueueNavOperation(nav:false, completion: finalize ) {
+            print("-------------")
+            print("dispatch COMP layer:\(transaction.layer)")
+            action(transaction)
         }
         
     }
     
-    func navTransaction(for layer:String,  completion:NavCompletion? = nil, action:@escaping (String,NavStack)->Void){
+    func nav(transaction:NavTransaction, action:@escaping (NavTransaction)->Void){
         
         let finalize:NavOperationCompletion = { operation, completed in
             
-            if let userCompletion = completion {
-                userCompletion(completed)
-            }
+            transaction.addResult(completed)
             
             DispatchQueue.main.async {
                 operation.complete()
             }
         }
         
-        let resolveState:NavOperationCompletion = {  [weak self] operation, completed in
-            
-          
-            
-            guard let this = self else { return }
-            let stack = this.stack(forLayer: layer)
-            
-            if completed {
-                print("dispatch STACK completed")
-                stack.commit()
-                this.substance.commitState(){
-                    finalize(operation, completed)
-                }
-            } else {
-                print("dispatch STACK canceled")
-                stack.rollback()
-                this.substance.rollbackState(){
-                    finalize(operation, completed)
-                }
-            }
-            
-        }
-        
-        enqueueNavOperation(nav:true, completion: resolveState ) { [weak self] in
+        enqueueNavOperation(nav:true, completion: finalize ) {
             
             print("-------------")
-            print("dispatch STACK start \(layer)")
-            
-            guard let this = self else { return }
-            
-            let stack = this.stack(forLayer: layer)
-            stack.capture()
-            this.substance.captureState()
-            
-            action(layer,stack)
+            print("dispatch NAV start \(transaction.layer)")
+            action(transaction)
         }
         
     }

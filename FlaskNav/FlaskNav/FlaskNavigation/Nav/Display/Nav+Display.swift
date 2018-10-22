@@ -103,13 +103,7 @@ extension FlaskNav{
         }
     }
     
-    func ensureNavCompletion(with context:NavContext, _ action:@escaping ()->Void){
-        
-        dismissModalIntent(with: context){ [weak self] in
-            self?._ensureNavCompletion(with: context, action)
-        }
-    }
-    
+   
     func dismissModalIntent(with context:NavContext, action:@escaping ()->Void){
         
         if NavLayer.IsModal(context.layer){
@@ -122,14 +116,16 @@ extension FlaskNav{
         }
     }
     
-    func _ensureNavCompletion(with context:NavContext, _ action:@escaping ()->Void){
+    func ensureNavCompletion(with context:NavContext, _ action:@escaping ()->Void){
         
         let nav = self.navInstance(forLayer: context.layer)
         
-        let execute = {
+        let execute = { [weak self] in
             print("Executing NAV Operation!")
             nav._isPerformingNavOperation = true
-            action()
+            self?.dismissModalIntent(with: context){
+                action()
+            }
         }
         
         let complete = {

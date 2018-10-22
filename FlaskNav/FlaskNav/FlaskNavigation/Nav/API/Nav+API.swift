@@ -23,79 +23,90 @@ extension FlaskNav: NavStackAPI{
     }
     
     func push(layer:String, controller:String , resourceId:String?, info:Any? = nil, animator: NavAnimatorClass? = nil, presentation: NavPresentationClass? = nil, completion:NavContextCompletion? = nil) {
-
-        let finalizer:NavCompletion = { result in self.completeContextOperation(layer: layer, result: result, contextCompletion: completion) }
-    
-        compTransaction(for: layer){ [weak self] (layer) in
+        
+        let finalizer:NavCompletion = { result in self.completeNavOperation(layer: layer, result: result, contextCompletion: completion) }
+        
+        transaction(for: layer, completion: finalizer){ [weak self] transaction in
             guard let this = self else { return }
             
-            this.disablePendingHideInteraction()
-            this.stackActive.show(layer:layer)
+            this.comp(transaction: transaction){ (transaction) in
+                this.disablePendingHideInteraction()
+                this.stackActive.show(layer: transaction.layer)
+            }
+            
+            this.nav(transaction: transaction){ (transaction) in
+                let context = NavContext.manager.context(layer:transaction.layer, navigator:.Push, controller: controller, resourceId: resourceId, info: info, animator:animator)
+                transaction.stack().push(context: context)
+            }
+            
+            this.comp(transaction: transaction){ (transaction) in
+                this.syncWithDisplay()
+            }
         }
         
-        navTransaction(for: layer){ (layer,stack) in
-            let context = NavContext.manager.context(layer:layer, navigator:.Push, controller: controller, resourceId: resourceId, info: info, animator:animator)
-            stack.push(context: context)
-        }
-        
-        compTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
-            self?.syncWithDisplay()
-        }
-      
     }
     
     func pop(layer:String, toController controller:String, resourceId:String?, info:Any?, animator: NavAnimatorClass? = nil, completion:NavContextCompletion? = nil){
         
-        let finalizer:NavCompletion = { result in self.completeContextOperation(layer: layer, result: result, contextCompletion: completion) }
+        let finalizer:NavCompletion = { result in self.completeNavOperation(layer: layer, result: result, contextCompletion: completion) }
         
-        compTransaction(for: layer){ [weak self] (layer) in
+        transaction(for: layer, completion: finalizer){ [weak self] transaction in
             guard let this = self else { return }
-            this.stackActive.show(layer:layer)
-        }
-        
-        navTransaction(for: layer){ (layer,stack) in
-            let context =  NavContext.manager.context(layer:layer, navigator:.Pop, controller: controller, resourceId: resourceId, info: info, animator: animator)
-            stack.pop(toContextRef: context)
-        }
-        
-        compTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
-            self?.syncWithDisplay()
+            
+            this.comp(transaction: transaction){ (transaction) in
+                this.stackActive.show(layer: transaction.layer)
+            }
+            
+            this.nav(transaction: transaction){ (transaction) in
+                let context =  NavContext.manager.context(layer:transaction.layer, navigator:.Pop, controller: controller, resourceId: resourceId, info: info, animator: animator)
+                transaction.stack().pop(toContextRef: context)
+            }
+            
+            this.comp(transaction: transaction){ (transaction) in
+                this.syncWithDisplay()
+            }
         }
         
     }
     func popCurrent(layer:String, animator: NavAnimatorClass? = nil, completion:NavContextCompletion? = nil){
-     
-        let finalizer:NavCompletion = { result in self.completeContextOperation(layer: layer, result: result, contextCompletion: completion) }
         
-        compTransaction(for: layer){ [weak self] (layer) in
+        let finalizer:NavCompletion = { result in self.completeNavOperation(layer: layer, result: result, contextCompletion: completion) }
+        
+        transaction(for: layer, completion: finalizer){ [weak self] transaction in
             guard let this = self else { return }
-            this.stackActive.show(layer:layer)
+            
+            this.comp(transaction: transaction){ (transaction) in
+                this.stackActive.show(layer: transaction.layer)
+            }
+            
+            this.nav(transaction: transaction){ (transaction) in
+                transaction.stack().pop(withAnimator: animator)
+            }
+            
+            this.comp(transaction: transaction){ (transaction) in
+                this.syncWithDisplay()
+            }
         }
         
-        navTransaction(for: layer){ (layer,stack) in
-            stack.pop(withAnimator: animator)
-        }
-        
-        compTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
-            self?.syncWithDisplay()
-        }
-       
     }
     func popToRoot(layer:String, animator: NavAnimatorClass? = nil, completion:NavContextCompletion? = nil){
-       
-        let finalizer:NavCompletion = { result in self.completeContextOperation(layer: layer, result: result, contextCompletion: completion) }
         
-        compTransaction(for: layer){ [weak self] (layer) in
+        let finalizer:NavCompletion = { result in self.completeNavOperation(layer: layer, result: result, contextCompletion: completion) }
+        
+        transaction(for: layer, completion: finalizer){ [weak self] transaction in
             guard let this = self else { return }
-            this.stackActive.show(layer:layer)
-        }
-        
-        navTransaction(for: layer){ (layer,stack) in
-            stack.clear(withAnimator: animator)
-        }
-        
-        compTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
-            self?.syncWithDisplay()
+            
+            this.comp(transaction: transaction){  (transaction) in
+                this.stackActive.show(layer: transaction.layer)
+            }
+            
+            this.nav(transaction: transaction){  (transaction) in
+                transaction.stack().clear(withAnimator: animator)
+            }
+            
+            this.comp(transaction: transaction){  (transaction) in
+                this.syncWithDisplay()
+            }
         }
         
     }
@@ -113,24 +124,25 @@ extension FlaskNav{
         
         let finalizer:NavCompletion = { result in self.completeCompOperation(layer: layer, result: result, contextCompletion: completion) }
         
-        compTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
-            guard let this = self else {
-                return
+        transaction(for: layer, completion: finalizer){ [weak self] transaction in
+            guard let this = self else { return }
+           
+            this.comp(transaction: transaction){  (transaction) in
+               
+                let layerName = NavLayer.IsTab(transaction.layer) ?  NavLayer.TabAny() : transaction.layer
+                
+                this.setActiveLayerAnimator(animator, for: layerName, withType: .Show)
+                this.setActiveLayerAnimator(animator, for: layerName, withType: .Hide)
+                
+                if NavLayer.IsTab(layer) ||  NavLayer.IsTabAny(transaction.layer){
+                    this.stackActive.showTab(transaction.layer)
+                } else if NavLayer.IsModal(transaction.layer) {
+                    this.stackActive.showModal()
+                } else{
+                    assert(false,"nav should never hide")
+                }
+                
             }
-            let layerName = NavLayer.IsTab(layer) ?  NavLayer.TabAny() : layer
-            
-            this.setActiveLayerAnimator(animator, for: layerName, withType: .Show)
-            this.setActiveLayerAnimator(animator, for: layerName, withType: .Hide)
-            
-            
-            if NavLayer.IsTab(layer) ||  NavLayer.IsTabAny(layer){
-                this.stackActive.showTab(layer)
-            } else if NavLayer.IsModal(layer) {
-                this.stackActive.showModal()
-            } else{
-                assert(false,"nav should never hide")
-            }
-            
         }
     }
     
@@ -143,30 +155,30 @@ extension FlaskNav{
         
         let finalizer:NavCompletion = { result in self.completeCompOperation(layer: layer, result: result, contextCompletion: completion) }
         
-        compTransaction(for: layer, completion:finalizer){ [weak self] (layer) in
-            guard let this = self else {
-                return
+        transaction(for: layer, completion: finalizer){ [weak self] transaction in
+            guard let this = self else { return }
+            
+            this.comp(transaction: transaction){  (transaction) in
+                
+                let layerName = NavLayer.IsTab(transaction.layer) ?  NavLayer.TabAny() : transaction.layer
+                let currentLayerName = NavLayer.IsTab(this.stackActive.active) ?  NavLayer.TabAny() : this.stackActive.active
+                
+                if currentLayerName != layerName {
+                    assert(!explicit,"can't hide a layer that is not shown (active)")
+                    return
+                }
+                
+                this.setActiveLayerAnimator(animator, for: layerName, withType: .Hide)
+                
+                if NavLayer.IsTab(transaction.layer) ||  NavLayer.IsTabAny(transaction.layer){
+                    this.stackActive.hideTabs()
+                } else if NavLayer.IsModal(transaction.layer) {
+                    this.stackActive.hideModal()
+                } else{
+                    assert(false,"nav should never hide")
+                }
+                
             }
-      
-            let layerName = NavLayer.IsTab(layer) ?  NavLayer.TabAny() : layer
-            let currentLayerName = NavLayer.IsTab(this.stackActive.active) ?  NavLayer.TabAny() : this.stackActive.active
-            
-            if currentLayerName != layerName {
-                assert(!explicit,"can't hide a layer that is not shown (active)")
-                return
-            }
-
-            this.setActiveLayerAnimator(animator, for: layerName, withType: .Hide)
-            
-            if NavLayer.IsTab(layer) ||  NavLayer.IsTabAny(layer){
-                this.stackActive.hideTabs()
-            } else if NavLayer.IsModal(layer) {
-                this.stackActive.hideModal()
-            } else{
-                assert(false,"nav should never hide")
-            }
-            
-            
         }
         
     }
@@ -174,14 +186,14 @@ extension FlaskNav{
     func tabIndex(from layer: String) -> Int {
         return tabsIndexMap[layer]!
     }
-
+    
 }
 
 extension FlaskNav{
-    func completeContextOperation(layer:String, result:Bool, contextCompletion:NavContextCompletion?){
+    func completeNavOperation(layer:String, result:Bool, contextCompletion:NavContextCompletion?){
         let stack = self.stack(forLayer: layer)
         contextCompletion?( stack.currentContext(), result)
-  
+        
     }
     func completeCompOperation(layer:String, result:Bool, contextCompletion:NavContextCompletion?){
         let context = NavContext(id: -1, layer: layer, navigator: .Root, controller: layer, resourceId: nil, info: nil)
@@ -190,7 +202,7 @@ extension FlaskNav{
 }
 
 extension FlaskNav{
-
+    
     func flushModalStack(){
         self.stack(forLayer: NavLayer.Modal()).clear()
     }
@@ -217,7 +229,7 @@ extension FlaskNav{
     func hideEmptyModal()->Bool{
         
         if !NavLayer.IsModal(self.stackActive.active) { return false}
-       
+        
         let stack = self.stack(forLayer: NavLayer.Modal())
         if stack.isEmpty() {
             self.stackActive.hideModal()
@@ -240,7 +252,7 @@ extension FlaskNav{
         stackLayers[name] = newStack
         return newStack
     }
-  
+    
     
 }
 

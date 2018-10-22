@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0B3FC4BA21CC837C1A970459 /* Pods_FlaskNavTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248B7C7A42F05FCF01A6C174 /* Pods_FlaskNavTests.framework */; };
+		26010F8C217E09BF00EB09D8 /* NavTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26010F8B217E09BF00EB09D8 /* NavTransaction.swift */; };
 		2616BB6A2155946D00A6AEFB /* NavInfoProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB692155946D00A6AEFB /* NavInfoProtocol.swift */; };
 		2616BB6C2155963900A6AEFB /* AsyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB6B2155963900A6AEFB /* AsyncViewController.swift */; };
 		2616BB6E2155A0D600A6AEFB /* Nav+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB6D2155A0D600A6AEFB /* Nav+Constructor.swift */; };
@@ -79,6 +80,7 @@
 /* Begin PBXFileReference section */
 		034BBE99CA17643EACB96E2F /* Pods-FlaskNav.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlaskNav.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlaskNav/Pods-FlaskNav.release.xcconfig"; sourceTree = "<group>"; };
 		248B7C7A42F05FCF01A6C174 /* Pods_FlaskNavTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlaskNavTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		26010F8B217E09BF00EB09D8 /* NavTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavTransaction.swift; sourceTree = "<group>"; };
 		2616BB692155946D00A6AEFB /* NavInfoProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavInfoProtocol.swift; sourceTree = "<group>"; };
 		2616BB6B2155963900A6AEFB /* AsyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncViewController.swift; sourceTree = "<group>"; };
 		2616BB6D2155A0D600A6AEFB /* Nav+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Constructor.swift"; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 			isa = PBXGroup;
 			children = (
 				2616BB762155CF8F00A6AEFB /* Operation.swift */,
+				26010F8B217E09BF00EB09D8 /* NavTransaction.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -693,6 +696,7 @@
 				2670378D21738AC6006CE84F /* NavGesture.swift in Sources */,
 				262599DE2159D000003144ED /* Nav+Dispatcher.swift in Sources */,
 				2667A62D21640BFD00F87A1B /* NavAnimatorZoom.swift in Sources */,
+				26010F8C217E09BF00EB09D8 /* NavTransaction.swift in Sources */,
 				26B8070E214DC740008091C2 /* AppDelegate.swift in Sources */,
 				2667A6262163FC2800F87A1B /* NavAnimators.swift in Sources */,
 				2670378621712914006CE84F /* NavActiveLayer.swift in Sources */,
