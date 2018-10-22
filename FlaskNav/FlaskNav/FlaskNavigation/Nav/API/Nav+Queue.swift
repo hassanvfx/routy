@@ -22,16 +22,8 @@ extension FlaskNav{
             action()
             NavStack.unlock()
             
-            if nav {
-                self?.dispatchNavFlux(with: operation){ (completed) in
-                    
-                    completion(operation,completed)
-                }
-            }else{
-                self?.dispatchCompFlux(with: operation){ (completed) in
-                    
-                    completion(operation,completed)
-                }
+            self?.dispatchFlux(nav:nav, with: operation){ (completed) in
+                completion(operation,completed)
             }
             
         }

@@ -87,6 +87,10 @@ enum NavLayer:String,Codable{
         return (parts.last?.starts(with: "tab"))!
     }
     
+    static func IsTabAny(_ layer:String)->Bool {
+        return layer == TabAny()
+    }
+    
     static func IsModal(_ layer:String)->Bool {
         let parts = layer.split(separator: ".")
         return parts.last == "modal"

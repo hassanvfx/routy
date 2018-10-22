@@ -12,18 +12,23 @@ import Flask
 
 extension FlaskNav{
     
-    func dispatchFlux(with operation:FlaskOperation,_ completion:@escaping NavCompletion){
+    func dispatchFlux(nav:Bool, with operation:FlaskOperation,_ completion:@escaping NavCompletion){
 
-        print("-------------")
-        print("dispatch start ")
+      
         
         let finalizer:NavCompletion = { finallyCompleted in
             completion(finallyCompleted)
         }
         
-        dispatchActiveLayer(){ [weak self] activeCompleted in
-            self?.dispatchCurrentNavigation(){ layersCompleted in
-                finalizer(activeCompleted && layersCompleted)
+        if nav{
+            print("dispatch FLUX nav")
+            dispatchNavigation(){ layersCompleted in
+                finalizer(layersCompleted)
+            }
+        } else{
+            print("dispatch FLUX comp")
+            dispatchComposition(){  activeCompleted in
+                finalizer(activeCompleted)
             }
         }
  
@@ -31,47 +36,19 @@ extension FlaskNav{
     }
     
     
-    func dispatchCompFlux(with operation:FlaskOperation,_ completion:@escaping NavCompletion){
-        
-        print("-------------")
-        print("dispatch COMP-FLUX start ")
-        
-        let finalizer:NavCompletion = { finallyCompleted in
-            completion(finallyCompleted)
-        }
-        
-        dispatchActiveLayer(){  activeCompleted in
-                finalizer(activeCompleted)
-        }
 
-    }
-    
-    
-    func dispatchNavFlux(with operation:FlaskOperation,_ completion:@escaping NavCompletion){
-        
-        print("-------------")
-        print("dispatch NAV-FLUX start ")
-        
-        let finalizer:NavCompletion = { finallyCompleted in
-            completion(finallyCompleted)
-        }
-        
-        dispatchCurrentNavigation(){ layersCompleted in
-            finalizer(layersCompleted)
-        }
-        
-        
-    }
-
-    func dispatchActiveLayer(_ completion:@escaping NavCompletion){
+    func dispatchComposition(_ completion:@escaping NavCompletion){
 
         
         assert(NavLayer.isValid(stackActive.active),"invalid layer name")
         
         let payload:[String : Any] = [
             "layerActive":stackActive.active,
+            "modal":stackActive.modal
             ]
-        let lock = Flask.lock(withMixer: NavMixers.LayerActive, payload: payload, autorelease: true)
+        
+        
+        let lock = Flask.lock(withMixer: NavMixers.Composition, payload: payload, autorelease: true)
         lock.onRelease = { (payload) in
             
             if let completed = payload as? Bool {
@@ -81,11 +58,11 @@ extension FlaskNav{
             completion(true)
            
         }
-        print("dispatch applyActiveLayer: \(payload)")
+        print("dispatch composition: \(payload)")
     }
     
 
-    func dispatchCurrentNavigation(_ completion:@escaping NavCompletion){
+    func dispatchNavigation(_ completion:@escaping NavCompletion){
 
         var layers:[String:String] = [:]
         
@@ -98,7 +75,7 @@ extension FlaskNav{
             "layers":layers,
             ]
         
-        let lock = Flask.lock(withMixer: NavMixers.Layers, payload: payload, autorelease: true )
+        let lock = Flask.lock(withMixer: NavMixers.Navigation, payload: payload, autorelease: true )
         lock.onRelease = { (payload) in
             if let completed = payload as? Bool {
                 completion(completed)
@@ -107,6 +84,6 @@ extension FlaskNav{
             completion(true)
         }
         
-        print("dispatch applyCurrentLayers: \(payload)")
+        print("dispatch navigation: \(payload)")
     }
 }

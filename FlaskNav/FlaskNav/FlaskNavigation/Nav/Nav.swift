@@ -85,7 +85,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     }
     
     func setupActiveLayer(){
-        stackActive.onActiveChange = { [weak self] in
+        stackActive.onModalChange = { [weak self] in
             self?.flushModalStack()
         }
     }

@@ -33,13 +33,13 @@ extension FlaskNav{
             }
             
             if completed {
-                print("dispatch ACTIVE LAYER completed")
+                print("dispatch COMP completed")
                 self?.stackActive.commit()
                 self?.substance.commitState(){
                     finalize(operation, completed)
                 }
             } else {
-                print("dispatch ACTIVE LAYER canceled")
+                print("dispatch COMP canceled")
                 self?.stackActive.rollback()
                 self?.substance.rollbackState(){
                     finalize(operation, completed)
@@ -49,7 +49,7 @@ extension FlaskNav{
         
         enqueueNavOperation(nav:false, completion: resolveState ) { [weak self] in
             print("-------------")
-            print("dispatch ACTIVE LAYER \(layer)")
+            print("dispatch COMP layer:\(layer)")
             
             self?.stackActive.capture()
             self?.substance.captureState()
@@ -93,7 +93,6 @@ extension FlaskNav{
             }
             
         }
-        
         
         enqueueNavOperation(nav:true, completion: resolveState ) { [weak self] in
             

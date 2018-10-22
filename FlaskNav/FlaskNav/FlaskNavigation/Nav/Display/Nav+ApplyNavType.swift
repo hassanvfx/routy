@@ -10,9 +10,31 @@ import UIKit
 import Flask
 
 extension FlaskNav {
-    func applyNavType(fluxLock:FluxLock){
+    
+    func displayModal(fluxLock:FluxLock){
+        let navOperation = FlaskNavOperation(fluxLock: fluxLock, name: substance.state.layerActive )
+      
+        let modal = substance.state.modal
         
-        
+        if modal{
+            performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
+                self?.displayModalOperation {
+                    //there is no way to cancel this animator
+                    completion(true)
+                }
+            })
+        } else {
+            performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
+                self?.dismissModalOperation {
+                     //there is no way to cancel this animator
+                    completion(true)
+                }
+            })
+        }
+    }
+    
+    func displayComposition(fluxLock:FluxLock){
+
         let navOperation = FlaskNavOperation(fluxLock: fluxLock, name: substance.state.layerActive )
         let activeLayer = substance.state.layerActive
         
@@ -23,12 +45,6 @@ extension FlaskNav {
                 }
             })
             
-        } else if NavLayer.IsModal(activeLayer){
-            performOperationFor(navOperation: navOperation, withCompletion: {[weak self] completion in
-                self?.displayModalOperation {
-                    completion(true)
-                }
-            })
         } else if  NavLayer.IsTab(activeLayer){
             let index = NavLayer.TabIndex(substance.state.layerActive)
             

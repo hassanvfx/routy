@@ -17,7 +17,14 @@ extension FlaskNav: FlaskReactor{
         // ACTIVE LAYER
         reaction.on(NavigationState.prop.layerActive){[weak self] (change) in
             print("dispatch reaction on Active Layer")
-            self?.applyNavType(fluxLock: reaction.onLock!)
+            self?.displayComposition(fluxLock: reaction.onLock!)
+            lockHandled = true
+        }
+        
+        // MODAL COMP
+        reaction.on(NavigationState.prop.modal){[weak self] (change) in
+            print("dispatch reaction on Modal Composition")
+            self?.displayModal(fluxLock: reaction.onLock!)
             lockHandled = true
         }
         
@@ -30,7 +37,7 @@ extension FlaskNav: FlaskReactor{
         
         // MODAL
         reaction.on(NavLayer.LayerModal()){[weak self] (change) in
-            print("dispatch reaction on Modal")
+            print("dispatch reaction on Modal Navigation")
             self?.navigateToController(layer:NavLayer.Modal(), fluxLock: reaction.onLock!)
             lockHandled = true
         }
