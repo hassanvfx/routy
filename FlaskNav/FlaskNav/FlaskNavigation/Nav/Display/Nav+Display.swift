@@ -118,13 +118,35 @@ extension FlaskNav{
     
     func ensureNavCompletion(with context:NavContext, _ action:@escaping ()->Void){
         
-        let nav = self.navInstance(forLayer: context.layer)
+        let nav = navInstance(forLayer: context.layer)
+        let animatorDuration = context.animator?._duration ?? 1.0
+        let delay = max( animatorDuration, 4.0) * 1.2
+        
+        let retry = { [weak self] in
+            print("Retrying NAV Operation!! \(context.desc())")
+            action()
+            self?.watchForNavOperationToComplete(delay: delay){
+                print("Aborting NAV Operation!! \(context.desc())")
+                self?.intentToCompleteOperationFor(context: context, completed: false)
+            }
+        }
         
         let execute = { [weak self] in
-            print("Executing NAV Operation!")
+            print("Performing NAV Operation! \(context.desc())")
+            action()
+            self?.watchForNavOperationToComplete(delay: delay){
+                retry()
+            }
+        }
+        
+        let prepareAndExecute = { [weak self] in
+            
+            self?.assertComposition(context: context)
+            print("Preparing NAV Operation \(context.desc())")
+            
             nav._isPerformingNavOperation = true
             self?.dismissModalIntent(with: context){
-                action()
+                execute()
             }
         }
         
@@ -137,9 +159,8 @@ extension FlaskNav{
         
         if context.navigator != .Root || (context.navigator == .Root && nav.viewControllers.count > 1){
             
-            assertComposition(context: context)
             
-            execute()
+            prepareAndExecute()
             
             if NavLayer.IsModal(context.layer) &&  self.isModalPresented() == false {
                 complete()
@@ -163,9 +184,9 @@ extension FlaskNav{
         Kron.watchDogCancel(key:navOperationKey())
     }
     
-    func watchForNavOperationToComplete(retry:@escaping (Int)->Void, retryCount:Int = 0){
-        Kron.watchDog(timeOut: 2, resetKey: navOperationKey()){ key,ctx  in
-            retry(retryCount + 1)
+    func watchForNavOperationToComplete(delay: Double, retry:@escaping ()->Void){
+        Kron.watchDog(timeOut: delay, resetKey: navOperationKey()){ key,ctx  in
+            retry()
         }
     }
 }

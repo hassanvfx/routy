@@ -124,7 +124,8 @@ extension FlaskNav{
     func assertNavigatorFor(context:NavContext, intention:NavigatorType){
         
         if  context.viewController() == nil && intention != .Push {
-           assert(false,"error controller must exist")
+            print("missing viewController for: \(context.desc())")
+//           assert(false,"error controller must exist")
         }
     }
     

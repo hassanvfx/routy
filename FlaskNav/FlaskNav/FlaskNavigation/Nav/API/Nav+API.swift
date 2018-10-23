@@ -38,10 +38,7 @@ extension FlaskNav: NavStackAPI{
                 let context = NavContext.manager.context(layer:transaction.layer, navigator:.Push, controller: controller, resourceId: resourceId, info: info, animator:animator)
                 transaction.stack().push(context: context)
             }
-            
-            this.enqueue(transaction: transaction, type: .Composition){ (transaction) in
-                this.syncWithDisplay()
-            }
+           
         }
         
     }
@@ -62,9 +59,7 @@ extension FlaskNav: NavStackAPI{
                 transaction.stack().pop(toContextRef: context)
             }
             
-            this.enqueue(transaction: transaction, type: .Composition){ (transaction) in
-                this.syncWithDisplay()
-            }
+            
         }
         
     }
@@ -83,9 +78,6 @@ extension FlaskNav: NavStackAPI{
                 transaction.stack().pop(withAnimator: animator)
             }
             
-            this.enqueue(transaction: transaction, type: .Composition){ (transaction) in
-                this.syncWithDisplay()
-            }
         }
         
     }
@@ -104,9 +96,6 @@ extension FlaskNav: NavStackAPI{
                 transaction.stack().clear(withAnimator: animator)
             }
             
-            this.enqueue(transaction: transaction, type: .Composition){ (transaction) in
-                this.syncWithDisplay()
-            }
         }
         
     }
@@ -198,45 +187,6 @@ extension FlaskNav{
     func completeCompOperation(layer:String, result:Bool, contextCompletion:NavContextCompletion?){
         let context = NavContext(id: -1, layer: layer, navigator: .Root, controller: layer, resourceId: nil, info: nil)
         contextCompletion?( context, result)
-    }
-}
-
-extension FlaskNav{
-    
-    func flushModalStack(){
-        self.stack(forLayer: NavLayer.Modal()).clear()
-    }
-    
-    func syncWithDisplay(){
-        syncModal()
-        syncTabs()
-        syncNavs()
-    }
-    
-    func syncModal(){
-        hideEmptyModal()
-    }
-    
-    func syncTabs(){
-        
-    }
-    
-    func syncNavs(){
-        
-    }
-    
-    @discardableResult
-    func hideEmptyModal()->Bool{
-        
-        if !NavLayer.IsModal(self.stackActive.active) { return false}
-        
-        let stack = self.stack(forLayer: NavLayer.Modal())
-        if stack.isEmpty() {
-            self.stackActive.hideModal()
-            return true
-        }
-        return false
-        
     }
 }
 

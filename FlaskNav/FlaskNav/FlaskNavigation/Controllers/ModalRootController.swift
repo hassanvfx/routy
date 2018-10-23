@@ -22,10 +22,9 @@ class ModalRootController: UIViewController {
         view = TouchForwardingView()
         viewForwarder().touchChilds = false
         
-//        NavDebug.shared.perform{
-//            view.backgroundColor = .black
-//            view.alpha = 0.5
-//        }
+        NavDebug.shared.perform{
+            view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

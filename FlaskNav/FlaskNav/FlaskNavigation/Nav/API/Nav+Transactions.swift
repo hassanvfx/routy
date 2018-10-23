@@ -64,10 +64,17 @@ extension FlaskNav{
                 }
             }
         }
+        
+        let sync = FlaskOperation() { [weak self]  operation in
+            self?.syncWithDisplay()
+            operation.complete()
+        }
   
         NavStack.enqueue(operation: capture)
         actions(transaction)
         NavStack.enqueue(operation: resolve)
+        NavStack.enqueue(operation: sync)
+        
     }
     
     func enqueue(transaction:NavTransaction, type:NavOperationType, action:@escaping (NavTransaction)->Void){
@@ -85,6 +92,8 @@ extension FlaskNav{
             action(transaction)
         }
     }
+    
+   
 }
 
 
