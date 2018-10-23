@@ -120,7 +120,6 @@ import UIKit
     }
     
     func testInteractorTabPushGesture(_ completion:@escaping ()->Void = {}) {
-        
         let animator = NavAnimators.SlideLeft()
         let navGesture = NavGesturePan(completesAt:0.5){ gesture in }
         animator.dismissGestures = [navGesture]

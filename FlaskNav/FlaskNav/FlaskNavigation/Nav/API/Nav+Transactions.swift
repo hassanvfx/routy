@@ -66,8 +66,9 @@ extension FlaskNav{
         }
         
         let sync = FlaskOperation() { [weak self]  operation in
-            self?.syncWithDisplay()
-            operation.complete()
+            self?.syncWithDisplay(){
+                operation.complete()
+            }
         }
   
         NavStack.enqueue(operation: capture)

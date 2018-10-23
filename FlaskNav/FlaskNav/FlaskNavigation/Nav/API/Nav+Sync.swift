@@ -15,15 +15,23 @@ extension FlaskNav{
         self.stack(forLayer: NavLayer.Modal()).clear()
     }
     
-    func syncWithDisplay(){
+    func syncWithDisplay(_ completion:@escaping ()->Void){
         
-        let aLayer = stackActive.active
-        let aModal = stackActive.modal
+//        let aLayer = stackActive.active
+//        let aModal = stackActive.modal
 //        let stackHash = nil
+        let state = substance.state
         
         syncModal()
         syncComposition()
         syncNavStacks()
+        
+        let newState = NavigationState(layers: state.layers, layerActive: stackActive.active, modal: stackActive.modal)
+        substance.captureState(newState: newState) { [weak self] in
+            self?.substance.rollbackState(){
+                completion()
+            }
+        }
     }
     
     func syncModal(){
