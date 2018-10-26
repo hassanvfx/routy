@@ -91,25 +91,34 @@ extension FlaskNav{
 
 extension FlaskNav{
     
-    func assertComposition(context:NavContext){
+    func isValidComposition(nav:FlaskNavigationController, context:NavContext)->Bool{
+        
+        print("validating composition... \(context.desc()) modal:\(isModalPresented()) tab:\(isTabPresented())")
         
         if NavLayer.IsModal(context.layer) &&  !isModalPresented() && context.navigator != .Root {
-             assert(false)
+            print("error: modal not visible")
+            return false
         }else if NavLayer.IsTab(context.layer) &&  !isTabPresented() {
-             assert(false)
-        } else if NavLayer.IsNav(context.layer) && (isModalPresented() || isTabPresented()) {
-            print("nav may fail if layers are presented. modal:\(isModalPresented()) tab:\(isTabPresented())")
-            assert(false)
+            print("error: tab not visible")
+            return false
+        }else if NavLayer.IsNav(context.layer) && (isModalPresented() || isTabPresented()) {
+            print("error: nav not top controller")
+            return false
+        }else if context.navigator == .Root &&  nav.viewControllers.count == 0{
+            print("error: no root")
+            return false
+        }else if context.navigator == .Pop && context.viewController() == nil{
+            print("error: no controller to pop")
+            return false
+        }else if context.navigator == .Pop && context.viewController() != nil && !(nav.viewControllers.contains(context.viewController()!)){
+            print("error: controller not in nav")
+            return false
         }
-    }
-    
-    func ensureNavCompletion(with context:NavContext, _ action:@escaping ()->Void){
         
-        dismissModalIntent(with: context){ [weak self] in
-            self?._ensureNavCompletion(with: context, action)
-        }
+        return true
     }
     
+   
     func dismissModalIntent(with context:NavContext, action:@escaping ()->Void){
         
         if NavLayer.IsModal(context.layer){
@@ -122,39 +131,48 @@ extension FlaskNav{
         }
     }
     
-    func _ensureNavCompletion(with context:NavContext, _ action:@escaping ()->Void){
+    func ensureNavCompletion(with context:NavContext, _ action:@escaping ()->Void){
         
-        let nav = self.navInstance(forLayer: context.layer)
+        let nav = navInstance(forLayer: context.layer)
+        let animatorDuration = context.animator?._duration ?? 1.0
+        let delay = max( animatorDuration, 4.0) * 1.2
         
-        let execute = {
-            print("Executing NAV Operation!")
-            nav._isPerformingNavOperation = true
+        
+        let abort = { [weak self] in
+            print("Aborting NAV Operation!! \(context.desc())")
+            self?.intentToCompleteOperationFor(context: context, completed: false)
+        }
+        
+        
+        let execute = { [weak self] in
+            
+            print("Performing NAV Operation! \(context.desc())")
             action()
-        }
-        
-        let complete = {
-            print("Aborting NAV Operation!")
-            DispatchQueue.main.async {
-                self.intentToCompleteOperationFor(context: context)
+            self?.watchForNavOperationToComplete(delay: delay){
+               abort()
             }
         }
         
-        if context.navigator != .Root || (context.navigator == .Root && nav.viewControllers.count > 1){
+        let prepareAndExecute = { [weak self] in
             
-            assertComposition(context: context)
+            print("Preparing NAV Operation \(context.desc())")
             
-            execute()
-            
-            if NavLayer.IsModal(context.layer) &&  self.isModalPresented() == false {
-                complete()
+            nav._isPerformingNavOperation = true
+            self?.dismissModalIntent(with: context){
+                execute()
             }
-            if NavLayer.IsTab(context.layer) &&  self.isTabPresented() == false {
-                complete()
-            }
-        } else{
-            complete()
+        }
+
+        if isValidComposition(nav: nav, context: context){
+            prepareAndExecute()
+        }else{
+            print("Invalid NAV composition! \(context.desc())")
+            abort()
+            return
         }
     }
+    
+    
 }
 
 extension FlaskNav{
@@ -167,9 +185,9 @@ extension FlaskNav{
         Kron.watchDogCancel(key:navOperationKey())
     }
     
-    func watchForNavOperationToComplete(retry:@escaping (Int)->Void, retryCount:Int = 0){
-        Kron.watchDog(timeOut: 2, resetKey: navOperationKey()){ key,ctx  in
-            retry(retryCount + 1)
+    func watchForNavOperationToComplete(delay: Double, retry:@escaping ()->Void){
+        Kron.watchDog(timeOut: delay, resetKey: navOperationKey()){ key,ctx  in
+            retry()
         }
     }
 }

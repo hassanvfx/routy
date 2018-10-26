@@ -62,7 +62,7 @@ import UIKit
         nonInteractiveTests()
     }
     func testForever(){
-//        testInteractive()
+        testInteractive()
         nonInteractiveTests(){
             self.testForever()
         }

@@ -11,6 +11,10 @@ import Flask
 
 let ROOT_CONTROLLER = "root"
 
+public enum NavOperationType: String {
+    case Composition, Navigation
+}
+
 public typealias NavConstructor = () -> UIViewController
 public typealias NavContextCompletion = (NavContext,Bool)->Void
 public typealias NavCompletion = (Bool)->Void

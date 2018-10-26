@@ -60,10 +60,8 @@ public class NavContext {
         return "cid:\(contextId)->\(path)"
     }
     
-    public func setViewControllerWeak(_ explicit:Bool = false){
-        if(!explicit){
-            assert(viewControllerStrong != nil,"called to set weak but strong is nil")
-        }
+    public func setViewControllerWeak(){
+        
         viewControllerWeak = viewControllerStrong
         viewControllerStrong = nil
     }

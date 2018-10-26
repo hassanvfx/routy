@@ -17,6 +17,12 @@ struct NavigationState: State {
         case layerActive,layers,modal
     }
     
+//    init(active:String, modal:Bool, layers:FlaskDictRef){
+//        self.layers = layers
+//        self.layerActive = active
+//        self.modal = modal
+//    }
+    
     var layers:FlaskDictRef = FlaskDictRef()
     var layerActive:String = ROOT_CONTROLLER
     var modal:Bool = false

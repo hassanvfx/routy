@@ -12,7 +12,7 @@ import Flask
 
 extension FlaskNav{
 
-    func enqueueNavOperation(nav:Bool, completion:@escaping NavOperationCompletion, action:@escaping ()->Void){
+    func enqueueNavOperation(type:NavOperationType, completion:@escaping NavOperationCompletion, action:@escaping ()->Void){
 
   
         let action:(FlaskOperation)->Void = { [weak self] operation in
@@ -22,7 +22,7 @@ extension FlaskNav{
             action()
             NavStack.unlock()
             
-            self?.dispatchFlux(nav:nav, with: operation){ (completed) in
+            self?.dispatchFlux(type: type, with: operation){ (completed) in
                 completion(operation,completed)
             }
             

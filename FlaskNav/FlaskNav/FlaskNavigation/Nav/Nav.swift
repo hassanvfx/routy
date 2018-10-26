@@ -105,6 +105,7 @@ public class FlaskNav<TABS:Hashable & RawRepresentable, CONT:Hashable & RawRepre
     //MARK: NavigationControllerDelegate
     public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         
+        cancelWatchForNavOperationToComplete()
         intentToCompleteOperationFor(controller: viewController)
     }
     
