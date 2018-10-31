@@ -122,11 +122,15 @@ extension FlaskNav{
     func dismissModalIntent(with context:NavContext, action:@escaping ()->Void){
         
         if NavLayer.IsModal(context.layer){
+            print("skip HIDE modal -> context IS modal")
             action()
             return
         }
         
+        
+        print("may HIDE modal...")
         dismissModal() {
+            print("after HIDE modal intent")
             action()
         }
     }
@@ -182,10 +186,12 @@ extension FlaskNav{
     }
     
     func cancelWatchForNavOperationToComplete(){
+        print("cancelling WATCHDOG")
         Kron.watchDogCancel(key:navOperationKey())
     }
     
     func watchForNavOperationToComplete(delay: Double, retry:@escaping ()->Void){
+        print("setting WATCHDOG")
         Kron.watchDog(timeOut: delay, resetKey: navOperationKey()){ key,ctx  in
             retry()
         }
