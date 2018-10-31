@@ -93,6 +93,8 @@ extension FlaskNav{
             return
         }
         
+        cancelWatchForNavOperationToComplete()
+        
         let key = context.contextId
         var references = operationsFor(key:key)
         

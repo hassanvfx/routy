@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Flask
 
 extension FlaskNav{
     
@@ -21,7 +22,7 @@ extension FlaskNav{
     }
     
     func controllerFrom(context:NavContext, navOperation:FlaskNavOperation)->UIViewController{
- 
+        
         if context.controller == ROOT_CONTROLLER {
             return activeRootController(for:context.layer)!
         }
@@ -66,7 +67,7 @@ extension FlaskNav{
                     info.onWillSetupEmptyState?(nav, context)
                     info.onWillSetupEmptyState = nil
                 }
-
+                
                 instanceAsyncSetup.setupEmptyState()
                 
                 if let info = context.info as? NavInfo {
@@ -75,48 +76,53 @@ extension FlaskNav{
                 }
             }
         }
-    
+        
     }
     
     
     func setupContentIntent(controller:UIViewController, context:NavContext, navOperation:FlaskNavOperation){
         
-        if let instanceAsyncSetup = controller as? FlaskNavSetup {
+        guard let instanceAsyncSetup = controller as? FlaskNavSetup else { return }
+        
+        let nav = navInstance(forLayer: context.layer)
+        
+        let completion = { [weak self] (contentOperation:FlaskOperation) in
             
-            let completion = { [weak self] in
-                _ = self?.contentQueue.addOperation {
-                    self?.waitingForContentCompletion = false
-                    navOperation.releaseNavigation()
-                }
-            }
+            navOperation.releaseNavigation()
+            self?.waitingForContentCompletion = false
             
-            let nav = navInstance(forLayer: context.layer)
+        }
+        
+        let operation = FlaskOperation(){ [weak self] operation in
             
-            self.contentQueue.addOperation { [weak self] in
+            assert(self?.waitingForContentCompletion == false, "Ensure to call the `setupContent(...` `completionHandler()`" )
+            self?.waitingForContentCompletion = true
+            
+            navOperation.lockNavigation()
+            
+            DispatchQueue.main.async {
                 
-                assert(self?.waitingForContentCompletion == false, "Ensure to call the `setupContent(...` `completionHandler()`" )
-                self?.waitingForContentCompletion = true
-               
-                navOperation.lockNavigation()
-      
-                DispatchQueue.main.async {
-                   
-                    if let info = context.info as? NavInfo {
-                        info.onWillSetupContent?(nav, context)
-                        info.onWillSetupContent = nil
-                    }
-                    
-                    instanceAsyncSetup.setupContent(with: completion )
-                    
-                    if let info = context.info as? NavInfo {
-                        info.onDidSetupContent?(nav, context)
-                        info.onDidSetupContent = nil
-                        info.onDidSetup?(nav, context)
-                        info.onDidSetup = nil
-                    }
+                if let info = context.info as? NavInfo {
+                    info.onWillSetupContent?(nav, context)
+                    info.onWillSetupContent = nil
+                }
+                
+                let finalizer = {
+                    completion(operation)
+                }
+                
+                instanceAsyncSetup.setupContent(with: finalizer )
+                
+                if let info = context.info as? NavInfo {
+                    info.onDidSetupContent?(nav, context)
+                    info.onDidSetupContent = nil
+                    info.onDidSetup?(nav, context)
+                    info.onDidSetup = nil
                 }
             }
         }
+        
+        self.contentQueue.addOperation(operation)
     }
     
 }

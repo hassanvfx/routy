@@ -134,6 +134,7 @@ extension FlaskNav{
     func dismissModal(completion:@escaping ()->Void = {}){
         
         if !isModalPresented() {
+            print("skip HIDE modal")
             completion()
             return
         }
