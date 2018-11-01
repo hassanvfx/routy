@@ -6,12 +6,12 @@ target 'FlaskNav' do
   use_frameworks!
 
   # Pods for FlaskNav
-  pod "Flask"
+  pod "Flask", :path => "../../flask"
 
   target 'FlaskNavTests' do
     inherit! :search_paths
     # Pods for testing
-  	pod "Flask"
+  	pod "Flask", :path => "../../flask"
   end
 
 end

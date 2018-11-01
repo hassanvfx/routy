@@ -22,8 +22,29 @@ extension FlaskNav{
         return "\(Unmanaged.passUnretained(key as AnyObject).toOpaque())"
     }
     
+    
+    func performInNavQueue(closure:@escaping ()->Void = {}) {
+        
+     
+        let debugClosure:(FlaskOperation)->Void = { (op) in
+            //print("[$] performing REACT operation")
+            closure()
+            //print("[-] removing REACT operation")
+            op.complete()
+        }
+        
+        //print("[+] queueing REACT operation")
+        
+        let operation = FlaskOperation(block: debugClosure)
+        
+        operationQueue.addOperation(operation)
+        
+    }
+    
     func performOperationFor(navOperation:FlaskNavOperation, withCompletion closure:@escaping (@escaping (Bool)->Void)->Void) {
        
+        cancelWatchForNavOperationToComplete()
+        
         let completed = { (completion:Bool) in
             print("[-] removing PRES operation for key \(String(describing: navOperation.name)) ")
             
@@ -35,7 +56,7 @@ extension FlaskNav{
             closure(completed)
         }
         
-        print("[+] queueing PRES operation for key \(navOperation.name)")
+       // print("[+] queueing PRES operation for key \(navOperation.name)")
         
         let operation = FlaskOperation(block: debugClosure)
         navOperation.operation = operation
@@ -47,6 +68,8 @@ extension FlaskNav{
  
     func startOperationFor(context:NavContext, navOperation:FlaskNavOperation, _ closure:@escaping (FlaskOperation)->Void) {
         
+        cancelWatchForNavOperationToComplete()
+        
         let key = context.contextId
         
         let debugClosure:(FlaskOperation)->Void = { (op) in
@@ -57,7 +80,7 @@ extension FlaskNav{
         let operation = FlaskOperation(block: debugClosure)
         navOperation.operation = operation
         
-        print("[+] queueing NAV operation for \(context.desc())")
+       // print("[+] queueing NAV operation for \(context.desc())")
         
         var references = operationsFor(key:key)
         references.append( navOperation )

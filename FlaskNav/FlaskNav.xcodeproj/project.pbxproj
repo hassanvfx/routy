@@ -10,6 +10,7 @@
 		0B3FC4BA21CC837C1A970459 /* Pods_FlaskNavTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 248B7C7A42F05FCF01A6C174 /* Pods_FlaskNavTests.framework */; };
 		26010F8C217E09BF00EB09D8 /* NavTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26010F8B217E09BF00EB09D8 /* NavTransaction.swift */; };
 		26010F8E217EA29E00EB09D8 /* Nav+Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26010F8D217EA29E00EB09D8 /* Nav+Sync.swift */; };
+		260218D2218A7FA50037F77F /* NavLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 260218D1218A7FA50037F77F /* NavLog.swift */; };
 		2616BB6A2155946D00A6AEFB /* NavInfoProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB692155946D00A6AEFB /* NavInfoProtocol.swift */; };
 		2616BB6C2155963900A6AEFB /* AsyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB6B2155963900A6AEFB /* AsyncViewController.swift */; };
 		2616BB6E2155A0D600A6AEFB /* Nav+Constructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2616BB6D2155A0D600A6AEFB /* Nav+Constructor.swift */; };
@@ -83,6 +84,7 @@
 		248B7C7A42F05FCF01A6C174 /* Pods_FlaskNavTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlaskNavTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		26010F8B217E09BF00EB09D8 /* NavTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavTransaction.swift; sourceTree = "<group>"; };
 		26010F8D217EA29E00EB09D8 /* Nav+Sync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Sync.swift"; sourceTree = "<group>"; };
+		260218D1218A7FA50037F77F /* NavLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavLog.swift; sourceTree = "<group>"; };
 		2616BB692155946D00A6AEFB /* NavInfoProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavInfoProtocol.swift; sourceTree = "<group>"; };
 		2616BB6B2155963900A6AEFB /* AsyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncViewController.swift; sourceTree = "<group>"; };
 		2616BB6D2155A0D600A6AEFB /* Nav+Constructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nav+Constructor.swift"; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				26B807472151EF83008091C2 /* Helpers.swift */,
 				2667A61E2163E9C800F87A1B /* NavDebug.swift */,
 				2667A63121641C0900F87A1B /* NavSerializer.swift */,
+				260218D1218A7FA50037F77F /* NavLog.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -233,7 +236,6 @@
 				26010F8D217EA29E00EB09D8 /* Nav+Sync.swift */,
 				26703783217125C1006CE84F /* Nav+Transactions.swift */,
 				263B10C72159C95A00E6E5C4 /* Nav+Queue.swift */,
-				2616BB742155A1F000A6AEFB /* Nav+Operations.swift */,
 				262599DD2159D000003144ED /* Nav+Dispatcher.swift */,
 			);
 			path = API;
@@ -247,6 +249,7 @@
 				2616BB722155A1BC00A6AEFB /* Nav+Reactor.swift */,
 				268EC7B2217026C30086A2FC /* Nav+ApplyNavType.swift */,
 				263B10C92159C9BC00E6E5C4 /* Nav+Navigators.swift */,
+				2616BB742155A1F000A6AEFB /* Nav+Operations.swift */,
 				2616BB6D2155A0D600A6AEFB /* Nav+Constructor.swift */,
 				2616BB7A2155D6F900A6AEFB /* Nav+Display.swift */,
 			);
@@ -662,6 +665,7 @@
 				26B8074A2151EF9E008091C2 /* Substance.swift in Sources */,
 				2616BB892157105100A6AEFB /* NavContext.swift in Sources */,
 				263B10C62159C81100E6E5C4 /* StackLayers.swift in Sources */,
+				260218D2218A7FA50037F77F /* NavLog.swift in Sources */,
 				2667A62B216409FF00F87A1B /* NavAnimatorSlide.swift in Sources */,
 				2616BB792155D65800A6AEFB /* Nav+Config.swift in Sources */,
 				2667A6102162D39300F87A1B /* NavConfig.swift in Sources */,
