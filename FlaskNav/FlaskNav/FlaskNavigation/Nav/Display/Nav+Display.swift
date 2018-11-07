@@ -138,23 +138,15 @@ extension FlaskNav{
     func ensureNavCompletion(with context:NavContext, _ action:@escaping ()->Void){
         
         let nav = navInstance(forLayer: context.layer)
-        let animatorDuration = context.animator?._duration ?? 1.0
-        let delay = max( animatorDuration, 4.0) * 1.2
         
-        
-        let abort = { [weak self] in
+        let cancel = { [weak self] in
             print("Aborting NAV Operation!! \(context.desc())")
             self?.intentToCompleteOperationFor(context: context, completed: false)
         }
         
-        
-        let execute = { [weak self] in
-            
+        let execute = {
             print("Performing NAV Operation! \(context.desc())")
             action()
-            self?.watchForNavOperationToComplete(delay: delay){
-               abort()
-            }
         }
         
         let prepareAndExecute = { [weak self] in
@@ -171,7 +163,7 @@ extension FlaskNav{
             prepareAndExecute()
         }else{
             print("Invalid NAV composition! \(context.desc())")
-            abort()
+            cancel()
             return
         }
     }
@@ -187,15 +179,21 @@ extension FlaskNav{
     
     func cancelWatchForNavOperationToComplete(){
         
-//        print("cancelling WATCHDOG")
-//        Kron.watchDogCancel(key:navOperationKey())
+        print("cancelling WATCHDOG")
+        Kron.watchDogCancel(key:navOperationKey())
     }
     
-    func watchForNavOperationToComplete(delay: Double, retry:@escaping ()->Void){
+    func watchForNavOperationToComplete(context: NavContext, finalizer:@escaping ()->Void){
         
-//        print("setting WATCHDOG")
-//        Kron.watchDog(timeOut: delay, resetKey: navOperationKey()){ key,ctx  in
-//            retry()
-//        }
+       
+        let animatorDuration = context.animator?._duration ?? 1.0
+        let delay = max( animatorDuration, 4.0) * 1.2
+        
+        print("setting WATCHDOG delay:\(delay) \(context.desc())")
+        
+        Kron.watchDog(timeOut: delay, resetKey: navOperationKey()){ key,ctx  in
+            finalizer()
+        }
+      
     }
 }

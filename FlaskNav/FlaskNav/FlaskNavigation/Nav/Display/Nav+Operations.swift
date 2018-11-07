@@ -68,8 +68,10 @@ extension FlaskNav{
  
     func startOperationFor(context:NavContext, navOperation:FlaskNavOperation, _ closure:@escaping (FlaskOperation)->Void) {
         
-        cancelWatchForNavOperationToComplete()
-        
+        watchForNavOperationToComplete(context: context){ [weak self] in
+            self?.intentToCompleteOperationFor(context: context, completed: false)
+        }
+
         let key = context.contextId
         
         let debugClosure:(FlaskOperation)->Void = { (op) in
@@ -111,12 +113,14 @@ extension FlaskNav{
     
     func intentToCompleteOperationFor(context aContext:NavContext?,completed:Bool = true, intentRoot:Bool = false){
         
+        cancelWatchForNavOperationToComplete()
+        
         guard let context = aContext else {
             assert(false, "context should always be defined")
             return
         }
         
-        cancelWatchForNavOperationToComplete()
+ 
         
         let key = context.contextId
         var references = operationsFor(key:key)
