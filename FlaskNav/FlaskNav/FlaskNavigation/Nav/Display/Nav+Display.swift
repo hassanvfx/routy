@@ -95,23 +95,23 @@ extension FlaskNav{
         
         print("validating composition... \(context.desc()) modal:\(isModalPresented()) tab:\(isTabPresented())")
         
-        if NavLayer.IsModal(context.layer) &&  !isModalPresented() && context.navigator != .Root {
-            print("error: modal not visible")
-            return false
-        }else if NavLayer.IsTab(context.layer) &&  !isTabPresented() {
-            print("error: tab not visible")
-            return false
-        }else if NavLayer.IsNav(context.layer) && (isModalPresented() || isTabPresented()) {
-            print("error: nav not top controller")
-            return false
-        }else if context.navigator == .Root &&  nav.viewControllers.count == 0{
-            print("error: no root")
+        if context.navigator == .Root &&  nav.viewControllers.count == 1{
+            print("error: already root \(context.desc())")
             return false
         }else if context.navigator == .Pop && context.viewController() == nil{
-            print("error: no controller to pop")
+            print("error: no controller to pop \(context.desc())")
             return false
         }else if context.navigator == .Pop && context.viewController() != nil && !(nav.viewControllers.contains(context.viewController()!)){
-            print("error: controller not in nav")
+            print("error: controller not in nav \(context.desc())")
+            return false
+        }else if NavLayer.IsModal(context.layer) &&  !isModalPresented() {
+            print("error: modal not visible \(context.desc())")
+            return false
+        }else if NavLayer.IsTab(context.layer) &&  !isTabPresented() {
+            print("error: tab not visible \(context.desc())")
+            return false
+        }else if NavLayer.IsNav(context.layer) && (isModalPresented() || isTabPresented()) {
+            print("error: nav not top controller \(context.desc())")
             return false
         }
         
@@ -186,14 +186,16 @@ extension FlaskNav{
     }
     
     func cancelWatchForNavOperationToComplete(){
-        print("cancelling WATCHDOG")
-        Kron.watchDogCancel(key:navOperationKey())
+        
+//        print("cancelling WATCHDOG")
+//        Kron.watchDogCancel(key:navOperationKey())
     }
     
     func watchForNavOperationToComplete(delay: Double, retry:@escaping ()->Void){
-        print("setting WATCHDOG")
-        Kron.watchDog(timeOut: delay, resetKey: navOperationKey()){ key,ctx  in
-            retry()
-        }
+        
+//        print("setting WATCHDOG")
+//        Kron.watchDog(timeOut: delay, resetKey: navOperationKey()){ key,ctx  in
+//            retry()
+//        }
     }
 }

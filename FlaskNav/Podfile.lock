@@ -4,17 +4,20 @@ PODS:
     - Delayed (> 2.2.2)
 
 DEPENDENCIES:
-  - Flask
+  - Flask (from `../../flask`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Delayed
-    - Flask
+
+EXTERNAL SOURCES:
+  Flask:
+    :path: "../../flask"
 
 SPEC CHECKSUMS:
   Delayed: 84ce53e7a16a9fb93fdda058e2a21334a6567645
   Flask: 77e6d2cf9c359d6ae28f8dec64e0bf4315f421c2
 
-PODFILE CHECKSUM: b2e17beba73eb91a3be3dc29e1dac7ad71799e36
+PODFILE CHECKSUM: 058776ac808b41eaf9ac32daad0a1d0aeb319865
 
 COCOAPODS: 1.6.0.beta.2
